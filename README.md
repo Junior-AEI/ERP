@@ -14,5 +14,5 @@ npm run dev
 
 ```bash
 cd server
-npm run start
+npm run dev
 ```

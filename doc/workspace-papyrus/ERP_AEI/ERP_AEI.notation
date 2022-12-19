@@ -1,0 +1,131 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xmi:XMI xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:notation="http://www.eclipse.org/gmf/runtime/1.0.3/notation" xmlns:style="http://www.eclipse.org/papyrus/infra/gmfdiag/style" xmlns:uml="http://www.eclipse.org/uml2/5.0.0/UML">
+  <notation:Diagram xmi:id="__ERBcH97Ee2KW6AGgHz7zg" type="PapyrusUMLActivityDiagram" name="Activity Diagram" measurementUnit="Pixel">
+    <children xmi:type="notation:Shape" xmi:id="__ERBcX97Ee2KW6AGgHz7zg" type="Activity_Shape">
+      <children xmi:type="notation:DecorationNode" xmi:id="__ERBcn97Ee2KW6AGgHz7zg" type="Activity_NameLabel"/>
+      <children xmi:type="notation:DecorationNode" xmi:id="__ERBc397Ee2KW6AGgHz7zg" type="Activity_KeywordLabel"/>
+      <children xmi:type="notation:BasicCompartment" xmi:id="__ERBdH97Ee2KW6AGgHz7zg" type="Activity_ParameterCompartment">
+        <styles xmi:type="notation:SortingStyle" xmi:id="__ERBdX97Ee2KW6AGgHz7zg"/>
+        <styles xmi:type="notation:FilteringStyle" xmi:id="__ERBdn97Ee2KW6AGgHz7zg"/>
+        <layoutConstraint xmi:type="notation:Bounds" xmi:id="__ERBd397Ee2KW6AGgHz7zg"/>
+      </children>
+      <children xmi:type="notation:BasicCompartment" xmi:id="__ERBeH97Ee2KW6AGgHz7zg" type="Activity_PreconditionCompartment">
+        <styles xmi:type="notation:SortingStyle" xmi:id="__ERBeX97Ee2KW6AGgHz7zg"/>
+        <styles xmi:type="notation:FilteringStyle" xmi:id="__ERBen97Ee2KW6AGgHz7zg"/>
+        <layoutConstraint xmi:type="notation:Bounds" xmi:id="__ERBe397Ee2KW6AGgHz7zg"/>
+      </children>
+      <children xmi:type="notation:BasicCompartment" xmi:id="__ERogH97Ee2KW6AGgHz7zg" type="Activity_PostconditionCompartment">
+        <styles xmi:type="notation:SortingStyle" xmi:id="__ERogX97Ee2KW6AGgHz7zg"/>
+        <styles xmi:type="notation:FilteringStyle" xmi:id="__ERogn97Ee2KW6AGgHz7zg"/>
+        <layoutConstraint xmi:type="notation:Bounds" xmi:id="__ERog397Ee2KW6AGgHz7zg"/>
+      </children>
+      <children xmi:type="notation:BasicCompartment" xmi:id="__ERohH97Ee2KW6AGgHz7zg" type="Activity_ActivityNodeCompartment">
+        <children xmi:type="notation:Shape" xmi:id="_MX-6QH98Ee2KW6AGgHz7zg" type="InitialNode_Shape">
+          <children xmi:type="notation:DecorationNode" xmi:id="_MYAIYH98Ee2KW6AGgHz7zg" type="InitialNode_FloatingNameLabel">
+            <layoutConstraint xmi:type="notation:Location" xmi:id="_MYAIYX98Ee2KW6AGgHz7zg" y="15"/>
+          </children>
+          <children xmi:type="notation:DecorationNode" xmi:id="_MYAvcH98Ee2KW6AGgHz7zg" type="InitialNode_StereotypeLabel">
+            <layoutConstraint xmi:type="notation:Location" xmi:id="_MYAvcX98Ee2KW6AGgHz7zg" y="15"/>
+          </children>
+          <element xmi:type="uml:InitialNode" href="ERP_AEI.uml#_MXqKIH98Ee2KW6AGgHz7zg"/>
+          <layoutConstraint xmi:type="notation:Bounds" xmi:id="_MX-6QX98Ee2KW6AGgHz7zg" x="35" y="68"/>
+        </children>
+        <children xmi:type="notation:Shape" xmi:id="_I70f8H99Ee2KW6AGgHz7zg" type="OpaqueAction_Shape">
+          <children xmi:type="notation:DecorationNode" xmi:id="_I71uEH99Ee2KW6AGgHz7zg" type="OpaqueAction_NameLabel"/>
+          <children xmi:type="notation:DecorationNode" xmi:id="_I72VIH99Ee2KW6AGgHz7zg" type="OpaqueAction_FloatingNameLabel">
+            <layoutConstraint xmi:type="notation:Location" xmi:id="_I72VIX99Ee2KW6AGgHz7zg" y="15"/>
+          </children>
+          <element xmi:type="uml:OpaqueAction" href="ERP_AEI.uml#_I7lPYH99Ee2KW6AGgHz7zg"/>
+          <layoutConstraint xmi:type="notation:Bounds" xmi:id="_I74KUH99Ee2KW6AGgHz7zg" x="215" y="88"/>
+        </children>
+        <children xmi:type="notation:Shape" xmi:id="_O2rU0H99Ee2KW6AGgHz7zg" type="ActivityFinalNode_Shape">
+          <children xmi:type="notation:DecorationNode" xmi:id="_O2r74H99Ee2KW6AGgHz7zg" type="ActivityFinalNode_FloatingNameLabel">
+            <layoutConstraint xmi:type="notation:Location" xmi:id="_O2r74X99Ee2KW6AGgHz7zg" y="15"/>
+          </children>
+          <children xmi:type="notation:DecorationNode" xmi:id="_O2r74n99Ee2KW6AGgHz7zg" type="ActivityFinalNode_StereotypeLabel">
+            <layoutConstraint xmi:type="notation:Location" xmi:id="_O2si8H99Ee2KW6AGgHz7zg" y="15"/>
+          </children>
+          <element xmi:type="uml:ActivityFinalNode" href="ERP_AEI.uml#_O2NawH99Ee2KW6AGgHz7zg"/>
+          <layoutConstraint xmi:type="notation:Bounds" xmi:id="_O2rU0X99Ee2KW6AGgHz7zg" x="491" y="268"/>
+        </children>
+        <layoutConstraint xmi:type="notation:Bounds" xmi:id="__ERohX97Ee2KW6AGgHz7zg"/>
+      </children>
+      <element xmi:type="uml:Activity" href="ERP_AEI.uml#__BOUgH97Ee2KW6AGgHz7zg"/>
+      <layoutConstraint xmi:type="notation:Bounds" xmi:id="__ERohn97Ee2KW6AGgHz7zg"/>
+    </children>
+    <styles xmi:type="notation:StringValueStyle" xmi:id="__ERoh397Ee2KW6AGgHz7zg" name="diagram_compatibility_version" stringValue="1.4.0"/>
+    <styles xmi:type="notation:DiagramStyle" xmi:id="__ERoiH97Ee2KW6AGgHz7zg"/>
+    <styles xmi:type="style:PapyrusDiagramStyle" xmi:id="__ERoiX97Ee2KW6AGgHz7zg" diagramKindId="org.eclipse.papyrus.uml.diagram.activity">
+      <owner xmi:type="uml:Model" href="ERP_AEI.uml#_-5q7AH97Ee2KW6AGgHz7zg"/>
+    </styles>
+    <element xmi:type="uml:Activity" href="ERP_AEI.uml#__BOUgH97Ee2KW6AGgHz7zg"/>
+    <edges xmi:type="notation:Connector" xmi:id="_I9i-QH99Ee2KW6AGgHz7zg" type="ControlFlow_Edge" source="_MX-6QH98Ee2KW6AGgHz7zg" target="_I70f8H99Ee2KW6AGgHz7zg">
+      <children xmi:type="notation:DecorationNode" xmi:id="_I9jlUH99Ee2KW6AGgHz7zg" type="ControlFlow_NameLabel">
+        <styles xmi:type="notation:BooleanValueStyle" xmi:id="_PbTE0H99Ee2KW6AGgHz7zg" name="IS_UPDATED_POSITION" booleanValue="true"/>
+        <layoutConstraint xmi:type="notation:Location" xmi:id="_I9jlUX99Ee2KW6AGgHz7zg" x="-26" y="19"/>
+      </children>
+      <children xmi:type="notation:DecorationNode" xmi:id="_I9jlUn99Ee2KW6AGgHz7zg" type="ControlFlow_WeightLabel">
+        <styles xmi:type="notation:BooleanValueStyle" xmi:id="_PbnN4H99Ee2KW6AGgHz7zg" name="IS_UPDATED_POSITION" booleanValue="true"/>
+        <layoutConstraint xmi:type="notation:Location" xmi:id="_I9kMYH99Ee2KW6AGgHz7zg" x="1" y="19"/>
+      </children>
+      <children xmi:type="notation:DecorationNode" xmi:id="_I9kMYX99Ee2KW6AGgHz7zg" type="ControlFlow_GuardLabel">
+        <styles xmi:type="notation:BooleanValueStyle" xmi:id="_Pbxl8H99Ee2KW6AGgHz7zg" name="IS_UPDATED_POSITION" booleanValue="true"/>
+        <layoutConstraint xmi:type="notation:Location" xmi:id="_I9kMYn99Ee2KW6AGgHz7zg" x="27" y="19"/>
+      </children>
+      <children xmi:type="notation:DecorationNode" xmi:id="_I9kMY399Ee2KW6AGgHz7zg" type="ControlFlow_StereotypeLabel">
+        <styles xmi:type="notation:BooleanValueStyle" xmi:id="_Pb7-AH99Ee2KW6AGgHz7zg" name="IS_UPDATED_POSITION" booleanValue="true"/>
+        <layoutConstraint xmi:type="notation:Location" xmi:id="_I9kMZH99Ee2KW6AGgHz7zg" x="-1" y="-18"/>
+      </children>
+      <styles xmi:type="notation:FontStyle" xmi:id="_I9i-QX99Ee2KW6AGgHz7zg"/>
+      <element xmi:type="uml:ControlFlow" href="ERP_AEI.uml#_I876QH99Ee2KW6AGgHz7zg"/>
+      <bendpoints xmi:type="notation:RelativeBendpoints" xmi:id="_I9i-Qn99Ee2KW6AGgHz7zg" points="[45, 101, -643984, -643984]$[5, 32, -643984, -643984]"/>
+    </edges>
+    <edges xmi:type="notation:Connector" xmi:id="_RP2LoH99Ee2KW6AGgHz7zg" type="ControlFlow_Edge" source="_I70f8H99Ee2KW6AGgHz7zg" target="_O2rU0H99Ee2KW6AGgHz7zg">
+      <children xmi:type="notation:DecorationNode" xmi:id="_RP2ysH99Ee2KW6AGgHz7zg" type="ControlFlow_NameLabel">
+        <styles xmi:type="notation:BooleanValueStyle" xmi:id="_TNMpIH99Ee2KW6AGgHz7zg" name="IS_UPDATED_POSITION" booleanValue="true"/>
+        <layoutConstraint xmi:type="notation:Location" xmi:id="_RP2ysX99Ee2KW6AGgHz7zg" x="-35" y="19"/>
+      </children>
+      <children xmi:type="notation:DecorationNode" xmi:id="_RP2ysn99Ee2KW6AGgHz7zg" type="ControlFlow_WeightLabel">
+        <styles xmi:type="notation:BooleanValueStyle" xmi:id="_TNhZQH99Ee2KW6AGgHz7zg" name="IS_UPDATED_POSITION" booleanValue="true"/>
+        <layoutConstraint xmi:type="notation:Location" xmi:id="_RP2ys399Ee2KW6AGgHz7zg" y="19"/>
+      </children>
+      <children xmi:type="notation:DecorationNode" xmi:id="_RP2ytH99Ee2KW6AGgHz7zg" type="ControlFlow_GuardLabel">
+        <styles xmi:type="notation:BooleanValueStyle" xmi:id="_TN07QH99Ee2KW6AGgHz7zg" name="IS_UPDATED_POSITION" booleanValue="true"/>
+        <layoutConstraint xmi:type="notation:Location" xmi:id="_RP3ZwH99Ee2KW6AGgHz7zg" x="34" y="19"/>
+      </children>
+      <children xmi:type="notation:DecorationNode" xmi:id="_RP3ZwX99Ee2KW6AGgHz7zg" type="ControlFlow_StereotypeLabel">
+        <styles xmi:type="notation:BooleanValueStyle" xmi:id="_TN_6YH99Ee2KW6AGgHz7zg" name="IS_UPDATED_POSITION" booleanValue="true"/>
+        <layoutConstraint xmi:type="notation:Location" xmi:id="_RP3Zwn99Ee2KW6AGgHz7zg" x="1" y="-18"/>
+      </children>
+      <styles xmi:type="notation:FontStyle" xmi:id="_RP2LoX99Ee2KW6AGgHz7zg"/>
+      <element xmi:type="uml:ControlFlow" href="ERP_AEI.uml#_RPiCkH99Ee2KW6AGgHz7zg"/>
+      <bendpoints xmi:type="notation:RelativeBendpoints" xmi:id="_RP2Lon99Ee2KW6AGgHz7zg" points="[-7, 2, -221, -26]$[216, 62, 2, 34]"/>
+      <sourceAnchor xmi:type="notation:IdentityAnchor" xmi:id="_RQg6AH99Ee2KW6AGgHz7zg" id="(1.0,0.95)"/>
+      <targetAnchor xmi:type="notation:IdentityAnchor" xmi:id="_RQg6AX99Ee2KW6AGgHz7zg" id="(0.25,0.6)"/>
+    </edges>
+  </notation:Diagram>
+  <notation:Diagram xmi:id="__FWmkH97Ee2KW6AGgHz7zg" type="PapyrusUMLClassDiagram" name="Class Diagram" measurementUnit="Pixel">
+    <styles xmi:type="notation:StringValueStyle" xmi:id="__FWmkX97Ee2KW6AGgHz7zg" name="diagram_compatibility_version" stringValue="1.4.0"/>
+    <styles xmi:type="notation:DiagramStyle" xmi:id="__FWmkn97Ee2KW6AGgHz7zg"/>
+    <styles xmi:type="style:PapyrusDiagramStyle" xmi:id="__FWmk397Ee2KW6AGgHz7zg" diagramKindId="org.eclipse.papyrus.uml.diagram.class">
+      <owner xmi:type="uml:Model" href="ERP_AEI.uml#_-5q7AH97Ee2KW6AGgHz7zg"/>
+    </styles>
+    <element xmi:type="uml:Model" href="ERP_AEI.uml#_-5q7AH97Ee2KW6AGgHz7zg"/>
+  </notation:Diagram>
+  <notation:Diagram xmi:id="__Fz5kH97Ee2KW6AGgHz7zg" type="PapyrusUMLSequenceDiagram" name="Sequence Diagram" measurementUnit="Pixel">
+    <children xmi:type="notation:Shape" xmi:id="__Fz5kX97Ee2KW6AGgHz7zg" type="Interaction_Shape">
+      <children xmi:type="notation:DecorationNode" xmi:id="__Fz5kn97Ee2KW6AGgHz7zg" type="Interaction_NameLabel"/>
+      <children xmi:type="notation:BasicCompartment" xmi:id="__Fz5k397Ee2KW6AGgHz7zg" type="Interaction_SubfragmentCompartment">
+        <layoutConstraint xmi:type="notation:Bounds" xmi:id="__Fz5lH97Ee2KW6AGgHz7zg"/>
+      </children>
+      <element xmi:type="uml:Interaction" href="ERP_AEI.uml#__Fg-oH97Ee2KW6AGgHz7zg"/>
+      <layoutConstraint xmi:type="notation:Bounds" xmi:id="__Fz5lX97Ee2KW6AGgHz7zg"/>
+    </children>
+    <styles xmi:type="notation:StringValueStyle" xmi:id="__Fz5ln97Ee2KW6AGgHz7zg" name="diagram_compatibility_version" stringValue="1.4.0"/>
+    <styles xmi:type="notation:DiagramStyle" xmi:id="__Fz5l397Ee2KW6AGgHz7zg"/>
+    <styles xmi:type="style:PapyrusDiagramStyle" xmi:id="__Fz5mH97Ee2KW6AGgHz7zg" diagramKindId="org.eclipse.papyrus.uml.diagram.sequence">
+      <owner xmi:type="uml:Model" href="ERP_AEI.uml#_-5q7AH97Ee2KW6AGgHz7zg"/>
+    </styles>
+    <element xmi:type="uml:Interaction" href="ERP_AEI.uml#__Fg-oH97Ee2KW6AGgHz7zg"/>
+  </notation:Diagram>
+</xmi:XMI>

@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<uml:Model xmi:version="20131001" xmlns:xmi="http://www.omg.org/spec/XMI/20131001" xmlns:uml="http://www.eclipse.org/uml2/5.0.0/UML" xmi:id="_-5q7AH97Ee2KW6AGgHz7zg" name="ERP_AEI">
+  <packageImport xmi:type="uml:PackageImport" xmi:id="__XOZsH97Ee2KW6AGgHz7zg">
+    <importedPackage xmi:type="uml:Model" href="pathmap://UML_LIBRARIES/UMLPrimitiveTypes.library.uml#_0"/>
+  </packageImport>
+  <packagedElement xmi:type="uml:Activity" xmi:id="__BOUgH97Ee2KW6AGgHz7zg" name="Activity1" node="_MXqKIH98Ee2KW6AGgHz7zg">
+    <node xmi:type="uml:InitialNode" xmi:id="_MXqKIH98Ee2KW6AGgHz7zg" name="InitialNode1"/>
+  </packagedElement>
+  <packagedElement xmi:type="uml:Interaction" xmi:id="__Fg-oH97Ee2KW6AGgHz7zg" name="Interaction2"/>
+</uml:Model>

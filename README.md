@@ -1,3 +1,8 @@
+# Requirements
+```
+node >= 14.0.0
+```
+
 # Installation
 ```bash
 cd client

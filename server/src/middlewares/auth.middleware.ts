@@ -26,7 +26,6 @@ function getUsername(req: Request, res: Response, next: () => void) {
         next();
       })
       .catch((error) => {
-        console.error(error);
         return res.status(401).json({
           status: "error",
           message: "Invalid token",
@@ -37,4 +36,14 @@ function getUsername(req: Request, res: Response, next: () => void) {
   }
 }
 
-export { getUsername };
+function verifyAuthentication(req: Request, res: Response, next: () => void) {
+  if (!res.locals.user) {
+    return res.status(401).json({
+      status: "error",
+      message: "Unauthorized",
+    });
+  }
+  next();
+}
+
+export { getUsername, verifyAuthentication };

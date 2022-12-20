@@ -9,7 +9,6 @@ const userController = {
 
 function getUser(req: Request, res: Response) {
   const ret = [];
-  console.log("userController.getUser");
   db.all("SELECT * FROM User", (err: Error | null, row: any[]) => {
     res.json(row);
   });

@@ -1,10 +1,10 @@
+import dotenv from "dotenv";
+dotenv.config();
 import express from "express";
 import bodyParser from "body-parser";
 import routes from "./routes/routes";
-import dotenv from "dotenv";
 import { populateDatabase } from "./config/database.config";
 
-dotenv.config();
 const app = express();
 
 populateDatabase();

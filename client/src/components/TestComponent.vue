@@ -22,7 +22,9 @@ export default {
         fetch("/api/user")
             .then(response => response.json())
             .then(data => {
-                this.users = data;
+                if (data.success) {
+                    this.users = data.users;
+                }
             });
     },
     methods: {

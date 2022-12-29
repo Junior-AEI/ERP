@@ -3,7 +3,7 @@
   <di:SashWindowsMngr>
     <sashModel currentSelection="/0/@sashModel/@windows.0/@children.0" restoreActivePage="true">
       <windows>
-        <children xsi:type="di:TabFolder">
+        <children xsi:type="di:TabFolder" currentSelection="/0/@sashModel/@windows.0/@children.0/@children.3">
           <children>
             <emfPageIdentifier href="platform:/resource/ERP_AEI/ERP_AEI.notation#__ERBcH97Ee2KW6AGgHz7zg"/>
           </children>
@@ -12,6 +12,9 @@
           </children>
           <children>
             <emfPageIdentifier href="platform:/resource/ERP_AEI/ERP_AEI.notation#__Fz5kH97Ee2KW6AGgHz7zg"/>
+          </children>
+          <children>
+            <emfPageIdentifier href="platform:/resource/ERP_AEI/ERP_AEI.notation#_ZDciAIdYEe2eaPb8RMqDYA"/>
           </children>
         </children>
       </windows>

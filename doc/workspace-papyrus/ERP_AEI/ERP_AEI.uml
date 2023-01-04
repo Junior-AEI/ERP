@@ -4,27 +4,19 @@
     <importedPackage xmi:type="uml:Model" href="pathmap://UML_LIBRARIES/UMLPrimitiveTypes.library.uml#_0"/>
   </packageImport>
   <packagedElement xmi:type="uml:Activity" xmi:id="__BOUgH97Ee2KW6AGgHz7zg" name="faire relire la facture traitée" node="_MXqKIH98Ee2KW6AGgHz7zg _I7lPYH99Ee2KW6AGgHz7zg _O2NawH99Ee2KW6AGgHz7zg _yCvigH-UEe2zSrsQ6VWTqw _rdn6gILHEe2-b6VKVP26NQ _WyLfcIdXEe2eaPb8RMqDYA">
-    <ownedComment xmi:type="uml:Comment" xmi:id="_abdH4IeGEe2JFvrItRyJ-A" annotatedElement="__BOUgH97Ee2KW6AGgHz7zg">
-      <body>(secondary) 
-si relecture demandée
-</body>
-    </ownedComment>
-    <ownedComment xmi:type="uml:Comment" xmi:id="_x-HPAIeIEe2iQ4YBiOOYSg" annotatedElement="_YW154IeIEe2iQ4YBiOOYSg">
-      <body>(secondary)</body>
-    </ownedComment>
     <generalization xmi:type="uml:Generalization" xmi:id="_RY4jEILDEe2-b6VKVP26NQ" general="_kA9DsIK-Ee2-b6VKVP26NQ"/>
     <generalization xmi:type="uml:Generalization" xmi:id="_DyaB8IeHEe2JFvrItRyJ-A" general="_oB6FYIdYEe2eaPb8RMqDYA"/>
     <ownedUseCase xmi:type="uml:UseCase" xmi:id="_M_i10IdZEe2eaPb8RMqDYA" name="Se connecter"/>
     <ownedUseCase xmi:type="uml:UseCase" xmi:id="_RYJ00IdZEe2eaPb8RMqDYA" name="Suivre les versions des documents pour une étude"/>
     <ownedUseCase xmi:type="uml:UseCase" xmi:id="_7HKCgIdZEe2eaPb8RMqDYA" name="Avoir accès à un onglet &quot;Mes études&quot; comportant uniquement ses études"/>
     <ownedUseCase xmi:type="uml:UseCase" xmi:id="_I-tBIIdaEe2eaPb8RMqDYA" name="Télécharger les docs types"/>
-    <ownedUseCase xmi:type="uml:UseCase" xmi:id="_Y-zAoIdaEe2eaPb8RMqDYA" name="Créer un diagramme Gantt avec pré-remplissage des dates"/>
-    <ownedUseCase xmi:type="uml:UseCase" xmi:id="_d970IIdaEe2eaPb8RMqDYA" name="Uploader un document en demandant une relecture ou non (devis compris)"/>
+    <ownedUseCase xmi:type="uml:UseCase" xmi:id="_Y-zAoIdaEe2eaPb8RMqDYA" name="Visualiser dans un Gantt les phases de l'étude"/>
+    <ownedUseCase xmi:type="uml:UseCase" xmi:id="_d970IIdaEe2eaPb8RMqDYA" name="Uploader un document en demandant une relecture ou non"/>
     <ownedUseCase xmi:type="uml:UseCase" xmi:id="_qOrNAIdaEe2eaPb8RMqDYA" name="Supprimer un document"/>
     <ownedUseCase xmi:type="uml:UseCase" xmi:id="_zXNe0IdaEe2eaPb8RMqDYA" name="Archiver une étude"/>
     <ownedUseCase xmi:type="uml:UseCase" xmi:id="_GLwRMIeCEe2htJpijkFCLw" name="Créer une étude"/>
     <ownedUseCase xmi:type="uml:UseCase" xmi:id="_J8uBYIeCEe2htJpijkFCLw" name="Ajouter plusieurs suiveurs (devco/étude/qualité)"/>
-    <ownedUseCase xmi:type="uml:UseCase" xmi:id="_M6PicIeCEe2htJpijkFCLw" name="Gérer la confidentialité (restriction des droits)"/>
+    <ownedUseCase xmi:type="uml:UseCase" xmi:id="_M6PicIeCEe2htJpijkFCLw" name="Gérer la confidentialité (restriction des droits aux suiveurs + CA)"/>
     <ownedUseCase xmi:type="uml:UseCase" xmi:id="_U0L6MIeCEe2htJpijkFCLw" name="Ajouter un nom à l'étude"/>
     <ownedUseCase xmi:type="uml:UseCase" xmi:id="_XoaVUIeCEe2htJpijkFCLw" name="Ajouter un client"/>
     <ownedUseCase xmi:type="uml:UseCase" xmi:id="_Zon5kIeCEe2htJpijkFCLw" name="Télécharger un document"/>
@@ -41,21 +33,18 @@ si relecture demandée
     <ownedUseCase xmi:type="uml:UseCase" xmi:id="_w4jAAIeGEe2JFvrItRyJ-A" name="Avoir accès à un historique de chaque document"/>
     <ownedUseCase xmi:type="uml:UseCase" xmi:id="_z76qYIeGEe2JFvrItRyJ-A" name="Uploader le document relu"/>
     <ownedUseCase xmi:type="uml:UseCase" xmi:id="_2fY3QIeHEe2iQ4YBiOOYSg" name="Supprimer une étude"/>
-    <ownedUseCase xmi:type="uml:UseCase" xmi:id="_4LcwcIeHEe2iQ4YBiOOYSg" name="Uploader un document en relecture"/>
     <ownedUseCase xmi:type="uml:UseCase" xmi:id="_747HwIeHEe2iQ4YBiOOYSg" name="lister les adhérents d'AEI et pouvoir les trier/filtrer/rechercher"/>
-    <ownedUseCase xmi:type="uml:UseCase" xmi:id="_L_VxsIeIEe2iQ4YBiOOYSg" name="Avoir accès à wikiX"/>
     <ownedUseCase xmi:type="uml:UseCase" xmi:id="_lUTiAIu-Ee2KVIDtCEYxFg" name="pouvoir ajouter, modifier et supprimer un membre cotisant d'AEI"/>
     <ownedUseCase xmi:type="uml:UseCase" xmi:id="_ovrcsIu-Ee2KVIDtCEYxFg" name="générer automatiquement les bulletins d'adhésion des adhérents"/>
     <ownedUseCase xmi:type="uml:UseCase" xmi:id="_r-PqcIu-Ee2KVIDtCEYxFg" name="convertir un membre cotisant en administrateur AEI"/>
-    <ownedUseCase xmi:type="uml:UseCase" xmi:id="_uyG5MIu-Ee2KVIDtCEYxFg" name="la durée de membre soit mis à jour automatiquement selon leur période d'étude à l'ENSEIRB"/>
-    <ownedUseCase xmi:type="uml:UseCase" xmi:id="_0GQ6cIu-Ee2KVIDtCEYxFg" name="la mailing list &quot;all@junior-aei.com&quot; (mails des cotisants d'AEI) soit automatiquement mis à jour à partir des membres cotisants inscrits sur l'ERP"/>
-    <ownedUseCase xmi:type="uml:UseCase" xmi:id="_BLxYIIu_Ee2KVIDtCEYxFg" name="factures pôle étude"/>
-    <ownedUseCase xmi:type="uml:UseCase" xmi:id="_FmGOYIu_Ee2KVIDtCEYxFg" name="recevoir"/>
-    <ownedUseCase xmi:type="uml:UseCase" xmi:id="_IFY7UIu_Ee2KVIDtCEYxFg" name="faire relire la facture traitée"/>
-    <ownedUseCase xmi:type="uml:UseCase" xmi:id="_T7MEoIu_Ee2KVIDtCEYxFg" name="renvoyer au pôle étude"/>
+    <ownedUseCase xmi:type="uml:UseCase" xmi:id="_uyG5MIu-Ee2KVIDtCEYxFg" name="Avoir un indicateur sur la durée de cotisation restante à un membre"/>
+    <ownedUseCase xmi:type="uml:UseCase" xmi:id="_0GQ6cIu-Ee2KVIDtCEYxFg" name="modifier automatiquement la mailing list &quot;all@junior-aei.com&quot; (mails des cotisants d'AEI) "/>
+    <ownedUseCase xmi:type="uml:UseCase" xmi:id="_FmGOYIu_Ee2KVIDtCEYxFg" name="recevoir une demande de facture relative à une étude"/>
+    <ownedUseCase xmi:type="uml:UseCase" xmi:id="_T7MEoIu_Ee2KVIDtCEYxFg" name="renvoyer une facture relue au pôle étude"/>
     <ownedUseCase xmi:type="uml:UseCase" xmi:id="_bg-xUIu_Ee2KVIDtCEYxFg" name="pouvoir générer les documents de refacturation automatiquement (doc-types) avec les informations sur la personne et le montant"/>
-    <ownedUseCase xmi:type="uml:UseCase" xmi:id="_iiSQ4Iu_Ee2KVIDtCEYxFg" name="pouvoir recevoir les demandes de notes de frais contenant RIB, le scan de la facture et le motif"/>
-    <ownedUseCase xmi:type="uml:UseCase" xmi:id="_oPHQ0Iu_Ee2KVIDtCEYxFg" name="avoir accès à des statistiques, graphiques à jour"/>
+    <ownedUseCase xmi:type="uml:UseCase" xmi:id="_iiSQ4Iu_Ee2KVIDtCEYxFg" name="faire des demandes de notes de frais contenant RIB, le scan de la facture et le motif"/>
+    <ownedUseCase xmi:type="uml:UseCase" xmi:id="_oPHQ0Iu_Ee2KVIDtCEYxFg" name="avoir accès à des statistiques, graphiques à jour (à préciser)"/>
+    <ownedUseCase xmi:type="uml:UseCase" xmi:id="_8nA-cIwJEe2u__C5O3a3jg" name="Avoir un accès à l'étude complète pour chaque document"/>
     <ownedAttribute xmi:type="uml:Property" xmi:id="_xVIo4H-EEe2zSrsQ6VWTqw" name="userName" visibility="private" aggregation="composite">
       <type xmi:type="uml:PrimitiveType" href="pathmap://UML_LIBRARIES/UMLPrimitiveTypes.library.uml#String"/>
     </ownedAttribute>
@@ -157,14 +146,17 @@ si relecture demandée
       <generalization xmi:type="uml:Generalization" xmi:id="_nfkT4IeFEe2JFvrItRyJ-A" general="_oB6FYIdYEe2eaPb8RMqDYA"/>
     </nestedClassifier>
     <nestedClassifier xmi:type="uml:Actor" xmi:id="_MLpaQIeGEe2JFvrItRyJ-A" name="Chargé qualité"/>
-    <nestedClassifier xmi:type="uml:Actor" xmi:id="_t1ebIIeHEe2iQ4YBiOOYSg" name="Admin">
-      <generalization xmi:type="uml:Generalization" xmi:id="_yJkGgIeHEe2iQ4YBiOOYSg" general="_oB6FYIdYEe2eaPb8RMqDYA"/>
-    </nestedClassifier>
     <nestedClassifier xmi:type="uml:Actor" xmi:id="_0AjLYIeJEe2iQ4YBiOOYSg" name="Trésorier">
       <generalization xmi:type="uml:Generalization" xmi:id="_27f5kIeJEe2iQ4YBiOOYSg" general="__BOUgH97Ee2KW6AGgHz7zg"/>
     </nestedClassifier>
     <nestedClassifier xmi:type="uml:Actor" xmi:id="_LyQtEIeKEe2iQ4YBiOOYSg" name="Secrétaire général">
       <generalization xmi:type="uml:Generalization" xmi:id="_RhaBMIeKEe2iQ4YBiOOYSg" general="_oB6FYIdYEe2eaPb8RMqDYA"/>
+    </nestedClassifier>
+    <nestedClassifier xmi:type="uml:Actor" xmi:id="_yLSmcIwJEe2u__C5O3a3jg" name="Respo étude">
+      <generalization xmi:type="uml:Generalization" xmi:id="_1hg7YIwJEe2u__C5O3a3jg" general="_yqFIgIdZEe2eaPb8RMqDYA"/>
+    </nestedClassifier>
+    <nestedClassifier xmi:type="uml:Actor" xmi:id="_vRYvMIwLEe2KZ7rz2b3LjA" name="Respo quali">
+      <generalization xmi:type="uml:Generalization" xmi:id="_yA7eoIwLEe2KZ7rz2b3LjA" general="_MLpaQIeGEe2JFvrItRyJ-A"/>
     </nestedClassifier>
     <edge xmi:type="uml:ControlFlow" xmi:id="_I876QH99Ee2KW6AGgHz7zg" target="_I7lPYH99Ee2KW6AGgHz7zg" source="_MXqKIH98Ee2KW6AGgHz7zg"/>
     <edge xmi:type="uml:ControlFlow" xmi:id="_RPiCkH99Ee2KW6AGgHz7zg" target="_O2NawH99Ee2KW6AGgHz7zg" source="_I7lPYH99Ee2KW6AGgHz7zg"/>
@@ -347,34 +339,6 @@ si relecture demandée
     <ownedEnd xmi:type="uml:Property" xmi:id="_E8ZCQYdaEe2eaPb8RMqDYA" name="accès à un onglet &quot;mes études&quot; comportant uniquement ses études" type="_7HKCgIdZEe2eaPb8RMqDYA" association="_E8XNEIdaEe2eaPb8RMqDYA"/>
     <ownedEnd xmi:type="uml:Property" xmi:id="_E8ZpUIdaEe2eaPb8RMqDYA" name="membre étude / devco" type="_yqFIgIdZEe2eaPb8RMqDYA" association="_E8XNEIdaEe2eaPb8RMqDYA"/>
   </packagedElement>
-  <packagedElement xmi:type="uml:Association" xmi:id="_TXrAEIdaEe2eaPb8RMqDYA" memberEnd="_TXrnIodaEe2eaPb8RMqDYA _TXrnI4daEe2eaPb8RMqDYA">
-    <eAnnotations xmi:type="ecore:EAnnotation" xmi:id="_TXrnIIdaEe2eaPb8RMqDYA" source="org.eclipse.papyrus">
-      <details xmi:type="ecore:EStringToStringMapEntry" xmi:id="_TXrnIYdaEe2eaPb8RMqDYA" key="nature" value="UML_Nature"/>
-    </eAnnotations>
-    <ownedEnd xmi:type="uml:Property" xmi:id="_TXrnIodaEe2eaPb8RMqDYA" name="télécharger les docs types" type="_I-tBIIdaEe2eaPb8RMqDYA" association="_TXrAEIdaEe2eaPb8RMqDYA"/>
-    <ownedEnd xmi:type="uml:Property" xmi:id="_TXrnI4daEe2eaPb8RMqDYA" name="membre étude / devco" type="_yqFIgIdZEe2eaPb8RMqDYA" association="_TXrAEIdaEe2eaPb8RMqDYA"/>
-  </packagedElement>
-  <packagedElement xmi:type="uml:Association" xmi:id="_uTKWIIdaEe2eaPb8RMqDYA" memberEnd="_uTMLUIdaEe2eaPb8RMqDYA _uTMLUYdaEe2eaPb8RMqDYA">
-    <eAnnotations xmi:type="ecore:EAnnotation" xmi:id="_uTLkQIdaEe2eaPb8RMqDYA" source="org.eclipse.papyrus">
-      <details xmi:type="ecore:EStringToStringMapEntry" xmi:id="_uTLkQYdaEe2eaPb8RMqDYA" key="nature" value="UML_Nature"/>
-    </eAnnotations>
-    <ownedEnd xmi:type="uml:Property" xmi:id="_uTMLUIdaEe2eaPb8RMqDYA" name="uploader un document en demandant une relecture ou non" type="_d970IIdaEe2eaPb8RMqDYA" association="_uTKWIIdaEe2eaPb8RMqDYA"/>
-    <ownedEnd xmi:type="uml:Property" xmi:id="_uTMLUYdaEe2eaPb8RMqDYA" name="membre étude / devco" type="_yqFIgIdZEe2eaPb8RMqDYA" association="_uTKWIIdaEe2eaPb8RMqDYA"/>
-  </packagedElement>
-  <packagedElement xmi:type="uml:Association" xmi:id="_vVYoIIdaEe2eaPb8RMqDYA" memberEnd="_vVadUIdaEe2eaPb8RMqDYA _vVadUYdaEe2eaPb8RMqDYA">
-    <eAnnotations xmi:type="ecore:EAnnotation" xmi:id="_vVZ2QIdaEe2eaPb8RMqDYA" source="org.eclipse.papyrus">
-      <details xmi:type="ecore:EStringToStringMapEntry" xmi:id="_vVZ2QYdaEe2eaPb8RMqDYA" key="nature" value="UML_Nature"/>
-    </eAnnotations>
-    <ownedEnd xmi:type="uml:Property" xmi:id="_vVadUIdaEe2eaPb8RMqDYA" name="supprimer un document" type="_qOrNAIdaEe2eaPb8RMqDYA" association="_vVYoIIdaEe2eaPb8RMqDYA"/>
-    <ownedEnd xmi:type="uml:Property" xmi:id="_vVadUYdaEe2eaPb8RMqDYA" type="_yqFIgIdZEe2eaPb8RMqDYA" association="_vVYoIIdaEe2eaPb8RMqDYA"/>
-  </packagedElement>
-  <packagedElement xmi:type="uml:Association" xmi:id="_wRvisIdaEe2eaPb8RMqDYA" memberEnd="_wRxX4IdaEe2eaPb8RMqDYA _wRxX4YdaEe2eaPb8RMqDYA">
-    <eAnnotations xmi:type="ecore:EAnnotation" xmi:id="_wRwJwIdaEe2eaPb8RMqDYA" source="org.eclipse.papyrus">
-      <details xmi:type="ecore:EStringToStringMapEntry" xmi:id="_wRww0IdaEe2eaPb8RMqDYA" key="nature" value="UML_Nature"/>
-    </eAnnotations>
-    <ownedEnd xmi:type="uml:Property" xmi:id="_wRxX4IdaEe2eaPb8RMqDYA" name="créer un diagramme gantt avec pré-remplissage des dates" type="_Y-zAoIdaEe2eaPb8RMqDYA" association="_wRvisIdaEe2eaPb8RMqDYA"/>
-    <ownedEnd xmi:type="uml:Property" xmi:id="_wRxX4YdaEe2eaPb8RMqDYA" name="membre étude / devco" type="_yqFIgIdZEe2eaPb8RMqDYA" association="_wRvisIdaEe2eaPb8RMqDYA"/>
-  </packagedElement>
   <packagedElement xmi:type="uml:Association" xmi:id="_C08YIIdbEe2eaPb8RMqDYA" memberEnd="_C0-NUYdbEe2eaPb8RMqDYA _C0-0YIdbEe2eaPb8RMqDYA">
     <eAnnotations xmi:type="ecore:EAnnotation" xmi:id="_C09mQIdbEe2eaPb8RMqDYA" source="org.eclipse.papyrus">
       <details xmi:type="ecore:EStringToStringMapEntry" xmi:id="_C0-NUIdbEe2eaPb8RMqDYA" key="nature" value="UML_Nature"/>
@@ -392,13 +356,6 @@ si relecture demandée
     </eAnnotations>
     <ownedEnd xmi:type="uml:Property" xmi:id="_CZJs0IeDEe2htJpijkFCLw" name="se déconnecter" type="_ujNdIIeCEe2htJpijkFCLw" association="_CZGpgIeDEe2htJpijkFCLw"/>
     <ownedEnd xmi:type="uml:Property" xmi:id="_CZK68IeDEe2htJpijkFCLw" name="utilisateur" type="_oB6FYIdYEe2eaPb8RMqDYA" association="_CZGpgIeDEe2htJpijkFCLw"/>
-  </packagedElement>
-  <packagedElement xmi:type="uml:Association" xmi:id="_I_iK8IeDEe2htJpijkFCLw" memberEnd="_I_iyAIeDEe2htJpijkFCLw _I_iyAYeDEe2htJpijkFCLw">
-    <eAnnotations xmi:type="ecore:EAnnotation" xmi:id="_I_iK8YeDEe2htJpijkFCLw" source="org.eclipse.papyrus">
-      <details xmi:type="ecore:EStringToStringMapEntry" xmi:id="_I_iK8oeDEe2htJpijkFCLw" key="nature" value="UML_Nature"/>
-    </eAnnotations>
-    <ownedEnd xmi:type="uml:Property" xmi:id="_I_iyAIeDEe2htJpijkFCLw" name="télécharger un document" type="_Zon5kIeCEe2htJpijkFCLw" association="_I_iK8IeDEe2htJpijkFCLw"/>
-    <ownedEnd xmi:type="uml:Property" xmi:id="_I_iyAYeDEe2htJpijkFCLw" type="_yqFIgIdZEe2eaPb8RMqDYA" association="_I_iK8IeDEe2htJpijkFCLw"/>
   </packagedElement>
   <packagedElement xmi:type="uml:Association" xmi:id="_mjAP4IeDEe20HJ03KX-Xtg" memberEnd="_mjGWgIeDEe20HJ03KX-Xtg _mjGWgYeDEe20HJ03KX-Xtg">
     <eAnnotations xmi:type="ecore:EAnnotation" xmi:id="_mjFIYIeDEe20HJ03KX-Xtg" source="org.eclipse.papyrus">
@@ -457,13 +414,6 @@ si relecture demandée
     <ownedEnd xmi:type="uml:Property" xmi:id="_Cxt2coeGEe2JFvrItRyJ-A" name="gérer les polices (upload/download/suppression)" type="_96lvcIeFEe2JFvrItRyJ-A" association="_CxtPYIeGEe2JFvrItRyJ-A"/>
     <ownedEnd xmi:type="uml:Property" xmi:id="_Cxt2c4eGEe2JFvrItRyJ-A" name="pôle com" type="_jX2QkIeFEe2JFvrItRyJ-A" association="_CxtPYIeGEe2JFvrItRyJ-A"/>
   </packagedElement>
-  <packagedElement xmi:type="uml:Association" xmi:id="_RtqRUIeGEe2JFvrItRyJ-A" memberEnd="_RtsGgIeGEe2JFvrItRyJ-A _RtsGgYeGEe2JFvrItRyJ-A">
-    <eAnnotations xmi:type="ecore:EAnnotation" xmi:id="_RtrfcIeGEe2JFvrItRyJ-A" source="org.eclipse.papyrus">
-      <details xmi:type="ecore:EStringToStringMapEntry" xmi:id="_RtrfcYeGEe2JFvrItRyJ-A" key="nature" value="UML_Nature"/>
-    </eAnnotations>
-    <ownedEnd xmi:type="uml:Property" xmi:id="_RtsGgIeGEe2JFvrItRyJ-A" name="chargé qualité" type="_MLpaQIeGEe2JFvrItRyJ-A" association="_RtqRUIeGEe2JFvrItRyJ-A"/>
-    <ownedEnd xmi:type="uml:Property" xmi:id="_RtsGgYeGEe2JFvrItRyJ-A" name="uploader un document en demandant une relecture ou non (devis compris)" type="_d970IIdaEe2eaPb8RMqDYA" association="_RtqRUIeGEe2JFvrItRyJ-A"/>
-  </packagedElement>
   <packagedElement xmi:type="uml:Association" xmi:id="_6AqbEIeGEe2JFvrItRyJ-A" memberEnd="_6ArpMYeGEe2JFvrItRyJ-A _6AsQQIeGEe2JFvrItRyJ-A">
     <eAnnotations xmi:type="ecore:EAnnotation" xmi:id="_6ArCIIeGEe2JFvrItRyJ-A" source="org.eclipse.papyrus">
       <details xmi:type="ecore:EStringToStringMapEntry" xmi:id="_6ArpMIeGEe2JFvrItRyJ-A" key="nature" value="UML_Nature"/>
@@ -492,35 +442,9 @@ si relecture demandée
     <ownedEnd xmi:type="uml:Property" xmi:id="_AYVSUIeIEe2iQ4YBiOOYSg" name="supprimer une étude" type="_2fY3QIeHEe2iQ4YBiOOYSg" association="_AYOkoIeIEe2iQ4YBiOOYSg"/>
     <ownedEnd xmi:type="uml:Property" xmi:id="_AYV5YIeIEe2iQ4YBiOOYSg" name="admin" type="__BOUgH97Ee2KW6AGgHz7zg" association="_AYOkoIeIEe2iQ4YBiOOYSg"/>
   </packagedElement>
-  <packagedElement xmi:type="uml:Association" xmi:id="_C-0MYIeIEe2iQ4YBiOOYSg" memberEnd="_C-32wIeIEe2iQ4YBiOOYSg _C-4d0IeIEe2iQ4YBiOOYSg">
-    <eAnnotations xmi:type="ecore:EAnnotation" xmi:id="_C-3PsIeIEe2iQ4YBiOOYSg" source="org.eclipse.papyrus">
-      <details xmi:type="ecore:EStringToStringMapEntry" xmi:id="_C-3PsYeIEe2iQ4YBiOOYSg" key="nature" value="UML_Nature"/>
-    </eAnnotations>
-    <ownedEnd xmi:type="uml:Property" xmi:id="_C-32wIeIEe2iQ4YBiOOYSg" name="uploader un document en relecture" type="_4LcwcIeHEe2iQ4YBiOOYSg" association="_C-0MYIeIEe2iQ4YBiOOYSg"/>
-    <ownedEnd xmi:type="uml:Property" xmi:id="_C-4d0IeIEe2iQ4YBiOOYSg" name="admin" type="_t1ebIIeHEe2iQ4YBiOOYSg" association="_C-0MYIeIEe2iQ4YBiOOYSg"/>
-  </packagedElement>
-  <packagedElement xmi:type="uml:Association" xmi:id="_RkdAEIeIEe2iQ4YBiOOYSg" memberEnd="_RkdnIoeIEe2iQ4YBiOOYSg _RkdnI4eIEe2iQ4YBiOOYSg">
-    <eAnnotations xmi:type="ecore:EAnnotation" xmi:id="_RkdnIIeIEe2iQ4YBiOOYSg" source="org.eclipse.papyrus">
-      <details xmi:type="ecore:EStringToStringMapEntry" xmi:id="_RkdnIYeIEe2iQ4YBiOOYSg" key="nature" value="UML_Nature"/>
-    </eAnnotations>
-    <ownedEnd xmi:type="uml:Property" xmi:id="_RkdnIoeIEe2iQ4YBiOOYSg" name="avoir accès à wikix" type="_L_VxsIeIEe2iQ4YBiOOYSg" association="_RkdAEIeIEe2iQ4YBiOOYSg"/>
-    <ownedEnd xmi:type="uml:Property" xmi:id="_RkdnI4eIEe2iQ4YBiOOYSg" name="utilisateur" type="__BOUgH97Ee2KW6AGgHz7zg" association="_RkdAEIeIEe2iQ4YBiOOYSg"/>
-  </packagedElement>
-  <packagedElement xmi:type="uml:Association" xmi:id="_YW154IeIEe2iQ4YBiOOYSg" memberEnd="_YW3IAIeIEe2iQ4YBiOOYSg _YW3IAYeIEe2iQ4YBiOOYSg">
-    <eAnnotations xmi:type="ecore:EAnnotation" xmi:id="_YW2g8IeIEe2iQ4YBiOOYSg" source="org.eclipse.papyrus">
-      <details xmi:type="ecore:EStringToStringMapEntry" xmi:id="_YW2g8YeIEe2iQ4YBiOOYSg" key="nature" value="UML_Nature"/>
-    </eAnnotations>
-    <ownedEnd xmi:type="uml:Property" xmi:id="_YW3IAIeIEe2iQ4YBiOOYSg" name="uploader un document en relecture" type="_4LcwcIeHEe2iQ4YBiOOYSg" association="_YW154IeIEe2iQ4YBiOOYSg"/>
-    <ownedEnd xmi:type="uml:Property" xmi:id="_YW3IAYeIEe2iQ4YBiOOYSg" name="suivre les versions des documents pour une étude" type="_MLpaQIeGEe2JFvrItRyJ-A" association="_YW154IeIEe2iQ4YBiOOYSg"/>
-  </packagedElement>
-  <packagedElement xmi:type="uml:Association" xmi:id="_9_DkgIu-Ee2KVIDtCEYxFg"/>
   <packagedElement xmi:type="uml:Association" xmi:id="_qyl6MIu_Ee2KVIDtCEYxFg"/>
   <packagedElement xmi:type="uml:Association" xmi:id="_xeo7cIu_Ee2KVIDtCEYxFg"/>
   <packagedElement xmi:type="uml:Association" xmi:id="_3LQgAIu_Ee2KVIDtCEYxFg"/>
-  <packagedElement xmi:type="uml:Association" xmi:id="_83kikIu_Ee2KVIDtCEYxFg"/>
-  <packagedElement xmi:type="uml:Abstraction" xmi:id="_AJfmUIvAEe2KVIDtCEYxFg" client="_BLxYIIu_Ee2KVIDtCEYxFg" supplier="_FmGOYIu_Ee2KVIDtCEYxFg"/>
-  <packagedElement xmi:type="uml:Abstraction" xmi:id="_BqVuAIvAEe2KVIDtCEYxFg" client="_BLxYIIu_Ee2KVIDtCEYxFg" supplier="_IFY7UIu_Ee2KVIDtCEYxFg"/>
-  <packagedElement xmi:type="uml:Abstraction" xmi:id="_CxPEoIvAEe2KVIDtCEYxFg" client="_BLxYIIu_Ee2KVIDtCEYxFg" supplier="_T7MEoIu_Ee2KVIDtCEYxFg"/>
   <packagedElement xmi:type="uml:Association" xmi:id="_Kre-YIvAEe2KVIDtCEYxFg" memberEnd="_KriowIvAEe2KVIDtCEYxFg _KrjP0IvAEe2KVIDtCEYxFg">
     <eAnnotations xmi:type="ecore:EAnnotation" xmi:id="_KrgzkIvAEe2KVIDtCEYxFg" source="org.eclipse.papyrus">
       <details xmi:type="ecore:EStringToStringMapEntry" xmi:id="_KrhaoIvAEe2KVIDtCEYxFg" key="nature" value="UML_Nature"/>
@@ -537,6 +461,88 @@ si relecture demandée
   </packagedElement>
   <packagedElement xmi:type="uml:Association" xmi:id="_Z5cWUIvAEe2KVIDtCEYxFg"/>
   <packagedElement xmi:type="uml:Association" xmi:id="_dGzDIIvAEe2KVIDtCEYxFg"/>
+  <packagedElement xmi:type="uml:Association" xmi:id="_COCt0IwJEe2u__C5O3a3jg" memberEnd="_COG_QIwJEe2u__C5O3a3jg _COG_QYwJEe2u__C5O3a3jg">
+    <eAnnotations xmi:type="ecore:EAnnotation" xmi:id="_COFxIIwJEe2u__C5O3a3jg" source="org.eclipse.papyrus">
+      <details xmi:type="ecore:EStringToStringMapEntry" xmi:id="_COGYMIwJEe2u__C5O3a3jg" key="nature" value="UML_Nature"/>
+    </eAnnotations>
+    <ownedEnd xmi:type="uml:Property" xmi:id="_COG_QIwJEe2u__C5O3a3jg" name="utilisateur" type="_oB6FYIdYEe2eaPb8RMqDYA" association="_COCt0IwJEe2u__C5O3a3jg"/>
+    <ownedEnd xmi:type="uml:Property" xmi:id="_COG_QYwJEe2u__C5O3a3jg" name="télécharger les docs types" type="_I-tBIIdaEe2eaPb8RMqDYA" association="_COCt0IwJEe2u__C5O3a3jg"/>
+  </packagedElement>
+  <packagedElement xmi:type="uml:Association" xmi:id="_e2LL4IwJEe2u__C5O3a3jg" memberEnd="_e2Ly8IwJEe2u__C5O3a3jg _e2Ly8YwJEe2u__C5O3a3jg">
+    <eAnnotations xmi:type="ecore:EAnnotation" xmi:id="_e2LL4YwJEe2u__C5O3a3jg" source="org.eclipse.papyrus">
+      <details xmi:type="ecore:EStringToStringMapEntry" xmi:id="_e2LL4owJEe2u__C5O3a3jg" key="nature" value="UML_Nature"/>
+    </eAnnotations>
+    <ownedEnd xmi:type="uml:Property" xmi:id="_e2Ly8IwJEe2u__C5O3a3jg" name="utilisateur" type="_oB6FYIdYEe2eaPb8RMqDYA" association="_e2LL4IwJEe2u__C5O3a3jg"/>
+    <ownedEnd xmi:type="uml:Property" xmi:id="_e2Ly8YwJEe2u__C5O3a3jg" name="télécharger un document" type="_Zon5kIeCEe2htJpijkFCLw" association="_e2LL4IwJEe2u__C5O3a3jg"/>
+  </packagedElement>
+  <packagedElement xmi:type="uml:Association" xmi:id="_f7NhUIwJEe2u__C5O3a3jg" memberEnd="_f7OIYowJEe2u__C5O3a3jg _f7OIY4wJEe2u__C5O3a3jg">
+    <eAnnotations xmi:type="ecore:EAnnotation" xmi:id="_f7OIYIwJEe2u__C5O3a3jg" source="org.eclipse.papyrus">
+      <details xmi:type="ecore:EStringToStringMapEntry" xmi:id="_f7OIYYwJEe2u__C5O3a3jg" key="nature" value="UML_Nature"/>
+    </eAnnotations>
+    <ownedEnd xmi:type="uml:Property" xmi:id="_f7OIYowJEe2u__C5O3a3jg" type="_e2LL4IwJEe2u__C5O3a3jg" association="_f7NhUIwJEe2u__C5O3a3jg"/>
+    <ownedEnd xmi:type="uml:Property" xmi:id="_f7OIY4wJEe2u__C5O3a3jg" name="supprimer un document" type="_qOrNAIdaEe2eaPb8RMqDYA" association="_f7NhUIwJEe2u__C5O3a3jg"/>
+  </packagedElement>
+  <packagedElement xmi:type="uml:Association" xmi:id="_iaV2MIwJEe2u__C5O3a3jg" memberEnd="_iaXEUYwJEe2u__C5O3a3jg _iaXEUowJEe2u__C5O3a3jg">
+    <eAnnotations xmi:type="ecore:EAnnotation" xmi:id="_iaWdQIwJEe2u__C5O3a3jg" source="org.eclipse.papyrus">
+      <details xmi:type="ecore:EStringToStringMapEntry" xmi:id="_iaXEUIwJEe2u__C5O3a3jg" key="nature" value="UML_Nature"/>
+    </eAnnotations>
+    <ownedEnd xmi:type="uml:Property" xmi:id="_iaXEUYwJEe2u__C5O3a3jg" name="utilisateur" type="_oB6FYIdYEe2eaPb8RMqDYA" association="_iaV2MIwJEe2u__C5O3a3jg"/>
+    <ownedEnd xmi:type="uml:Property" xmi:id="_iaXEUowJEe2u__C5O3a3jg" name="uploader un document en demandant une relecture ou non (devis compris)" type="_d970IIdaEe2eaPb8RMqDYA" association="_iaV2MIwJEe2u__C5O3a3jg"/>
+  </packagedElement>
+  <packagedElement xmi:type="uml:Association" xmi:id="_jqrcsIwJEe2u__C5O3a3jg" memberEnd="_jqsq0owJEe2u__C5O3a3jg _jqsq04wJEe2u__C5O3a3jg">
+    <eAnnotations xmi:type="ecore:EAnnotation" xmi:id="_jqsq0IwJEe2u__C5O3a3jg" source="org.eclipse.papyrus">
+      <details xmi:type="ecore:EStringToStringMapEntry" xmi:id="_jqsq0YwJEe2u__C5O3a3jg" key="nature" value="UML_Nature"/>
+    </eAnnotations>
+    <ownedEnd xmi:type="uml:Property" xmi:id="_jqsq0owJEe2u__C5O3a3jg" name="utilisateur" type="_oB6FYIdYEe2eaPb8RMqDYA" association="_jqrcsIwJEe2u__C5O3a3jg"/>
+    <ownedEnd xmi:type="uml:Property" xmi:id="_jqsq04wJEe2u__C5O3a3jg" name="faire des demandes de notes de frais contenant rib, le scan de la facture et le motif" type="_iiSQ4Iu_Ee2KVIDtCEYxFg" association="_jqrcsIwJEe2u__C5O3a3jg"/>
+  </packagedElement>
+  <packagedElement xmi:type="uml:Association" xmi:id="_0PyNwIwJEe2u__C5O3a3jg" memberEnd="_0Py00owJEe2u__C5O3a3jg _0Py004wJEe2u__C5O3a3jg">
+    <eAnnotations xmi:type="ecore:EAnnotation" xmi:id="_0Py00IwJEe2u__C5O3a3jg" source="org.eclipse.papyrus">
+      <details xmi:type="ecore:EStringToStringMapEntry" xmi:id="_0Py00YwJEe2u__C5O3a3jg" key="nature" value="UML_Nature"/>
+    </eAnnotations>
+    <ownedEnd xmi:type="uml:Property" xmi:id="_0Py00owJEe2u__C5O3a3jg" name="supprimer une étude" type="_2fY3QIeHEe2iQ4YBiOOYSg" association="_0PyNwIwJEe2u__C5O3a3jg"/>
+    <ownedEnd xmi:type="uml:Property" xmi:id="_0Py004wJEe2u__C5O3a3jg" name="respo étude" type="_yLSmcIwJEe2u__C5O3a3jg" association="_0PyNwIwJEe2u__C5O3a3jg"/>
+  </packagedElement>
+  <packagedElement xmi:type="uml:Association" xmi:id="_IDLfwIwKEe2u__C5O3a3jg" memberEnd="_IDMG0YwKEe2u__C5O3a3jg _IDMG0owKEe2u__C5O3a3jg">
+    <eAnnotations xmi:type="ecore:EAnnotation" xmi:id="_IDLfwYwKEe2u__C5O3a3jg" source="org.eclipse.papyrus">
+      <details xmi:type="ecore:EStringToStringMapEntry" xmi:id="_IDMG0IwKEe2u__C5O3a3jg" key="nature" value="UML_Nature"/>
+    </eAnnotations>
+    <ownedEnd xmi:type="uml:Property" xmi:id="_IDMG0YwKEe2u__C5O3a3jg" name="avoir un accès à l'étude complète pour chaque document" type="_8nA-cIwJEe2u__C5O3a3jg" association="_IDLfwIwKEe2u__C5O3a3jg"/>
+    <ownedEnd xmi:type="uml:Property" xmi:id="_IDMG0owKEe2u__C5O3a3jg" type="_9MwjoIeGEe2JFvrItRyJ-A" association="_IDLfwIwKEe2u__C5O3a3jg"/>
+  </packagedElement>
+  <packagedElement xmi:type="uml:Association" xmi:id="_OUynwIwKEe2u__C5O3a3jg" memberEnd="_OUzO0owKEe2u__C5O3a3jg _OUzO04wKEe2u__C5O3a3jg">
+    <eAnnotations xmi:type="ecore:EAnnotation" xmi:id="_OUzO0IwKEe2u__C5O3a3jg" source="org.eclipse.papyrus">
+      <details xmi:type="ecore:EStringToStringMapEntry" xmi:id="_OUzO0YwKEe2u__C5O3a3jg" key="nature" value="UML_Nature"/>
+    </eAnnotations>
+    <ownedEnd xmi:type="uml:Property" xmi:id="_OUzO0owKEe2u__C5O3a3jg" name="lister les adhérents d'aei et pouvoir les trier/filtrer/rechercher" type="_747HwIeHEe2iQ4YBiOOYSg" association="_OUynwIwKEe2u__C5O3a3jg"/>
+    <ownedEnd xmi:type="uml:Property" xmi:id="_OUzO04wKEe2u__C5O3a3jg" type="_oB6FYIdYEe2eaPb8RMqDYA" association="_OUynwIwKEe2u__C5O3a3jg"/>
+  </packagedElement>
+  <packagedElement xmi:type="uml:Association" xmi:id="_h9j-IIwKEe2KZ7rz2b3LjA" memberEnd="_h9nBcYwKEe2KZ7rz2b3LjA _h9nogIwKEe2KZ7rz2b3LjA">
+    <eAnnotations xmi:type="ecore:EAnnotation" xmi:id="_h9maYIwKEe2KZ7rz2b3LjA" source="org.eclipse.papyrus">
+      <details xmi:type="ecore:EStringToStringMapEntry" xmi:id="_h9nBcIwKEe2KZ7rz2b3LjA" key="nature" value="UML_Nature"/>
+    </eAnnotations>
+    <ownedEnd xmi:type="uml:Property" xmi:id="_h9nBcYwKEe2KZ7rz2b3LjA" name="la mailing list &quot;all@junior-aei.com&quot; (mails des cotisants d'aei) soit automatiquement mis à jour à partir des membres cotisants inscrits sur l'erp" type="_0GQ6cIu-Ee2KVIDtCEYxFg" association="_h9j-IIwKEe2KZ7rz2b3LjA"/>
+    <ownedEnd xmi:type="uml:Property" xmi:id="_h9nogIwKEe2KZ7rz2b3LjA" type="_LyQtEIeKEe2iQ4YBiOOYSg" association="_h9j-IIwKEe2KZ7rz2b3LjA"/>
+  </packagedElement>
+  <packagedElement xmi:type="uml:Dependency" xmi:id="_Ei4MUIwLEe2KZ7rz2b3LjA" client="_jnYowIeCEe2htJpijkFCLw" supplier="_Y-zAoIdaEe2eaPb8RMqDYA"/>
+  <packagedElement xmi:type="uml:Association" xmi:id="_iY-SUIwLEe2KZ7rz2b3LjA" memberEnd="_iY-5YowLEe2KZ7rz2b3LjA _iY_gcIwLEe2KZ7rz2b3LjA">
+    <eAnnotations xmi:type="ecore:EAnnotation" xmi:id="_iY-5YIwLEe2KZ7rz2b3LjA" source="org.eclipse.papyrus">
+      <details xmi:type="ecore:EStringToStringMapEntry" xmi:id="_iY-5YYwLEe2KZ7rz2b3LjA" key="nature" value="UML_Nature"/>
+    </eAnnotations>
+    <ownedEnd xmi:type="uml:Property" xmi:id="_iY-5YowLEe2KZ7rz2b3LjA" name="recevoir une demande de facture relative à une étude" type="_FmGOYIu_Ee2KVIDtCEYxFg" association="_iY-SUIwLEe2KZ7rz2b3LjA"/>
+    <ownedEnd xmi:type="uml:Property" xmi:id="_iY_gcIwLEe2KZ7rz2b3LjA" name="trésorier" type="_0AjLYIeJEe2iQ4YBiOOYSg" association="_iY-SUIwLEe2KZ7rz2b3LjA"/>
+  </packagedElement>
+  <packagedElement xmi:type="uml:Realization" xmi:id="_mhDiAIwLEe2KZ7rz2b3LjA" client="_FmGOYIu_Ee2KVIDtCEYxFg" supplier="_T7MEoIu_Ee2KVIDtCEYxFg"/>
+  <packagedElement xmi:type="uml:Association" xmi:id="_0uf4IIwLEe2KZ7rz2b3LjA" memberEnd="_0ui7cIwLEe2KZ7rz2b3LjA _0ui7cYwLEe2KZ7rz2b3LjA">
+    <eAnnotations xmi:type="ecore:EAnnotation" xmi:id="_0uiUYIwLEe2KZ7rz2b3LjA" source="org.eclipse.papyrus">
+      <details xmi:type="ecore:EStringToStringMapEntry" xmi:id="_0uiUYYwLEe2KZ7rz2b3LjA" key="nature" value="UML_Nature"/>
+    </eAnnotations>
+    <ownedEnd xmi:type="uml:Property" xmi:id="_0ui7cIwLEe2KZ7rz2b3LjA" name="respo quali" type="_vRYvMIwLEe2KZ7rz2b3LjA" association="_0uf4IIwLEe2KZ7rz2b3LjA"/>
+    <ownedEnd xmi:type="uml:Property" xmi:id="_0ui7cYwLEe2KZ7rz2b3LjA" name="supprimer une étude" type="_2fY3QIeHEe2iQ4YBiOOYSg" association="_0uf4IIwLEe2KZ7rz2b3LjA"/>
+  </packagedElement>
+  <packagedElement xmi:type="uml:Dependency" xmi:id="_DFvqgIwMEe2KZ7rz2b3LjA" client="_d970IIdaEe2eaPb8RMqDYA" supplier="_MLpaQIeGEe2JFvrItRyJ-A"/>
+  <packagedElement xmi:type="uml:Dependency" xmi:id="_FHKIoIwMEe2KZ7rz2b3LjA" client="_iiSQ4Iu_Ee2KVIDtCEYxFg" supplier="_0AjLYIeJEe2iQ4YBiOOYSg"/>
+  <packagedElement xmi:type="uml:Dependency" xmi:id="_HloWMIwMEe2KZ7rz2b3LjA" client="_T7MEoIu_Ee2KVIDtCEYxFg" supplier="_yqFIgIdZEe2eaPb8RMqDYA"/>
   <profileApplication xmi:type="uml:ProfileApplication" xmi:id="_5Qpt8H-EEe2zSrsQ6VWTqw">
     <eAnnotations xmi:type="ecore:EAnnotation" xmi:id="_5QsKMH-EEe2zSrsQ6VWTqw" source="http://www.eclipse.org/uml2/2.0.0/UML">
       <references xmi:type="ecore:EPackage" href="pathmap://PAPYRUS_ACTIONLANGUAGE_PROFILE/ActionLanguage-Profile.profile.uml#_Kv8EIKFXEeS_KNX0nfvIVQ"/>

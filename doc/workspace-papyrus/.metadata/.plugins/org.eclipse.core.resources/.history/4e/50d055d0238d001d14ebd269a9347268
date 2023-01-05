@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<uml:Model xmi:version="20131001" xmlns:xmi="http://www.omg.org/spec/XMI/20131001" xmlns:ecore="http://www.eclipse.org/emf/2002/Ecore" xmlns:uml="http://www.eclipse.org/uml2/5.0.0/UML" xmi:id="_-5q7AH97Ee2KW6AGgHz7zg" name="ERP_AEI" visibility="public">
+<uml:Model xmi:version="20131001" xmlns:xmi="http://www.omg.org/spec/XMI/20131001" xmlns:ecore="http://www.eclipse.org/emf/2002/Ecore" xmlns:uml="http://www.eclipse.org/uml2/5.0.0/UML" xmi:id="_-5q7AH97Ee2KW6AGgHz7zg" name="ERP_AEI" visibility="package">
   <packageImport xmi:type="uml:PackageImport" xmi:id="__XOZsH97Ee2KW6AGgHz7zg">
     <importedPackage xmi:type="uml:Model" href="pathmap://UML_LIBRARIES/UMLPrimitiveTypes.library.uml#_0"/>
   </packageImport>
@@ -543,38 +543,6 @@
   <packagedElement xmi:type="uml:Dependency" xmi:id="_DFvqgIwMEe2KZ7rz2b3LjA" client="_d970IIdaEe2eaPb8RMqDYA" supplier="_MLpaQIeGEe2JFvrItRyJ-A"/>
   <packagedElement xmi:type="uml:Dependency" xmi:id="_FHKIoIwMEe2KZ7rz2b3LjA" client="_iiSQ4Iu_Ee2KVIDtCEYxFg" supplier="_0AjLYIeJEe2iQ4YBiOOYSg"/>
   <packagedElement xmi:type="uml:Dependency" xmi:id="_HloWMIwMEe2KZ7rz2b3LjA" client="_T7MEoIu_Ee2KVIDtCEYxFg" supplier="_yqFIgIdZEe2eaPb8RMqDYA"/>
-  <packagedElement xmi:type="uml:Class" xmi:id="_zugJII0bEe2oR7c22j3HrA" name="Client" visibility="package">
-    <generalization xmi:type="uml:Generalization" xmi:id="_OmbYYI0dEe2oR7c22j3HrA" general="_SqVj4ILDEe2-b6VKVP26NQ"/>
-    <ownedAttribute xmi:type="uml:Property" xmi:id="_uwq10I0eEe2oR7c22j3HrA" name="job" visibility="private">
-      <type xmi:type="uml:PrimitiveType" href="pathmap://UML_LIBRARIES/UMLPrimitiveTypes.library.uml#String"/>
-    </ownedAttribute>
-    <ownedAttribute xmi:type="uml:Property" xmi:id="_KyiIoI0gEe2oR7c22j3HrA" name="entreprise" type="_aukZcI0eEe2oR7c22j3HrA"/>
-    <ownedAttribute xmi:type="uml:Property" xmi:id="_iPWYYo0gEe2oR7c22j3HrA" name="company" type="_aukZcI0eEe2oR7c22j3HrA"/>
-    <ownedAttribute xmi:type="uml:Property" xmi:id="_Ha3z0o0hEe2oR7c22j3HrA" name="entreprise" type="_aukZcI0eEe2oR7c22j3HrA" association="_Ha3MwI0hEe2oR7c22j3HrA"/>
-  </packagedElement>
-  <packagedElement xmi:type="uml:Class" xmi:id="_aukZcI0eEe2oR7c22j3HrA" name="Entreprise">
-    <ownedAttribute xmi:type="uml:Property" xmi:id="_ij4I0I0eEe2oR7c22j3HrA" name="Name_company" visibility="private">
-      <type xmi:type="uml:PrimitiveType" href="pathmap://UML_LIBRARIES/UMLPrimitiveTypes.library.uml#String"/>
-    </ownedAttribute>
-    <ownedAttribute xmi:type="uml:Property" xmi:id="_g2yNgo0hEe2oR7c22j3HrA" name="adresse" type="_a0i3IILBEe2-b6VKVP26NQ" association="_g2xmcI0hEe2oR7c22j3HrA"/>
-    <ownedAttribute xmi:type="uml:Property" xmi:id="_3xYEgI0iEe2oR7c22j3HrA" name="entity" visibility="private">
-      <type xmi:type="uml:PrimitiveType" href="pathmap://UML_LIBRARIES/UMLPrimitiveTypes.library.uml#String"/>
-    </ownedAttribute>
-  </packagedElement>
-  <packagedElement xmi:type="uml:Association" xmi:id="_Ha3MwI0hEe2oR7c22j3HrA" name="travaille dans" memberEnd="_Ha3z0o0hEe2oR7c22j3HrA _Ha4a4I0hEe2oR7c22j3HrA">
-    <eAnnotations xmi:type="ecore:EAnnotation" xmi:id="_Ha3z0I0hEe2oR7c22j3HrA" source="org.eclipse.papyrus">
-      <details xmi:type="ecore:EStringToStringMapEntry" xmi:id="_Ha3z0Y0hEe2oR7c22j3HrA" key="nature" value="UML_Nature"/>
-    </eAnnotations>
-    <ownedEnd xmi:type="uml:Property" xmi:id="_Ha4a4I0hEe2oR7c22j3HrA" name="client" type="_zugJII0bEe2oR7c22j3HrA" association="_Ha3MwI0hEe2oR7c22j3HrA">
-      <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_YoAOMI0hEe2oR7c22j3HrA" value="*"/>
-    </ownedEnd>
-  </packagedElement>
-  <packagedElement xmi:type="uml:Association" xmi:id="_g2xmcI0hEe2oR7c22j3HrA" name="se situe" memberEnd="_g2yNgo0hEe2oR7c22j3HrA _g2y0kI0hEe2oR7c22j3HrA">
-    <eAnnotations xmi:type="ecore:EAnnotation" xmi:id="_g2yNgI0hEe2oR7c22j3HrA" source="org.eclipse.papyrus">
-      <details xmi:type="ecore:EStringToStringMapEntry" xmi:id="_g2yNgY0hEe2oR7c22j3HrA" key="nature" value="UML_Nature"/>
-    </eAnnotations>
-    <ownedEnd xmi:type="uml:Property" xmi:id="_g2y0kI0hEe2oR7c22j3HrA" name="entreprise" type="_aukZcI0eEe2oR7c22j3HrA" association="_g2xmcI0hEe2oR7c22j3HrA"/>
-  </packagedElement>
   <profileApplication xmi:type="uml:ProfileApplication" xmi:id="_5Qpt8H-EEe2zSrsQ6VWTqw">
     <eAnnotations xmi:type="ecore:EAnnotation" xmi:id="_5QsKMH-EEe2zSrsQ6VWTqw" source="http://www.eclipse.org/uml2/2.0.0/UML">
       <references xmi:type="ecore:EPackage" href="pathmap://PAPYRUS_ACTIONLANGUAGE_PROFILE/ActionLanguage-Profile.profile.uml#_Kv8EIKFXEeS_KNX0nfvIVQ"/>

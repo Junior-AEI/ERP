@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="UTF-8"?><project name="Untitled Gantt Project" company="" webLink="http://" view-date="2022-12-17" view-index="1" gantt-divider-location="735" resource-divider-location="300" version="3.2.3247" locale="fr_FR">
+    <description/>
+    <view zooming-state="default:2" id="gantt-chart">
+        <field id="tpd3" name="Nom" width="419" order="0"/>
+        <field id="tpd4" name="Date de début" width="157" order="1"/>
+        <field id="tpd5" name="Date de fin" width="158" order="2"/>
+        <option id="filter.completedTasks" value="false"/>
+        <option id="color.recent"><![CDATA[#00ff00 #ff0000]]></option>
+    </view>
+    <view id="resource-table">
+        <field id="0" name="Nom" width="210" order="0"/>
+        <field id="1" name="Rôle par défaut" width="86" order="1"/>
+    </view>
+    <!-- -->
+    <calendars>
+        <day-types>
+            <day-type id="0"/>
+            <day-type id="1"/>
+            <default-week id="1" name="default" sun="1" mon="0" tue="0" wed="0" thu="0" fri="0" sat="1"/>
+            <only-show-weekends value="false"/>
+            <overriden-day-types/>
+            <days/>
+        </day-types>
+        <date year="2023" month="1" date="9" type="HOLIDAY"><![CDATA[Vacances sur 09/01/2023 00:00]]></date>
+        <date year="2023" month="1" date="10" type="HOLIDAY"><![CDATA[Vacances sur 10/01/2023 00:00]]></date>
+        <date year="2023" month="1" date="11" type="HOLIDAY"><![CDATA[Vacances sur 11/01/2023 00:00]]></date>
+        <date year="2023" month="1" date="12" type="HOLIDAY"><![CDATA[Vacances sur 12/01/2023 00:00]]></date>
+        <date year="2023" month="1" date="13" type="HOLIDAY"><![CDATA[Vacances sur 13/01/2023 00:00]]></date>
+    </calendars>
+    <tasks empty-milestones="true">
+        <taskproperties>
+            <taskproperty id="tpd0" name="type" type="default" valuetype="icon"/>
+            <taskproperty id="tpd1" name="priority" type="default" valuetype="icon"/>
+            <taskproperty id="tpd2" name="info" type="default" valuetype="icon"/>
+            <taskproperty id="tpd3" name="name" type="default" valuetype="text"/>
+            <taskproperty id="tpd4" name="begindate" type="default" valuetype="date"/>
+            <taskproperty id="tpd5" name="enddate" type="default" valuetype="date"/>
+            <taskproperty id="tpd6" name="duration" type="default" valuetype="int"/>
+            <taskproperty id="tpd7" name="completion" type="default" valuetype="int"/>
+            <taskproperty id="tpd8" name="coordinator" type="default" valuetype="text"/>
+            <taskproperty id="tpd9" name="predecessorsr" type="default" valuetype="text"/>
+        </taskproperties>
+        <task id="0" name="[MCD] Création des tables liées aux Personnes" color="#8cb6ce" meeting="false" start="2022-12-19" duration="9" complete="0" thirdDate="2023-01-04" thirdDate-constraint="0" expand="true">
+            <depend id="1" type="2" difference="0" hardness="Strong"/>
+        </task>
+        <task id="1" name="[MCD] Création des tables liées à l'étude" color="#8cb6ce" meeting="false" start="2022-12-30" duration="14" complete="0" thirdDate="2022-12-14" thirdDate-constraint="0" expand="true">
+            <depend id="2" type="2" difference="0" hardness="Strong"/>
+        </task>
+        <task id="2" name="[MCD] Création des tables liées à la Tréso" color="#8cb6ce" meeting="false" start="2023-01-26" duration="10" complete="0" thirdDate="2022-12-14" thirdDate-constraint="0" expand="true"/>
+        <task id="3" name="[Proto] Monter le proto front/back" color="#ff0000" meeting="false" start="2022-12-14" duration="1" complete="0" thirdDate="2022-12-14" thirdDate-constraint="0" expand="true">
+            <depend id="4" type="2" difference="0" hardness="Strong"/>
+        </task>
+        <task id="4" name="[Proto] Connexion back" color="#ff0000" meeting="false" start="2022-12-15" duration="1" complete="0" thirdDate="2022-11-29" thirdDate-constraint="0" expand="true"/>
+        <task id="5" name="[Proto] Test de SonarQube" color="#ff0000" meeting="false" start="2023-01-04" duration="4" complete="0" thirdDate="2022-11-29" thirdDate-constraint="0" expand="true"/>
+        <task id="6" name="[Front] Page de connexion" color="#ff0000" meeting="false" start="2023-01-04" duration="3" complete="0" thirdDate="2022-12-15" thirdDate-constraint="0" expand="true"/>
+        <task id="7" name="[Front] Affichage des membres" color="#ff0000" meeting="false" start="2023-01-04" duration="5" complete="0" thirdDate="2022-12-15" thirdDate-constraint="0" expand="true"/>
+        <task id="8" name="[UML] Diagramme des Cas d'Utilisation" color="#00ff00" meeting="false" start="2022-12-29" duration="7" complete="0" thirdDate="2022-12-19" thirdDate-constraint="0" expand="true"/>
+    </tasks>
+    <resources>
+        <resource id="0" name="Nadjime" function="Default:0" contacts="" phone=""/>
+        <resource id="1" name="Antoine" function="Default:0" contacts="" phone=""/>
+        <resource id="2" name="Nesrine" function="Default:0" contacts="" phone=""/>
+        <resource id="3" name="Léo-Paul" function="Default:0" contacts="" phone=""/>
+        <resource id="4" name="Maël" function="Default:0" contacts="" phone=""/>
+        <resource id="5" name="Marine" function="Default:0" contacts="" phone=""/>
+        <resource id="6" name="Lisa" function="Default:0" contacts="" phone=""/>
+        <resource id="7" name="Mathieu" function="Default:0" contacts="" phone=""/>
+    </resources>
+    <allocations>
+        <allocation task-id="6" resource-id="0" function="Default:0" responsible="false" load="100.0"/>
+        <allocation task-id="4" resource-id="1" function="Default:0" responsible="false" load="100.0"/>
+        <allocation task-id="3" resource-id="1" function="Default:0" responsible="false" load="100.0"/>
+        <allocation task-id="7" resource-id="2" function="Default:0" responsible="false" load="100.0"/>
+        <allocation task-id="8" resource-id="3" function="Default:0" responsible="false" load="100.0"/>
+        <allocation task-id="8" resource-id="4" function="Default:0" responsible="false" load="100.0"/>
+        <allocation task-id="0" resource-id="5" function="Default:0" responsible="false" load="100.0"/>
+        <allocation task-id="1" resource-id="5" function="Default:0" responsible="false" load="100.0"/>
+        <allocation task-id="0" resource-id="6" function="Default:0" responsible="false" load="100.0"/>
+        <allocation task-id="1" resource-id="6" function="Default:0" responsible="false" load="100.0"/>
+        <allocation task-id="0" resource-id="7" function="Default:0" responsible="false" load="100.0"/>
+        <allocation task-id="1" resource-id="7" function="Default:0" responsible="false" load="100.0"/>
+    </allocations>
+    <vacations/>
+    <previous/>
+    <roles roleset-name="Default"/>
+    <roles roleset-name="SoftwareDevelopment"/>
+</project>

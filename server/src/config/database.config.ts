@@ -1,21 +1,24 @@
-import sqlite3 from "sqlite3";
-const { Sequelize } = require('sequelize');
+import { Sequelize } from 'sequelize';
 
+const sequelize = new Sequelize("erp", "root", "root", {
+  dialect: 'sqlite',
+  storage: 'database/database.sqlite',
+  logging: console.log
+});
 
-const db = new sqlite3.Database(":memory:");
+let testConnection = async () => {
+  try {
+    await sequelize.authenticate();
+    console.log('Connection has been established successfully.');
+  } catch (error) {
+    console.error('Unable to connect to the database:', error);
+  }
+}
 
-const sequelize = new Sequelize('sqlite::memory:');
+testConnection();
 
-let f = async () => {try {
-  await sequelize.authenticate();
-  console.log('Connection has been established successfully.');
-} catch (error) {
-  console.error('Unable to connect to the database:', error);
-}}
-
-f();
-
-function populateDatabase() {
+export { sequelize };
+/*function populateDatabase() {
   db.serialize(() => {
     db.run("CREATE TABLE User (name TEXT)");
     const stmt = db.prepare("INSERT INTO User VALUES (?)");
@@ -26,6 +29,6 @@ function populateDatabase() {
 
     stmt.finalize();
   });
-}
+}*/
 
-export { db, populateDatabase };
+// export { db, populateDatabase };

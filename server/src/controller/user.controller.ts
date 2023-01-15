@@ -1,39 +1,28 @@
-import { db } from "../config/database.config";
 import { Request, Response } from "express";
-
+import { User } from '../models/user.model';
 const userController = {
   getUser,
   addUser,
   deleteUser,
 };
 
-function getUser(req: Request, res: Response) {
-  const ret = [];
-  db.all("SELECT * FROM User", (err: Error | null, row: any[]) => {
-    res.json(row);
-  });
+async function getUser(req: Request, res: Response) {
+  await User.findAll().then(users => res.json(users));
+
 }
 
-function addUser(req: Request, res: Response) {
+async function addUser(req: Request, res: Response) {
   const name = req.body.name;
-  db.run("INSERT INTO User VALUES (?)", [name], (err: Error | null) => {
-    if (err) {
-      res.status(500).json({ error: err.message });
-    } else {
-      res.json({ status: "success", data: { name } });
-    }
-  });
+  await User.create({ name: name }).then(() => res.json(name)).catch(err => res.status(500).json({ error: err.message }))
 }
 
-function deleteUser(req: Request, res: Response) {
+async function deleteUser(req: Request, res: Response) {
   const name = req.body.name;
-  db.run("DELETE FROM User WHERE name = ?", [name], (err: Error | null) => {
-    if (err) {
-      res.status(500).json({ error: err.message });
-    } else {
-      res.json({ status: "success", data: { name } });
+  await User.destroy({
+    where: {
+      name: name,
     }
-  });
+  })
 }
 
 export default userController;

@@ -9,6 +9,6 @@ import {
 const router = express.Router();
 
 router.use("/", authRoutes);
-router.use("/user", getUsername, usersRoutes);
+router.use("/user", getUsername, verifyAuthentication, usersRoutes);
 
 export default router;

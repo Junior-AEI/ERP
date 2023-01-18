@@ -9,13 +9,14 @@ cd client
 npm install
 cd ../server
 npm install
+cp .env.example .env
 ```
 ## Set up mysql for dev env
 ```bash
 sudo mysql
-CREATE USER erp_dev IDENTIFIED BY 'password';
+CREATE USER 'erp_dev'@'localhost' IDENTIFIED BY 'password';
 CREATE DATABASE erp_dev;
-GRANT ALL PRIVILEGES ON erp_dev.* TO 'erp_dev'@'localhost' IDENTIFIED BY 'password';
+GRANT ALL PRIVILEGES ON erp_dev.* TO 'erp_dev'@'localhost';
 exit
 npx sequelize-cli db:create
 npx sequelize-cli db:migrate

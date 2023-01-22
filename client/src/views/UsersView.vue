@@ -11,9 +11,8 @@
 <style scoped lang="scss">
 @media (min-width: 1024px) {
     .user {
-        min-height: 100vh;
-        display: flex;
-        align-items: center;
+        display:block;
+        margin: 4em;
     }
 }
 </style>

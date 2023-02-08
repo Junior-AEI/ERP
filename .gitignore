@@ -1,3 +1,4 @@
 .idea/
 node_modules
 doc/workspace-papyrus/.metadata/
+.env

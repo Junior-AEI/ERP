@@ -39,7 +39,7 @@
                 class="me-4"
                 @click="validate"
             >
-                Validate
+               Me connecter
             </v-btn>
         </div>
         </v-form>
@@ -49,22 +49,31 @@
 </template>
 
 <script  lang="ts">
+import axios from 'axios';
 export default {
   data: () => ({
     valid: true,
-    Password: '',
-    PasswordRules: [
-    ],
     email: '',
     emailRules: [
+        v => !!v || 'E-mail is required',
+        v => /.+@.+\..+/.test(v) || 'E-mail must be valid',
     ],
-
+    Password: '',
+    PasswordRules: [
+        v => !!v || 'Password is required',
+        v => (v && v.length <= 30) || 'Password must be less than 30 characters',
+    ],
     checkbox: false,
   }),
 
   methods: {
     async validate () {
-
+        /*let result = await axios.post('https://http://localhost:5173', {
+             email: this.email, 
+             Password: this.Password 
+            });
+        console.warn(result);*/
+        this.$router.push({name:'users'})
     },
   },
 }

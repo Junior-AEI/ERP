@@ -1,0 +1,134 @@
+<?xml version="1.0" encoding="UTF-8"?><project name="Untitled Gantt Project" company="" webLink="http://" view-date="2023-03-04" view-index="0" gantt-divider-location="834" resource-divider-location="300" version="3.2.3247" locale="fr_FR">
+    <description/>
+    <view zooming-state="default:2" id="gantt-chart">
+        <field id="tpd3" name="Nom" width="466" order="0"/>
+        <field id="tpd4" name="Date de début" width="174" order="1"/>
+        <field id="tpd5" name="Date de fin" width="178" order="2"/>
+        <option id="filter.completedTasks" value="false"/>
+        <option id="color.recent"><![CDATA[#00ff00 #ff0000 #ffff00]]></option>
+    </view>
+    <view id="resource-table">
+        <field id="0" name="Nom" width="210" order="0"/>
+        <field id="1" name="Rôle par défaut" width="86" order="1"/>
+    </view>
+    <!-- -->
+    <calendars>
+        <day-types>
+            <day-type id="0"/>
+            <day-type id="1"/>
+            <default-week id="1" name="default" sun="1" mon="0" tue="0" wed="0" thu="0" fri="0" sat="1"/>
+            <only-show-weekends value="false"/>
+            <overriden-day-types/>
+            <days/>
+        </day-types>
+        <date year="2023" month="1" date="9" type="HOLIDAY"><![CDATA[Vacances sur 09/01/2023 00:00]]></date>
+        <date year="2023" month="1" date="10" type="HOLIDAY"><![CDATA[Vacances sur 10/01/2023 00:00]]></date>
+        <date year="2023" month="1" date="11" type="HOLIDAY"><![CDATA[Vacances sur 11/01/2023 00:00]]></date>
+        <date year="2023" month="1" date="12" type="HOLIDAY"><![CDATA[Vacances sur 12/01/2023 00:00]]></date>
+        <date year="2023" month="1" date="13" type="HOLIDAY"><![CDATA[Vacances sur 13/01/2023 00:00]]></date>
+    </calendars>
+    <tasks empty-milestones="true">
+        <taskproperties>
+            <taskproperty id="tpd0" name="type" type="default" valuetype="icon"/>
+            <taskproperty id="tpd1" name="priority" type="default" valuetype="icon"/>
+            <taskproperty id="tpd2" name="info" type="default" valuetype="icon"/>
+            <taskproperty id="tpd3" name="name" type="default" valuetype="text"/>
+            <taskproperty id="tpd4" name="begindate" type="default" valuetype="date"/>
+            <taskproperty id="tpd5" name="enddate" type="default" valuetype="date"/>
+            <taskproperty id="tpd6" name="duration" type="default" valuetype="int"/>
+            <taskproperty id="tpd7" name="completion" type="default" valuetype="int"/>
+            <taskproperty id="tpd8" name="coordinator" type="default" valuetype="text"/>
+            <taskproperty id="tpd9" name="predecessorsr" type="default" valuetype="text"/>
+        </taskproperties>
+        <task id="9" name="[BDD] Création des tables liées aux utilisateurs" color="#8cb6ce" meeting="false" start="2023-02-08" duration="4" complete="0" thirdDate="2022-12-28" thirdDate-constraint="0" expand="true">
+            <depend id="7" type="2" difference="0" hardness="Strong"/>
+            <depend id="10" type="2" difference="0" hardness="Strong"/>
+            <depend id="45" type="2" difference="0" hardness="Strong"/>
+        </task>
+        <task id="6" name="[Front] Page de connexion" color="#ff0000" meeting="false" start="2023-02-08" duration="4" complete="0" thirdDate="2022-12-15" thirdDate-constraint="0" expand="true">
+            <depend id="7" type="2" difference="0" hardness="Strong"/>
+        </task>
+        <task id="7" name="[Front] Affichage des membres" color="#ff0000" meeting="false" start="2023-02-14" duration="3" complete="0" thirdDate="2022-12-15" thirdDate-constraint="0" expand="true"/>
+        <task id="10" name="[BDD] Création des tables liées aux clients" color="#8cb6ce" meeting="false" start="2023-02-14" duration="4" complete="0" thirdDate="2023-01-27" thirdDate-constraint="0" expand="true">
+            <depend id="11" type="2" difference="0" hardness="Strong"/>
+            <depend id="13" type="2" difference="0" hardness="Strong"/>
+            <depend id="51" type="2" difference="0" hardness="Strong"/>
+            <depend id="52" type="2" difference="0" hardness="Strong"/>
+        </task>
+        <task id="13" name="[Back] CRUD pour les clients" color="#00ff00" meeting="false" start="2023-02-20" duration="4" complete="0" thirdDate="2023-01-27" thirdDate-constraint="0" expand="true"/>
+        <task id="45" name="[Back] CRUD pour les utilisateurs par le secrétaire général" color="#00ff00" meeting="false" start="2023-02-14" duration="3" complete="0" thirdDate="2023-01-02" thirdDate-constraint="0" expand="true">
+            <depend id="19" type="2" difference="0" hardness="Strong"/>
+            <depend id="46" type="2" difference="0" hardness="Strong"/>
+        </task>
+        <task id="46" name="[Back] Activation des utilisateurs en administrateur par le pôle SI" color="#00ff00" meeting="false" start="2023-02-17" duration="2" complete="0" thirdDate="2023-01-02" thirdDate-constraint="0" expand="true">
+            <depend id="30" type="2" difference="0" hardness="Strong"/>
+        </task>
+        <task id="30" name="[Back] Configuration du site par le pôle SI" color="#00ff00" meeting="false" start="2023-02-21" duration="4" complete="0" thirdDate="2023-01-16" thirdDate-constraint="0" expand="true">
+            <depend id="17" type="2" difference="0" hardness="Strong"/>
+        </task>
+        <task id="17" name="[Front] Page d'administration du pôle SI" color="#ff0000" meeting="false" start="2023-02-27" duration="3" complete="0" thirdDate="2023-01-16" thirdDate-constraint="0" expand="true"/>
+        <task id="19" name="[Front] Affichage spécifique au Secrétaire général" color="#ff0000" meeting="false" start="2023-02-17" duration="4" complete="0" thirdDate="2023-01-16" thirdDate-constraint="0" expand="true"/>
+        <task id="51" name="[Front] Affichage des clients" color="#ff0000" meeting="false" start="2023-02-20" duration="3" complete="0" thirdDate="2023-01-24" thirdDate-constraint="0" expand="true"/>
+        <task id="52" name="[Back] CRUD des clients" color="#00ff00" meeting="false" start="2023-02-20" duration="4" complete="0" thirdDate="2023-01-24" thirdDate-constraint="0" expand="true"/>
+        <task id="11" name="[BDD] Création des tables liées aux études (en dehors de la gestion documentaire)" color="#8cb6ce" meeting="false" start="2023-02-20" duration="7" complete="0" thirdDate="2023-01-27" thirdDate-constraint="0" expand="true">
+            <depend id="14" type="2" difference="0" hardness="Strong"/>
+            <depend id="15" type="2" difference="0" hardness="Strong"/>
+            <depend id="20" type="2" difference="0" hardness="Strong"/>
+        </task>
+        <task id="15" name="[Back] CRUD pour les études" color="#00ff00" meeting="false" start="2023-03-01" duration="5" complete="0" thirdDate="2023-01-16" thirdDate-constraint="0" expand="true">
+            <depend id="18" type="2" difference="0" hardness="Strong"/>
+        </task>
+        <task id="18" name="[Front] Affichage des études" color="#ff0000" meeting="false" start="2023-03-08" duration="5" complete="0" thirdDate="2023-01-16" thirdDate-constraint="0" expand="true"/>
+        <task id="14" name="[BDD] Création des tables liées aux documents en général" color="#8cb6ce" meeting="false" start="2023-03-01" duration="7" complete="0" thirdDate="2023-01-27" thirdDate-constraint="0" expand="true">
+            <depend id="16" type="2" difference="0" hardness="Strong"/>
+        </task>
+        <task id="16" name="[Back] CRUD pour les documents en général" color="#00ff00" meeting="false" start="2023-03-10" duration="14" complete="0" thirdDate="2023-01-16" thirdDate-constraint="0" expand="true">
+            <depend id="25" type="2" difference="0" hardness="Strong"/>
+            <depend id="27" type="2" difference="0" hardness="Strong"/>
+            <depend id="28" type="2" difference="0" hardness="Strong"/>
+            <depend id="29" type="2" difference="0" hardness="Strong"/>
+        </task>
+        <task id="29" name="[Back] Gestion documentaire pour le pôle Étude" color="#00ff00" meeting="false" start="2023-03-30" duration="7" complete="0" thirdDate="2023-01-16" thirdDate-constraint="0" expand="true">
+            <depend id="21" type="2" difference="0" hardness="Strong"/>
+            <depend id="25" type="2" difference="0" hardness="Strong"/>
+            <depend id="28" type="2" difference="0" hardness="Strong"/>
+        </task>
+        <task id="21" name="[Front] Affichage spécifique au pôle Étude" color="#ff0000" meeting="false" start="2023-04-10" duration="5" complete="0" thirdDate="2023-01-16" thirdDate-constraint="0" expand="true"/>
+        <task id="25" name="[Back] Gestion documentaire pour le pôle Qualité" color="#00ff00" meeting="false" start="2023-04-10" duration="7" complete="0" thirdDate="2023-01-16" thirdDate-constraint="0" expand="true">
+            <depend id="20" type="2" difference="0" hardness="Strong"/>
+            <depend id="27" type="2" difference="0" hardness="Strong"/>
+        </task>
+        <task id="20" name="[Front] Affichage spécifique au pôle Qualité" color="#ff0000" meeting="false" start="2023-04-19" duration="6" complete="0" thirdDate="2023-01-16" thirdDate-constraint="0" expand="true"/>
+        <task id="28" name="[Back] Gestion documentaire pour le pôle Devéloppement commercial" color="#00ff00" meeting="false" start="2023-04-10" duration="5" complete="0" thirdDate="2023-01-16" thirdDate-constraint="0" expand="true">
+            <depend id="22" type="2" difference="0" hardness="Strong"/>
+            <depend id="26" type="2" difference="0" hardness="Strong"/>
+        </task>
+        <task id="22" name="[Front] Affichage spécifique au pôle Développement Commercial" color="#ff0000" meeting="false" start="2023-04-17" duration="3" complete="0" thirdDate="2023-01-16" thirdDate-constraint="0" expand="true"/>
+        <task id="26" name="[Back] Gestion documentaire pour le pôle Communication" color="#00ff00" meeting="false" start="2023-04-17" duration="4" complete="0" thirdDate="2023-01-16" thirdDate-constraint="0" expand="true">
+            <depend id="23" type="2" difference="0" hardness="Strong"/>
+        </task>
+        <task id="23" name="[Front] Affichage spécifique au pôle Communication" color="#ff0000" meeting="false" start="2023-04-21" duration="2" complete="0" thirdDate="2023-01-16" thirdDate-constraint="0" expand="true"/>
+        <task id="27" name="[Back] Gestion documentaire pour le pôle Trésorerie" color="#00ff00" meeting="false" start="2023-04-19" duration="7" complete="0" thirdDate="2023-01-16" thirdDate-constraint="0" expand="true">
+            <depend id="24" type="2" difference="0" hardness="Strong"/>
+        </task>
+        <task id="24" name="[Front] Affichage spécifique au pôle Trésorerie" color="#ff0000" meeting="false" start="2023-04-28" duration="4" complete="0" thirdDate="2023-01-16" thirdDate-constraint="0" expand="true"/>
+    </tasks>
+    <resources>
+        <resource id="0" name="Nadjime" function="Default:0" contacts="" phone=""/>
+        <resource id="1" name="Antoine" function="Default:0" contacts="" phone=""/>
+        <resource id="2" name="Nesrine" function="Default:0" contacts="" phone=""/>
+        <resource id="3" name="Léo-Paul" function="Default:0" contacts="" phone=""/>
+        <resource id="4" name="Maël" function="Default:0" contacts="" phone=""/>
+        <resource id="5" name="Marine" function="Default:0" contacts="" phone=""/>
+        <resource id="6" name="Lisa" function="Default:0" contacts="" phone=""/>
+        <resource id="7" name="Mathieu" function="Default:0" contacts="" phone=""/>
+    </resources>
+    <allocations>
+        <allocation task-id="6" resource-id="0" function="Default:0" responsible="false" load="100.0"/>
+        <allocation task-id="7" resource-id="2" function="Default:0" responsible="false" load="100.0"/>
+    </allocations>
+    <vacations/>
+    <previous/>
+    <roles roleset-name="Default"/>
+    <roles roleset-name="SoftwareDevelopment"/>
+</project>

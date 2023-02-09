@@ -1,55 +1,55 @@
-'use strict';
+"use strict";
 /** @type {import('sequelize-cli').Migration} */
 module.exports = {
   async up(queryInterface, Sequelize) {
-    await queryInterface.createTable('Cotisants', {
+    await queryInterface.createTable("Cotisants", {
       id: {
         allowNull: false,
         autoIncrement: true,
         primaryKey: true,
-        type: Sequelize.INTEGER
+        type: Sequelize.INTEGER,
       },
       nom: {
-        type: Sequelize.STRING
+        type: Sequelize.STRING,
       },
       prenom: {
-        type: Sequelize.STRING
+        type: Sequelize.STRING,
       },
       sexe: {
-        type: Sequelize.STRING
+        type: Sequelize.STRING,
       },
       telMobile: {
-        type: Sequelize.STRING
+        type: Sequelize.STRING,
       },
       email: {
-        type: Sequelize.STRING
+        type: Sequelize.STRING,
       },
       dateNaissance: {
-        type: Sequelize.DATEONLY
+        type: Sequelize.DATEONLY,
       },
       lieuNaissance: {
-        type: Sequelize.STRING
+        type: Sequelize.STRING,
       },
       nationalite: {
-        type: Sequelize.STRING
+        type: Sequelize.STRING,
       },
       promotion: {
-        type: Sequelize.STRING
+        type: Sequelize.STRING,
       },
       dateCotisation: {
-        type: Sequelize.DATEONLY
+        type: Sequelize.DATEONLY,
       },
       createdAt: {
         allowNull: false,
-        type: Sequelize.DATE
+        type: Sequelize.DATE,
       },
       updatedAt: {
         allowNull: false,
-        type: Sequelize.DATE
-      }
+        type: Sequelize.DATE,
+      },
     });
   },
   async down(queryInterface, Sequelize) {
-    await queryInterface.dropTable('Cotisants');
-  }
+    await queryInterface.dropTable("Cotisants");
+  },
 };

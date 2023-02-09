@@ -1,20 +1,23 @@
-import { DataTypes, Model } from 'sequelize';
-import { sequelize } from '../config/database.config';
+import { DataTypes, Model } from "sequelize";
+import { sequelize } from "../config/database.config";
 class User extends Model {
   declare id: number;
   declare name: string;
 }
 
-User.init({
-  id: {
-    type: DataTypes.INTEGER,
-    autoIncrement: true,
-    primaryKey: true,
+User.init(
+  {
+    id: {
+      type: DataTypes.INTEGER,
+      autoIncrement: true,
+      primaryKey: true,
+    },
+    name: {
+      type: DataTypes.STRING,
+    },
   },
-  name: {
-    type: DataTypes.STRING
-  }
-}, { sequelize });
+  { sequelize }
+);
 
 sequelize.sync();
 

@@ -3,8 +3,7 @@
 </template>
 
 <script setup lang="ts">
-    import login from "../components/logIn.vue";
+import login from "../components/logIn.vue";
 </script>
 
-<style scoped lang="scss">
-</style>
+<style scoped lang="scss"></style>

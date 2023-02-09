@@ -1,26 +1,23 @@
-const dotenv = require("dotenv");
-dotenv.config();
-
-module.exports = {
-  dev: {
-    username: process.env.DB_DEV_USER,
-    password: process.env.DB_DEV_PASSWORD,
-    database: process.env.DB_DEV,
-    host: "127.0.0.1",
-    dialect: "mysql",
-  },
-  test: {
-    username: "root",
-    password: null,
-    database: "database_test",
-    host: "127.0.0.1",
-    dialect: "mysql",
-  },
-  production: {
-    username: "root",
-    password: null,
-    database: "database_production",
-    host: "127.0.0.1",
-    dialect: "mysql",
-  },
+"use strict";
+/*
+* Describes dev and prod database configurations for Sequelize
+* Must be build after each modification and before any execution or building
+*/
+var dotenv_1 = require("dotenv");
+(0, dotenv_1.config)();
+var configuration = {
+    // Dev database configuration (SQLite)
+    dev: {
+        storage: "database/database.sqlite",
+        dialect: "sqlite",
+    },
+    // Prod database server configuration (from .env file)
+    production: {
+        username: process.env.DB_USER,
+        password: process.env.DB_PASSWORD,
+        database: process.env.DB,
+        host: process.env.DB_HOST,
+        dialect: "mysql",
+    }
 };
+module.exports = configuration;

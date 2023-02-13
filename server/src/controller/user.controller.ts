@@ -1,23 +1,23 @@
 import { Request, Response } from "express";
-import { User } from "../models/user.model";
+import { Utilisateur } from "../models/utilisateur.model";
 const userController = {
-  getUser,
-  addUser,
-  deleteUser,
+  getUtilisateur,
+  addUtilisateur,
+  deleteUtilisateur,
 };
 
-async function getUser(req: Request, res: Response) {
-  await User.findAll().then((users) => res.json(users));
+async function getUtilisateur(req: Request, res: Response) {
+  await Utilisateur.findAll().then((users) => res.json(users));
 }
 
-async function addUser(req: Request, res: Response) {
-  await User.create({ name: req.body.name })
-    .then(() => res.json(req.body.name))
+async function addUtilisateur(req: Request, res: Response) {
+  await Utilisateur.create(req.body)
+    .then(() => res.json(req.body))
     .catch((err) => res.status(500).json({ error: err.message }));
 }
 
-async function deleteUser(req: Request, res: Response) {
-  await User.destroy({ where: { name: req.body.name } })
+async function deleteUtilisateur(req: Request, res: Response) {
+  await Utilisateur.destroy(req.body)
     .then(() => res.json(req.body.name))
     .catch((err) => res.status(500).json({ error: err.message }));
 }

@@ -3,11 +3,8 @@ dotenv.config();
 import express from "express";
 import bodyParser from "body-parser";
 import routes from "./routes/routes";
-// import { populateDatabase } from "./config/database.config";
 
 const app = express();
-
-// populateDatabase();
 
 app.use(bodyParser.json({ limit: "50mb" }));
 

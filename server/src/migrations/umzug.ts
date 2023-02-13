@@ -2,6 +2,8 @@
 import { Umzug, SequelizeStorage } from 'umzug';
 import { sequelize } from '../config/database.config';
 import { Sequelize } from 'sequelize-typescript';
+import fs from 'fs';
+import path from 'path';
 
 interface UmzugConfig {
   migrations: {
@@ -10,7 +12,8 @@ interface UmzugConfig {
   context: Sequelize,
   storage: SequelizeStorage,
   logger: any,
-  models?: string[]
+  models?: string[],
+  create: any,
 }
 
 const config: UmzugConfig = {
@@ -22,6 +25,13 @@ const config: UmzugConfig = {
     sequelize,
   }),
   logger: console,
+  create: {
+    folder: 'database/migrations',
+    template: (filepath: any) => [
+      // read template from filesystem
+      [filepath, fs.readFileSync(path.join(__dirname, 'templates/sample-migration.ts')).toString()],
+    ],
+  },
 };
 
 if (process.env.NODE_ENV === 'dev') {
@@ -42,6 +52,13 @@ export const seeder = new Umzug({
     modelName: 'seeder_meta',
   }),
   logger: console,
+  create: {
+    folder: 'database/seeders',
+    template: (filepath: any) => [
+      // read template from filesystem
+      [filepath, fs.readFileSync(path.join(__dirname, 'templates/sample-seeders.ts')).toString()],
+    ],
+  },
 });
 
 export type Seeder = typeof seeder._types.migration;

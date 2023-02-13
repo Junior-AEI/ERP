@@ -1,18 +1,16 @@
-import { Sequelize } from "sequelize";
+import { Sequelize } from "sequelize-typescript";
 import dotenv from "dotenv";
+import config from "./sequelize.config";
 
+// Database configuration depending of NODE_ENV variable (dev or production)
 dotenv.config();
+const env = process.env.NODE_ENV || 'dev';
+const databaseConfig = config[env];
 
-const sequelize = new Sequelize(
-  process.env.NODE_ENV === "dev" ? (process.env.DB_DEV as string) : "",
-  process.env.NODE_ENV === "dev" ? (process.env.DB_DEV_USER as string) : "",
-  process.env.NODE_ENV === "dev" ? (process.env.DB_DEV_PASSWORD as string) : "",
-  {
-    dialect: "mysql",
-    host: process.env.NODE_ENV === "dev" ? "localhost" : "",
-  }
-);
+// ORM initialization
+const sequelize = new Sequelize(databaseConfig);
 
+// Test de la connexion à la base de donnée
 let testConnection = async () => {
   try {
     await sequelize.authenticate();

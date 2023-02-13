@@ -4,14 +4,15 @@
 */
 
 import { config } from "dotenv";
-import { Options } from "sequelize";
+import { SequelizeOptions } from "sequelize-typescript";
 config();
 
-const configuration: { [key: string]: Options } = {
+const configuration: { [key: string]: SequelizeOptions } = {
   // Dev database configuration (SQLite)
   dev: {
     storage: "database/database.sqlite",
     dialect: "sqlite",
+    models: ['./src/models/**/'],
   },
 
   // Prod database server configuration (from .env file)

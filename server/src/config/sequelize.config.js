@@ -9,7 +9,8 @@ var configuration = {
     // Dev database configuration (SQLite)
     dev: {
         storage: "database/database.sqlite",
-        dialect: "sqlite"
+        dialect: "sqlite",
+        models: ['./src/models/**/'],
     },
     // Prod database server configuration (from .env file)
     production: {
@@ -17,7 +18,7 @@ var configuration = {
         password: process.env.DB_PASSWORD,
         database: process.env.DB,
         host: process.env.DB_HOST,
-        dialect: "mysql"
+        dialect: "mysql",
     }
 };
 module.exports = configuration;

@@ -1,8 +1,19 @@
 
 import { Umzug, SequelizeStorage } from 'umzug';
 import { sequelize } from '../config/database.config';
+import { Sequelize } from 'sequelize-typescript';
 
-export const migrator = new Umzug({
+interface UmzugConfig {
+  migrations: {
+    glob: string[] | any
+  },
+  context: Sequelize,
+  storage: SequelizeStorage,
+  logger: any,
+  models?: string[]
+}
+
+const config: UmzugConfig = {
   migrations: {
     glob: ['../../database/migrations/*.ts', { cwd: __dirname }],
   },
@@ -11,7 +22,13 @@ export const migrator = new Umzug({
     sequelize,
   }),
   logger: console,
-});
+};
+
+if (process.env.NODE_ENV === 'dev') {
+  config.models = ['../models/**/*.ts'];
+}
+
+export const migrator = new Umzug(config);
 
 export type Migration = typeof migrator._types.migration;
 

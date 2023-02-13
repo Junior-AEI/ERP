@@ -5,7 +5,9 @@
   "main": "index.js",
   "scripts": {
     "config": "tsc --strict --target es5 --module commonjs src/config/sequelize.config.ts",
-    "dev": "npm run config && nodemon"
+    "dev": "npm run config && nodemon",
+    "migrate": "node src/migrations/migrate.js",
+    "seeders": "node src/migrations/seeders.js"
   },
   "keywords": [],
   "author": "",

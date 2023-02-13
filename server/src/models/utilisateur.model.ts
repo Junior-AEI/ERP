@@ -1,51 +1,59 @@
-import { Timestamp } from 'bson';
-import { Table, Column, Model, DataType, CreatedAt, UpdatedAt } from 'sequelize-typescript';
+import { sequelize } from '../config/database.config';
+import { Table, Column, Model, DataType, CreatedAt, UpdatedAt, ForeignKey, BelongsTo } from 'sequelize-typescript';
+import { Poste } from './poste.model';
 
 @Table
 export class Utilisateur extends Model<Utilisateur> {
   @Column({
-    type: DataType.INTEGER,
-    primaryKey: true,
-    autoIncrement: true,
-  })
-  id!: number;
-
-  @Column({
-    type: DataType.STRING
+    type: DataType.STRING,
+    allowNull: false
   })
   nomUtilisateur!: string;
 
   @Column({
-    type: DataType.STRING
+    type: DataType.STRING,
+    allowNull: false
   })
   motDePasse!: string;
 
   @Column({
     type: DataType.DATE
   })
-  derniereConnexion!: Timestamp;
+  derniereConnexion!: Date;
 
   @Column({
-    type: DataType.BOOLEAN
+    type: DataType.BOOLEAN,
+    allowNull: false
   })
   estActif!: boolean;
 
   @Column({
-    type: DataType.STRING
+    type: DataType.STRING,
+    allowNull: false
   })
   mailJE!: string;
 
-  // TODO: Implement roles ("postes")
+  @ForeignKey(() => Poste)
+  @Column({
+    type: DataType.INTEGER,
+    allowNull: false,
+  })
+  posteId!: number;
+
+  @BelongsTo(() => Poste)
+  poste!: Poste;
 
   @CreatedAt
   @Column({
     type: DataType.DATE
   })
-  createdAt!: Timestamp;
+  createdAt!: Date;
 
   @UpdatedAt
   @Column({
     type: DataType.DATE
   })
-  updatedAt!: Timestamp;
+  updatedAt!: Date;
 }
+
+sequelize.addModels([Utilisateur, Poste]);

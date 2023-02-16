@@ -1,9 +1,10 @@
+
 <template>
-    <UsersList />
+    <DataTable />
 </template>
 
 <script setup lang="ts">
-import UsersList from "../components/UsersList.vue";
+import DataTable from "../components/DataTable.vue";
 </script>
 
 <style scoped lang="scss">

@@ -7,7 +7,7 @@
     "config": "tsc --strict --target es5 --module commonjs src/config/sequelize.config.ts",
     "dev": "npm run config && nodemon",
     "migrate": "node src/migrations/migrate.js",
-    "seed": "node src/migrations/seeders.js"
+    "seed": "node src/migrations/seed.js"
   },
   "keywords": [],
   "author": "",

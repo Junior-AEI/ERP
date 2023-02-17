@@ -7,27 +7,26 @@ const posteController = {
   getPosteById,
   createPoste,
   updatePoste,
+  deletePosteById,
 };
 
 // TODO: Setup validator ("express-validator" package?) to verify whole body
 /**
  * Avoid empty role name
  */
-async function checkEmptyName(req: Request) {
-  if (
-    req.body.nom === "" ||
-    req.body.nom === undefined ||
-    req.body.nom === null
-  ) {
+async function checkEmptyName(name: string) {
+  if (name === "" || name === undefined || name === null) {
     throw new Error("Empty name provided");
   }
 }
 
 /**
- * Check if role id already exist
+ * Throws error if given role id does not exist or isn't valid
+ * @param id Role id to check
  */
-async function checkExistingId(req: Request) {
-  const existingPoste = await Poste.findByPk(req.body.id);
+async function checkExistingId(id: number) {
+  if (Number.isNaN(id)) throw new Error("Giver id is Not A Number");
+  const existingPoste = await Poste.findByPk(id);
   if (existingPoste === null)
     throw new Error("Wrong role id or role doesn't exist");
 }
@@ -37,7 +36,6 @@ async function checkExistingId(req: Request) {
  */
 async function checkExistingPoste(req: Request): Promise<void> {
   if (req.body.id === undefined) req.body.id = null;
-  console.log(req.body.id);
   const existingPoste = await Poste.findOne({
     where: {
       [Op.and]: [
@@ -71,7 +69,7 @@ async function getPosteById(req: Request, res: Response) {
  */
 async function createPoste(req: Request, res: Response) {
   try {
-    await checkEmptyName(req);
+    await checkEmptyName(req.body.nom);
     await checkExistingPoste(req);
 
     // Clean useless creation and update dates if given (setup while creating role)
@@ -96,8 +94,8 @@ async function createPoste(req: Request, res: Response) {
  */
 async function updatePoste(req: Request, res: Response) {
   try {
-    await checkEmptyName(req);
-    await checkExistingId(req);
+    await checkEmptyName(req.body.nom);
+    await checkExistingId(req.body.id);
     await checkExistingPoste(req);
 
     // Clean useless update dates if given (setup while creating role)
@@ -113,4 +111,24 @@ async function updatePoste(req: Request, res: Response) {
     });
   }
 }
+
+/**
+ * Role remove for DELETE route
+ * @param req Request (parameter "id" used)
+ * @param res Response
+ */
+async function deletePosteById(req: Request, res: Response) {
+  try {
+    await checkExistingId(parseInt(req.params.id));
+    await Poste.destroy({ where: { id: req.params.id } })
+      .then((poste) => res.status(200).json(poste))
+      .catch((err) => res.status(500).json(err));
+  } catch (err: any) {
+    res.status(401).json({
+      status: "error",
+      message: err.message,
+    });
+  }
+}
+
 export default posteController;

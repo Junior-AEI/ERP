@@ -1,35 +1,44 @@
-import { sequelize } from '../config/database.config';
-import { Table, Column, Model, DataType, CreatedAt, UpdatedAt, ForeignKey, BelongsTo } from 'sequelize-typescript';
-import { Poste } from './poste.model';
+import { sequelize } from "../config/database.config";
+import {
+  Table,
+  Column,
+  Model,
+  DataType,
+  CreatedAt,
+  UpdatedAt,
+  ForeignKey,
+  BelongsTo,
+} from "sequelize-typescript";
+import { Poste } from "./poste.model";
 
 @Table
 export class Utilisateur extends Model<Utilisateur> {
   @Column({
     type: DataType.STRING,
-    allowNull: false
+    allowNull: false,
   })
   nomUtilisateur!: string;
 
   @Column({
     type: DataType.STRING,
-    allowNull: false
+    allowNull: false,
   })
   motDePasse!: string;
 
   @Column({
-    type: DataType.DATE
+    type: DataType.DATE,
   })
   derniereConnexion!: Date;
 
   @Column({
     type: DataType.BOOLEAN,
-    allowNull: false
+    allowNull: false,
   })
   estActif!: boolean;
 
   @Column({
     type: DataType.STRING,
-    allowNull: false
+    allowNull: false,
   })
   mailJE!: string;
 
@@ -45,13 +54,13 @@ export class Utilisateur extends Model<Utilisateur> {
 
   @CreatedAt
   @Column({
-    type: DataType.DATE
+    type: DataType.DATE,
   })
   createdAt!: Date;
 
   @UpdatedAt
   @Column({
-    type: DataType.DATE
+    type: DataType.DATE,
   })
   updatedAt!: Date;
 }

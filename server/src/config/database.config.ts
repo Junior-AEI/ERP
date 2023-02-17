@@ -4,7 +4,7 @@ import config from "./sequelize.config";
 
 // Database configuration depending of NODE_ENV variable (dev or production)
 dotenv.config();
-const env = process.env.NODE_ENV || 'dev';
+const env = process.env.NODE_ENV || "dev";
 const databaseConfig = config[env];
 
 // ORM initialization

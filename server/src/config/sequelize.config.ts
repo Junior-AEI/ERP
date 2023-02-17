@@ -1,7 +1,7 @@
 /*
-* Describes dev and prod database configurations for Sequelize
-* Must be build after each modification and before any execution or building
-*/
+ * Describes dev and prod database configurations for Sequelize
+ * Must be build after each modification and before any execution or building
+ */
 
 import { config } from "dotenv";
 import { SequelizeOptions } from "sequelize-typescript";
@@ -12,7 +12,7 @@ const configuration: { [key: string]: SequelizeOptions } = {
   dev: {
     storage: "database/database.sqlite",
     dialect: "sqlite",
-    models: ['./src/models/**/'],
+    models: ["./src/models/**/"],
   },
 
   // Prod database server configuration (from .env file)
@@ -22,7 +22,7 @@ const configuration: { [key: string]: SequelizeOptions } = {
     database: process.env.DB,
     host: process.env.DB_HOST,
     dialect: "mysql",
-  }
+  },
 };
 
 // export with "=" version for CommonJS version building of sequelize.config.js (module.exports)

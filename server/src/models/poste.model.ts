@@ -1,3 +1,4 @@
+import { sequelize } from "../config/database.config";
 import {
   Table,
   Column,
@@ -32,3 +33,5 @@ export class Poste extends Model<Poste> {
   })
   updatedAt!: Date;
 }
+
+sequelize.addModels([Poste]);

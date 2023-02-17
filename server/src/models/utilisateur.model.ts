@@ -64,5 +64,3 @@ export class Utilisateur extends Model<Utilisateur> {
   })
   updatedAt!: Date;
 }
-
-sequelize.addModels([Utilisateur, Poste]);

@@ -1,13 +1,12 @@
 import { Request, Response } from "express";
 import { Poste } from "../models/poste.model";
 import { Op } from "sequelize";
-import { truncate } from "lodash";
 
 const posteController = {
   getAllPostes,
   getPosteById,
   createPoste,
-  // updatePoste,
+  updatePoste,
 };
 
 // TODO: Setup validator ("express-validator" package?) to verify whole body
@@ -25,12 +24,31 @@ async function checkEmptyName(req: Request) {
 }
 
 /**
+ * Check if role id already exist
+ */
+async function checkExistingId(req: Request) {
+  const existingPoste = await Poste.findByPk(req.body.id);
+  if (existingPoste === null)
+    throw new Error("Wrong role id or role doesn't exist");
+}
+
+/**
  * Avoid creating existing role
  */
 async function checkExistingPoste(req: Request): Promise<void> {
+  if (req.body.id === undefined) req.body.id = null;
+  console.log(req.body.id);
   const existingPoste = await Poste.findOne({
     where: {
-      [Op.or]: [{ nom: req.body.nom }, { description: req.body.description }],
+      [Op.and]: [
+        { [Op.not]: { id: req.body.id } },
+        {
+          [Op.or]: [
+            { nom: req.body.nom },
+            { description: req.body.description },
+          ],
+        },
+      ],
     },
   });
   if (existingPoste !== null) throw new Error("Role already exist");
@@ -71,4 +89,28 @@ async function createPoste(req: Request, res: Response) {
   }
 }
 
+/**
+ * Role update for PUT route
+ * @param req Request
+ * @param res Response
+ */
+async function updatePoste(req: Request, res: Response) {
+  try {
+    await checkEmptyName(req);
+    await checkExistingId(req);
+    await checkExistingPoste(req);
+
+    // Clean useless update dates if given (setup while creating role)
+    req.body.updatedAt = null;
+
+    await Poste.update(req.body, { where: { id: req.body.id } })
+      .then((poste) => res.status(200).json(poste))
+      .catch((err) => res.status(500).json(err));
+  } catch (err: any) {
+    res.status(401).json({
+      status: "error",
+      message: err.message,
+    });
+  }
+}
 export default posteController;

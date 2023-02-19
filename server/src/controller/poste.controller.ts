@@ -67,7 +67,7 @@ async function checkExistingPoste(req: Request): Promise<void> {
  *  - Roles in database
  *  - 500 error
  */
-async function getAllPostes(res: Response) {
+async function getAllPostes(req: Request, res: Response) {
   await Poste.findAll().then((poste) => res.json(poste));
 }
 

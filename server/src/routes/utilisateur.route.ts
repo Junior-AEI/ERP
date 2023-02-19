@@ -1,10 +1,10 @@
 import express from "express";
-import userController from "../controller/user.controller";
+import utilisateurController from "../controller/utilisateur.controller";
 
 const router = express.Router();
 
-router.get("/", userController.getUtilisateur);
-router.post("/", userController.addUtilisateur);
-router.delete("/", userController.deleteUtilisateur);
+router.get("/", utilisateurController.getAllUtilisateurs);
+router.post("/", utilisateurController.addUtilisateur);
+router.delete("/", utilisateurController.deleteUtilisateur);
 
 export default router;

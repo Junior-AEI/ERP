@@ -1,13 +1,22 @@
 import { Request, Response } from "express";
 import { Utilisateur } from "../models/utilisateur.model";
-const userController = {
-  getUtilisateur,
+
+const utilisateurController = {
+  getAllUtilisateurs,
   addUtilisateur,
   deleteUtilisateur,
 };
 
-async function getUtilisateur(req: Request, res: Response) {
-  await Utilisateur.findAll().then((users) => res.json(users));
+/**
+ * All utilisateurs reader for GET route
+ * @param res
+ *  - Utilisateurs in database
+ *  - 500 error
+ */
+async function getAllUtilisateurs(req: Request, res: Response) {
+  await Utilisateur.findAll({ attributes: { exclude: ["motDePasse"] } }).then(
+    (users) => res.json(users)
+  );
 }
 
 async function addUtilisateur(req: Request, res: Response) {
@@ -22,4 +31,4 @@ async function deleteUtilisateur(req: Request, res: Response) {
     .catch((err) => res.status(500).json({ error: err.message }));
 }
 
-export default userController;
+export default utilisateurController;

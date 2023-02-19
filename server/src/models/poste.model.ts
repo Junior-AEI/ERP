@@ -6,7 +6,11 @@ import {
   DataType,
   CreatedAt,
   UpdatedAt,
+  ForeignKey,
+  BelongsTo,
+  HasMany,
 } from "sequelize-typescript";
+import { Utilisateur } from "./utilisateur.model";
 
 @Table
 export class Poste extends Model<Poste> {
@@ -21,6 +25,9 @@ export class Poste extends Model<Poste> {
   })
   description!: string;
 
+  @HasMany(() => Utilisateur)
+  utilisateurs!: Utilisateur[];
+
   @CreatedAt
   @Column({
     type: DataType.DATE,
@@ -33,5 +40,3 @@ export class Poste extends Model<Poste> {
   })
   updatedAt!: Date;
 }
-
-sequelize.addModels([Poste]);

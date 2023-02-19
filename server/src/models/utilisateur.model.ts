@@ -6,13 +6,14 @@ import {
   DataType,
   CreatedAt,
   UpdatedAt,
+  HasOne,
   ForeignKey,
   BelongsTo,
 } from "sequelize-typescript";
 import { Poste } from "./poste.model";
 
 @Table
-export class Utilisateur extends Model<Utilisateur> {
+export class Utilisateur extends Model {
   @Column({
     type: DataType.STRING,
     allowNull: false,
@@ -64,3 +65,5 @@ export class Utilisateur extends Model<Utilisateur> {
   })
   updatedAt!: Date;
 }
+
+sequelize.addModels([Utilisateur, Poste]);

@@ -8,6 +8,7 @@ const posteController = {
   createPoste,
   updatePoste,
   deletePosteById,
+  checkExistingPosteId,
 };
 
 // TODO: Setup validator ("express-validator" package?) to verify whole body
@@ -26,7 +27,7 @@ async function checkEmptyName(name: string) {
  * Throws error if given role id does not exist or isn't valid
  * @param id Role id to check
  */
-async function checkExistingId(id: number) {
+async function checkExistingPosteId(id: number) {
   // Check is id is a number
   if (Number.isNaN(id)) throw new Error("Giver id is Not A Number");
 
@@ -141,7 +142,7 @@ async function updatePoste(req: Request, res: Response) {
   try {
     // Check is given name is not empty and if given role or role id doesn't already exist
     await checkEmptyName(req.body.nom);
-    await checkExistingId(req.body.id);
+    await checkExistingPosteId(req.body.id);
     await checkExistingPoste(req);
 
     // Clean useless update dates if given (setup while creating role)
@@ -171,7 +172,7 @@ async function updatePoste(req: Request, res: Response) {
 async function deletePosteById(req: Request, res: Response) {
   try {
     // Check if requested role id exist in database
-    await checkExistingId(parseInt(req.params.id));
+    await checkExistingPosteId(parseInt(req.params.id));
 
     // Delete requested role by its id
     await Poste.destroy({ where: { id: req.params.id } })

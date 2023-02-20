@@ -83,9 +83,9 @@ async function getPosteById(req: Request, res: Response) {
   try {
     // Check if req.params.id is a number
     if (Number.isNaN(req.params.id))
-      throw new Error("Giver id is Not A Number");
+      throw new Error("Given id is Not A Number");
 
-    // Find requested post by primary key (id)
+    // Find requested role by primary key (id)
     await Poste.findByPk(req.params.id)
       .then((poste) => res.json(poste))
       .catch((err) => res.status(500).json({ error: err.message }));

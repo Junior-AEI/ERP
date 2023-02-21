@@ -1,6 +1,7 @@
 import { Request, Response } from "express";
 import { Utilisateur } from "../models/utilisateur.model";
-import posteController from "./poste.controller";
+import { Poste } from "../models/poste.model";
+import { checkExistingId } from "./utils.controller";
 import { Op } from "sequelize";
 
 const utilisateurController = {
@@ -8,6 +9,7 @@ const utilisateurController = {
   getUtilisateurById,
   createUtilisateur,
   deleteUtilisateur,
+  updateUtilisateur,
 };
 
 /**
@@ -87,7 +89,7 @@ async function getUtilisateurById(req: Request, res: Response) {
 async function createUtilisateur(req: Request, res: Response) {
   try {
     //TODO: Setup true data checking
-    await posteController.checkExistingPosteId(req.body.posteId);
+    await checkExistingId<Poste>(req.body.posteId, Poste);
     await checkExistingUtilisateur(req);
 
     // Clean useless creation and update dates if given (setup while creating user)
@@ -99,6 +101,36 @@ async function createUtilisateur(req: Request, res: Response) {
       .catch((err) => res.status(500).json({ error: err.message }));
   } catch (err: any) {
     // return client error if wrong id has been given
+    res.status(401).json({
+      status: "error",
+      message: err.message,
+    });
+  }
+}
+
+/**
+ * User update for PUT route
+ * @param req Request (body used to update user)
+ * @param res
+ *  - 200 confirmation
+ *  - 401 error if wrong datas are given
+ *  - 500 error for database error
+ */
+async function updateUtilisateur(req: Request, res: Response) {
+  try {
+    // Check is given name is not empty and if given user or user id doesn't already exist
+    // TODO : Add more checks if necessary
+    await checkExistingId<Utilisateur>(req.body.id, Utilisateur);
+    await checkExistingUtilisateur(req);
+    // Clean useless update dates if given (setup while creating user)
+    req.body.updatedAt = null;
+
+    // Update requested role with given body
+    await Utilisateur.update(req.body, { where: { id: req.body.id } })
+      .then((u) => res.status(200).json(u))
+      .catch((err) => res.status(500).json(err));
+  } catch (err: any) {
+    // return client error if wrong informations have been given
     res.status(401).json({
       status: "error",
       message: err.message,

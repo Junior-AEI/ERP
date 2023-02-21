@@ -8,7 +8,7 @@ const utilisateurController = {
   getAllUtilisateurs,
   getUtilisateurById,
   createUtilisateur,
-  deleteUtilisateur,
+  deleteUtilisateurById,
   updateUtilisateur,
 };
 
@@ -125,7 +125,7 @@ async function updateUtilisateur(req: Request, res: Response) {
     // Clean useless update dates if given (setup while creating user)
     req.body.updatedAt = null;
 
-    // Update requested role with given body
+    // Update requested user with given body
     await Utilisateur.update(req.body, { where: { id: req.body.id } })
       .then((u) => res.status(200).json(u))
       .catch((err) => res.status(500).json(err));
@@ -138,10 +138,30 @@ async function updateUtilisateur(req: Request, res: Response) {
   }
 }
 
-async function deleteUtilisateur(req: Request, res: Response) {
-  await Utilisateur.destroy(req.body)
-    .then(() => res.json(req.body.name))
-    .catch((err) => res.status(500).json({ error: err.message }));
+/**
+ * User remove for DELETE route
+ * @param req Request (parameter "id" used to find user to delete)
+ * @param res :
+ *  - 200 confirmation
+ *  - 401 error if given id is NaN or doesn't exist
+ *  - 500 error for database error
+ */
+async function deleteUtilisateurById(req: Request, res: Response) {
+  try {
+    // Check if requested user id exist in database
+    await checkExistingId<Utilisateur>(parseInt(req.params.id), Utilisateur);
+
+    // Delete requested user by its id
+    await Utilisateur.destroy({ where: { id: req.params.id } })
+      .then((user) => res.status(200).json(user))
+      .catch((err) => res.status(500).json(err));
+  } catch (err: any) {
+    // return client error if wrong informations have been given
+    res.status(401).json({
+      status: "error",
+      message: err.message,
+    });
+  }
 }
 
 export default utilisateurController;

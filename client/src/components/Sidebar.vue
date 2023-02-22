@@ -2,7 +2,7 @@
     <div>
         <Button icon="pi pi-home" @click="visibleLeft = true" class="p-button-rounded p-button-info p-button-outlined" style="margin-left:20px;margin-top:20px;"/>
 
-        <Sidebar v-model:visible="visibleLeft">
+        <Sidebar v-model:visible="visibleLeft" :showCloseIcon="false">
                 <div class="container">
                     <img
                         class="logo"
@@ -136,4 +136,5 @@ $height: 90px;
         height: $height;
     }
 }
+
 </style>

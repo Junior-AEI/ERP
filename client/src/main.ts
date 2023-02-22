@@ -17,6 +17,7 @@ import ColumnGroup from 'primevue/columngroup';
 import Row from 'primevue/row'; 
 import PanelMenu from 'primevue/panelmenu';
 import Sidebar from 'primevue/sidebar';
+import Menubar from 'primevue/Menubar';
 
 
 import "primevue/resources/themes/saga-blue/theme.css"      //theme
@@ -49,6 +50,7 @@ app.component("ColumnGroup", ColumnGroup);
 app.component("Row", Row);
 app.component("PanelMenu", PanelMenu);
 app.component("Sidebar", Sidebar);
+app.component("Menubar", Menubar);
 
 //app.component("FilterMatchMode", FilterMatchMode);
 

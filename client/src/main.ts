@@ -9,6 +9,7 @@ import router from "./router";
 //Prime Vue
 import PrimeVue from 'primevue/config';
 
+import Dropdown from 'primevue/dropdown';
 import DataTable from 'primevue/datatable';
 import Button from 'primevue/button';
 import InputText from 'primevue/inputtext';
@@ -17,7 +18,7 @@ import ColumnGroup from 'primevue/columngroup';
 import Row from 'primevue/row'; 
 import PanelMenu from 'primevue/panelmenu';
 import Sidebar from 'primevue/sidebar';
-import Menubar from 'primevue/Menubar';
+import Menubar from 'primevue/menubar';
 
 
 import "primevue/resources/themes/saga-blue/theme.css"      //theme
@@ -42,6 +43,7 @@ app.use(router);
 
 app.use(PrimeVue);
 
+app.component("Dropdown", Dropdown);
 app.component("DataTable", DataTable);
 app.component("Button", Button);
 app.component("InputText", InputText);

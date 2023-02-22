@@ -4,16 +4,36 @@
             <template #start>
             </template>
             <template #end>
-                <Button icon="pi pi-user" class="p-button-rounded p-button-info p-button-text" aria-label="User" />
+                <Button icon="pi pi-user" @click="visibleRight = true" class="p-button-rounded p-button-info p-button-text" aria-label="User" />
+                <Sidebar v-model:visible="visibleRight" :showCloseIcon="false" position="right">
+                    <PanelMenu :model="items" />
+                </Sidebar>
             </template>
         </Menubar>
     </div>
 </template>
 
 <script lang="ts">
+import { ref } from 'vue';
+
 export default {
     name: "Navbar.vue",
-};
+
+    setup() {
+        const visibleRight = ref(false);
+		return { visibleRight }
+    },
+    data() {
+		return {
+			items: [
+                {
+                    label: 'Se déconnecter',
+                    icon:'pi pi-sign-out',
+                }
+            ]
+        }
+	}
+}
 </script>
 
 <style scoped lang="scss">

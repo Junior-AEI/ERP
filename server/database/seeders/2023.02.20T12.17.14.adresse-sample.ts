@@ -24,10 +24,10 @@ const adresses = [
 ];
 
 export const up: Seeder = async ({ context: sequelize }) => {
-  await sequelize.getQueryInterface().bulkInsert("Adresse", adresses);
+  await sequelize.getQueryInterface().bulkInsert("Adresses", adresses);
 };
 export const down: Seeder = async ({ context: sequelize }) => {
   await sequelize
     .getQueryInterface()
-    .bulkDelete("Adresse", { id: adresses.map((p) => p.id) });
+    .bulkDelete("Adresses", { id: adresses.map((p) => p.id) });
 };

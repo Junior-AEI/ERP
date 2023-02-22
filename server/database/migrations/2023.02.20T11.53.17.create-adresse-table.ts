@@ -2,37 +2,37 @@ import type { Migration } from "../../src/migrations/umzug";
 import { DataType } from "sequelize-typescript";
 
 export const up: Migration = async ({ context: sequelize }) => {
-  await sequelize.getQueryInterface().createTable("Adresse", {
+  await sequelize.getQueryInterface().createTable("Adresses", {
     id: {
       type: DataType.INTEGER,
       allowNull: false,
       primaryKey: true,
       autoIncrement: true,
-      // field: "id",
+      field: "id",
     },
     adresse: {
       type: DataType.STRING,
       allowNull: false,
-      // field: "adresse",
+      field: "adresse",
     },
     complementAdresse: {
       type: DataType.STRING,
-      // field: "complement adresse",
+      field: "complementAdresse",
     },
     ville: {
       type: DataType.STRING,
       allowNull: false,
-      // field: "ville",
+      field: "ville",
     },
     codePostal: {
       type: DataType.INTEGER,
       allowNull: false,
-      // field: "code postal",
+      field: "codePostal",
     },
     pays: {
       type: DataType.STRING,
       allowNull: false,
-      // field: "pays",
+      field: "pays",
     },
     createdAt: {
       type: DataType.DATE,
@@ -45,5 +45,5 @@ export const up: Migration = async ({ context: sequelize }) => {
   });
 };
 export const down: Migration = async ({ context: sequelize }) => {
-  await sequelize.getQueryInterface().dropTable("Adresse");
+  await sequelize.getQueryInterface().dropTable("Adresses");
 };

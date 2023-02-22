@@ -1,7 +1,7 @@
 <template>
 
 
-<DataTable :value="users" dataKey="id" v-model:filters="filters" filterDisplay="row" :loading="loading" sortField="Nom" :sortOrder="1" :paginator="true" :rows="10" >
+<DataTable :value="users" responsiveLayout="scroll" dataKey="id" v-model:filters="filters" filterDisplay="row" :loading="loading" sortField="Nom" :sortOrder="1" :paginator="true" :rows="10" >
     <Column field="Nom" header="Nom" :sortable="true"> 
         <template #filter="{filterModel,filterCallback}">
             <InputText type="text" v-model="filterModel.value" @keydown.enter="filterCallback()" class="p-column-filter" :placeholder="`Nom`"/>

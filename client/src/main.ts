@@ -15,6 +15,8 @@ import InputText from 'primevue/inputtext';
 import Column from 'primevue/column';
 import ColumnGroup from 'primevue/columngroup';    
 import Row from 'primevue/row'; 
+import PanelMenu from 'primevue/panelmenu';
+import Sidebar from 'primevue/sidebar';
 
 
 import "primevue/resources/themes/saga-blue/theme.css"      //theme
@@ -45,6 +47,9 @@ app.component("InputText", InputText);
 app.component("Column", Column);
 app.component("ColumnGroup", ColumnGroup);
 app.component("Row", Row);
+app.component("PanelMenu", PanelMenu);
+app.component("Sidebar", Sidebar);
+
 //app.component("FilterMatchMode", FilterMatchMode);
 
 app.mount("#app");

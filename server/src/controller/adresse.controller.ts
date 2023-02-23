@@ -90,8 +90,8 @@ async function createAdresse(req: Request, res: Response) {
     // await checkExistingAdresse(req);
 
     // Clean useless creation and update dates if given (setup while creating role)
-    req.body.createdAt = null;
-    req.body.updatedAt = null;
+    // req.body.createdAt = null;
+    // req.body.updatedAt = null;
 
     // Create new role from given body
     await Adresse.create(req.body)
@@ -122,7 +122,7 @@ async function updateAdresse(req: Request, res: Response) {
     // await checkExistingAdresse(req);
 
     // Clean useless update dates if given (setup while creating role)
-    req.body.updatedAt = null;
+    // req.body.updatedAt = null;
 
     // Update requested role with given body
     await Adresse.update(req.body, { where: { id: req.body.id } })

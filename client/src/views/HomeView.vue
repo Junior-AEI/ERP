@@ -1,8 +1,9 @@
 <template>
+    <DataTable/>
 </template>
 
 <script setup lang="ts">
-import login from "../components/logIn.vue";
+import DataTable from "../components/DataTable.vue";
 </script>
 
 <style scoped lang="scss"></style>

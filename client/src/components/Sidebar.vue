@@ -1,28 +1,16 @@
 <template>
-    <div>
-        <Button icon="pi pi-home" @click="visibleLeft = true" class="p-button-rounded p-button-info p-button-outlined" style="margin-left:20px;margin-top:20px;"/>
-
-        <Sidebar v-model:visible="visibleLeft" :showCloseIcon="false">
-                <div class="container">
-                    <img
-                        class="logo"
-                        src="../assets/logos/logo-bi-ff.svg"
-                        alt="AEI logo"
-                    />
-                </div>
-            <PanelMenu :model="items" />
-        </Sidebar>
+  <section class="nav">
+    <div class="nav-logo">
+ 
     </div>
+    <div class="nav-menu">
+        <PanelMenu :model="items"/>
+    </div>
+  </section>
 </template>
 
 <script>
-import { ref } from 'vue';
-
 export default {
-    setup() {
-        const visibleLeft = ref(false);
-		return { visibleLeft }
-    },
     data() {
 		return {
 			items: [
@@ -136,5 +124,21 @@ $height: 90px;
         height: $height;
     }
 }
-
+.nav{
+  position: fixed;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background: $dark-blue;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  width: 17vw;
+  .nav-logo
+    { position: absolute;
+      height: $height;
+    }
+  .nav-menu
+    {width: 17vw;}
+}
 </style>

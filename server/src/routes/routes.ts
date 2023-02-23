@@ -9,7 +9,7 @@ import {
 
 const router = express.Router();
 
-router.use("/", authRoutes);
+router.use("/auth", authRoutes);
 router.use("/user", getUsername, verifyAuthentication, usersRoutes);
 router.use("/test", testRoutes);
 

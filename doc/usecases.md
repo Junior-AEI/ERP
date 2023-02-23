@@ -1,15 +1,17 @@
 # Use Cases
 
 ## Administrateur AEI
+
 - pouvoir mettre un document en relecture et le récupérer une fois corrigé par la qualité
 - pouvoir suivre les différentes versions d'un document en relecture
 - voir chaque processus à l'endroit où je dois l'appliquer : lien wikix
-- Informations globales : 
+- Informations globales :
   - voir le chiffre d'affaire signé
   - voir le nombre d'études en cours
   - afficher l'agenda
 
 ## Secrétaire général
+
 - lister les adhérents d'AEI et pouvoir les trier/filtrer/rechercher
 - pouvoir ajouter, modifier et supprimer un membre cotisant d'AEI
 - générer automatiquement les bulletins d'adhésion des adhérents
@@ -18,14 +20,17 @@
 - la mailing list "all@junior-aei.com" (mails des cotisants d'AEI) soit automatiquement mis à jour à partir des membres cotisants inscrits sur l'ERP
 
 ## Pôle communication
+
 - mettre à la disposition des autres pôles, les doctypes et polices que nous créons
 
 ## Pôle qualité
+
 - lister les documents en relecture et pouvoir les trier/filtrer/rechercher
--  valider ou refuser un document en relecture et indiquer les problèmes si il y en a
--  uploader le document relu
+- valider ou refuser un document en relecture et indiquer les problèmes si il y en a
+- uploader le document relu
 
 ## Trésorier
+
 - factures pôle étude
   - recevoir
   - faire relire la facture traitée
@@ -35,6 +40,7 @@
 - avoir accès à des statistiques, graphiques à jour
 
 ## Pôle étude / Développement commercial
+
 - pouvoir créer une étude en indiquant son nom et le client concerné
 - pouvoir créer un diagramme gantt avec pré-remplissage des dates
 - lister les étude me concernant dans un onglet "Mes études"

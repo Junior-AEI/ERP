@@ -3,8 +3,8 @@ import usersRoutes from "./users.route";
 import authRoutes from "./auth.route";
 import testRoutes from "./test.route";
 import {
-  getUsername,
-  verifyAuthentication,
+    getUsername,
+    verifyAuthentication,
 } from "../middlewares/auth.middleware";
 
 const router = express.Router();

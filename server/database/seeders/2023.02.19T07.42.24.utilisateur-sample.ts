@@ -1,5 +1,4 @@
 import type { Seeder } from "../../src/migrations/umzug";
-import { Poste } from "../../src/models/poste.model";
 const utilistateurSamples = [
   {
     id: 1,
@@ -7,6 +6,8 @@ const utilistateurSamples = [
     motDePasse: "unmotdepassesuperfort",
     derniereConnexion: new Date(0),
     estActif: true,
+    debutMandat: "2022-04-01T00:00:00+01:00",
+    finMandat: "2023-03-31T23:59:59+01:00",
     posteId: 1,
     mailJE: "lorene.marques@junior-aei.com",
     createdAt: new Date(),
@@ -18,6 +19,8 @@ const utilistateurSamples = [
     motDePasse: "encoreunndpsuperfort",
     derniereConnexion: new Date(0),
     estActif: true,
+    debutMandat: "2022-04-01T00:00:00+01:00",
+    finMandat: "2023-03-31T23:59:59+01:00",
     posteId: 2,
     mailJE: "tahir.bouhassoun@junior-aei.com",
     createdAt: new Date(),
@@ -29,6 +32,8 @@ const utilistateurSamples = [
     motDePasse: "encoreunndpsuperfort",
     derniereConnexion: new Date(0),
     estActif: true,
+    debutMandat: "2022-04-01T00:00:00+01:00",
+    finMandat: "2023-03-31T23:59:59+01:00",
     posteId: 3,
     mailJE: "clement.zilliox@junior-aei.com",
     createdAt: new Date(),
@@ -40,6 +45,8 @@ const utilistateurSamples = [
     motDePasse: "unmdp",
     derniereConnexion: new Date(0),
     estActif: true,
+    debutMandat: "2022-04-01T00:00:00+01:00",
+    finMandat: "2023-03-31T23:59:59+01:00",
     posteId: 4,
     mailJE: "tristan.le-meur@junior-aei.com",
     createdAt: new Date(),

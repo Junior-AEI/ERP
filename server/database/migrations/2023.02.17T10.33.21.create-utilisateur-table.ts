@@ -55,6 +55,16 @@ export const up: Migration = async ({ context: sequelize }) => {
       allowNull: false,
       field: "estActif",
     },
+    debutMandat: {
+      type: DataType.DATE,
+      allowNull: false,
+      field: "debutMandat",
+    },
+    finMandat: {
+      type: DataType.DATE,
+      allowNull: false,
+      field: "finMandat",
+    },
     mailJE: {
       type: DataType.STRING,
       allowNull: false,

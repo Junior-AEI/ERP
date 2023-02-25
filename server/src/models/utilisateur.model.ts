@@ -6,7 +6,6 @@ import {
   DataType,
   CreatedAt,
   UpdatedAt,
-  HasOne,
   ForeignKey,
   BelongsTo,
 } from "sequelize-typescript";
@@ -36,6 +35,18 @@ export class Utilisateur extends Model {
     allowNull: false,
   })
   estActif!: boolean;
+
+  @Column({
+    type: DataType.DATE,
+    allowNull: false,
+  })
+  debutMandat!: Date;
+
+  @Column({
+    type: DataType.DATE,
+    allowNull: false,
+  })
+  finMandat!: Date;
 
   @Column({
     type: DataType.STRING,

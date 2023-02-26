@@ -19,6 +19,9 @@ import Row from 'primevue/row';
 import PanelMenu from 'primevue/panelmenu';
 import Sidebar from 'primevue/sidebar';
 import Menubar from 'primevue/menubar';
+// import ConfirmationService from 'primevue/confirmationservice';
+// import ConfirmPopup from 'primevue/confirmpopup';
+
 
 
 import "primevue/resources/themes/saga-blue/theme.css"      //theme
@@ -53,6 +56,9 @@ app.component("Row", Row);
 app.component("PanelMenu", PanelMenu);
 app.component("Sidebar", Sidebar);
 app.component("Menubar", Menubar);
+// app.component("ConfirmationService", ConfirmationService);
+// app.component("ConfirmPopup", ConfirmPopup);
+
 
 //app.component("FilterMatchMode", FilterMatchMode);
 

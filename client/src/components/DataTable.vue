@@ -20,15 +20,26 @@
             <InputText type="text" v-model="filterModel.value" @keydown.enter="filterCallback()" class="p-column-filter" :placeholder="`Promotion`"/>
         </template>
     </Column>
+    <Column headerStyle="width: 4rem; text-align: center" bodyStyle="text-align: center; overflow: visible">
+                <template #body>
+                    <Button  class="button" icon="pi pi-user-edit"></Button>
+                </template>
+            </Column>
     
 </DataTable>
 
+<Button class="button" label="Ajouter un utilisateur"  @click="handleClick($event)"/>
 </template>
 
 <script>
 import {FilterMatchMode,FilterOperator} from 'primevue/api';
 
 export default {
+    methods : {
+    handleClick(){
+        console.log("ajout utilisateur");
+    },
+},
     data() {
         return {
             filters: {
@@ -66,3 +77,18 @@ export default {
     },
 };
 </script>
+<style lang="scss" scoped>
+ .button {
+    float:right;
+    background-color: #0C2764;
+    border-color: #0C2764;
+ };
+
+ .button:hover {
+    background-color: #cbd9f9 !important;
+    color : black !important;
+    transition: 0.7s !important;
+  }
+
+
+</style>

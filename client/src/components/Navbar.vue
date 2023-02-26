@@ -14,14 +14,25 @@
 </template>
 
 <script lang="ts">
+import type Button from 'primevue/button';
 import { ref } from 'vue';
 
 export default {
     name: "Navbar.vue",
 
+    // methods :{
+    //     delete(){
+    //         console.log("suppression compte");
+    //     },
+    //     end_session(){
+    //         console.log("déconnexion");
+    //     }
+    // },
+
     setup() {
         const visibleRight = ref(false);
-		return { visibleRight }
+		return { visibleRight };
+        
     },
     data() {
 		return {
@@ -29,6 +40,11 @@ export default {
                 {
                     label: 'Se déconnecter',
                     icon:'pi pi-sign-out',
+                },
+                {
+                    label: 'Supprimer mon compte',
+                    icon: 'pi pi-fw pi-trash',
+                    ///@click: delete(),
                 }
             ]
         }

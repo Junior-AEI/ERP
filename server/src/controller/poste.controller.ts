@@ -4,11 +4,11 @@ import { Op } from "sequelize";
 import { checkExistingId } from "./utils.controller";
 
 const posteController = {
-  getAllPostes,
-  getPosteById,
-  createPoste,
-  updatePoste,
-  deletePosteById,
+    getAllPostes,
+    getPosteById,
+    createPoste,
+    updatePoste,
+    deletePosteById,
 };
 
 // TODO: Setup validator ("express-validator" package?) to verify whole body
@@ -18,9 +18,9 @@ const posteController = {
  * @param name Role name to check
  */
 async function checkEmptyName(name: string) {
-  if (name === "" || name === undefined || name === null) {
-    throw new Error("Empty name provided");
-  }
+    if (name === "" || name === undefined || name === null) {
+        throw new Error("Empty name provided");
+    }
 }
 
 /**
@@ -28,24 +28,24 @@ async function checkEmptyName(name: string) {
  * @param req Request to check (req.body used)
  */
 async function checkExistingPoste(req: Request): Promise<void> {
-  // if id isn't given (case of new role creation), set it to "null" (avoid database error)
-  if (req.body.id === undefined) req.body.id = null;
+    // if id isn't given (case of new role creation), set it to "null" (avoid database error)
+    if (req.body.id === undefined) req.body.id = null;
 
-  // Check is given role isn't already in database with another id
-  const existingPoste = await Poste.findOne({
-    where: {
-      [Op.and]: [
-        { [Op.not]: { id: req.body.id } },
-        {
-          [Op.or]: [
-            { nom: req.body.nom },
-            { description: req.body.description },
-          ],
+    // Check is given role isn't already in database with another id
+    const existingPoste = await Poste.findOne({
+        where: {
+            [Op.and]: [
+                { [Op.not]: { id: req.body.id } },
+                {
+                    [Op.or]: [
+                        { nom: req.body.nom },
+                        { description: req.body.description },
+                    ],
+                },
+            ],
         },
-      ],
-    },
-  });
-  if (existingPoste !== null) throw new Error("Role already exist");
+    });
+    if (existingPoste !== null) throw new Error("Role already exist");
 }
 
 /**
@@ -55,7 +55,7 @@ async function checkExistingPoste(req: Request): Promise<void> {
  *  - 500 error
  */
 async function getAllPostes(req: Request, res: Response) {
-  await Poste.findAll().then((poste) => res.json(poste));
+    await Poste.findAll().then((poste) => res.json(poste));
 }
 
 /**
@@ -67,22 +67,22 @@ async function getAllPostes(req: Request, res: Response) {
  *  - 500 error for database error
  */
 async function getPosteById(req: Request, res: Response) {
-  try {
-    // Check if req.params.id is a number
-    if (Number.isNaN(req.params.id))
-      throw new Error("Given id is Not A Number");
+    try {
+        // Check if req.params.id is a number
+        if (Number.isNaN(req.params.id))
+            throw new Error("Given id is Not A Number");
 
-    // Find requested role by primary key (id)
-    await Poste.findByPk(req.params.id)
-      .then((poste) => res.json(poste))
-      .catch((err) => res.status(500).json({ error: err.message }));
-  } catch (err: any) {
-    // return client error if wrong id has been given
-    res.status(401).json({
-      status: "error",
-      message: err.message,
-    });
-  }
+        // Find requested role by primary key (id)
+        await Poste.findByPk(req.params.id)
+            .then((poste) => res.json(poste))
+            .catch((err) => res.status(500).json({ error: err.message }));
+    } catch (err: any) {
+        // return client error if wrong id has been given
+        res.status(401).json({
+            status: "error",
+            message: err.message,
+        });
+    }
 }
 
 /**
@@ -94,26 +94,26 @@ async function getPosteById(req: Request, res: Response) {
  *  - 500 error for database error
  */
 async function createPoste(req: Request, res: Response) {
-  try {
-    // Check is given name is not empty and if given post doesn't already exist
-    await checkEmptyName(req.body.nom);
-    await checkExistingPoste(req);
+    try {
+        // Check is given name is not empty and if given post doesn't already exist
+        await checkEmptyName(req.body.nom);
+        await checkExistingPoste(req);
 
-    // Clean useless creation and update dates if given (setup while creating role)
-    req.body.createdAt = null;
-    req.body.updatedAt = null;
+        // Clean useless creation and update dates if given (setup while creating role)
+        req.body.createdAt = null;
+        req.body.updatedAt = null;
 
-    // Create new role from given body
-    await Poste.create(req.body)
-      .then((poste) => res.status(200).json(poste))
-      .catch((err) => res.status(500).json(err));
-  } catch (err: any) {
-    // return client error if wrong informations have been given
-    res.status(401).json({
-      status: "error",
-      message: err.message,
-    });
-  }
+        // Create new role from given body
+        await Poste.create(req.body)
+            .then((poste) => res.status(200).json(poste))
+            .catch((err) => res.status(500).json(err));
+    } catch (err: any) {
+        // return client error if wrong informations have been given
+        res.status(401).json({
+            status: "error",
+            message: err.message,
+        });
+    }
 }
 
 /**
@@ -125,26 +125,26 @@ async function createPoste(req: Request, res: Response) {
  *  - 500 error for database error
  */
 async function updatePoste(req: Request, res: Response) {
-  try {
-    // Check is given name is not empty and if given role or role id doesn't already exist
-    await checkEmptyName(req.body.nom);
-    await checkExistingId<Poste>(req.body.id, Poste);
-    await checkExistingPoste(req);
+    try {
+        // Check is given name is not empty and if given role or role id doesn't already exist
+        await checkEmptyName(req.body.nom);
+        await checkExistingId<Poste>(req.body.id, Poste);
+        await checkExistingPoste(req);
 
-    // Clean useless update dates if given (setup while creating role)
-    req.body.updatedAt = null;
+        // Clean useless update dates if given (setup while creating role)
+        req.body.updatedAt = null;
 
-    // Update requested role with given body
-    await Poste.update(req.body, { where: { id: req.body.id } })
-      .then((poste) => res.status(200).json(poste))
-      .catch((err) => res.status(500).json(err));
-  } catch (err: any) {
-    // return client error if wrong informations have been given
-    res.status(401).json({
-      status: "error",
-      message: err.message,
-    });
-  }
+        // Update requested role with given body
+        await Poste.update(req.body, { where: { id: req.body.id } })
+            .then((poste) => res.status(200).json(poste))
+            .catch((err) => res.status(500).json(err));
+    } catch (err: any) {
+        // return client error if wrong informations have been given
+        res.status(401).json({
+            status: "error",
+            message: err.message,
+        });
+    }
 }
 
 /**
@@ -156,21 +156,21 @@ async function updatePoste(req: Request, res: Response) {
  *  - 500 error for database error
  */
 async function deletePosteById(req: Request, res: Response) {
-  try {
-    // Check if requested role id exist in database
-    await checkExistingId<Poste>(parseInt(req.params.id), Poste);
+    try {
+        // Check if requested role id exist in database
+        await checkExistingId<Poste>(parseInt(req.params.id), Poste);
 
-    // Delete requested role by its id
-    await Poste.destroy({ where: { id: req.params.id } })
-      .then((poste) => res.status(200).json(poste))
-      .catch((err) => res.status(500).json(err));
-  } catch (err: any) {
-    // return client error if wrong informations have been given
-    res.status(401).json({
-      status: "error",
-      message: err.message,
-    });
-  }
+        // Delete requested role by its id
+        await Poste.destroy({ where: { id: req.params.id } })
+            .then((poste) => res.status(200).json(poste))
+            .catch((err) => res.status(500).json(err));
+    } catch (err: any) {
+        // return client error if wrong informations have been given
+        res.status(401).json({
+            status: "error",
+            message: err.message,
+        });
+    }
 }
 
 export default posteController;

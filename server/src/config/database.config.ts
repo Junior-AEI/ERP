@@ -11,13 +11,13 @@ const databaseConfig = config[env];
 const sequelize = new Sequelize(databaseConfig);
 
 // Test de la connexion à la base de donnée
-let testConnection = async () => {
-  try {
-    await sequelize.authenticate();
-    console.log("Connection has been established successfully.");
-  } catch (error) {
-    console.error("Unable to connect to the database:", error);
-  }
+const testConnection = async () => {
+    try {
+        await sequelize.authenticate();
+        console.log("Connection has been established successfully.");
+    } catch (error) {
+        console.error("Unable to connect to the database:", error);
+    }
 };
 
 testConnection();

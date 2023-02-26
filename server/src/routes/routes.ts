@@ -6,8 +6,8 @@ import adresseRoute from "./adresse.route";
 import adherentRoute from "./adherent.route";
 
 import {
-  getUsername,
-  verifyAuthentication,
+    getUsername,
+    verifyAuthentication,
 } from "../middlewares/auth.middleware";
 
 const router = express.Router();

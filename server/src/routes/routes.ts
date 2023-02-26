@@ -15,9 +15,14 @@ const router = express.Router();
 router.use("/", authRoutes);
 // TODO : RE-enable and setup all authentification system
 //router.use("/user", getUsername, verifyAuthentication, usersRoutes);
-router.use("/poste", posteRoute);
-router.use("/utilisateur", utilisateurRouter);
-router.use("/adresse", adresseRoute);
-router.use("/adherent", adherentRoute);
+router.use("/poste", getUsername, verifyAuthentication, posteRoute);
+router.use(
+    "/utilisateur",
+    getUsername,
+    verifyAuthentication,
+    utilisateurRouter
+);
+router.use("/adresse", getUsername, verifyAuthentication, adresseRoute);
+router.use("/adherent", getUsername, verifyAuthentication, adherentRoute);
 
 export default router;

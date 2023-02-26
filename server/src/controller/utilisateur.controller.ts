@@ -2,7 +2,9 @@ import { Request, Response } from "express";
 import { Utilisateur } from "../models/utilisateur.model";
 import { Poste } from "../models/poste.model";
 import { checkExistingId } from "./utils.controller";
+import { hash } from "bcrypt";
 import { Op } from "sequelize";
+import { hasUncaughtExceptionCaptureCallback } from "process";
 
 const utilisateurController = {
     getAllUtilisateurs,
@@ -44,6 +46,7 @@ async function checkExistingUtilisateur(req: Request): Promise<void> {
  *  - 500 error
  */
 async function getAllUtilisateurs(req: Request, res: Response) {
+    console.log("req");
     await Utilisateur.findAll({ attributes: { exclude: ["motDePasse"] } }).then(
         (users) => res.json(users)
     );
@@ -87,25 +90,34 @@ async function getUtilisateurById(req: Request, res: Response) {
  *  - 500 error for database error
  */
 async function createUtilisateur(req: Request, res: Response) {
-    try {
-        //TODO: Setup true data checking
-        await checkExistingId<Poste>(req.body.posteId, Poste);
-        await checkExistingUtilisateur(req);
-
-        // Clean useless creation and update dates if given (setup while creating user)
-        req.body.createdAt = null;
-        req.body.updatedAt = null;
-
-        await Utilisateur.create(req.body)
-            .then(() => res.json(req.body))
-            .catch((err) => res.status(500).json({ error: err.message }));
-    } catch (err: any) {
-        // return client error if wrong id has been given
-        res.status(401).json({
-            status: "error",
-            message: err.message,
-        });
-    }
+    //TODO: Setup true data checking
+    checkExistingId<Poste>(req.body.posteId, Poste)
+        .catch((err) =>
+            res.status(400).json({
+                status: "error",
+                message: err.message,
+            })
+        )
+        .then(() => checkExistingUtilisateur(req))
+        .catch((err) =>
+            res.status(409).json({
+                status: "error",
+                message: err.message,
+            })
+        )
+        .then(() => {
+            // Clean useless creation and update dates if given (setup while creating user)
+            req.body.createdAt = null;
+            req.body.updatedAt = null;
+            hash(req.body.motDePasse, 10)
+                .then((hash) => (req.body.motDePasse = hash))
+                .then(() => {
+                    Utilisateur.create(req.body);
+                });
+        })
+        .catch((err) => res.status(500).json({ error: err.message }))
+        .then((u) => res.json(u));
+    // return client error if wrong id has been given
 }
 
 /**
@@ -117,25 +129,35 @@ async function createUtilisateur(req: Request, res: Response) {
  *  - 500 error for database error
  */
 async function updateUtilisateur(req: Request, res: Response) {
-    try {
-        // Check is given name is not empty and if given user or user id doesn't already exist
-        // TODO : Add more checks if necessary
-        await checkExistingId<Utilisateur>(req.body.id, Utilisateur);
-        await checkExistingUtilisateur(req);
-        // Clean useless update dates if given (setup while creating user)
-        req.body.updatedAt = null;
-
-        // Update requested user with given body
-        await Utilisateur.update(req.body, { where: { id: req.body.id } })
-            .then((u) => res.status(200).json(u))
-            .catch((err) => res.status(500).json(err));
-    } catch (err: any) {
-        // return client error if wrong informations have been given
-        res.status(401).json({
-            status: "error",
-            message: err.message,
-        });
-    }
+    // Check is given name is not empty and if given user or user id doesn't already exist
+    // TODO : Add more checks if necessary
+    checkExistingId<Utilisateur>(req.body.id, Utilisateur)
+        .catch((err) =>
+            res.status(401).json({
+                status: "error",
+                message: err.message,
+            })
+        )
+        .then(() => checkExistingUtilisateur(req))
+        .catch((err) =>
+            res.status(409).json({
+                status: "error",
+                message: err.message,
+            })
+        )
+        .then(() => {
+            // Clean useless update dates if given (setup while creating user)
+            req.body.updatedAt = null;
+            hash(req.body.motDePasse, 10)
+                .then((hash) => (req.body.motDePasse = hash))
+                .then(() => {
+                    Utilisateur.update(req.body, {
+                        where: { id: req.body.id },
+                    });
+                });
+        })
+        .then((u) => res.status(200).json(u))
+        .catch((err) => res.status(500).json(err));
 }
 
 /**

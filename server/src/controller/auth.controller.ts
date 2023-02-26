@@ -41,9 +41,8 @@ async function register(req: Request, res: Response) {
 }
 
 async function login(req: Request, res: Response) {
-    const username = req.body.username;
-    const password = req.body.password;
-
+    const username = req.body.nomUtilisateur;
+    const password = req.body.motDePasse;
     Utilisateur.findOne({ where: { nomUtilisateur: username } }).then(
         (user) => {
             if (user) {

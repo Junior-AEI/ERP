@@ -10,35 +10,8 @@ import {
 import { Utilisateur } from "../models/utilisateur.model";
 
 const authController = {
-    register,
     login,
 };
-
-async function register(req: Request, res: Response) {
-    await Utilisateur.findOne({
-        where: { nomUtilisateur: req.body.username },
-    }).then((user) => {
-        if (user) {
-            res.status(409).json({
-                status: "error",
-                message: "Username already exists",
-            });
-        } else {
-            hash(req.body.password, 10).then((hash) => {
-                Utilisateur.create({
-                    nomUtilisateur: req.body.username,
-                    motDePasse: hash,
-                    estActive: true,
-                    derniereConnexion: new Date(),
-                })
-                    .then(() => res.status(200).json({ status: "success" }))
-                    .catch((err) =>
-                        res.status(500).json({ status: "error", message: err })
-                    );
-            });
-        }
-    });
-}
 
 async function login(req: Request, res: Response) {
     const username = req.body.nomUtilisateur;

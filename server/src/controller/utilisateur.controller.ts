@@ -4,8 +4,11 @@ import { Op } from "sequelize";
 import createHttpError from "http-errors";
 import { Utilisateur } from "../models/utilisateur.model";
 import { Poste } from "../models/poste.model";
-import { checkExistingId, controllerErrorHandler } from "./utils.controller";
-import { create } from "lodash";
+import {
+    checkExistingId,
+    checkIdIsNotNaN,
+    controllerErrorHandler,
+} from "./utils.controller";
 
 const utilisateurController = {
     getAllUtilisateurs,
@@ -53,7 +56,7 @@ async function checkPasswordStrength(password: string) {
 
 /**
  * All user reader for GET route
- * @param res
+ * @param res :
  *  - Utilisateurs in database + 200 confirmation
  *  - 500 error
  */
@@ -66,17 +69,14 @@ async function getAllUtilisateurs(req: Request, res: Response) {
 /**
  * Specific user (by id) reader for GET route
  * @param req Request ("id" parameter, needed to find right user)
- * @param res
+ * @param res :
  *  - Requested user + 200 confirmation
  *  - 400 error if "id" is NaN
  *  - 500 error for database error
  */
 async function getUtilisateurById(req: Request, res: Response) {
-    (async () => {
-        // Check if req.params.id is a number
-        if (Number.isNaN(parseInt(req.params.id)))
-            throw createHttpError(400, "Given id is Not A Number");
-    })()
+    // Check if req.params.id is a number
+    await checkIdIsNotNaN(req.params.id)
         .then(() =>
             // Find requested user by primary key (id)
             Utilisateur.findByPk(req.params.id, {
@@ -90,7 +90,7 @@ async function getUtilisateurById(req: Request, res: Response) {
 /**
  * User creation for POST route
  * @param req Request (body used to create new user)
- * @param res
+ * @param res :
  *  - 200 confirmation (new ressource created)
  *  - 400 error if wrong datas are given or password strength is too low
  *  - 409 error if user already exist
@@ -98,7 +98,7 @@ async function getUtilisateurById(req: Request, res: Response) {
  */
 async function createUtilisateur(req: Request, res: Response) {
     //TODO: Setup true data checking
-    checkExistingId<Poste>(req.body.posteId, Poste)
+    await checkExistingId<Poste>(req.body.posteId, Poste)
         .then(() => checkExistingUtilisateur(req))
         .then(() => checkPasswordStrength(req.body.motDePasse))
         .then(() => hash(req.body.motDePasse, 10))
@@ -117,7 +117,7 @@ async function createUtilisateur(req: Request, res: Response) {
 /**
  * User update for PUT route
  * @param req Request (body used to update user)
- * @param res
+ * @param res :
  *  - 204 confirmation (ressource updated)
  *  - 400 error if wrong datas are given or password strength is too low
  *  - 404 error if user don't exist
@@ -126,8 +126,7 @@ async function createUtilisateur(req: Request, res: Response) {
 async function updateUtilisateur(req: Request, res: Response) {
     // Check is given name is not empty and if given user or user id doesn't already exist
     // TODO : Add more checks if necessary
-    checkExistingId<Utilisateur>(req.body.id, Utilisateur)
-        .then(() => checkExistingUtilisateur(req))
+    await checkExistingId<Utilisateur>(req.body.id, Utilisateur)
         .then(() => checkPasswordStrength(req.body.motDePasse))
         .then(() => {
             return hash(req.body.motDePasse, 10);
@@ -156,7 +155,7 @@ async function updateUtilisateur(req: Request, res: Response) {
  */
 async function deleteUtilisateurById(req: Request, res: Response) {
     // Check if requested user id exist in database
-    checkExistingId<Utilisateur>(parseInt(req.params.id), Utilisateur)
+    await checkExistingId<Utilisateur>(req.params.id, Utilisateur)
         .then(() =>
             // Delete requested user by its id
             Utilisateur.destroy({ where: { id: req.params.id } })

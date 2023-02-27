@@ -2,7 +2,11 @@ import { Request, Response } from "express";
 import { Op } from "sequelize";
 import createHttpError from "http-errors";
 import { Poste } from "../models/poste.model";
-import { checkExistingId, controllerErrorHandler } from "./utils.controller";
+import {
+    checkExistingId,
+    checkIdIsNotNaN,
+    controllerErrorHandler,
+} from "./utils.controller";
 
 const posteController = {
     getAllPostes,
@@ -52,7 +56,7 @@ async function checkExistingPoste(req: Request): Promise<void> {
 
 /**
  * All roles reader for GET route
- * @param res
+ * @param res :
  *  - Roles in database + 200 confirmation
  *  - 500 error
  */
@@ -65,34 +69,33 @@ async function getAllPostes(req: Request, res: Response) {
 /**
  * Specific role (by id) reader for GET route
  * @param req Request ("id" parameter, needed to find right role)
- * @param res
+ * @param res :
  *  - Requested role + 200 confirmation
  *  - 400 error if "id" is NaN
  *  - 500 error for database error
  */
 async function getPosteById(req: Request, res: Response) {
-    (async () => {
-        // Check if req.params.id is a number
-        if (Number.isNaN(parseInt(req.params.id)))
-            throw createHttpError(400, "Given id is Not A Number");
-    })()
-        .then(() => Poste.findByPk(req.params.id))
+    // Check if req.params.id is a number
+    await checkIdIsNotNaN(req.params.id)
+        .then(() =>
+            // Find requested role by primary key (id)
+            Poste.findByPk(req.params.id)
+        )
         .then((poste) => res.status(200).json(poste))
         .catch((err) => controllerErrorHandler(err, res));
-    // return client error if wrong id has been given
 }
 
 /**
  * Role creation for POST route
  * @param req Request (body used to create new role)
- * @param res
+ * @param res :
  *  - 201 confirmation (new ressource created)
  *  - 400 error if wrong datas are given
  *  - 409 error if role already exist
  *  - 500 error for database error
  */
 async function createPoste(req: Request, res: Response) {
-    checkEmptyName(req.body.nom)
+    await checkEmptyName(req.body.nom)
         .then(() => checkExistingPoste(req))
         .then(() => {
             req.body.createdAt = null;
@@ -106,7 +109,7 @@ async function createPoste(req: Request, res: Response) {
 /**
  * Role update for PUT route
  * @param req Request (body used to update role)
- * @param res
+ * @param res :
  *  - 204 confirmation (ressource updated)
  *  - 400 error if wrong datas are given
  *  - 404 error if role don't exist
@@ -114,7 +117,7 @@ async function createPoste(req: Request, res: Response) {
  */
 async function updatePoste(req: Request, res: Response) {
     // Check is given name is not empty
-    checkEmptyName(req.body.nom)
+    await checkEmptyName(req.body.nom)
         .then(() =>
             // Check if given role or role id doesn't already exist
             checkExistingId<Poste>(req.body.id, Poste)
@@ -141,7 +144,7 @@ async function updatePoste(req: Request, res: Response) {
  */
 async function deletePosteById(req: Request, res: Response) {
     // Check if requested role id exist in database
-    checkExistingId<Poste>(parseInt(req.params.id), Poste)
+    await checkExistingId<Poste>(req.params.id, Poste)
         .then(() =>
             // Delete requested role by its id
             Poste.destroy({ where: { id: req.params.id } })

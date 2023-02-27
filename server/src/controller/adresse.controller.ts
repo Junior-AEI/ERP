@@ -1,7 +1,11 @@
 import { Request, Response } from "express";
 import { Adresse } from "../models/adresse.model";
 import { Op } from "sequelize";
-import { checkExistingId } from "./utils.controller";
+import {
+    checkExistingId,
+    checkIdIsNotNaN,
+    controllerErrorHandler,
+} from "./utils.controller";
 
 const adresseController = {
     getAllAdresses,
@@ -14,14 +18,14 @@ const adresseController = {
 // TODO: Setup validator ("express-validator" package?) to verify whole body
 
 /**
- * Throws error if a role already exist in database
+ * Throws error if a address already exist in database
  * @param req Request to check (req.body used)
  */
 // async function checkExistingAdresse(req: Request): Promise<void> {
-//   // if id isn't given (case of new role creation), set it to "null" (avoid database error)
+//   // if id isn't given (case of new address creation), set it to "null" (avoid database error)
 //   if (req.body.id === undefined) req.body.id = null;
 
-//   // Check is given role isn't already in database with another id
+//   // Check is given address isn't already in database with another id
 //   const existingAdresse = await Adresse.findOne({
 //     where: {
 //       [Op.and]: [
@@ -35,132 +39,105 @@ const adresseController = {
 //       ],
 //     },
 //   });
-//   if (existingAdresse !== null) throw new Error("Role already exist");
+//   if (existingAdresse !== null) throw new Error("address already exist");
 // }
 
 /**
- * All roles reader for GET route
- * @param res
- *  - Roles in database
+ * All addresses reader for GET route
+ * @param res :
+ *  - Addresses in database + 200 confirmation
  *  - 500 error
  */
 async function getAllAdresses(req: Request, res: Response) {
-    await Adresse.findAll().then((adresse) => res.json(adresse));
+    await Adresse.findAll()
+        .then((adresse) => res.status(200).json(adresse))
+        .catch((err) => controllerErrorHandler(err, res));
 }
 
 /**
- * Specific role (by id) reader for GET route
- * @param req Request ("id" parameter, needed to find right role)
- * @param res
- *  - Requested role
+ * Specific address (by id) reader for GET route
+ * @param req Request ("id" parameter, needed to find right address)
+ * @param res :
+ *  - Requested address + 200 confirmation
  *  - 401 error if "id" is NaN
  *  - 500 error for database error
  */
 async function getAdresseById(req: Request, res: Response) {
-    try {
-        // Check if req.params.id is a number
-        if (Number.isNaN(req.params.id))
-            throw new Error("Given id is Not A Number");
-
-        // Find requested role by primary key (id)
-        await Adresse.findByPk(req.params.id)
-            .then((adresse) => res.json(adresse))
-            .catch((err) => res.status(500).json({ error: err.message }));
-    } catch (err: any) {
-        // return client error if wrong id has been given
-        res.status(401).json({
-            status: "error",
-            message: err.message,
-        });
-    }
+    // Check if req.params.id is a number
+    await checkIdIsNotNaN(req.params.id)
+        .then(() =>
+            // Find requested address by primary key (id)
+            Adresse.findByPk(req.params.id)
+        )
+        .then((adresse) => res.status(200).json(adresse))
+        .catch((err) => controllerErrorHandler(err, res));
 }
 
 /**
- * Role creation for POST route
- * @param req Request (body used to create new role)
- * @param res
+ * Address creation for POST route
+ * @param req Request (body used to create new address)
+ * @param res :
  *  - 200 confirmation
- *  - 401 error if wrong datas are given
+ *  - 400 error if wrong datas are given
+ *  - 409 error if address already exist
  *  - 500 error for database error
  */
 async function createAdresse(req: Request, res: Response) {
-    try {
-        // Check is given name is not empty and if given post doesn't already exist
-        // await checkEmptyName(req.body.nom);
-        // await checkExistingAdresse(req);
+    // await checkEmptyName(req.body.nom);
+    // await checkExistingAdresse(req);
 
-        // Clean useless creation and update dates if given (setup while creating role)
-        // req.body.createdAt = null;
-        // req.body.updatedAt = null;
+    // Clean useless creation and update dates if given (setup while creating address)
+    // req.body.createdAt = null;
+    // req.body.updatedAt = null;
 
-        // Create new role from given body
-        await Adresse.create(req.body)
-            .then((adresse) => res.status(200).json(adresse))
-            .catch((err) => res.status(500).json(err));
-    } catch (err: any) {
-        // return client error if wrong informations have been given
-        res.status(401).json({
-            status: "error",
-            message: err.message,
-        });
-    }
+    // Create new address from given body
+    await Adresse.create(req.body)
+        .then((adresse) => res.status(201).json(adresse))
+        .catch((err) => controllerErrorHandler(err, res));
 }
 
 /**
- * Role update for PUT route
- * @param req Request (body used to update role)
- * @param res
+ * Address update for PUT route
+ * @param req Request (body used to update address)
+ * @param res :
  *  - 200 confirmation
  *  - 401 error if wrong datas are given
+ *  - 404 error if address don't exist
  *  - 500 error for database error
  */
 async function updateAdresse(req: Request, res: Response) {
-    try {
-        // Check is given name is not empty and if given role or role id doesn't already exist
-        // await checkEmptyName(req.body.nom);
-        await checkExistingId<Adresse>(req.body.id, Adresse);
-        // await checkExistingAdresse(req);
-
-        // Clean useless update dates if given (setup while creating role)
-        // req.body.updatedAt = null;
-
-        // Update requested role with given body
-        await Adresse.update(req.body, { where: { id: req.body.id } })
-            .then((adresse) => res.status(200).json(adresse))
-            .catch((err) => res.status(500).json(err));
-    } catch (err: any) {
-        // return client error if wrong informations have been given
-        res.status(401).json({
-            status: "error",
-            message: err.message,
-        });
-    }
+    // Check is given name is not empty and if given address or address id doesn't already exist
+    // await checkEmptyName(req.body.nom);
+    await checkExistingId<Adresse>(req.body.id, Adresse)
+        // .then(() => checkExistingAdresse(req))
+        .then(() => {
+            // Clean useless update dates if given (setup while creating address)
+            req.body.updatedAt = null;
+            // Update requested address with given body
+            return Adresse.update(req.body, { where: { id: req.body.id } });
+        })
+        .then((adresse) => res.status(204).json(adresse))
+        .catch((err) => controllerErrorHandler(err, res));
 }
 
 /**
- * Role remove for DELETE route
- * @param req Request (parameter "id" used to find role to delete)
+ * Address remove for DELETE route
+ * @param req Request (parameter "id" used to find address to delete)
  * @param res :
  *  - 200 confirmation
  *  - 401 error if given id is NaN or doesn't exist
+ *  - 404 error if given id doesn't exist
  *  - 500 error for database error
  */
 async function deleteAdresseById(req: Request, res: Response) {
-    try {
-        // Check if requested role id exist in database
-        await checkExistingId<Adresse>(parseInt(req.params.id), Adresse);
-
-        // Delete requested role by its id
-        await Adresse.destroy({ where: { id: req.params.id } })
-            .then((adresse) => res.status(200).json(adresse))
-            .catch((err) => res.status(500).json(err));
-    } catch (err: any) {
-        // return client error if wrong informations have been given
-        res.status(401).json({
-            status: "error",
-            message: err.message,
-        });
-    }
+    // Check if requested address id exist in database
+    await checkExistingId<Adresse>(req.params.id, Adresse)
+        .then(() =>
+            // Delete requested address by its id
+            Adresse.destroy({ where: { id: req.params.id } })
+        )
+        .then((adresse) => res.status(204).json(adresse))
+        .catch((err) => controllerErrorHandler(err, res));
 }
 
 export default adresseController;

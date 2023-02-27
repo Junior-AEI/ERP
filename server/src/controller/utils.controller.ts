@@ -4,23 +4,44 @@ import { ModelStatic } from "sequelize";
 import { Model } from "sequelize-typescript";
 
 /**
+ * Throws BadRequest (400) error if given number is NaN
+ * @param id Id to check
+ */
+export async function checkIdIsNotNaN(id: number | string) {
+    if (typeof id === "string") {
+        id = parseInt(id);
+    }
+    if (Number.isNaN(id)) {
+        throw createHttpError(400, "Given id is Not A Number");
+    }
+}
+
+/**
  * Throws error if given item id does not exist or isn't valid
  * @param id Role id to check
  */
 export async function checkExistingId<M extends Model>(
-    id: number,
+    id: number | string,
     model: ModelStatic<M>
 ) {
     // Check is id is a number
-    if (Number.isNaN(id))
-        throw createHttpError(400, "Giver id is Not A Number");
-
-    // Check if requested role id exist in database
-    const existingPoste = await model.findByPk(id);
-    if (existingPoste === null)
-        throw createHttpError(404, "Wrong id or item doesn't exist");
+    return checkIdIsNotNaN(id)
+        .then(() =>
+            // Check if requested role id exist in database
+            model.findByPk(id)
+        )
+        .then(async (existingPoste) => {
+            if (existingPoste === null) {
+                throw createHttpError(404, "Wrong id or item doesn't exist");
+            }
+        });
 }
 
+/**
+ * Generic error handler for controllers
+ * @param err Error to handle
+ * @param res : Error status and message, 500 by default
+ */
 export async function controllerErrorHandler(err: HttpError, res: Response) {
     if (err.status === undefined) {
         err.status = 500;

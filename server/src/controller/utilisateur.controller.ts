@@ -149,7 +149,7 @@ async function updateUtilisateur(req: Request, res: Response) {
  * @param req Request (parameter "id" used to find user to delete)
  * @param res :
  *  - 204 confirmation (ressource deleted)
- *  - 404 error if given id is NaN
+ *  - 400 error if given id is NaN
  *  - 404 error if given id doesn't exist
  *  - 500 error for database error
  */

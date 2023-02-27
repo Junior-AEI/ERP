@@ -59,7 +59,7 @@ async function getAllAdresses(req: Request, res: Response) {
  * @param req Request ("id" parameter, needed to find right address)
  * @param res :
  *  - Requested address + 200 confirmation
- *  - 401 error if "id" is NaN
+ *  - 400 error if "id" is NaN
  *  - 500 error for database error
  */
 async function getAdresseById(req: Request, res: Response) {
@@ -77,7 +77,7 @@ async function getAdresseById(req: Request, res: Response) {
  * Address creation for POST route
  * @param req Request (body used to create new address)
  * @param res :
- *  - 200 confirmation
+ *  - 201 confirmation
  *  - 400 error if wrong datas are given
  *  - 409 error if address already exist
  *  - 500 error for database error
@@ -100,8 +100,8 @@ async function createAdresse(req: Request, res: Response) {
  * Address update for PUT route
  * @param req Request (body used to update address)
  * @param res :
- *  - 200 confirmation
- *  - 401 error if wrong datas are given
+ *  - 204 confirmation (ressource updated)
+ *  - 400 error if wrong datas are given
  *  - 404 error if address don't exist
  *  - 500 error for database error
  */
@@ -124,8 +124,8 @@ async function updateAdresse(req: Request, res: Response) {
  * Address remove for DELETE route
  * @param req Request (parameter "id" used to find address to delete)
  * @param res :
- *  - 200 confirmation
- *  - 401 error if given id is NaN or doesn't exist
+ *  - 204 confirmation (ressource deleted)
+ *  - 400 error if given id is NaN
  *  - 404 error if given id doesn't exist
  *  - 500 error for database error
  */

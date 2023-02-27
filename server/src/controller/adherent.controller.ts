@@ -1,7 +1,11 @@
 import { Request, Response } from "express";
 import { Adherent } from "../models/adherent.model";
 import { Adresse } from "../models/adresse.model";
-import { checkExistingId } from "./utils.controller";
+import {
+    checkExistingId,
+    checkIdIsNotNaN,
+    controllerErrorHandler,
+} from "./utils.controller";
 import { Op } from "sequelize";
 
 const adherentController = {
@@ -13,14 +17,14 @@ const adherentController = {
 };
 
 /**
- * Throws error if a user already exist in database
+ * Throws error if a subscriber already exist in database
  * @param req Request to check (req.body used)
  */
 // async function checkExistingAdherent(req: Request): Promise<void> {
-// if id isn't given (case of new user creation), set it to "null" (avoid database error)
+// if id isn't given (case of new subscriber creation), set it to "null" (avoid database error)
 // if (req.body.id === undefined) req.body.id = null;
 
-// Check is given user isn't already in database with another id
+// Check is given subscriber isn't already in database with another id
 //   const existingAdherent = await Adherent.findOne({
 //     where: {
 //       [Op.and]: [
@@ -34,134 +38,107 @@ const adherentController = {
 //       ],
 //     },
 //   });
-//   if (existingAdherent !== null) throw new Error("User already exist");
+//   if (existingAdherent !== null) throw new Error("subscriber already exist");
 // }
 
 /**
- * All user reader for GET route
- * @param res
- *  - Adherents in database
+ * All subscribers reader for GET route
+ * @param res :
+ *  - Subscribers in database + 200 confirmation
  *  - 500 error
  */
 async function getAllAdherents(req: Request, res: Response) {
-    await Adherent.findAll({ attributes: { exclude: ["motDePasse"] } }).then(
-        (users) => res.json(users)
-    );
+    await Adherent.findAll({ attributes: { exclude: ["motDePasse"] } })
+        .then((subscriber) => res.status(200).json(subscriber))
+        .catch((err) => controllerErrorHandler(err, res));
 }
 
 /**
- * Specific user (by id) reader for GET route
- * @param req Request ("id" parameter, needed to find right user)
- * @param res
- *  - Requested user
- *  - 401 error if "id" is NaN
+ * Specific subscriber (by id) reader for GET route
+ * @param req Request ("id" parameter, needed to find right subscriber)
+ * @param res :
+ *  - Requested subscriber + 200 confirmation
+ *  - 400 error if "id" is NaN
  *  - 500 error for database error
  */
 async function getAdherentById(req: Request, res: Response) {
-    try {
-        // Check if req.params.id is a number
-        if (Number.isNaN(parseInt(req.params.id)))
-            throw new Error("Given id is Not A Number");
-
-        // Find requested user by primary key (id)
-        await Adherent.findByPk(req.params.id, {
-            attributes: { exclude: ["motDePasse"] },
-        })
-            .then((poste) => res.json(poste))
-            .catch((err) => res.status(500).json({ error: err.message }));
-    } catch (err: any) {
-        // return client error if wrong id has been given
-        res.status(401).json({
-            status: "error",
-            message: err.message,
-        });
-    }
+    // Check if req.params.id is a number
+    await checkIdIsNotNaN(req.params.id)
+        .then(() =>
+            // Find requested subscriber by primary key (id)
+            Adherent.findByPk(req.params.id, {
+                attributes: { exclude: ["motDePasse"] },
+            })
+        )
+        .then((adherent) => res.status(200).json(adherent))
+        .catch((err) => controllerErrorHandler(err, res));
 }
 
 /**
- * User creation for POST route
- * @param req Request (body used to create new user)
- * @param res
- *  - 200 confirmation
- *  - 401 error if wrong datas are given
+ * Subscriber creation for POST route
+ * @param req Request (body used to create new subscriber)
+ * @param res :
+ *  - 201 confirmation
+ *  - 400 error if wrong datas are given
+ *  - 409 error if role already exist
  *  - 500 error for database error
  */
 async function createAdherent(req: Request, res: Response) {
-    try {
-        //TODO: Setup true data checking
-        // await checkExistingId<Adresse>(req.body.posteId, Adresse);
-        // await checkExistingAdherent(req);
+    //TODO: Setup true data checking
+    // await checkExistingId<Adresse>(req.body.posteId, Adresse);
+    // await checkExistingAdherent(req);
 
-        // Clean useless creation and update dates if given (setup while creating user)
-        // req.body.createdAt = null;
-        // req.body.updatedAt = null;
+    // Clean useless creation and update dates if given (setup while creating subscriber)
+    // req.body.createdAt = null;
+    // req.body.updatedAt = null;
 
-        await Adherent.create(req.body)
-            .then(() => res.json(req.body))
-            .catch((err) => res.status(500).json({ error: err.message }));
-    } catch (err: any) {
-        // return client error if wrong id has been given
-        res.status(401).json({
-            status: "error",
-            message: err.message,
-        });
-    }
+    await Adherent.create(req.body)
+        .then((adherent) => res.status(201).json(adherent))
+        .catch((err) => controllerErrorHandler(err, res));
 }
 
 /**
- * User update for PUT route
- * @param req Request (body used to update user)
- * @param res
+ * Subscriber update for PUT route
+ * @param req Request (body used to update subscriber)
+ * @param res :
  *  - 200 confirmation
- *  - 401 error if wrong datas are given
+ *  - 400 error if wrong datas are given
+ *  - 404 error if subscriber don't exist
  *  - 500 error for database error
  */
 async function updateAdherent(req: Request, res: Response) {
-    try {
-        // Check is given name is not empty and if given user or user id doesn't already exist
-        // TODO : Add more checks if necessary
-        await checkExistingId<Adherent>(req.body.id, Adherent);
-        // await checkExistingAdherent(req);
-        // Clean useless update dates if given (setup while creating user)
-        req.body.updatedAt = null;
-
-        // Update requested user with given body
-        await Adherent.update(req.body, { where: { id: req.body.id } })
-            .then((u) => res.status(200).json(u))
-            .catch((err) => res.status(500).json(err));
-    } catch (err: any) {
-        // return client error if wrong informations have been given
-        res.status(401).json({
-            status: "error",
-            message: err.message,
-        });
-    }
+    // Check is given name is not empty and if given subscriber or subscriber id doesn't already exist
+    // TODO : Add more checks if necessary
+    await checkExistingId<Adherent>(req.body.id, Adherent)
+        // .then(() => checkExistingAdherent(req))
+        .then(() => {
+            // Clean useless update dates if given (setup while creating subscriber)
+            req.body.updatedAt = null;
+            // Update requested subscriber with given body
+            Adherent.update(req.body, { where: { id: req.body.id } });
+        })
+        .then((adherent) => res.status(204).json(adherent))
+        .catch((err) => controllerErrorHandler(err, res));
 }
 
 /**
- * User remove for DELETE route
- * @param req Request (parameter "id" used to find user to delete)
+ * Subscriber remove for DELETE route
+ * @param req Request (parameter "id" used to find subscriber to delete)
  * @param res :
  *  - 200 confirmation
- *  - 401 error if given id is NaN or doesn't exist
+ *  - 400 error if given id is NaN
+ *  - 404 error if given id doesn't exist
  *  - 500 error for database error
  */
 async function deleteAdherentById(req: Request, res: Response) {
-    try {
-        // Check if requested user id exist in database
-        await checkExistingId<Adherent>(parseInt(req.params.id), Adherent);
-
-        // Delete requested user by its id
-        await Adherent.destroy({ where: { id: req.params.id } })
-            .then((user) => res.status(200).json(user))
-            .catch((err) => res.status(500).json(err));
-    } catch (err: any) {
-        // return client error if wrong informations have been given
-        res.status(401).json({
-            status: "error",
-            message: err.message,
-        });
-    }
+    // Check if requested subscriber id exist in database
+    await checkExistingId<Adherent>(req.params.id, Adherent)
+        .then(() =>
+            // Delete requested subscriber by its id
+            Adherent.destroy({ where: { id: req.params.id } })
+        )
+        .then((subscriber) => res.status(204).json(subscriber))
+        .catch((err) => controllerErrorHandler(err, res));
 }
 
 export default adherentController;

@@ -57,7 +57,7 @@ async function getAllUtilisateurs(req: Request, res: Response) {
  * @param req Request ("id" parameter, needed to find right user)
  * @param res
  *  - Requested user
- *  - 401 error if "id" is NaN
+ *  - 400 error if "id" is NaN
  *  - 500 error for database error
  */
 async function getUtilisateurById(req: Request, res: Response) {
@@ -74,7 +74,7 @@ async function getUtilisateurById(req: Request, res: Response) {
             .catch((err) => res.status(500).json({ error: err.message }));
     } catch (err: any) {
         // return client error if wrong id has been given
-        res.status(401).json({
+        res.status(400).json({
             status: "error",
             message: err.message,
         });
@@ -133,7 +133,7 @@ async function updateUtilisateur(req: Request, res: Response) {
     // TODO : Add more checks if necessary
     checkExistingId<Utilisateur>(req.body.id, Utilisateur)
         .catch((err) =>
-            res.status(401).json({
+            res.status(400).json({
                 status: "error",
                 message: err.message,
             })

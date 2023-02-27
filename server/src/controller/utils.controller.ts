@@ -1,3 +1,5 @@
+import { Response } from "express";
+import createHttpError, { HttpError } from "http-errors";
 import { ModelStatic } from "sequelize";
 import { Model } from "sequelize-typescript";
 
@@ -10,10 +12,24 @@ export async function checkExistingId<M extends Model>(
     model: ModelStatic<M>
 ) {
     // Check is id is a number
-    if (Number.isNaN(id)) throw new Error("Giver id is Not A Number");
+    if (Number.isNaN(id))
+        throw createHttpError(400, "Giver id is Not A Number");
 
     // Check if requested role id exist in database
     const existingPoste = await model.findByPk(id);
     if (existingPoste === null)
-        throw new Error("Wrong id or item doesn't exist");
+        throw createHttpError(404, "Wrong id or item doesn't exist");
+}
+
+export async function controllerErrorHandler(err: HttpError, res: Response) {
+    if (err.status === undefined) {
+        err.status = 500;
+    }
+    if (err.message === undefined) {
+        err.message = "Unknown error";
+    }
+    res.status(err.status).json({
+        status: err.status,
+        message: err.message,
+    });
 }

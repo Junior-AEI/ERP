@@ -13,8 +13,6 @@ import {
 const router = express.Router();
 
 router.use("/", authRoutes);
-// TODO : RE-enable and setup all authentification system
-//router.use("/user", getUsername, verifyAuthentication, usersRoutes);
 router.use("/poste", getUsername, verifyAuthentication, posteRoute);
 router.use(
     "/utilisateur",

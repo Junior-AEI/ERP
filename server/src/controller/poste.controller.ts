@@ -1,6 +1,6 @@
 import { Request, Response } from "express";
 import { Op } from "sequelize";
-import createError from "http-errors";
+import createHttpError from "http-errors";
 import { Poste } from "../models/poste.model";
 import { checkExistingId, controllerErrorHandler } from "./utils.controller";
 
@@ -20,7 +20,7 @@ const posteController = {
  */
 async function checkEmptyName(name: string) {
     if (name === "" || name === undefined || name === null) {
-        throw createError(400, "Empty name provided");
+        throw createHttpError(400, "Empty name provided");
     }
 }
 
@@ -46,13 +46,14 @@ async function checkExistingPoste(req: Request): Promise<void> {
             ],
         },
     });
-    if (existingPoste !== null) throw createError(409, "Role already exist");
+    if (existingPoste !== null)
+        throw createHttpError(409, "Role already exist");
 }
 
 /**
  * All roles reader for GET route
  * @param res
- *  - Roles in database + 200 status
+ *  - Roles in database + 200 confirmation
  *  - 500 error
  */
 async function getAllPostes(req: Request, res: Response) {
@@ -65,7 +66,7 @@ async function getAllPostes(req: Request, res: Response) {
  * Specific role (by id) reader for GET route
  * @param req Request ("id" parameter, needed to find right role)
  * @param res
- *  - Requested role + 200 status
+ *  - Requested role + 200 confirmation
  *  - 400 error if "id" is NaN
  *  - 500 error for database error
  */
@@ -73,7 +74,7 @@ async function getPosteById(req: Request, res: Response) {
     (async () => {
         // Check if req.params.id is a number
         if (Number.isNaN(parseInt(req.params.id)))
-            throw createError(400, "Given id is Not A Number");
+            throw createHttpError(400, "Given id is Not A Number");
     })()
         .then(() => Poste.findByPk(req.params.id))
         .then((poste) => res.status(200).json(poste))
@@ -96,7 +97,7 @@ async function createPoste(req: Request, res: Response) {
         .then(() => {
             req.body.createdAt = null;
             req.body.updatedAt = null;
-            Poste.create(req.body);
+            return Poste.create(req.body);
         })
         .then((poste) => res.status(201).json(poste))
         .catch((err) => controllerErrorHandler(err, res));
@@ -108,7 +109,7 @@ async function createPoste(req: Request, res: Response) {
  * @param res
  *  - 204 confirmation (ressource updated)
  *  - 400 error if wrong datas are given
- *  - 409 error if role already exist
+ *  - 404 error if role don't exist
  *  - 500 error for database error
  */
 async function updatePoste(req: Request, res: Response) {
@@ -123,7 +124,7 @@ async function updatePoste(req: Request, res: Response) {
             // Clean useless update dates if given (setup while creating role)
             req.body.updatedAt = null;
             // Update requested role with given body
-            Poste.update(req.body, { where: { id: req.body.id } });
+            return Poste.update(req.body, { where: { id: req.body.id } });
         })
         .then((poste) => res.status(204).json(poste))
         .catch((err) => controllerErrorHandler(err, res));
@@ -134,8 +135,8 @@ async function updatePoste(req: Request, res: Response) {
  * @param req Request (parameter "id" used to find role to delete)
  * @param res :
  *  - 204 confirmation (ressource deleted)
- *  - 400 error if given id is NaN or doesn't exist
- *  - 409 error if given id is NaN or doesn't exist
+ *  - 404 error if given id is NaN
+ *  - 404 error if given id doesn't exist
  *  - 500 error for database error
  */
 async function deletePosteById(req: Request, res: Response) {

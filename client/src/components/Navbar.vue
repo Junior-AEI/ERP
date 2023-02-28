@@ -1,15 +1,11 @@
 <template>
     <div class="container">
-        <Menubar>
-            <template #start>
-            </template>
-            <template #end>
-                <Button icon="pi pi-user" @click="visibleRight = true" class="p-button-rounded p-button-info p-button-text" aria-label="User" />
-                <Sidebar v-model:visible="visibleRight" :showCloseIcon="false" position="right">
-                    <PanelMenu :model="items" />
-                </Sidebar>
-            </template>
-        </Menubar>
+        <div class="container">
+            <Button icon="pi pi-user" @click="visibleRight = true" class="p-button-rounded p-button-info p-button-text" aria-label="User" />
+            <Sidebar v-model:visible="visibleRight" :showCloseIcon="false" position="right">
+                <PanelMenu :model="items" />
+            </Sidebar>
+        </div>
     </div>
 </template>
 
@@ -53,5 +49,16 @@ export default {
 </script>
 
 <style scoped lang="scss">
-
+@import "../assets/colors.scss";
+$height: 110px;
+.container {
+    position: fixed;
+    background: $dark-blue;
+    height: 50px;
+    width: 1536px;
+}
+#userButton{
+    justify-content: left;
+    background: $dark-blue;
+}
 </style>

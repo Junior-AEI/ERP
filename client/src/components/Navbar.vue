@@ -53,19 +53,5 @@ export default {
 </script>
 
 <style scoped lang="scss">
-@import "../assets/colors.scss";
-$height: 110px;
-.container {
-    background: $dark-blue;
-    height: 50px;
 
-    .link {
-        color: white;
-        padding: 2em;
-    }
-    .logo {
-        position: absolute;
-        height: $height;
-    }
-}
 </style>

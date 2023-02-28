@@ -1,12 +1,6 @@
 <template>
     <div class="container">
-        <Menubar>
-            <template #start>
-            </template>
-            <template #end>
-                <Button icon="pi pi-user" class="p-button-rounded p-button-info p-button-text" aria-label="User" />
-            </template>
-        </Menubar>
+
     </div>
 </template>
 
@@ -20,16 +14,13 @@ export default {
 @import "../assets/colors.scss";
 $height: 110px;
 .container {
+    position: fixed;
     background: $dark-blue;
     height: 50px;
-
-    .link {
-        color: white;
-        padding: 2em;
-    }
-    .logo {
-        position: absolute;
-        height: $height;
-    }
+    width: 1536px;
+}
+#userButton{
+    justify-content: left;
+    background: $dark-blue;
 }
 </style>

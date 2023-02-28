@@ -1,7 +1,11 @@
 <template>
   <section class="nav">
-    <div class="nav-logo">
- 
+    <div>
+        <img
+            class="logo"
+            src="../assets/logos/logo-bi-ff.svg"
+            alt="AEI logo"
+        />
     </div>
     <div class="nav-menu">
         <PanelMenu :model="items"/>
@@ -113,32 +117,42 @@ export default {
 }
 </script>
 
-<style scoped lang="scss">
-@import "../assets/colors.scss";
+<style lang="scss">
 $height: 90px;
-.container {
-    background: $dark-blue;
-    height: $height;
-    .logo {
-        position: absolute;
-        height: $height;
-    }
-}
+@import '../assets/_theme.scss';
 .nav{
   position: fixed;
   display: flex;
   flex-direction: column;
   align-items: center;
-  background: $dark-blue;
-  top: 0;
+  top: 50px;
   left: 0;
   bottom: 0;
   width: 17vw;
-  .nav-logo
-    { position: absolute;
-      height: $height;
+  .logo {
+    height: $height;
+    width: 100%;
+
+  }
+ .nav-menu
+    {width: 17vw;
+    margin-top: 30px;
+     
     }
-  .nav-menu
-    {width: 17vw;}
+}
+   .p-panelmenu, .p-component *{
+        background-color: var(--primary-color);    
+        color: var(--primary-color-text	);
+    }
+
+.p-panelmenu {
+    --primary-color: #0c2764!important;
+    --primary-color-text: #fdfcfc !important;
+}
+.p-panelmenu .p-panelmenu-content{
+    padding: 0px !important;
+}
+.p-panelmenu .p-panelmenu-content .p-menuitem > .p-menuitem-content .p-menuitem-link .p-menuitem-text {
+  color: #fff !important;
 }
 </style>

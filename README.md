@@ -26,6 +26,18 @@ cd server
 npm run dev
 ```
 
+# Test 
+
+```
+npm run test 
+```
+
+Don't forget to run the back-end with `npm run dev` before launching the tests. 
+
+```
+npm run coverage
+```
+
 # Migrations
 
 ## Generality
@@ -93,3 +105,4 @@ Don't forget to update the `route.ts` file with your new route.
 
 Try your function using Postman (example of url `http://localhost:5000/api/utilisateur`).
 How to test your route with token comming soon. 
+

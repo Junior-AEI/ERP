@@ -6,10 +6,15 @@ import {
     DataType,
     CreatedAt,
     UpdatedAt,
+    NotEmpty,
+    PrimaryKey,
+    IsDate,
 } from "sequelize-typescript";
+import validator from "validator";
 
 @Table
 export class Adresse extends Model {
+    @PrimaryKey
     @Column({
         type: DataType.INTEGER,
         allowNull: false,
@@ -18,6 +23,7 @@ export class Adresse extends Model {
     })
     id!: number;
 
+    @NotEmpty
     @Column({
         type: DataType.STRING,
         allowNull: false,
@@ -29,40 +35,52 @@ export class Adresse extends Model {
     })
     complementAdresse!: string;
 
+    @NotEmpty
     @Column({
         type: DataType.STRING,
-        // allowNull: false,
+        allowNull: false,
     })
     ville!: string;
 
+    @NotEmpty
     @Column({
         type: DataType.STRING,
-        // allowNull: false,
+        allowNull: false,
+        validate: {
+            checkPostalCode(pc: string) {
+                if (!validator.isPostalCode(pc, "any")) {
+                    throw new Error("Invalid postal code !");
+                }
+            },
+        },
     })
-    codePostal!: boolean;
+    codePostal!: string;
 
+    @NotEmpty
     @Column({
         type: DataType.STRING,
-        // allowNull: false,
+        allowNull: false,
+        validate: {
+            checkCountry(c: string) {
+                if (!validator.isISO31661Alpha3(c)) {
+                    throw new Error("Invalid country code");
+                }
+            },
+        },
     })
     pays!: string;
 
+    @IsDate
     @CreatedAt
     @Column({
         type: DataType.DATE,
     })
     createdAt!: Date;
 
+    @IsDate
     @UpdatedAt
     @Column({
         type: DataType.DATE,
     })
     updatedAt!: Date;
 }
-
-sequelize.addModels([Adresse]);
-function PrimaryGeneratedColumn() {
-    throw new Error("Function not implemented.");
-}
-
-sequelize.addModels([Adresse]);

@@ -115,7 +115,7 @@ async function updateAdherent(req: Request, res: Response) {
             // Clean useless update dates if given (setup while creating subscriber)
             req.body.updatedAt = null;
             // Update requested subscriber with given body
-            Adherent.update(req.body, { where: { id: req.body.id } });
+            return Adherent.update(req.body, { where: { id: req.body.id } });
         })
         .then((adherent) => res.status(204).json(adherent))
         .catch((err) => controllerErrorHandler(err, res));

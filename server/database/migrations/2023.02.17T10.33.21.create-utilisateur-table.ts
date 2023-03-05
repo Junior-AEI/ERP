@@ -13,18 +13,23 @@ export const up: Migration = async ({ context: sequelize }) => {
         nom: {
             type: DataType.STRING,
             allowNull: false,
+            validate: { notEmpty: true },
             field: "nom",
         },
         description: {
-            type: DataType.STRING,
+            type: DataType.TEXT,
             field: "description",
         },
         createdAt: {
             type: DataType.DATE,
+            allowNull: false,
+            validate: { isDate: true },
             field: "createdAt",
         },
         updatedAt: {
             type: DataType.DATE,
+            allowNull: false,
+            validate: { isDate: true },
             field: "updatedAt",
         },
     });
@@ -39,35 +44,43 @@ export const up: Migration = async ({ context: sequelize }) => {
         nomUtilisateur: {
             type: DataType.STRING,
             allowNull: false,
+            unique: true,
+            validate: { notEmpty: true },
             field: "nomUtilisateur",
         },
         motDePasse: {
             type: DataType.STRING,
             allowNull: false,
+            validate: { notEmpty: true },
             field: "motDePasse",
         },
         derniereConnexion: {
             type: DataType.DATE,
+            validate: { isDate: true },
             field: "derniereConnexion",
         },
         estActif: {
             type: DataType.BOOLEAN,
             allowNull: false,
+            validate: { isBoolean: true, notEmpty: true },
             field: "estActif",
         },
         debutMandat: {
             type: DataType.DATE,
             allowNull: false,
+            validate: { isDate: true, notEmpty: true },
             field: "debutMandat",
         },
         finMandat: {
             type: DataType.DATE,
             allowNull: false,
+            validate: { isDate: true, notEmpty: true },
             field: "finMandat",
         },
         mailJE: {
             type: DataType.STRING,
             allowNull: false,
+            validate: { isEmail: true },
             field: "mailJE",
         },
         posteId: {
@@ -80,10 +93,14 @@ export const up: Migration = async ({ context: sequelize }) => {
         },
         createdAt: {
             type: DataType.DATE,
+            allowNull: false,
+            validate: { isDate: true },
             field: "createdAt",
         },
         updatedAt: {
             type: DataType.DATE,
+            allowNull: false,
+            validate: { isDate: true },
             field: "updatedAt",
         },
     });

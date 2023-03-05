@@ -6,11 +6,22 @@ import {
     DataType,
     CreatedAt,
     UpdatedAt,
-    HasOne,
     ForeignKey,
     BelongsTo,
+    IsIn,
+    IsDate,
+    IsEmail,
+    NotEmpty,
+    IsNumeric,
+    Max,
+    Min,
 } from "sequelize-typescript";
+import validator from "validator";
 import { Adresse } from "./adresse.model";
+
+const GENDER = ["F", "M", "O"];
+const PAYMENTS = ["Esp", "CB", "Vir", "Lydia"];
+const COURSES = ["Info", "Elec", "Telecom", "Matmeca", "R&I", "SEE"];
 
 @Table
 export class Adherent extends Model {
@@ -34,31 +45,42 @@ export class Adherent extends Model {
     })
     prenom!: string;
 
+    @IsIn([GENDER])
     @Column({
-        type: DataType.STRING(1),
+        type: DataType.ENUM,
+        values: GENDER,
         allowNull: false,
-        // add condition on value in F,M,O (Female, Male, Other)
     })
     sexe!: string;
 
     @Column({
         type: DataType.STRING,
         allowNull: false,
+        validate: {
+            checkPhone(str: string) {
+                if (!validator.isMobilePhone(str)) {
+                    throw new Error("Invalid phone number");
+                }
+            },
+        },
     })
     telephoneMobile!: string;
 
+    @IsEmail
     @Column({
         type: DataType.STRING,
         allowNull: false,
-        //add condition here for email (cf sequelize)
     })
     email!: string;
 
+    @IsDate
     @Column({
         type: DataType.DATEONLY,
     })
     dateNaissance!: Date;
 
+    // TODO : Is birth place useful ?
+    @NotEmpty
     @Column({
         type: DataType.STRING,
     })
@@ -66,53 +88,74 @@ export class Adherent extends Model {
 
     @Column({
         type: DataType.STRING,
+        allowNull: false,
+        validate: {
+            checkCountry(str: string) {
+                if (!validator.isISO31661Alpha3(str)) {
+                    throw new Error("Invalid country code");
+                }
+            },
+        },
     })
     nationalite!: string;
 
+    @IsNumeric
+    @Max(9999)
+    @Min(1920)
     @Column({
         type: DataType.STRING(4),
-        // add restriction here for only year of the promotion !
+        allowNull: false,
     })
     promotion!: string;
 
+    @IsDate
     @Column({
         type: DataType.DATE,
+        allowNull: false,
     })
     dateCotisation!: Date;
 
+    @IsIn([PAYMENTS])
     @Column({
-        type: DataType.STRING,
-        // est-ce que on verifie les donnees ici, ou est-ce qu'on le met en
+        type: DataType.ENUM,
+        values: PAYMENTS,
     })
     moyenPaiement!: string;
 
+    @IsIn([COURSES])
     @Column({
-        type: DataType.STRING,
-        // est-ce que on verifie les donnees ici, ou est-ce qu'on le met en
+        type: DataType.ENUM,
+        allowNull: false,
+        values: COURSES,
     })
     filiere!: string;
 
     @ForeignKey(() => Adresse)
     @Column({
         type: DataType.INTEGER,
-        // allowNull: false,
+        allowNull: false,
     })
     adresseId!: number;
 
     @BelongsTo(() => Adresse)
     adresse!: Adresse;
 
+    @IsDate
     @CreatedAt
     @Column({
         type: DataType.DATE,
+        allowNull: false,
     })
     createdAt!: Date;
 
+    @IsDate
     @UpdatedAt
     @Column({
         type: DataType.DATE,
+        allowNull: false,
     })
     updatedAt!: Date;
 }
 
 sequelize.addModels([Adherent, Adresse]);
+console.log(Adherent.getAttributes());

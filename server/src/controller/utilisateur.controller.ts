@@ -110,7 +110,7 @@ async function createUtilisateur(req: Request, res: Response) {
             req.body.updatedAt = null;
             return Utilisateur.create(req.body);
         })
-        .then((u) => res.json(u))
+        .then(() => res.json())
         .catch((err) => controllerErrorHandler(err, res));
 }
 

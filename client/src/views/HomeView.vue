@@ -1,9 +1,5 @@
-<template>
-    <DataTable />
-</template>
+<template>Home page</template>
 
-<script setup lang="ts">
-import DataTable from "../components/UsersTableComponent.vue";
-</script>
+<script setup lang="ts"></script>
 
 <style scoped lang="scss"></style>

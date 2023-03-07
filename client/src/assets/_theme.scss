@@ -4937,8 +4937,8 @@
 }
 
 .p-breadcrumb {
-    background: #ffffff;
-    border: 1px solid #dee2e6;
+    background: $dark-blue;
+    border: none;
     border-radius: 3px;
     padding: 1rem;
 }
@@ -4952,20 +4952,20 @@
     box-shadow: 0 0 0 0.2rem #a6d5fa;
 }
 .p-breadcrumb .p-breadcrumb-list li .p-menuitem-link .p-menuitem-text {
-    color: #495057;
+    color: white;
 }
 .p-breadcrumb .p-breadcrumb-list li .p-menuitem-link .p-menuitem-icon {
-    color: #6c757d;
+    color: white;
 }
 .p-breadcrumb .p-breadcrumb-list li.p-menuitem-separator {
     margin: 0 0.5rem 0 0.5rem;
-    color: #495057;
+    color: white;
 }
 .p-breadcrumb .p-breadcrumb-list li:last-child .p-menuitem-text {
-    color: #495057;
+    color: white;
 }
 .p-breadcrumb .p-breadcrumb-list li:last-child .p-menuitem-icon {
-    color: #6c757d;
+    color: white;
 }
 
 .p-contextmenu {

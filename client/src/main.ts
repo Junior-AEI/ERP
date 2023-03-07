@@ -19,6 +19,8 @@ import Row from "primevue/row";
 import PanelMenu from "primevue/panelmenu";
 import Sidebar from "primevue/sidebar";
 import Menubar from "primevue/menubar";
+import Breadcrumb from "primevue/breadcrumb";
+
 // import ConfirmationService from 'primevue/confirmationservice';
 // import ConfirmPopup from 'primevue/confirmpopup';
 
@@ -53,6 +55,7 @@ app.component("Row", Row);
 app.component("PanelMenu", PanelMenu);
 app.component("Sidebar", Sidebar);
 app.component("Menubar", Menubar);
+app.component("Breadcrumb", Breadcrumb);
 // app.component("ConfirmationService", ConfirmationService);
 // app.component("ConfirmPopup", ConfirmPopup);
 

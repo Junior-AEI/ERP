@@ -1,5 +1,9 @@
 <template>
     <div class="container">
+        <Breadcrumb :home="home" :model="itemsBreadcrumb"> </Breadcrumb>
+        <router-link to="/users">users</router-link>
+        <router-link to="/users/1">users/1</router-link>
+
         <Button
             icon="pi pi-user"
             @click="visibleRight = true"
@@ -18,7 +22,9 @@
 
 <script setup lang="ts">
 import type Button from "primevue/button";
-import { ref } from "vue";
+import type Breadcrumb from "primevue/breadcrumb";
+import { ref, watch } from "vue";
+import { useRouter } from "vue-router";
 
 const visibleRight = ref(false);
 const items = [
@@ -32,6 +38,23 @@ const items = [
         ///@click: delete(),
     },
 ];
+
+const home = { icon: "pi pi-home", to: "/" };
+const router = useRouter();
+let itemsBreadcrumb = ref([{ label: "Home", to: "/" }]);
+watch(router.currentRoute, (route) => {
+    let totalRoute = "/";
+    itemsBreadcrumb.value = route.fullPath
+        .split("/")
+        .filter((item) => item !== "")
+        .map((item) => {
+            totalRoute += item + "/";
+            return {
+                label: item.charAt(0).toUpperCase() + item.slice(1),
+                to: totalRoute,
+            };
+        });
+});
 </script>
 
 <style scoped lang="scss">
@@ -39,7 +62,7 @@ const items = [
 $height: 110px;
 .container {
     display: flex;
-    justify-content: right;
+    justify-content: space-between;
     background: $dark-blue;
     height: 50px;
 

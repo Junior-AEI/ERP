@@ -85,7 +85,7 @@ Don't forget to check if the down function work too with the command `npm run mi
 
 Use the following command to create a seeder file `npm run seed -- create --name=<Name>`.
 Add your data following the structure of your model. 
-Try it with the command `npm run migrate -- up`. 
+Try it with the command `npm run seed -- up`. 
 Don't forget to check if the down function work too with the command `npm run seed -- down`.
 
 ### Step 4 : create a controller 
@@ -99,7 +99,7 @@ Don't forget to export your new functions !
 
 Create a new file in the routes folder. 
 Add the route for the new functions you created in the previous step. 
-Don't forget to update the `route.ts` file with your new route. 
+Don't forget to update the `routes.ts` file with your new route. 
 
 ### Step 6 : Try what you did 
 

@@ -4,6 +4,8 @@ import authRoutes from "./auth.route";
 import posteRoute from "./poste.route";
 import adresseRoute from "./adresse.route";
 import adherentRoute from "./adherent.route";
+import entrepriseRoute from "./entreprise.route";
+import clientRoute from "./client.route";
 
 import {
     getUsername,
@@ -22,5 +24,7 @@ router.use(
 );
 router.use("/adresse", getUsername, verifyAuthentication, adresseRoute);
 router.use("/adherent", getUsername, verifyAuthentication, adherentRoute);
+router.use("/entreprise", getUsername, verifyAuthentication, entrepriseRoute);
+router.use("/client", getUsername, verifyAuthentication, clientRoute);
 
 export default router;

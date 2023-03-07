@@ -16,14 +16,11 @@ router.use("/", authRoutes);
 router.use("/poste", getUsername, verifyAuthentication, posteRoute);
 router.use(
     "/utilisateur",
-    // getUsername,
-    // verifyAuthentication,
+    getUsername,
+    verifyAuthentication,
     utilisateurRouter
 );
 router.use("/adresse", getUsername, verifyAuthentication, adresseRoute);
-router.use(
-    "/adherent", //getUsername, verifyAuthentication,
-    adherentRoute
-);
+router.use("/adherent", getUsername, verifyAuthentication, adherentRoute);
 
 export default router;

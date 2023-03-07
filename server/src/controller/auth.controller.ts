@@ -1,6 +1,6 @@
 import { Request, Response } from "express";
 import { SignJWT } from "jose";
-import { compare, hash } from "bcrypt";
+import { compare } from "bcrypt";
 import {
     JWT_AUDIENCE,
     JWT_EXPIRATION,
@@ -8,6 +8,7 @@ import {
     JWT_SECRET_KEY,
 } from "../config/auth.config";
 import { Utilisateur } from "../models/utilisateur.model";
+import { controllerErrorHandler } from "./utils.controller";
 
 const authController = {
     login,
@@ -16,8 +17,8 @@ const authController = {
 async function login(req: Request, res: Response) {
     const username = req.body.nomUtilisateur;
     const password = req.body.motDePasse;
-    Utilisateur.findOne({ where: { nomUtilisateur: username } }).then(
-        (user) => {
+    Utilisateur.findOne({ where: { nomUtilisateur: username } })
+        .then((user) => {
             if (user) {
                 compare(password, user.motDePasse).then(async (result) => {
                     if (result) {
@@ -44,8 +45,8 @@ async function login(req: Request, res: Response) {
                     message: "Invalid username or password",
                 });
             }
-        }
-    );
+        })
+        .catch((err) => controllerErrorHandler(err, res));
 }
 
 export default authController;

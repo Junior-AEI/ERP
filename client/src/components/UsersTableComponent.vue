@@ -86,32 +86,7 @@ const filters = {
     },
 };
 
-let users = ref([
-    {
-        nom: "John",
-        prenom: "bean",
-        Téléphone: "+33 7 45 67 98 26",
-        Email: "john@gmail.com",
-        Poste: "Secrétaire général",
-        Promotion: 2022,
-    },
-    {
-        nom: "Lolla",
-        prenom: "ppp",
-        Téléphone: "+33 7 45 00 98 26",
-        Email: "lolla@gmail.com",
-        Poste: "Chargé qualité",
-        Promotion: 2021,
-    },
-    {
-        nom: "david",
-        prenom: "bbb",
-        Téléphone: "+33 7 00 00 98 26",
-        Email: "david@gmail.com",
-        Poste: "Chargé qualité",
-        Promotion: 2023,
-    },
-]);
+let users = ref([]);
 
 onMounted(() => {
     axios.get("/adherent").then((data) => {

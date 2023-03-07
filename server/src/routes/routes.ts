@@ -1,16 +1,29 @@
 import express from "express";
-import usersRoutes from "./users.route";
+import utilisateurRouter from "./utilisateur.route";
 import authRoutes from "./auth.route";
-import testRoutes from "./test.route";
+import posteRoute from "./poste.route";
+import adresseRoute from "./adresse.route";
+import adherentRoute from "./adherent.route";
+
 import {
-  getUsername,
-  verifyAuthentication,
+    getUsername,
+    verifyAuthentication,
 } from "../middlewares/auth.middleware";
 
 const router = express.Router();
 
 router.use("/", authRoutes);
-router.use("/user", getUsername, verifyAuthentication, usersRoutes);
-router.use("/test", testRoutes);
+router.use("/poste", getUsername, verifyAuthentication, posteRoute);
+router.use(
+    "/utilisateur",
+    // getUsername,
+    // verifyAuthentication,
+    utilisateurRouter
+);
+router.use("/adresse", getUsername, verifyAuthentication, adresseRoute);
+router.use(
+    "/adherent", //getUsername, verifyAuthentication,
+    adherentRoute
+);
 
 export default router;

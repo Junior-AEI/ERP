@@ -1,9 +1,16 @@
 {
   "devDependencies": {
     "husky": "^8.0.3",
-    "lint-staged": "^13.1.1"
+    "lint-staged": "^13.1.1",
+    "@rushstack/eslint-patch": "^1.1.4",
+    "@vue/eslint-config-prettier": "^7.0.0",
+    "@vue/eslint-config-typescript": "^11.0.0",
+    "eslint": "^8.22.0",
+    "eslint-plugin-cypress": "^2.12.1",
+    "eslint-plugin-vue": "^9.3.0"
   },
   "scripts": {
-    "prepare": "husky install"
+    "prepare": "husky install",
+    "lint": "eslint . --ext .vue,.js,.jsx,.cjs,.mjs,.ts,.tsx,.cts,.mts --fix --ignore-path .gitignore"
   }
 }

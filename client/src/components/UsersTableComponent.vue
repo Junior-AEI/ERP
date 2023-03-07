@@ -5,13 +5,12 @@
         dataKey="id"
         v-model:filters="filters"
         filterDisplay="row"
-        :loading="loading"
         sortField="Nom"
         :sortOrder="1"
         :paginator="true"
         :rows="10"
     >
-        <Column field="Nom" header="Nom" :sortable="true">
+        <Column field="nom" header="Nom" :sortable="true">
             <template #filter="{ filterModel, filterCallback }">
                 <InputText
                     type="text"
@@ -22,7 +21,7 @@
                 />
             </template>
         </Column>
-        <Column field="Prénom" header="Prénom" :sortable="true">
+        <Column field="prenom" header="Prénom" :sortable="true">
             <template #filter="{ filterModel, filterCallback }">
                 <InputText
                     type="text"
@@ -33,10 +32,14 @@
                 />
             </template>
         </Column>
-        <Column field="Téléphone" header="Téléphone" :sortable="true"></Column>
-        <Column field="Email" header="Email" :sortable="true"></Column>
+        <Column
+            field="telephoneMobile"
+            header="Téléphone"
+            :sortable="true"
+        ></Column>
+        <Column field="email" header="Email" :sortable="true"></Column>
         <Column field="Poste" header="Poste" :sortable="true"></Column>
-        <Column field="Promotion" header="Promotion" :sortable="true">
+        <Column field="promotion" header="Promotion" :sortable="true">
             <template #filter="{ filterModel, filterCallback }">
                 <InputText
                     type="text"
@@ -65,54 +68,57 @@
     />
 </template>
 
-<script>
+<script setup lang="ts">
 import { FilterMatchMode } from "primevue/api";
+import { onMounted, ref } from "vue";
+import axios from "axios";
 
-export default {
-    methods: {
-        handleClick() {
-            console.log("ajout utilisateur");
-        },
-    },
-    data() {
-        return {
-            filters: {
-                Nom: { value: null, matchMode: FilterMatchMode.STARTS_WITH },
-                Prénom: { value: null, matchMode: FilterMatchMode.STARTS_WITH },
-                Promotion: {
-                    value: null,
-                    matchMode: FilterMatchMode.STARTS_WITH,
-                },
-            },
-            users: [
-                {
-                    Nom: "John",
-                    Prénom: "bean",
-                    Téléphone: "+33 7 45 67 98 26",
-                    Email: "john@gmail.com",
-                    Poste: "Secrétaire général",
-                    Promotion: 2022,
-                },
-                {
-                    Nom: "Lolla",
-                    Prénom: "ppp",
-                    Téléphone: "+33 7 45 00 98 26",
-                    Email: "lolla@gmail.com",
-                    Poste: "Chargé qualité",
-                    Promotion: 2021,
-                },
-                {
-                    Nom: "david",
-                    Prénom: "bbb",
-                    Téléphone: "+33 7 00 00 98 26",
-                    Email: "david@gmail.com",
-                    Poste: "Chargé qualité",
-                    Promotion: 2023,
-                },
-            ],
-        };
+function handleClick() {
+    console.log("ajout utilisateur");
+}
+
+const filters = {
+    nom: { value: null, matchMode: FilterMatchMode.STARTS_WITH },
+    prenom: { value: null, matchMode: FilterMatchMode.STARTS_WITH },
+    promotion: {
+        value: null,
+        matchMode: FilterMatchMode.STARTS_WITH,
     },
 };
+
+let users = ref([
+    {
+        nom: "John",
+        prenom: "bean",
+        Téléphone: "+33 7 45 67 98 26",
+        Email: "john@gmail.com",
+        Poste: "Secrétaire général",
+        Promotion: 2022,
+    },
+    {
+        nom: "Lolla",
+        prenom: "ppp",
+        Téléphone: "+33 7 45 00 98 26",
+        Email: "lolla@gmail.com",
+        Poste: "Chargé qualité",
+        Promotion: 2021,
+    },
+    {
+        nom: "david",
+        prenom: "bbb",
+        Téléphone: "+33 7 00 00 98 26",
+        Email: "david@gmail.com",
+        Poste: "Chargé qualité",
+        Promotion: 2023,
+    },
+]);
+
+onMounted(() => {
+    axios.get("/adherent").then((data) => {
+        console.log(data.data);
+        users.value = data.data;
+    });
+});
 </script>
 <style lang="scss" scoped>
 @import "../assets/colors.scss";

@@ -28,16 +28,8 @@ import "../src/assets/_theme.scss"; //theme
 import "primevue/resources/primevue.min.css"; //core css
 import "primeicons/primeicons.css";
 
-// Vuetify
-// import "vuetify/styles";
-// import { createVuetify } from "vuetify";
-// import * as components from "vuetify/components";
-// import * as directives from "vuetify/directives";
-
-// const vuetify = createVuetify({
-//     components,
-//     directives,
-// });
+import axios from "axios";
+axios.defaults.baseURL = "http://localhost:5000/api";
 
 const app = createApp(App);
 app.use(createPinia());

@@ -42,6 +42,10 @@ $height: 110px;
     justify-content: right;
     background: $dark-blue;
     height: 50px;
+
+    .p-button-text {
+        color: #ffffff !important;
+    }
 }
 
 Button {

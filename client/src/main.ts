@@ -22,7 +22,7 @@ import Menubar from "primevue/menubar";
 // import ConfirmationService from 'primevue/confirmationservice';
 // import ConfirmPopup from 'primevue/confirmpopup';
 
-import "primevue/resources/themes/saga-blue/theme.css"; //theme
+import "../src/assets/_theme.scss"; //theme
 import "primevue/resources/primevue.min.css"; //core css
 import "primeicons/primeicons.css";
 

@@ -1,6 +1,6 @@
 <template>
     <div class="nav">
-        <div>
+        <div class="img-container">
             <img
                 class="logo"
                 src="../assets/logos/logo-bi-ff.svg"
@@ -116,10 +116,9 @@ export default {
 };
 </script>
 
-<style lang="scss">
-$height: 90px;
-@import "../assets/_theme.scss";
+<style scoped lang="scss">
 @import "../assets/colors.scss";
+
 .nav {
     background-color: $dark-blue;
     display: flex;
@@ -127,34 +126,18 @@ $height: 90px;
     align-items: center;
     width: 100%;
     height: 100%;
-    .logo {
-        height: $height;
-        width: 100%;
+
+    .img-container {
+        display: flex;
+        justify-content: center;
+        .logo {
+            width: 90%;
+        }
     }
+
     .nav-menu {
-        width: 99%;
+        width: 100%;
         margin-top: 30px;
     }
-}
-.p-panelmenu,
-.p-component * {
-    background-color: var(--primary-color);
-    color: var(--primary-color-text);
-}
-
-.p-panelmenu {
-    --primary-color: #0c2764 !important;
-    --primary-color-text: #fdfcfc !important;
-}
-.p-panelmenu .p-panelmenu-content {
-    padding: 0px !important;
-}
-.p-panelmenu
-    .p-panelmenu-content
-    .p-menuitem
-    > .p-menuitem-content
-    .p-menuitem-link
-    .p-menuitem-text {
-    color: #fff !important;
 }
 </style>

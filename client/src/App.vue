@@ -26,6 +26,7 @@ export default {
 </script>
 
 <style lang="scss">
+@import "./assets/_theme.scss";
 * {
     box-sizing: border-box;
     margin: 0;
@@ -34,6 +35,7 @@ export default {
 
 html {
     height: 100%;
+    width: 100%;
 }
 
 body {
@@ -45,10 +47,15 @@ body {
 .container {
     display: grid;
     grid-template-columns: 250px 1fr;
+    height: 100vh;
+
+    .grid-left {
+        height: 100%;
+    }
 
     .grid-right {
         display: grid;
-        grid-template-rows: 1fr 10fr;
+        grid-template-rows: auto 10fr;
     }
 }
 </style>

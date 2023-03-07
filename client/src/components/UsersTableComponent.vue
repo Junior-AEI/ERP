@@ -118,17 +118,9 @@ export default {
 @import "../assets/colors.scss";
 .button {
     float: right;
-    background-color: $light-blue;
-    border-color: #0c2764;
 }
 
 #user-add {
     margin: 1em 1em 1em 1em;
-}
-
-.button:hover {
-    background-color: $blue !important;
-    color: black !important;
-    transition: 0.7s !important;
 }
 </style>

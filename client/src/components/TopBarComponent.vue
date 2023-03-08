@@ -1,8 +1,6 @@
 <template>
     <div class="container">
         <Breadcrumb :home="home" :model="itemsBreadcrumb"> </Breadcrumb>
-        <router-link to="/users">users</router-link>
-        <router-link to="/users/1">users/1</router-link>
 
         <Button
             icon="pi pi-user"

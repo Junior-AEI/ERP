@@ -1,6 +1,6 @@
 <template>
     <DataTable
-        :value="users"
+        :value="clients"
         responsiveLayout="scroll"
         dataKey="id"
         v-model:filters="filters"
@@ -38,18 +38,18 @@
             :sortable="true"
         ></Column>
         <Column field="email" header="Email" :sortable="true"></Column>
-        <Column field="Poste" header="Poste" :sortable="true"></Column>
-        <Column field="promotion" header="Promotion" :sortable="true">
+        <Column field="entreprise" header="Entreprise" :sortable="true">
             <template #filter="{ filterModel, filterCallback }">
                 <InputText
                     type="text"
                     v-model="filterModel.value"
                     @keydown.enter="filterCallback()"
                     class="p-column-filter"
-                    :placeholder="`Promotion`"
+                    :placeholder="`Entreprise`"
                 />
             </template>
         </Column>
+        <Column field="fonction" header="Fonction" :sortable="true"></Column>
         <Column
             headerStyle="width: 4rem; text-align: center"
             bodyStyle="text-align: center; overflow: visible"
@@ -61,9 +61,9 @@
     </DataTable>
 
     <Button
-        id="user-add"
+        id="client-add"
         class="button"
-        label="Ajouter un utilisateur"
+        label="Ajouter un prospect"
         @click="handleClick()"
     />
 </template>
@@ -74,24 +74,24 @@ import { onMounted, ref } from "vue";
 import axios from "axios";
 
 function handleClick() {
-    console.log("ajout utilisateur");
+    console.log("ajout prospect");
 }
 
 const filters = {
     nom: { value: null, matchMode: FilterMatchMode.STARTS_WITH },
     prenom: { value: null, matchMode: FilterMatchMode.STARTS_WITH },
-    promotion: {
+    entreprise: {
         value: null,
         matchMode: FilterMatchMode.STARTS_WITH,
     },
 };
 
-let users = ref([]);
+let clients = ref([]);
 
 onMounted(() => {
-    axios.get("/adherent").then((data) => {
+    axios.get("/client").then((data) => {
         console.log(data.data);
-        users.value = data.data;
+        clients.value = data.data;
     });
 });
 </script>
@@ -101,7 +101,7 @@ onMounted(() => {
     float: right;
 }
 
-#user-add {
+#client-add {
     margin: 1em 1em 1em 1em;
 }
 </style>

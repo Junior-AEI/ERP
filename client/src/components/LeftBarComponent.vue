@@ -27,10 +27,23 @@ export default {
                             label: "List",
                             to: "/users",
                         },
+                        
                         // {
                         //     label: "New",
                         //     icon: "pi pi-fw pi-user-plus",
                         // },
+                    ],
+                        },
+                {
+                    label: "Prospects",
+                    icon: "pi pi-fw pi-user",
+                    items: [
+                        {
+                            icon: "pi pi-fw pi-bars",
+                            label: "List",
+                            to: "/clients",
+                        },
+                        
                     ],
                 },
                 // {

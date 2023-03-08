@@ -27,6 +27,7 @@ export default {
 
 <style lang="scss">
 @import "./assets/_theme.scss";
+
 * {
     box-sizing: border-box;
     margin: 0;

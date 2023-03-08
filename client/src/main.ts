@@ -20,6 +20,8 @@ import PanelMenu from "primevue/panelmenu";
 import Sidebar from "primevue/sidebar";
 import Menubar from "primevue/menubar";
 import Breadcrumb from "primevue/breadcrumb";
+import Card from "primevue/card";
+import Checkbox from "primevue/checkbox";
 
 import ConfirmationService from 'primevue/confirmationservice';
 import ConfirmDialog from 'primevue/confirmdialog';
@@ -29,6 +31,7 @@ import ToastService from 'primevue/toastservice';
 import "../src/assets/_theme.scss"; //theme
 import "primevue/resources/primevue.min.css"; //core css
 import "primeicons/primeicons.css";
+/*import "primeflex/primeflex.css";*/
 
 import axios from "axios";
 axios.defaults.baseURL = "http://localhost:5000/api";
@@ -53,11 +56,21 @@ app.component("PanelMenu", PanelMenu);
 app.component("Sidebar", Sidebar);
 app.component("Menubar", Menubar);
 app.component("Breadcrumb", Breadcrumb);
+app.component("Card", Card);
+app.component("Checkbox", Checkbox);
 app.component("ConfirmationService", ConfirmationService);
 app.component("ConfirmDialog", ConfirmDialog);
 app.component("Toast", Toast);
 app.component("ToastService", ToastService);
-
-
 app.mount("#app");
 //app.use(vuetify).mount("#app");
+
+axios.interceptors.request.use(
+    config => {
+        config.headers['Authorization'] = `Bearer ${sessionStorage.getItem('token')}`;
+        return config;
+    },
+    error => {
+        return Promise.reject(error);
+    }
+);

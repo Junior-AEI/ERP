@@ -13,7 +13,7 @@
     </div>
 </template>
 
-<script>
+<script lang="ts">
 export default {
     data() {
         return {
@@ -27,13 +27,13 @@ export default {
                             label: "List",
                             to: "/users",
                         },
-                        
+
                         // {
                         //     label: "New",
                         //     icon: "pi pi-fw pi-user-plus",
                         // },
                     ],
-                        },
+                },
                 {
                     label: "Prospects",
                     icon: "pi pi-fw pi-user",
@@ -43,7 +43,6 @@ export default {
                             label: "List",
                             to: "/clients",
                         },
-                        
                     ],
                 },
                 // {

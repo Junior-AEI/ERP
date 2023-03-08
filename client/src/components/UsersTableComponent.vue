@@ -77,14 +77,14 @@ function handleClick() {
     console.log("ajout utilisateur");
 }
 
-const filters = {
+const filters = ref({
     nom: { value: null, matchMode: FilterMatchMode.STARTS_WITH },
     prenom: { value: null, matchMode: FilterMatchMode.STARTS_WITH },
     promotion: {
         value: null,
         matchMode: FilterMatchMode.STARTS_WITH,
     },
-};
+});
 
 let users = ref([]);
 

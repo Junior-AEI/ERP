@@ -12,7 +12,7 @@
     </div>
 </template>
 
-<script>
+<script lang="ts">
 import { RouterView } from "vue-router";
 import Sidebar from "./components/LeftBarComponent.vue";
 import Navbar from "./components/TopBarComponent.vue";

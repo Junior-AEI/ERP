@@ -77,19 +77,18 @@ function handleClick() {
     console.log("ajout prospect");
 }
 
-const filters = {
+const filters = ref({
     nom: { value: null, matchMode: FilterMatchMode.STARTS_WITH },
     prenom: { value: null, matchMode: FilterMatchMode.STARTS_WITH },
     entreprise: {
         value: null,
         matchMode: FilterMatchMode.STARTS_WITH,
     },
-};
+});
 
 let clients = ref([]);
 
-
-let companies: { [x: string]: { nom: any; }; };
+let companies: { [x: string]: { nom: any } };
 
 onMounted(() => {
     axios.get("/entreprise").then((data) => {
@@ -102,18 +101,12 @@ onMounted(() => {
     axios.get("/client").then((data) => {
         //console.log(data.data);
         for (let i = 0; i < data.data.length; ++i) {
-            data.data[i].entreprise = companies[(data.data[i]).entrepriseId - 1].nom;
-            }
-            clients.value = data.data;
+            data.data[i].entreprise =
+                companies[data.data[i].entrepriseId - 1].nom;
+        }
+        clients.value = data.data;
     });
 });
-
-
-
-
-
-
-
 </script>
 <style lang="scss" scoped>
 @import "../assets/colors.scss";

@@ -1,6 +1,7 @@
 <template>
     <div class="container">
         <Breadcrumb :home="home" :model="itemsBreadcrumb"> </Breadcrumb>
+        
 
         <Button
             icon="pi pi-user"
@@ -8,6 +9,19 @@
             class="p-button-rounded p-button-info p-button-text"
             aria-label="User"
         />
+        <Toast />
+        <ConfirmDialog></ConfirmDialog>
+        <ConfirmDialog group="templating">
+                <template #message="slotProps">
+                    <div class="flex p-4">
+                        <i :class="slotProps.message.icon" style="font-size: 1.5rem"></i>
+                        <p class="pl-2">{{slotProps.message.message}}</p>
+                    </div>
+                </template>
+        </ConfirmDialog>
+        <ConfirmDialog group="positionDialog"></ConfirmDialog>
+ 
+        
         <Sidebar
             v-model:visible="visibleRight"
             :showCloseIcon="false"
@@ -20,9 +34,31 @@
 
 <script setup lang="ts">
 import type Button from "primevue/button";
+import { useConfirm } from "primevue/useconfirm";
+import { useToast } from "primevue/usetoast";
 import type Breadcrumb from "primevue/breadcrumb";
 import { ref, watch } from "vue";
 import { useRouter } from "vue-router";
+
+
+const confirm = useConfirm();
+const toast = useToast();
+const confirm1 = () => {
+    confirm.require({
+                message: 'Etes-vous sûr(e) de vouloir supprimer votre compte',
+                header: 'Suppression du compte',
+                icon: 'pi pi-info-circle',
+                acceptClass: 'p-button-danger',
+                accept: () => {
+                    toast.add({severity:'info', summary:'Confirmé', detail:'Compte supprimé', life: 3000});
+                },
+                reject: () => {
+                    toast.add({severity:'error', summary:'Annulé', detail:'Compte pas supprimé', life: 3000});
+                }
+            });
+        }
+
+
 
 const visibleRight = ref(false);
 const items = [
@@ -33,9 +69,26 @@ const items = [
     {
         label: "Supprimer mon compte",
         icon: "pi pi-fw pi-trash",
-        ///@click: delete(),
+        command: () => { confirm.require({
+                message: 'Etes-vous sûr(e) de vouloir supprimer votre compte',
+                header: 'Suppression du compte',
+                icon: 'pi pi-info-circle',
+                acceptClass: 'p-button-danger',
+                acceptLabel: 'Oui',
+                rejectLabel: 'Non',
+                accept: () => {
+                    toast.add({severity:'info', summary:'Confirmé', detail:'Compte supprimé', life: 3000});
+                },
+                reject: () => {
+                    toast.add({severity:'info', summary:'Annulé', detail:'Le compte n\'a pas été supprimé', life: 3000});
+                }
+            });
+        }
     },
 ];
+
+
+
 
 const home = { icon: "pi pi-home", to: "/" };
 const router = useRouter();
@@ -53,6 +106,14 @@ watch(router.currentRoute, (route) => {
             };
         });
 });
+
+
+
+
+
+function shallowMount(MyComponent: any, arg1: { props: { aProp: any; }; global: { components: { useConfirm: () => { require: (option: import("primevue/confirmationoptions").ConfirmationOptions) => void; close: () => void; }; }; plugins: any[]; }; }) {
+throw new Error("Function not implemented.");
+}
 </script>
 
 <style scoped lang="scss">

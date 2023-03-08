@@ -21,7 +21,10 @@ import Sidebar from "primevue/sidebar";
 import Menubar from "primevue/menubar";
 import Breadcrumb from "primevue/breadcrumb";
 
-// import ConfirmationService from 'primevue/confirmationservice';
+import ConfirmationService from 'primevue/confirmationservice';
+import ConfirmDialog from 'primevue/confirmdialog';
+import Toast from 'primevue/toast';
+import ToastService from 'primevue/toastservice';
 // import ConfirmPopup from 'primevue/confirmpopup';
 
 import "../src/assets/_theme.scss"; //theme
@@ -36,6 +39,9 @@ app.use(createPinia());
 app.use(router);
 
 app.use(PrimeVue);
+app.use(ConfirmationService);
+app.use(ToastService);
+
 
 app.component("Dropdown", Dropdown);
 app.component("DataTable", DataTable);
@@ -48,7 +54,10 @@ app.component("PanelMenu", PanelMenu);
 app.component("Sidebar", Sidebar);
 app.component("Menubar", Menubar);
 app.component("Breadcrumb", Breadcrumb);
-// app.component("ConfirmationService", ConfirmationService);
+app.component("ConfirmationService", ConfirmationService);
+app.component("ConfirmDialog", ConfirmDialog);
+app.component("Toast", Toast);
+app.component("ToastService", ToastService);
 // app.component("ConfirmPopup", ConfirmPopup);
 
 //app.component("FilterMatchMode", FilterMatchMode);

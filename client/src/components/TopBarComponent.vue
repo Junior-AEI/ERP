@@ -43,20 +43,6 @@ import { useRouter } from "vue-router";
 
 const confirm = useConfirm();
 const toast = useToast();
-const confirm1 = () => {
-    confirm.require({
-                message: 'Etes-vous sûr(e) de vouloir supprimer votre compte',
-                header: 'Suppression du compte',
-                icon: 'pi pi-info-circle',
-                acceptClass: 'p-button-danger',
-                accept: () => {
-                    toast.add({severity:'info', summary:'Confirmé', detail:'Compte supprimé', life: 3000});
-                },
-                reject: () => {
-                    toast.add({severity:'error', summary:'Annulé', detail:'Compte pas supprimé', life: 3000});
-                }
-            });
-        }
 
 
 

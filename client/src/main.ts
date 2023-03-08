@@ -25,7 +25,6 @@ import ConfirmationService from 'primevue/confirmationservice';
 import ConfirmDialog from 'primevue/confirmdialog';
 import Toast from 'primevue/toast';
 import ToastService from 'primevue/toastservice';
-// import ConfirmPopup from 'primevue/confirmpopup';
 
 import "../src/assets/_theme.scss"; //theme
 import "primevue/resources/primevue.min.css"; //core css
@@ -58,9 +57,7 @@ app.component("ConfirmationService", ConfirmationService);
 app.component("ConfirmDialog", ConfirmDialog);
 app.component("Toast", Toast);
 app.component("ToastService", ToastService);
-// app.component("ConfirmPopup", ConfirmPopup);
 
-//app.component("FilterMatchMode", FilterMatchMode);
 
 app.mount("#app");
 //app.use(vuetify).mount("#app");

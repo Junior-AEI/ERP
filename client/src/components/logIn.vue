@@ -25,7 +25,7 @@
 
                     <v-checkbox
                         v-model="checkbox"
-                        :rules="[(v) => !!v || 'You must agree to continue!']"
+                        :rules="[(v : string) => !!v || 'You must agree to continue!']"
                         label="Forgot Password?"
                         required
                     ></v-checkbox>
@@ -45,16 +45,17 @@
 import axios from "axios";
 export default {
     data: () => ({
+        checked1: false,
         valid: true,
         email: "",
         emailRules: [
-            (v) => !!v || "E-mail is required",
-            (v) => /.+@.+\..+/.test(v) || "E-mail must be valid",
+            (v: string) => !!v || "E-mail is required",
+            (v: string) => /.+@.+\..+/.test(v) || "E-mail must be valid",
         ],
         Password: "",
         PasswordRules: [
-            (v) => !!v || "Password is required",
-            (v) =>
+            (v: string) => !!v || "Password is required",
+            (v: string) =>
                 (v && v.length <= 30) ||
                 "Password must be less than 30 characters",
         ],

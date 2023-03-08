@@ -43,17 +43,20 @@
                 </div>
                 <a
                     class="font-medium no-underline ml-2 text-blue-500 text-right cursor-pointer"
-                >Mot de passe oublié ?</a
+                    >Mot de passe oublié ?</a
                 >
             </div>
 
-            <Button @click="connection(login, password)" label="Se connecter" class="w-full"></Button>
+            <Button
+                @click="connection(login, password)"
+                label="Se connecter"
+                class="w-full"
+            ></Button>
         </div>
     </div>
 </template>
 
 <script setup lang="ts">
-
 /*function storageAvailable(type : any) {
     let storage;
     try {
@@ -81,18 +84,17 @@
 
 import axios from "axios";
 axios.defaults.baseURL = "http://localhost:5000/api";
-async function connection(login :string, password: string) {
-    const res = await axios.post('/login', {
-        nomUtilisateur: login,
-        motDePasse: password,
-    }).then((res) => {
-        sessionStorage.setItem('token', res.data.token);
-    });
+async function connection(login: string, password: string) {
+    const res = await axios
+        .post("/login", {
+            nomUtilisateur: login,
+            motDePasse: password,
+        })
+        .then((res) => {
+            sessionStorage.setItem("token", res.data.token);
+        });
 }
-
-
-
 </script>
 <style lang="scss">
-    /*@import "~primeflex/primeflex.css";*/
+/*@import "~primeflex/primeflex.css";*/
 </style>

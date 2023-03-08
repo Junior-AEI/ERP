@@ -23,10 +23,10 @@ import Breadcrumb from "primevue/breadcrumb";
 import Card from "primevue/card";
 import Checkbox from "primevue/checkbox";
 
-import ConfirmationService from 'primevue/confirmationservice';
-import ConfirmDialog from 'primevue/confirmdialog';
-import Toast from 'primevue/toast';
-import ToastService from 'primevue/toastservice';
+import ConfirmationService from "primevue/confirmationservice";
+import ConfirmDialog from "primevue/confirmdialog";
+import Toast from "primevue/toast";
+import ToastService from "primevue/toastservice";
 
 import "../src/assets/_theme.scss"; //theme
 import "primevue/resources/primevue.min.css"; //core css
@@ -43,7 +43,6 @@ app.use(router);
 app.use(PrimeVue);
 app.use(ConfirmationService);
 app.use(ToastService);
-
 
 app.component("Dropdown", Dropdown);
 app.component("DataTable", DataTable);
@@ -66,11 +65,13 @@ app.mount("#app");
 //app.use(vuetify).mount("#app");
 
 axios.interceptors.request.use(
-    config => {
-        config.headers['Authorization'] = `Bearer ${sessionStorage.getItem('token')}`;
+    (config) => {
+        config.headers["Authorization"] = `Bearer ${sessionStorage.getItem(
+            "token"
+        )}`;
         return config;
     },
-    error => {
+    (error) => {
         return Promise.reject(error);
     }
 );

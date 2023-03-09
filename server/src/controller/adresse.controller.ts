@@ -6,6 +6,7 @@ import {
     checkIdIsNotNaN,
     controllerErrorHandler,
 } from "./utils.controller";
+import createHttpError from "http-errors";
 
 const adresseController = {
     getAllAdresses,
@@ -21,26 +22,31 @@ const adresseController = {
  * Throws error if a address already exist in database
  * @param req Request to check (req.body used)
  */
-// async function checkExistingAdresse(req: Request): Promise<void> {
-//   // if id isn't given (case of new address creation), set it to "null" (avoid database error)
-//   if (req.body.id === undefined) req.body.id = null;
+async function checkExistingAdresse(req: Request): Promise<void> {
+    // if id isn't given (case of new address creation), set it to "null" (avoid database error)
+    if (req.body.id === undefined) req.body.id = null;
 
-//   // Check is given address isn't already in database with another id
-//   const existingAdresse = await Adresse.findOne({
-//     where: {
-//       [Op.and]: [
-//         { [Op.not]: { id: req.body.id } },
-//         {
-//           [Op.or]: [
-//             { nom: req.body.nom },
-//             { description: req.body.description },
-//           ],
-//         },
-//       ],
-//     },
-//   });
-//   if (existingAdresse !== null) throw new Error("address already exist");
-// }
+    // Check if given address isn't already in database with another id
+    const existingAdresse = await Adresse.findOne({
+        where: {
+            [Op.and]: [
+                { [Op.not]: { id: req.body.id } },
+                {
+                    [Op.and]: [
+                        { adresse: req.body.adresse },
+                        { complementAdresse: req.body.complementAdresse },
+                        { ville: req.body.ville },
+                        { codePostal: req.body.codePostal },
+                        { pays: req.body.pays },
+                    ],
+                },
+            ],
+        },
+    });
+    if (existingAdresse !== null) {
+        throw createHttpError(409, "Address already exist");
+    }
+}
 
 /**
  * All addresses reader for GET route
@@ -83,16 +89,15 @@ async function getAdresseById(req: Request, res: Response) {
  *  - 500 error for database error
  */
 async function createAdresse(req: Request, res: Response) {
-    // await checkEmptyName(req.body.nom);
-    // await checkExistingAdresse(req);
-
-    // Clean useless creation and update dates if given (setup while creating address)
-    // req.body.createdAt = null;
-    // req.body.updatedAt = null;
-
-    // Create new address from given body
-    await Adresse.create(req.body)
-        .then((adresse) => res.status(201).json(adresse))
+    await checkExistingAdresse(req)
+        .then(() => {
+            // Clean useless creation and update dates if given (setup while creating address)
+            req.body.createdAt = null;
+            req.body.updatedAt = null;
+            // Create new address from given body
+            return Adresse.create(req.body);
+        })
+        .then((adresse) => res.status(201).json({ id: adresse.id }))
         .catch((err) => controllerErrorHandler(err, res));
 }
 
@@ -107,7 +112,6 @@ async function createAdresse(req: Request, res: Response) {
  */
 async function updateAdresse(req: Request, res: Response) {
     // Check is given name is not empty and if given address or address id doesn't already exist
-    // await checkEmptyName(req.body.nom);
     await checkExistingId<Adresse>(req.body.id, Adresse)
         // .then(() => checkExistingAdresse(req))
         .then(() => {

@@ -1,11 +1,13 @@
 <template>
     <div class="nav">
         <div class="img-container">
-            <img
-                class="logo"
-                src="../assets/logos/logo-bi-ff.svg"
-                alt="AEI logo"
-            />
+            <RouterLink to="/">
+                <img
+                    class="logo"
+                    src="../assets/logos/logo-bi-ff.svg"
+                    alt="AEI logo"
+                />
+            </RouterLink>
         </div>
         <div class="nav-menu">
             <PanelMenu :model="items" />
@@ -120,7 +122,7 @@ export default {
     width: 100%;
     height: 100%;
 
-    .img-container {
+    .img-container a {
         display: flex;
         justify-content: center;
         .logo {

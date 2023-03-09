@@ -1,4 +1,5 @@
 <template>
+    <Toast />
     <div class="container">
         <div class="grid-left">
             <Sidebar class="sidebar" />

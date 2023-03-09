@@ -66,7 +66,6 @@
 </template>
 
 <script setup lang="ts">
-
 /*
 Suite du dev :
 TODO : ajouter les regex pour les mails
@@ -82,7 +81,6 @@ TODO : popup mot de passe oublié
 TODO : régler les problèmes de warnings
 TODO : suppression autre page de login (après fin de dev de celle-ci)
  */
-
 
 /*function storageAvailable(type : any) {
     let storage;
@@ -109,21 +107,32 @@ TODO : suppression autre page de login (après fin de dev de celle-ci)
     }
 }*/
 
+import router from "@/router";
 import axios from "axios";
+import { useToast } from "primevue/usetoast";
 
 const checked1 = false;
 let login: string;
 let password: string;
 
+let toast = useToast();
+
 axios.defaults.baseURL = "http://localhost:5000/api";
 async function connection(login: string, password: string) {
-    const res = await axios
+    await axios
         .post("/login", {
             nomUtilisateur: login,
             motDePasse: password,
         })
         .then((res) => {
             sessionStorage.setItem("token", res.data.token);
+        })
+        .catch((err) => {
+            toast.add({
+                severity: "error",
+                summary: "Error",
+                detail: err.response.data.message,
+            });
         });
 }
 </script>

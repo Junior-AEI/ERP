@@ -51,7 +51,7 @@ async function checkExistingPoste(req: Request): Promise<void> {
         },
     });
     if (existingPoste !== null)
-        throw createHttpError(409, "Role already exist");
+        throw createHttpError(409, "Post already exist");
 }
 
 /**
@@ -102,7 +102,7 @@ async function createPoste(req: Request, res: Response) {
             req.body.updatedAt = null;
             return Poste.create(req.body);
         })
-        .then((poste) => res.status(201).json(poste))
+        .then((poste) => res.status(201).json({ id: poste.id }))
         .catch((err) => controllerErrorHandler(err, res));
 }
 

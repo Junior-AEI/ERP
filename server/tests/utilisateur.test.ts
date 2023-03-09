@@ -7,11 +7,8 @@ interface User {
 }
 
 describe("Test `utilisateur` model", () => {
-    test.todo(
-        "create situation where we have the message - Given id is Not A Number-"
-    );
-
     let token = "";
+
     const utilisateurAttributes: string[] = [
         "id",
         "nomUtilisateur",
@@ -105,9 +102,10 @@ describe("Test `utilisateur` model", () => {
                     if (
                         attribute != "id" &&
                         attribute != "createdAt" &&
-                        attribute != "updatedAt"
+                        attribute != "updatedAt" &&
+                        attribute != "motDePasse"
                     ) {
-                        expect(response.body[attribute]).toBe(
+                        expect(checkResponse.body[attribute]).toBe(
                             newUser[attribute]
                         );
                     } else {
@@ -115,8 +113,6 @@ describe("Test `utilisateur` model", () => {
                         expect(checkResponse.body[attribute]).not.toBeNull();
                     }
                 });
-                // return password too so pb here !
-                // what should we do if the value returned are supposed to be a secret ?
 
                 expect(response.statusCode).toBe(200);
             });
@@ -207,6 +203,12 @@ describe("Test `utilisateur` model", () => {
                     .set("Authorization", token);
 
                 expect(response.statusCode).toBe(204);
+
+                const checkResponse = await request(baseURL)
+                    .get(`/utilisateur/${idNewUser}`)
+                    .set("Authorization", token);
+
+                expect(checkResponse.body).toBeNull();
             });
 
             test("Delete already deleted `utilisateur` nadjime ", async () => {

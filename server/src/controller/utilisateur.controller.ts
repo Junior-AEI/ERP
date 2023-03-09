@@ -111,7 +111,7 @@ async function createUtilisateur(req: Request, res: Response) {
             return Utilisateur.create(req.body);
         })
         .then((user) => {
-            res.json(user);
+            res.json({ id: user.id });
         })
         .catch((err) => controllerErrorHandler(err, res));
 }

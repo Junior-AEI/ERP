@@ -31,6 +31,8 @@ import ToastService from "primevue/toastservice";
 import "../src/assets/_theme.scss"; //theme
 import "primevue/resources/primevue.min.css"; //core css
 import "primeicons/primeicons.css";
+import Message from "primevue/message";
+
 /*import "primeflex/primeflex.css";*/
 
 import axios from "axios";
@@ -61,6 +63,7 @@ app.component("ConfirmationService", ConfirmationService);
 app.component("ConfirmDialog", ConfirmDialog);
 app.component("Toast", Toast);
 app.component("ToastService", ToastService);
+app.component("Message", Message);
 app.mount("#app");
 //app.use(vuetify).mount("#app");
 

@@ -54,7 +54,10 @@
                         >Mot de passe oublié ?</a
                     >
                 </div>
-
+                <Message v-if="wrongValue" severity="error" :closable="false"
+                    >Les informations transmises n'ont pas permis de vous
+                    authentifier.</Message
+                >
                 <Button
                     @click="connection(login, password)"
                     label="Se connecter"
@@ -69,8 +72,10 @@
 /*
 Suite du dev :
 TODO : ajouter les regex pour les mails
+TODO : transformer la page en component vue
+TODO : regarder les vars globales (à défricher)
 TODO : ajouter les regex pour les mots de passe
-TODO : refaire la connexion avec Pinia
+TODO : refaire la connexion avec Pinia (à défricher)
 TODO : vérifier si le storage est disponible
 TODO : nettoyer page de login (suppression des autres vues)
 TODO : catch des erreurs
@@ -80,6 +85,7 @@ TODO : bouton se souvenir de moi (à garder ou pas ?)
 TODO : popup mot de passe oublié
 TODO : régler les problèmes de warnings
 TODO : suppression autre page de login (après fin de dev de celle-ci)
+TODO : régler le problème de non réapparition de message
  */
 
 /*function storageAvailable(type : any) {
@@ -109,15 +115,14 @@ TODO : suppression autre page de login (après fin de dev de celle-ci)
 
 import router from "@/router";
 import axios from "axios";
-import { useToast } from "primevue/usetoast";
+import { ref } from "vue";
+import * as async_hooks from "async_hooks";
 
 const checked1 = false;
 let login: string;
 let password: string;
+let wrongValue = ref(false);
 
-let toast = useToast();
-
-axios.defaults.baseURL = "http://localhost:5000/api";
 async function connection(login: string, password: string) {
     await axios
         .post("/login", {
@@ -127,12 +132,9 @@ async function connection(login: string, password: string) {
         .then((res) => {
             sessionStorage.setItem("token", res.data.token);
         })
-        .catch((err) => {
-            toast.add({
-                severity: "error",
-                summary: "Error",
-                detail: err.response.data.message,
-            });
+        .catch(() => {
+            wrongValue.value = true;
+            setTimeout(() => (wrongValue.value = false), 3000);
         });
 }
 </script>

@@ -66,6 +66,24 @@
 </template>
 
 <script setup lang="ts">
+
+/*
+Suite du dev :
+TODO : ajouter les regex pour les mails
+TODO : ajouter les regex pour les mots de passe
+TODO : refaire la connexion avec Pinia
+TODO : vérifier si le storage est disponible
+TODO : nettoyer page de login (suppression des autres vues)
+TODO : catch des erreurs
+TODO : mauvais mot de passe ou login
+TODO : changement de page après connexion
+TODO : bouton se souvenir de moi (à garder ou pas ?)
+TODO : popup mot de passe oublié
+TODO : régler les problèmes de warnings
+TODO : suppression autre page de login (après fin de dev de celle-ci)
+ */
+
+
 /*function storageAvailable(type : any) {
     let storage;
     try {

@@ -5,6 +5,7 @@ import ClientsView from "../views/ClientsView.vue";
 import PostsView from "../views/PostsView.vue";
 import MemberView from "../views/MemberView.vue";
 import AddUserView from "../views/AddUserView.vue";
+import DocumentView from "../views/DocumentView.vue";
 
 import axios from "axios";
 
@@ -48,6 +49,11 @@ const router = createRouter({
             // this generates a separate chunk (About.[hash].js) for this route
             // which is lazy-loaded when the route is visited.
             component: () => import("../views/AboutView.vue"),
+        },
+        {
+            path: "/doc",
+            name: "doc",
+            component: DocumentView,
         },
     ],
 });

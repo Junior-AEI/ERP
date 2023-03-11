@@ -23,6 +23,7 @@ import Breadcrumb from "primevue/breadcrumb";
 import Card from "primevue/card";
 import Checkbox from "primevue/checkbox";
 import Fieldset from "primevue/fieldset";
+import ProgressBar from "primevue/progressbar";
 
 import ConfirmationService from "primevue/confirmationservice";
 import ConfirmDialog from "primevue/confirmdialog";
@@ -36,6 +37,8 @@ import Message from "primevue/message";
 import SelectButton from "primevue/selectbutton";
 import Calendar from "primevue/calendar";
 import InputNumber from "primevue/inputnumber";
+
+import FileUpload from "primevue/fileupload";
 
 /*import "primeflex/primeflex.css";*/
 
@@ -115,6 +118,8 @@ app.component("Message", Message);
 app.component("SelectButton", SelectButton);
 app.component("Calendar", Calendar);
 
+app.component("FileUpload", FileUpload);
+app.component("ProgressBar", ProgressBar);
 app.mount("#app");
 //app.use(vuetify).mount("#app");
 

@@ -6,7 +6,6 @@ import adresseRoute from "./adresse.route";
 import adherentRoute from "./adherent.route";
 import entrepriseRoute from "./entreprise.route";
 import clientRoute from "./client.route";
-import poleRoute from "./pole.route";
 
 import {
     getUsername,
@@ -27,6 +26,5 @@ router.use("/adresse", getUsername, verifyAuthentication, adresseRoute);
 router.use("/adherent", getUsername, verifyAuthentication, adherentRoute);
 router.use("/entreprise", getUsername, verifyAuthentication, entrepriseRoute);
 router.use("/client", getUsername, verifyAuthentication, clientRoute);
-router.use("/pole", getUsername, verifyAuthentication, poleRoute);
 
 export default router;

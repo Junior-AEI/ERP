@@ -2,11 +2,7 @@
     <div class="nav">
         <div class="img-container">
             <RouterLink to="/">
-                <img
-                    class="logo"
-                    src="../assets/logos/logo-bi-ff.svg"
-                    alt="AEI logo"
-                />
+                <img class="logo" src="../assets/logos/logo-bi-ff.svg" alt="AEI logo" />
             </RouterLink>
         </div>
         <div class="nav-menu">
@@ -51,6 +47,22 @@ export default {
                             label: "List",
                             to: "/Posts",
                         },
+                    ],
+                },
+                {
+                    label: "Documents",
+                    icon: "pi pi-fw pi-doc",
+                    items: [
+                        {
+                            icon: "pi pi-fw pi-bars",
+                            label: "Upload",
+                            to: "/doc",
+                        },
+
+                        // {
+                        //     label: "New",
+                        //     icon: "pi pi-fw pi-user-plus",
+                        // },
                     ],
                 },
                 // {
@@ -131,6 +143,7 @@ export default {
     .img-container a {
         display: flex;
         justify-content: center;
+
         .logo {
             width: 90%;
         }

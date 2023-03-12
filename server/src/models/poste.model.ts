@@ -8,8 +8,11 @@ import {
     HasMany,
     IsDate,
     NotEmpty,
+    BelongsTo,
+    ForeignKey,
 } from "sequelize-typescript";
 import { Utilisateur } from "./utilisateur.model";
+import { Pole } from "./pole.model";
 
 @Table
 export class Poste extends Model<Poste> {
@@ -27,6 +30,15 @@ export class Poste extends Model<Poste> {
 
     @HasMany(() => Utilisateur)
     utilisateurs!: Utilisateur[];
+
+    @ForeignKey(() => Pole)
+    @Column({
+        type: DataType.STRING,
+    })
+    nomPole!: string;
+
+    @BelongsTo(() => Pole)
+    pole!: Pole;
 
     @IsDate
     @CreatedAt

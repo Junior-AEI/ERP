@@ -15,6 +15,7 @@ import {
     PrimaryKey,
 } from "sequelize-typescript";
 import { Poste } from "./poste.model";
+import { Pole } from "./pole.model";
 
 @Table
 export class Utilisateur extends Model {
@@ -107,5 +108,4 @@ export class Utilisateur extends Model {
     })
     updatedAt!: Date;
 }
-
-sequelize.addModels([Utilisateur, Poste]);
+sequelize.addModels([Utilisateur, Poste, Pole]);

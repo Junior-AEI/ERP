@@ -33,13 +33,19 @@ async function getPoleByName(req: Request, res: Response) {
 
 async function createPole(req: Request, res: Response) {
     await checkEmptyName(req.body.nom)
-        .then(() => {
+        .then(() => Pole.findByPk(req.body.nom))
+        .then((pole) => {
+            if (pole !== null) {
+                console.log("Pole already exist");
+                res.status(409).json({ message: "Pole already exist" });
+                return;
+            }
             req.body.createdAt = null;
             req.body.updatedAt = null;
-            return Pole.create(req.body);
-        })
-        .then((pole) => res.status(201).json({ nom: pole.nom }))
-        .catch((err) => controllerErrorHandler(err, res));
+            Pole.create(req.body)
+                .then((pole) => res.status(201).json({ nom: pole.nom }))
+                .catch((err) => controllerErrorHandler(err, res));
+        });
 }
 
 async function deletePoste(req: Request, res: Response) {

@@ -75,6 +75,7 @@ import axios from "axios";
 
 function handleClick() {
     console.log("ajout utilisateur");
+    window.location.href='../adduser';
 }
 
 const filters = ref({

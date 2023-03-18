@@ -32,6 +32,9 @@ import "../src/assets/_theme.scss"; //theme
 import "primevue/resources/primevue.min.css"; //core css
 import "primeicons/primeicons.css";
 import Message from "primevue/message";
+import SelectButton from 'primevue/selectbutton';
+import Calendar from 'primevue/calendar';
+import InputNumber from 'primevue/inputnumber';
 
 /*import "primeflex/primeflex.css";*/
 
@@ -42,7 +45,15 @@ const app = createApp(App);
 app.use(createPinia());
 app.use(router);
 
-app.use(PrimeVue);
+app.use(PrimeVue, {
+    locale: {
+    dayNames: ['Dimanche', 'Lundi', 'Mardi', 'Mercredi', 'Jeudi', 'Vendredi', 'Samedi'],
+    dayNamesShort : ['Dim', 'Lun', 'Mar', 'Mer', 'Jeu', 'Ven', 'Sam'], 
+    dayNamesMin : ['Di', 'Lu', 'Ma', 'Me', 'Je', 'Ve', 'Sa'],
+    monthNames : ['Janvier', 'Février', 'Mars', 'Avril', 'Mai', 'Juin', 'Juillet', 'Août', 'Septembre', 'Octobre', 'Novembre', 'Décembre'],
+    monthNamesShort : ['Jan', 'Fév', 'Mar', 'Avr', 'Mai', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']
+    }
+    });
 app.use(ConfirmationService);
 app.use(ToastService);
 
@@ -50,6 +61,7 @@ app.component("Dropdown", Dropdown);
 app.component("DataTable", DataTable);
 app.component("Button", Button);
 app.component("InputText", InputText);
+app.component("InputNumber", InputNumber);
 app.component("Column", Column);
 app.component("ColumnGroup", ColumnGroup);
 app.component("Row", Row);
@@ -64,6 +76,9 @@ app.component("ConfirmDialog", ConfirmDialog);
 app.component("Toast", Toast);
 app.component("ToastService", ToastService);
 app.component("Message", Message);
+app.component("SelectButton", SelectButton);
+app.component("Calendar", Calendar);
+
 app.mount("#app");
 //app.use(vuetify).mount("#app");
 

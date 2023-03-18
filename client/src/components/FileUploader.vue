@@ -4,7 +4,7 @@
             name="demo[]"
             :customUpload="true"
             @uploader="FileUploader"
-            :multiple="true"
+            :multiple="false"
             accept="application/pdf"
             :maxFileSize="1000000"
         >

@@ -3,6 +3,7 @@ import express from "express";
 import { upload } from "../middlewares/document.middleware";
 
 const router = express.Router();
-router.post("/", upload.single("file"), documentController.uploadDocument);
+router.post("/", documentController.createDocument);
+router.post("/:id", upload.single("file"), documentController.uploadNewVersion);
 
 export default router;

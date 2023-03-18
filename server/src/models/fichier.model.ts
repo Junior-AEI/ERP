@@ -1,30 +1,46 @@
 import { sequelize } from "../config/database.config";
+import { Document } from "./document.model";
 import {
     Table,
     Column,
     Model,
     DataType,
     NotEmpty,
-    HasMany,
     IsDate,
     CreatedAt,
     UpdatedAt,
-    Unique,
+    ForeignKey,
+    BelongsTo,
+    PrimaryKey,
 } from "sequelize-typescript";
-import { Fichier } from "./fichier.model";
 
 @Table
-export class Document extends Model<Document> {
-    @Unique
+export class Fichier extends Model {
+    @PrimaryKey
+    @Column({
+        type: DataType.INTEGER,
+        allowNull: false,
+        primaryKey: true,
+        autoIncrement: true,
+    })
+    id!: number;
+
     @NotEmpty
     @Column({
         type: DataType.STRING,
         allowNull: false,
     })
-    nom!: string;
+    chemin!: string;
 
-    @HasMany(() => Fichier)
-    versions!: Fichier[];
+    @ForeignKey(() => Document)
+    @Column({
+        type: DataType.INTEGER,
+        allowNull: false,
+    })
+    documentId!: number;
+
+    @BelongsTo(() => Document)
+    document!: Document;
 
     @IsDate
     @CreatedAt
@@ -42,3 +58,5 @@ export class Document extends Model<Document> {
     })
     updatedAt!: Date;
 }
+
+sequelize.addModels([Document, Fichier]);

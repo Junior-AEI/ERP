@@ -66,7 +66,6 @@
 </template>
 
 <script setup lang="ts">
-
 /*
 Suite du dev :
 TODO : ajouter les regex pour les mails
@@ -82,7 +81,6 @@ TODO : popup mot de passe oublié
 TODO : régler les problèmes de warnings
 TODO : suppression autre page de login (après fin de dev de celle-ci)
  */
-
 
 /*function storageAvailable(type : any) {
     let storage;

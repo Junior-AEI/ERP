@@ -27,6 +27,16 @@ const router = createRouter({
             component: ClientsView,
         },
         {
+            path: "/member",
+            name: "member",
+            component: MemberView,
+        },
+        {
+            path: "/posts",
+            name: "posts",
+            component: PostsView,
+        },
+        {
             path: "/adduser",
             name: "adduser",
             component: AddUserView,

@@ -88,14 +88,12 @@ const filters = ref({
 
 let clients = ref([]);
 
-
 onMounted(() => {
     axios.get("/client").then((data) => {
         //console.log(data.data);
         clients.value = data.data;
     });
 });
-
 </script>
 <style lang="scss" scoped>
 @import "../assets/colors.scss";

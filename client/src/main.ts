@@ -32,9 +32,9 @@ import "../src/assets/_theme.scss"; //theme
 import "primevue/resources/primevue.min.css"; //core css
 import "primeicons/primeicons.css";
 import Message from "primevue/message";
-import SelectButton from 'primevue/selectbutton';
-import Calendar from 'primevue/calendar';
-import InputNumber from 'primevue/inputnumber';
+import SelectButton from "primevue/selectbutton";
+import Calendar from "primevue/calendar";
+import InputNumber from "primevue/inputnumber";
 
 /*import "primeflex/primeflex.css";*/
 
@@ -47,13 +47,47 @@ app.use(router);
 
 app.use(PrimeVue, {
     locale: {
-    dayNames: ['Dimanche', 'Lundi', 'Mardi', 'Mercredi', 'Jeudi', 'Vendredi', 'Samedi'],
-    dayNamesShort : ['Dim', 'Lun', 'Mar', 'Mer', 'Jeu', 'Ven', 'Sam'], 
-    dayNamesMin : ['Di', 'Lu', 'Ma', 'Me', 'Je', 'Ve', 'Sa'],
-    monthNames : ['Janvier', 'Février', 'Mars', 'Avril', 'Mai', 'Juin', 'Juillet', 'Août', 'Septembre', 'Octobre', 'Novembre', 'Décembre'],
-    monthNamesShort : ['Jan', 'Fév', 'Mar', 'Avr', 'Mai', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']
-    }
-    });
+        dayNames: [
+            "Dimanche",
+            "Lundi",
+            "Mardi",
+            "Mercredi",
+            "Jeudi",
+            "Vendredi",
+            "Samedi",
+        ],
+        dayNamesShort: ["Dim", "Lun", "Mar", "Mer", "Jeu", "Ven", "Sam"],
+        dayNamesMin: ["Di", "Lu", "Ma", "Me", "Je", "Ve", "Sa"],
+        monthNames: [
+            "Janvier",
+            "Février",
+            "Mars",
+            "Avril",
+            "Mai",
+            "Juin",
+            "Juillet",
+            "Août",
+            "Septembre",
+            "Octobre",
+            "Novembre",
+            "Décembre",
+        ],
+        monthNamesShort: [
+            "Jan",
+            "Fév",
+            "Mar",
+            "Avr",
+            "Mai",
+            "Jun",
+            "Jul",
+            "Aug",
+            "Sep",
+            "Oct",
+            "Nov",
+            "Dec",
+        ],
+    },
+});
 app.use(ConfirmationService);
 app.use(ToastService);
 

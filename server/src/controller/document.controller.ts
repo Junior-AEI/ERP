@@ -7,6 +7,7 @@ import { controllerErrorHandler } from "./utils.controller";
 const documentController = {
     createDocument,
     uploadNewVersion,
+    getAllDocuments,
 };
 
 async function createDocument(req: Request, res: Response) {
@@ -48,4 +49,16 @@ async function uploadNewVersion(req: Request, res: Response) {
     }
 }
 
+async function getAllDocuments(req: Request, res: Response) {
+    await Document.findAll({
+        include: {
+            model: Fichier,
+            separate: true,
+            order: [["createdAt", "DESC"]],
+        },
+        order: [["updatedAt", "DESC"]],
+    })
+        .then((docs) => res.status(200).json(docs))
+        .catch((err) => controllerErrorHandler(err, res));
+}
 export default documentController;

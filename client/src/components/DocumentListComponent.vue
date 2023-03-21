@@ -19,7 +19,7 @@
                                 icon="pi pi-eye"
                             ></Button>
                             <Button
-                                @click="displayUpload = true"
+                                @click="preUpload(doc.id)"
                                 class="flex flex-wrap button"
                                 icon="pi pi-upload"
                             ></Button>
@@ -30,21 +30,25 @@
                     <li
                         class="flex justify-content-between align-items-center py-2 px-1 surface-border flex-wrap"
                     >
-                        <span class="flex flex-wrap">{{ v.chemin }}</span>
-                        <span class="flex flex-wrap">{{ v.createdAt }}</span>
+                        <span class="flex flex-wrap">{{
+                            doc.nom + "_" + v.chemin.slice(-12)
+                        }}</span>
+                        <span class="flex flex-wrap">{{
+                            new Date(v.createdAt).toLocaleString()
+                        }}</span>
                     </li>
                 </ul>
+                <Dialog
+                    v-model:visible="displayUpload"
+                    modal
+                    header="Uploader une nouvelle version"
+                    :style="{ width: '50vw' }"
+                >
+                    <FileUploader :docId="docIdToUpload" />
+                </Dialog>
             </AccordionTab>
         </Accordion>
     </div>
-    <Dialog
-        v-model:visible="displayUpload"
-        modal
-        header="Uploader une nouvelle version"
-        :style="{ width: '50vw' }"
-    >
-        <FileUploader />
-    </Dialog>
 </template>
 
 <script setup lang="ts">
@@ -55,51 +59,23 @@ import Tag from "primevue/tag";
 import Dialog from "primevue/dialog";
 
 import { ref, onMounted } from "vue";
+import axios from "axios";
 
 let displayUpload = ref(false);
+let docIdToUpload = ref();
 const documents = ref();
 
-const getTreeTableNodesData = () => {
-    return [
-        {
-            nom: "Convention d'Étude",
-            updatedAt: new Date(),
-            status: "Validé",
-            versions: [
-                {
-                    id: 1,
-                    chemin: "database/document/CE_v2.pdf",
-                    createdAt: "2015-09-17",
-                    statut: "En cours",
-                },
-                {
-                    id: 1,
-                    chemin: "database/document/CE_v1.pdf",
-                    createdAt: "2015-09-13",
-                },
-            ],
-        },
-        {
-            nom: "Récapitulatif de Mission",
-            updatedAt: new Date(),
-            status: "À relire",
-            versions: [
-                {
-                    id: 1,
-                    chemin: "database/document/RM_V2.pdf",
-                    createdAt: "2015-09-13",
-                },
-                {
-                    id: 1,
-                    chemin: "database/document/RM_v1.pdf",
-                    createdAt: "2015-09-15",
-                },
-            ],
-        },
-    ];
+const preUpload = (docId: number) => {
+    displayUpload.value = true;
+    docIdToUpload.value = docId;
 };
 
-const getTreeTableNodes = Promise.resolve(getTreeTableNodesData());
+const getTreeTableNodes = () => {
+    axios.get("http://localhost:5000/api/document").then((data) => {
+        console.log(data.data);
+        documents.value = data.data;
+    });
+};
 
 const getSeverity = (doc: any) => {
     switch (doc.status) {
@@ -120,7 +96,7 @@ const getSeverity = (doc: any) => {
     }
 };
 onMounted(() => {
-    getTreeTableNodes.then((doc) => (documents.value = doc));
+    getTreeTableNodes();
 });
 </script>
 

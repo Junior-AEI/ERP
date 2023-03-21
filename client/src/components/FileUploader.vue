@@ -29,6 +29,7 @@
 import axios from "axios";
 import { useToast } from "primevue/usetoast";
 const toast = useToast();
+const props = defineProps<{ docId: Number }>();
 
 const FileUploader = async (event: { files: File[] }) => {
     const formData = new FormData();
@@ -36,7 +37,7 @@ const FileUploader = async (event: { files: File[] }) => {
         formData.append("file", file);
     });
     axios
-        .post("http://localhost:5000/api/document/1/", formData)
+        .post(`http://localhost:5000/api/document/${props.docId}/`, formData)
         .then(() => {
             toast.add({
                 severity: "success",

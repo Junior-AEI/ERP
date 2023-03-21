@@ -1,5 +1,9 @@
 <template>
     <DataTable
+        v-model:selection="selectedUser"
+        selectionMode="single"
+        :metaKeySelection="false"
+        @rowSelect="onRowSelect"
         :value="users"
         responsiveLayout="scroll"
         dataKey="id"
@@ -69,14 +73,22 @@
 </template>
 
 <script setup lang="ts">
+import axios from "axios";
 import { FilterMatchMode } from "primevue/api";
 import { onMounted, ref } from "vue";
-import axios from "axios";
+import { useRouter } from "vue-router";
+
+const router = useRouter();
 
 function handleClick() {
     console.log("ajout utilisateur");
     window.location.href = "../adduser";
 }
+
+const selectedUser = ref();
+const onRowSelect = (event: any) => {
+    router.push(`/users/${event.data.id}`);
+};
 
 const filters = ref({
     nom: { value: null, matchMode: FilterMatchMode.STARTS_WITH },

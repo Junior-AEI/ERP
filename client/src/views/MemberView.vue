@@ -6,8 +6,10 @@
 
 <script setup lang="ts">
 import MemberInfoComponent from "../components/MemberInfoComponent.vue";
+import { useRoute } from "vue-router";
 
-const my_id = 1;
+const route = useRoute();
+const my_id = route.params.id;
 </script>
 
 <style scoped lang="scss">

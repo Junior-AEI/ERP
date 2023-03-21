@@ -21,14 +21,14 @@ const router = createRouter({
             component: UsersView,
         },
         {
+            path: `/users/:id`,
+            name: "member",
+            component: MemberView,
+        },
+        {
             path: "/clients",
             name: "clients",
             component: ClientsView,
-        },
-        {
-            path: "/member",
-            name: "member",
-            component: MemberView,
         },
         {
             path: "/adduser",

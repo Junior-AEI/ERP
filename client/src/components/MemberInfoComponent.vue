@@ -141,7 +141,7 @@
             </Fieldset>
         </template>
         <template #footer>
-            <Button icon="pi pi-check" label="Modifier" />
+            <Button icon="pi pi-check" label="Modifier" @click="modifyUser" />
             <Button
                 icon="pi pi-times"
                 label="Supprimer"
@@ -165,14 +165,16 @@ let adresse = ref({});
 
 onMounted(() => {
     axios.get(`/adherent/${props.id_user}`).then((data) => {
-        console.log(data.data);
         user.value = data.data;
     });
     axios.get(`/adresse/${props.id_user}`).then((data) => {
-        console.log(data.data);
         adresse.value = data.data;
     });
 });
+
+function modifyUser() {
+    console.log("modify User");
+}
 
 function convertDate(date: string) {
     const d = new Date(date);

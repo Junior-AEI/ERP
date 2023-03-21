@@ -36,7 +36,7 @@ const FileUploader = async (event: { files: File[] }) => {
         formData.append("file", file);
     });
     axios
-        .post("http://localhost:5000/api/document/", formData)
+        .post("http://localhost:5000/api/document/1/", formData)
         .then(() => {
             toast.add({
                 severity: "success",

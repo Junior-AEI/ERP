@@ -28,6 +28,7 @@ export default {
 
 <style lang="scss">
 @import "./assets/_theme.scss";
+@import "/node_modules/primeflex/primeflex.css";
 
 * {
     box-sizing: border-box;

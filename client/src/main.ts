@@ -24,9 +24,13 @@ import Card from "primevue/card";
 import Checkbox from "primevue/checkbox";
 import Fieldset from "primevue/fieldset";
 import ProgressBar from "primevue/progressbar";
+import Fieldset from "primevue/fieldset";
 
 import ConfirmationService from "primevue/confirmationservice";
 import ConfirmDialog from "primevue/confirmdialog";
+import Dialog from "primevue/dialog";
+import Accordion from "primevue/accordion";
+import AccordionTab from "primevue/accordiontab";
 import Toast from "primevue/toast";
 import ToastService from "primevue/toastservice";
 
@@ -111,6 +115,9 @@ app.component("Card", Card);
 app.component("Checkbox", Checkbox);
 app.component("ConfirmationService", ConfirmationService);
 app.component("ConfirmDialog", ConfirmDialog);
+app.component("Accordion", Accordion);
+app.component("AccordionTab", AccordionTab);
+app.component("Dialog", Dialog);
 app.component("Toast", Toast);
 app.component("ToastService", ToastService);
 app.component("Fieldset", Fieldset);
@@ -120,6 +127,7 @@ app.component("Calendar", Calendar);
 
 app.component("FileUpload", FileUpload);
 app.component("ProgressBar", ProgressBar);
+app.component("Fieldset", Fieldset);
 app.mount("#app");
 //app.use(vuetify).mount("#app");
 

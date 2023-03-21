@@ -2,6 +2,7 @@ import { createRouter, createWebHistory } from "vue-router";
 import HomeView from "../views/HomeView.vue";
 import UsersView from "../views/UsersView.vue";
 import ClientsView from "../views/ClientsView.vue";
+import MemberView from "../views/MemberView.vue";
 import axios from "axios";
 
 const router = createRouter({
@@ -21,6 +22,11 @@ const router = createRouter({
             path: "/clients",
             name: "clients",
             component: ClientsView,
+        },
+        {
+            path: "/member",
+            name: "member",
+            component: MemberView,
         },
         {
             path: "/about",

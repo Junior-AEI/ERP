@@ -22,6 +22,7 @@ import Menubar from "primevue/menubar";
 import Breadcrumb from "primevue/breadcrumb";
 import Card from "primevue/card";
 import Checkbox from "primevue/checkbox";
+import Fieldset from "primevue/fieldset";
 
 import ConfirmationService from "primevue/confirmationservice";
 import ConfirmDialog from "primevue/confirmdialog";
@@ -61,6 +62,7 @@ app.component("ConfirmationService", ConfirmationService);
 app.component("ConfirmDialog", ConfirmDialog);
 app.component("Toast", Toast);
 app.component("ToastService", ToastService);
+app.component("Fieldset", Fieldset);
 app.mount("#app");
 //app.use(vuetify).mount("#app");
 

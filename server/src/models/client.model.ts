@@ -114,4 +114,3 @@ export class Client extends Model {
 }
 
 sequelize.addModels([Client, Entreprise]);
-console.log(Client.getAttributes());

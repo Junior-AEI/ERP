@@ -8,7 +8,6 @@
             class="p-button-rounded p-button-info p-button-text"
             aria-label="User"
         />
-        <Toast />
         <ConfirmDialog></ConfirmDialog>
         <ConfirmDialog group="templating">
             <template #message="slotProps">

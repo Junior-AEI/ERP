@@ -62,4 +62,3 @@ export class Entreprise extends Model {
 }
 
 sequelize.addModels([Entreprise, Adresse]);
-console.log(Entreprise.getAttributes());

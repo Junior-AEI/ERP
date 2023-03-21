@@ -9,7 +9,8 @@
         "migrate": "node src/migrations/migrate.js",
         "seed": "node src/migrations/seed.js",
         "test": "vitest",
-        "coverage": "vitest run --coverage"
+        "test_ui": "vitest --ui",
+        "coverage": "vitest --config ./vitest.config.ts run --coverage"
     },
     "keywords": [],
     "author": "",
@@ -36,7 +37,8 @@
         "@types/node": "^18.13.0",
         "@types/supertest": "^2.0.12",
         "@types/umzug": "^2.3.3",
-        "@vitest/coverage-c8": "^0.29.2",
+        "@vitest/coverage-istanbul": "^0.29.2",
+        "@vitest/ui": "^0.29.2",
         "nodemon": "^2.0.20",
         "sequelize-cli": "^6.5.2",
         "sequelize-typescript": "^2.1.5",

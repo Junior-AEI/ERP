@@ -45,7 +45,6 @@ async function checkExistingUtilisateur(req: Request): Promise<void> {
 }
 
 async function checkPasswordStrength(password: string) {
-    console.log(password.length);
     if (password === null || password === undefined) {
         throw createHttpError(400, "Empty password given");
         // TODO : Discuss about password strength checking
@@ -110,7 +109,9 @@ async function createUtilisateur(req: Request, res: Response) {
             req.body.updatedAt = null;
             return Utilisateur.create(req.body);
         })
-        .then(() => res.json())
+        .then((user) => {
+            res.json({ id: user.id });
+        })
         .catch((err) => controllerErrorHandler(err, res));
 }
 

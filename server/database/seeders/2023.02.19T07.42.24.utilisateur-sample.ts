@@ -1,8 +1,7 @@
 import { hashSync } from "bcrypt";
 import type { Seeder } from "../../src/migrations/umzug";
-import { Utilisateur } from "../../src/models/utilisateur.model";
 
-let utilistateurSamples = [
+const utilistateurSamples = [
     {
         id: 1,
         nomUtilisateur: "lorene.marques",

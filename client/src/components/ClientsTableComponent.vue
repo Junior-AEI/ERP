@@ -88,20 +88,9 @@ const filters = ref({
 
 let clients = ref([]);
 
-let companies: { [x: string]: { nom: any } };
-
-onMounted(() => {
-    axios.get("/entreprise").then((data) => {
-        companies = data.data;
-    });
-});
-
 onMounted(() => {
     axios.get("/client").then((data) => {
-        for (let i = 0; i < data.data.length; ++i) {
-            data.data[i].entreprise =
-                companies[data.data[i].entrepriseId - 1].nom;
-        }
+        //console.log(data.data);
         clients.value = data.data;
     });
 });

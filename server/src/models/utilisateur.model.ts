@@ -12,11 +12,22 @@ import {
     IsDate,
     NotEmpty,
     Unique,
+    PrimaryKey,
 } from "sequelize-typescript";
 import { Poste } from "./poste.model";
+import { Pole } from "./pole.model";
 
 @Table
 export class Utilisateur extends Model {
+    @PrimaryKey
+    @Column({
+        type: DataType.INTEGER,
+        allowNull: false,
+        primaryKey: true,
+        autoIncrement: true,
+    })
+    id!: number;
+
     @NotEmpty
     @Unique
     @Column({
@@ -97,5 +108,4 @@ export class Utilisateur extends Model {
     })
     updatedAt!: Date;
 }
-
-sequelize.addModels([Utilisateur, Poste]);
+sequelize.addModels([Utilisateur, Poste, Pole]);

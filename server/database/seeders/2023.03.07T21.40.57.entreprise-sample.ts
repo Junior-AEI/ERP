@@ -20,11 +20,12 @@ const entrepriseSample = [
 ];
 
 export const up: Seeder = async ({ context: sequelize }) => {
-    await sequelize.getQueryInterface().bulkInsert("Entreprises", entrepriseSample);
+    await sequelize
+        .getQueryInterface()
+        .bulkInsert("Entreprises", entrepriseSample);
 };
 export const down: Seeder = async ({ context: sequelize }) => {
     await sequelize
         .getQueryInterface()
         .bulkDelete("Entreprises", { id: entrepriseSample.map((u) => u.id) });
 };
-

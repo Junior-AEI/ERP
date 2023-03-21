@@ -158,4 +158,3 @@ export class Adherent extends Model {
 }
 
 sequelize.addModels([Adherent, Adresse]);
-console.log(Adherent.getAttributes());

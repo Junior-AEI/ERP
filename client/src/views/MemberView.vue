@@ -1,6 +1,6 @@
 <template>
     <div class="flex justify-content-center">
-        <MemberInfoComponent. :id_user="my_id" />
+        <MemberInfoComponent :id_user="my_id" />
     </div>
 </template>
 

@@ -15,8 +15,8 @@ const authController = {
 };
 
 async function login(req: Request, res: Response) {
-    const username = req.body.nomUtilisateur;
-    const password = req.body.motDePasse;
+    const username = req.body.nomUtilisateur || "";
+    const password = req.body.motDePasse || "";
     Utilisateur.findOne({ where: { nomUtilisateur: username } })
         .then((user) => {
             if (user) {

@@ -2,7 +2,11 @@
     <div class="nav">
         <div class="img-container">
             <RouterLink to="/">
-                <img class="logo" src="../assets/logos/logo-bi-ff.svg" alt="AEI logo" />
+                <img
+                    class="logo"
+                    src="../assets/logos/logo-bi-ff.svg"
+                    alt="AEI logo"
+                />
             </RouterLink>
         </div>
         <div class="nav-menu">

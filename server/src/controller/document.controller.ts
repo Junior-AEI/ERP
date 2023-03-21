@@ -3,11 +3,13 @@ import { Fichier } from "../models/fichier.model";
 import { sequelize } from "../config/database.config";
 import { Document } from "../models/document.model";
 import { controllerErrorHandler } from "./utils.controller";
+import fs from "fs";
 
 const documentController = {
     createDocument,
     uploadNewVersion,
     getAllDocuments,
+    downloadFileById,
 };
 
 async function createDocument(req: Request, res: Response) {
@@ -47,6 +49,21 @@ async function uploadNewVersion(req: Request, res: Response) {
             .then(() => res.status(200).json("File uploaded successfully"))
             .catch((err) => controllerErrorHandler(err, res));
     }
+}
+
+async function downloadFileById(req: Request, res: Response) {
+    await Fichier.findByPk(req.params.id, { include: Document })
+        .then((file: Fichier | null) => {
+            if (file === null) {
+                throw new Error("File not found");
+            } else {
+                res.download(
+                    __dirname + "/../../" + file.chemin,
+                    file.document.nom + ".pdf"
+                );
+            }
+        })
+        .catch((err) => controllerErrorHandler(err, res));
 }
 
 async function getAllDocuments(req: Request, res: Response) {

@@ -15,8 +15,11 @@
                                 :severity="getSeverity(doc)"
                             />
                             <Button
+                                @click="
+                                    downloadFile(doc.versions[0].id, doc.nom)
+                                "
                                 class="flex flex-wrap button"
-                                icon="pi pi-eye"
+                                icon="pi pi-download"
                             ></Button>
                             <Button
                                 @click="preUpload(doc.id)"
@@ -26,18 +29,25 @@
                         </div>
                     </div>
                 </template>
-                <ul class="list-none" v-for="v in doc.versions">
-                    <li
-                        class="flex justify-content-between align-items-center py-2 px-1 surface-border flex-wrap"
-                    >
-                        <span class="flex flex-wrap">{{
-                            doc.nom + "_" + v.chemin.slice(-12)
-                        }}</span>
-                        <span class="flex flex-wrap">{{
-                            new Date(v.createdAt).toLocaleString()
-                        }}</span>
-                    </li>
-                </ul>
+                <Timeline :value="doc.versions">
+                    <template #opposite="v">
+                        {{ new Date(v.item.createdAt).toLocaleString() }}
+                    </template>
+                    <template #content="v">
+                        <span>{{ fileName(doc, v.index) }}</span>
+                        <a
+                            @click="
+                                downloadFile(v.item.id, fileName(doc, v.index))
+                            "
+                            href="#"
+                            ><i
+                                class="pi pi-download"
+                                style="color: darkblue"
+                            ></i
+                        ></a>
+                    </template>
+                </Timeline>
+
                 <Dialog
                     v-model:visible="displayUpload"
                     modal
@@ -57,6 +67,7 @@ import AccordionTab from "primevue/accordiontab";
 import FileUploader from "../components/FileUploader.vue";
 import Tag from "primevue/tag";
 import Dialog from "primevue/dialog";
+import Timeline from "primevue/timeline";
 
 import { ref, onMounted } from "vue";
 import axios from "axios";
@@ -65,6 +76,9 @@ let displayUpload = ref(false);
 let docIdToUpload = ref();
 const documents = ref();
 
+const fileName = (doc: any, versionId: number): string => {
+    return doc.nom + "_v" + (doc.versions.length - versionId);
+};
 const preUpload = (docId: number) => {
     displayUpload.value = true;
     docIdToUpload.value = docId;
@@ -75,6 +89,24 @@ const getTreeTableNodes = () => {
         console.log(data.data);
         documents.value = data.data;
     });
+};
+
+const downloadFile = (fileId: number, filename: string) => {
+    axios
+        .get(`http://localhost:5000/api/document/file/${fileId}`, {
+            responseType: "blob",
+        })
+        .then((response) => {
+            const fileURL = window.URL.createObjectURL(
+                new Blob([response.data])
+            );
+            let fURL = document.createElement("a");
+
+            fURL.href = fileURL;
+            fURL.setAttribute("download", filename + ".pdf");
+
+            fURL.click();
+        });
 };
 
 const getSeverity = (doc: any) => {

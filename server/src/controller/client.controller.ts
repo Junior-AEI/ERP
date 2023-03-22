@@ -7,6 +7,7 @@ import {
     controllerErrorHandler,
 } from "./utils.controller";
 import { Op } from "sequelize";
+import createHttpError from "http-errors";
 
 const clientController = {
     getAllClients,
@@ -20,26 +21,26 @@ const clientController = {
  * Throws error if a customer already exist in database
  * @param req Request to check (req.body used)
  */
-// async function checkExistingClient(req: Request): Promise<void> {
-// if id isn't given (case of new customer creation), set it to "null" (avoid database error)
-// if (req.body.id === undefined) req.body.id = null;
+async function checkExistingClient(req: Request): Promise<void> {
+    // if id isn't given (case of new customer creation), set it to "null" (avoid database error)
+    if (req.body.id === undefined) req.body.id = null;
 
-// Check is given customer isn't already in database with another id
-//   const existingClient = await Client.findOne({
-//     where: {
-//       [Op.and]: [
-//         { [Op.not]: { id: req.body.id } },
-//         {
-//           [Op.or]: [
-//             { nom: req.body.nom },
-//             { mail: req.body.mail },
-//           ],
-//         },
-//       ],
-//     },
-//   });
-//   if (existingClient !== null) throw new Error("customer already exist");
-// }
+    // Check is given customer isn't already in database with another id
+    const existingClient = await Client.findOne({
+        where: {
+            [Op.and]: [
+                { [Op.not]: { id: req.body.id } },
+                {
+                    [Op.or]: [{ email: req.body.email },
+                        { telephoneMobile: req.body.telephoneMobile },
+                    ],
+                },
+            ],
+        },
+    });
+    if (existingClient !== null)
+        throw createHttpError(409, "Customer already exist");
+}
 
 /**
  * All customers reader for GET route
@@ -82,16 +83,15 @@ async function getClientById(req: Request, res: Response) {
  *  - 500 error for database error
  */
 async function createClient(req: Request, res: Response) {
-    //TODO: Setup true data checking
-    // await checkExistingId<Entreprise>(req.body.entrepriseId, Entreprise);
-    // await checkExistingClient(req);
+    await checkExistingClient(req)
+        .then(() => {
+            // Clean useless creation and update dates if given (setup while creating customer)
+            req.body.createdAt = null;
+            req.body.updatedAt = null;
 
-    // Clean useless creation and update dates if given (setup while creating customer)
-    // req.body.createdAt = null;
-    // req.body.updatedAt = null;
-
-    await Client.create(req.body)
-        .then((client) => res.status(201).json(client))
+            return Client.create(req.body);
+        })
+        .then((client) => res.status(201).json({ id: client.id }))
         .catch((err) => controllerErrorHandler(err, res));
 }
 
@@ -106,9 +106,8 @@ async function createClient(req: Request, res: Response) {
  */
 async function updateClient(req: Request, res: Response) {
     // Check is given name is not empty and if given customer or customer id doesn't already exist
-    // TODO : Add more checks if necessary
     await checkExistingId<Client>(req.body.id, Client)
-        // .then(() => checkExistingClient(req))
+        .then(() => checkExistingClient(req))
         .then(() => {
             // Clean useless update dates if given (setup while creating customer)
             req.body.updatedAt = null;

@@ -7,6 +7,7 @@ import {
     controllerErrorHandler,
 } from "./utils.controller";
 import { Op } from "sequelize";
+import createHttpError from "http-errors";
 
 const entrepriseController = {
     getAllEntreprises,
@@ -20,26 +21,24 @@ const entrepriseController = {
  * Throws error if a company already exist in database
  * @param req Request to check (req.body used)
  */
-// async function checkExistingEntreprise(req: Request): Promise<void> {
-// if id isn't given (case of new company creation), set it to "null" (avoid database error)
-// if (req.body.id === undefined) req.body.id = null;
+async function checkExistingEntreprise(req: Request): Promise<void> {
+    // if id isn't given (case of new company creation), set it to "null" (avoid database error)
+    if (req.body.id === undefined) req.body.id = null;
 
-// Check is given company isn't already in database with another id
-//   const existingEntreprise = await Entreprise.findOne({
-//     where: {
-//       [Op.and]: [
-//         { [Op.not]: { id: req.body.id } },
-//         {
-//           [Op.or]: [
-//             { nom: req.body.nom },
-//             { entiteJuridique: req.body.entiteJuridique },
-//           ],
-//         },
-//       ],
-//     },
-//   });
-//   if (existingEntreprise !== null) throw new Error("company already exist");
-// }
+    // Check is given company isn't already in database with another id
+    const existingEntreprise = await Entreprise.findOne({
+        where: {
+            [Op.and]: [
+                { [Op.not]: { id: req.body.id } },
+                {
+                    [Op.or]: [{ nom: req.body.nom }],
+                },
+            ],
+        },
+    });
+    if (existingEntreprise !== null)
+        throw createHttpError(409, "Company already exist");
+}
 
 /**
  * All companies reader for GET route
@@ -82,16 +81,15 @@ async function getEntrepriseById(req: Request, res: Response) {
  *  - 500 error for database error
  */
 async function createEntreprise(req: Request, res: Response) {
-    //TODO: Setup true data checking
-    // await checkExistingId<Adresse>(req.body.adresseId, Adresse);
-    // await checkExistingEntreprise(req);
+    await checkExistingEntreprise(req)
+        .then(() => {
+            // Clean useless creation and update dates if given (setup while creating company)
+            req.body.createdAt = null;
+            req.body.updatedAt = null;
 
-    // Clean useless creation and update dates if given (setup while creating company)
-    // req.body.createdAt = null;
-    // req.body.updatedAt = null;
-
-    await Entreprise.create(req.body)
-        .then((entreprise) => res.status(201).json(entreprise))
+            return Entreprise.create(req.body);
+        })
+        .then((entreprise) => res.status(201).json({ id: entreprise.id }))
         .catch((err) => controllerErrorHandler(err, res));
 }
 
@@ -108,7 +106,7 @@ async function updateEntreprise(req: Request, res: Response) {
     // Check is given name is not empty and if given company or company id doesn't already exist
     // TODO : Add more checks if necessary
     await checkExistingId<Entreprise>(req.body.id, Entreprise)
-        // .then(() => checkExistingEntreprise(req))
+        .then(() => checkExistingEntreprise(req))
         .then(() => {
             // Clean useless update dates if given (setup while creating company)
             req.body.updatedAt = null;

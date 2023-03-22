@@ -31,7 +31,8 @@ async function checkExistingClient(req: Request): Promise<void> {
             [Op.and]: [
                 { [Op.not]: { id: req.body.id } },
                 {
-                    [Op.or]: [{ email: req.body.email },
+                    [Op.or]: [
+                        { email: req.body.email },
                         { telephoneMobile: req.body.telephoneMobile },
                     ],
                 },

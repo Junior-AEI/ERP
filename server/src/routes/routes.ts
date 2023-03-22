@@ -2,6 +2,7 @@ import express from "express";
 import utilisateurRouter from "./utilisateur.route";
 import authRoutes from "./auth.route";
 import posteRoute from "./poste.route";
+import poleRoute from "./pole.route";
 import adresseRoute from "./adresse.route";
 import adherentRoute from "./adherent.route";
 import entrepriseRoute from "./entreprise.route";
@@ -16,6 +17,7 @@ import {
 const router = express.Router();
 
 router.use(authRoutes);
+router.use("/pole", getUsername, verifyAuthentication, poleRoute);
 router.use("/poste", getUsername, verifyAuthentication, posteRoute);
 router.use(
     "/utilisateur",

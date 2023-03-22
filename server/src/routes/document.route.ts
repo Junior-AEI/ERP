@@ -6,6 +6,10 @@ const router = express.Router();
 router.get("/", documentController.getAllDocuments);
 router.post("/", documentController.createDocument);
 router.get("/file/:id", documentController.downloadFileById);
-router.post("/:id", upload.single("file"), documentController.uploadNewVersion);
+router.post(
+    "/:id/:statut",
+    upload.single("file"),
+    documentController.uploadNewVersion
+);
 
 export default router;

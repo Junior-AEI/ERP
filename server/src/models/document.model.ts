@@ -1,4 +1,3 @@
-import { sequelize } from "../config/database.config";
 import {
     Table,
     Column,
@@ -10,11 +9,18 @@ import {
     CreatedAt,
     UpdatedAt,
     Unique,
+    IsIn,
 } from "sequelize-typescript";
 import { Fichier } from "./fichier.model";
-
 @Table
-export class Document extends Model<Document> {
+export class Document extends Model {
+    public static readonly STATUT = [
+        "À relire",
+        "À modifier",
+        "Validé",
+        "Signé",
+    ];
+
     @Unique
     @NotEmpty
     @Column({
@@ -25,6 +31,14 @@ export class Document extends Model<Document> {
 
     @HasMany(() => Fichier)
     versions!: Fichier[];
+
+    @IsIn([Document.STATUT])
+    @Column({
+        type: DataType.ENUM,
+        values: Document.STATUT,
+        allowNull: false,
+    })
+    statut!: string;
 
     @IsDate
     @CreatedAt

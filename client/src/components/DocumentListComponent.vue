@@ -11,7 +11,7 @@
                             class="flex flex-wrap justify-content-center align-items-center gap-3"
                         >
                             <Tag
-                                :value="doc.status"
+                                :value="doc.statut"
                                 :severity="getSeverity(doc)"
                             />
                             <Button
@@ -54,7 +54,10 @@
                     header="Uploader une nouvelle version"
                     :style="{ width: '50vw' }"
                 >
-                    <FileUploader :docId="docIdToUpload" />
+                    <FileUploader
+                        :docId="docIdToUpload"
+                        @upload-completed="postUpload()"
+                    />
                 </Dialog>
             </AccordionTab>
         </Accordion>
@@ -83,10 +86,13 @@ const preUpload = (docId: number) => {
     displayUpload.value = true;
     docIdToUpload.value = docId;
 };
+const postUpload = () => {
+    displayUpload.value = false;
+    getTreeTableNodes();
+};
 
 const getTreeTableNodes = () => {
     axios.get("http://localhost:5000/api/document").then((data) => {
-        console.log(data.data);
         documents.value = data.data;
     });
 };
@@ -110,7 +116,7 @@ const downloadFile = (fileId: number, filename: string) => {
 };
 
 const getSeverity = (doc: any) => {
-    switch (doc.status) {
+    switch (doc.statut) {
         case "À relire":
             return "warning";
 
@@ -127,6 +133,7 @@ const getSeverity = (doc: any) => {
             return "danger";
     }
 };
+
 onMounted(() => {
     getTreeTableNodes();
 });

@@ -24,6 +24,7 @@ import Card from "primevue/card";
 import Checkbox from "primevue/checkbox";
 import ProgressBar from "primevue/progressbar";
 import Fieldset from "primevue/fieldset";
+import SplitButton from "primevue/splitbutton";
 
 import ConfirmationService from "primevue/confirmationservice";
 import ConfirmDialog from "primevue/confirmdialog";
@@ -125,6 +126,7 @@ app.component("Fieldset", Fieldset);
 app.component("Message", Message);
 app.component("SelectButton", SelectButton);
 app.component("Calendar", Calendar);
+app.component("SplitButton", SplitButton);
 
 app.component("FileUpload", FileUpload);
 app.component("ProgressBar", ProgressBar);

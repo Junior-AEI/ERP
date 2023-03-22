@@ -3,7 +3,6 @@ import { Fichier } from "../models/fichier.model";
 import { sequelize } from "../config/database.config";
 import { Document } from "../models/document.model";
 import { controllerErrorHandler } from "./utils.controller";
-import fs from "fs";
 
 const documentController = {
     createDocument,
@@ -13,7 +12,10 @@ const documentController = {
 };
 
 async function createDocument(req: Request, res: Response) {
-    Document.create(req.body)
+    await Document.create({
+        nom: req.body.nom,
+        statut: "À relire",
+    })
         .then((doc) => res.json({ id: doc.id }))
         .catch((err) => controllerErrorHandler(err, res));
 }
@@ -43,9 +45,11 @@ async function uploadNewVersion(req: Request, res: Response) {
                 });
                 return { doc, version };
             })
-            .then((input: { doc: Document; version: Fichier }) =>
-                input.doc.$add("version", input.version)
-            )
+            .then((input: { doc: Document; version: Fichier }) => {
+                input.doc.$add("version", input.version);
+                return input.doc;
+            })
+            .then((doc) => doc.update({ statut: req.params.statut }))
             .then(() => res.status(200).json("File uploaded successfully"))
             .catch((err) => controllerErrorHandler(err, res));
     }

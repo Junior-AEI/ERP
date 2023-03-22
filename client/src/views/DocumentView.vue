@@ -38,7 +38,6 @@ import InputText from "primevue/inputtext";
 import axios from "axios";
 
 let docName: string;
-let uploadToggle = true;
 const createDocument = () => {
     axios.post("/document", { nom: docName }).then();
 };

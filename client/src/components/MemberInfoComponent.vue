@@ -140,6 +140,8 @@
                 </div>
             </Fieldset>
         </template>
+        <Toast />
+        <ConfirmDialog></ConfirmDialog>
         <template #footer>
             <Button icon="pi pi-check" label="Modifier" @click="modifyUser" />
             <Button
@@ -147,6 +149,7 @@
                 label="Supprimer"
                 severity="secondary"
                 style="margin-left: 0.5em"
+                @click="delUser"
             />
         </template>
     </Card>
@@ -154,30 +157,103 @@
 
 <script setup lang="ts">
 import { onMounted, ref } from "vue";
+import { useConfirm } from "primevue/useconfirm";
+import { useToast } from "primevue/usetoast";
 import axios from "axios";
+import { useRouter } from "vue-router";
+
+const confirm = useConfirm();
+const toast = useToast();
+const router = useRouter();
+
+interface Adherent {
+    id: string;
+    nom: string;
+    prenom: string;
+    sexe: string;
+    telephoneMobile: string;
+    email: string;
+    dateNaissance: string;
+    lieuNaissance: string;
+    nationalite: string;
+    promotion: string;
+    dateCotisation: string;
+    moyenPaiement: string;
+    filiere: string;
+    adresseId: string;
+    createdAt: string;
+    updatedAt: string;
+}
+
+interface Adresse {
+    id: string;
+    adresse: string;
+    complementAdresse: string;
+    ville: string;
+    codePostal: string;
+    pays: string;
+    createdAt: string;
+    updatedAt: string;
+}
 
 const props = defineProps({
-    id_user: Number,
+    id_user: String,
 });
 
-let user = ref({});
-let adresse = ref({});
+let user = ref({} as Adherent);
+let adresse = ref({} as Adresse);
 
 onMounted(() => {
-    axios.get(`/adherent/${props.id_user}`).then((data) => {
-        user.value = data.data;
-    });
-    axios.get(`/adresse/${props.id_user}`).then((data) => {
-        adresse.value = data.data;
-    });
+    axios
+        .get(`/adherent/${props.id_user}`)
+        .then((data) => {
+            user.value = data.data;
+            return data.data;
+        })
+        .then(
+            (res) => {
+                axios.get(`/adresse/${res.adresseId}`).then((data) => {
+                    adresse.value = data.data;
+                });
+            },
+            (failed: any) =>
+                console.log("Probleme avec la requete get adherent:", failed)
+        );
 });
 
 function modifyUser() {
     console.log("modify User");
 }
 
+function delUser() {
+    confirm.require({
+        message: "Es-tu certain de vouloir supprimer cet adhérent ?",
+        header: "Suppression",
+        icon: "pi pi-info-circle",
+        acceptClass: "p-button-danger",
+        acceptLabel: "Oui",
+        rejectLabel: "Non",
+        accept: () => {
+            axios.delete(`/adresse/${adresse.value.id}`).then(() => {
+                axios.delete(`/adherent/${props.id_user}`);
+            });
+            router.push(`/users`);
+            toast.add({
+                severity: "error",
+                summary: "Suppression validée",
+                detail: "Adhérent supprimé",
+                life: 3000,
+            });
+        },
+        reject: () => {},
+    });
+}
+
 function convertDate(date: string) {
     const d = new Date(date);
+    if (d == undefined) {
+        return date;
+    }
     return d.getDate() + "/" + d.getMonth() + "/" + d.getFullYear();
 }
 

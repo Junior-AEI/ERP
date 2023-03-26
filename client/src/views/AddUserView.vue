@@ -1,86 +1,62 @@
 <template>
-    <div class="form">
-        <div class="personnalInformationBlock">
-            <div class="label">
-                <label class="title">Informations personnelles</label>
-            </div>
-            <div class="personnalInformationInput">
-                <div class="card flex flex-wrap justify-content identity">
-                    <div class="block">
-                        <p>Nom</p>
-                        <span class="p-input-icon-left">
+    <Card style="width: 100%; margin: 10px">
+        <template #content>
+            <div class="flex flex-wrap justify-content-center gap-3">
+                <Fieldset class="flex-auto">
+                    <template #legend>
+                        <div class="flex align-items-center">
+                            <span class="pi pi-user mr-2"></span>
+                            <span class="font-bold"
+                                >Informations personnelles</span
+                            >
+                        </div>
+                    </template>
+
+                    <div class="surface-section">
+                        <ul class="list-none p-0 m-0">
+                            <li class="row">
+                                <div class="key1">Nom</div>
+                                <span class="p-input-icon-left">
                             <i class="pi pi-user" />
                             <InputText placeholder="Nom" v-model="lastName" />
                         </span>
-                    </div>
-                    <div class="block">
-                        <p>Prénom</p>
-                        <span class="p-input-icon-left">
+                            </li>
+
+                            <li class="row">
+                                <div class="key1">Prenom</div>
+                                <span class="p-input-icon-left">
                             <i class="pi pi-user" />
                             <InputText
                                 placeholder="Prénom"
                                 v-model="firstName"
                             />
                         </span>
-                    </div>
-                    <div class="block">
-                        <p>Genre</p>
-                        <Dropdown
+                            </li>
+                            <li class="row">
+                                <div class="key1">Genre</div>
+                                <Dropdown
                             v-model="selectedGender"
                             :options="gender"
                             optionLabel="name"
                             placeholder="Genre"
                             class="select"
                         />
-                    </div>
-                </div>
-                <div class="card flex flex-wrap justify-content birth">
-                    <div class="block">
-                        <p>Date de naissance</p>
-                        <span class="p-input-icon-left">
-                            <Calendar
-                                class="calendar"
-                                v-model="birthDate"
-                                dateFormat="dd/mm/yy"
-                                showIcon
-                            />
-                        </span>
-                    </div>
-                    <div class="block">
-                        <p>Lieu de naissance</p>
-                        <span class="p-input-icon-left">
-                            <i class="pi pi-compass" />
-                            <InputText
-                                placeholder="Lieu de naissance"
-                                v-model="birthPlace"
-                            />
-                        </span>
-                    </div>
-                    <div class="block">
-                        <p>Nationalité</p>
-                        <span class="p-input-icon-left">
-                            <i class="pi pi-map" />
-                            <InputText
-                                placeholder="Type:FRA"
-                                v-model="nationality"
-                            />
-                        </span>
-                    </div>
-                </div>
-                <div class="card flex flex-wrap justify-content contact">
-                    <div class="block">
-                        <p>Numéro de téléphone</p>
-                        <span class="p-input-icon-left">
+                            </li>
+
+                            <li class="row">
+                                <div class="key1">Telephone Mobile</div>
+                                <span class="p-input-icon-left">
                             <i class="pi pi-phone" />
                             <InputText
                                 placeholder="Téléphone"
                                 v-model="phoneNumber"
                             />
                         </span>
-                    </div>
-                    <div class="block">
-                        <p>Adresse mail</p>
-                        <span class="p-input-icon-left">
+                            </li>
+
+                            <li class="row">
+                                <div class="key1">Email</div>
+                                <span class="p-input-icon-left">
                             <i class="pi pi-envelope" />
                             <InputText
                                 placeholder="E-mail"
@@ -88,22 +64,24 @@
                                 v-model="emailAddress"
                             />
                         </span>
+                            </li>
+                        </ul>
                     </div>
-                </div>
-            </div>
-        </div>
+                </Fieldset>
 
-        <div class="line"></div>
-        <div class="addressBlock">
-            <div class="label">
-                <label class="title">Adresse</label>
-            </div>
+                <Fieldset class="flex-auto">
+                    <template #legend>
+                        <div class="flex align-items-center">
+                            <span class="pi pi-home mr-2"></span>
+                            <span class="font-bold">Adresse</span>
+                        </div>
+                    </template>
 
-            <div class="addressInput">
-                <div class="card flex flex-wrap justify-content address">
-                    <div class="block">
-                        <p>Adresse</p>
-                        <span class="p-input-icon-left">
+                    <div class="surface-section">
+                        <ul class="list-none p-0 m-0">
+                            <li class="row">
+                                <div class="key1">Adresse</div>
+                                <span class="p-input-icon-left">
                             <i class="pi pi-map-marker" />
                             <InputText
                                 placeholder="Adresse"
@@ -111,12 +89,11 @@
                                 v-model="address"
                             />
                         </span>
-                    </div>
-                </div>
-                <div class="card flex flex-wrap justify-content complement">
-                    <div class="block">
-                        <p>Complément d'adresse</p>
-                        <span class="p-input-icon-left">
+                            </li>
+
+                            <li class="row">
+                                <div class="key1">Complément d'adresse</div>
+                                <span class="p-input-icon-left">
                             <i class="pi pi-map-marker" />
                             <InputText
                                 placeholder="Complément d'adresse"
@@ -124,13 +101,10 @@
                                 v-model="addressComplement"
                             />
                         </span>
-                    </div>
-                </div>
-
-                <div class="card flex flex-wrap justify-content cityCountry">
-                    <div class="block blockAddr">
-                        <p>Ville</p>
-                        <span class="p-input-icon-left">
+                            </li>
+                            <li class="row">
+                                <div class="key1">Ville</div>
+                                <span class="p-input-icon-left">
                             <i class="pi pi-map" />
                             <InputText
                                 placeholder="Ville"
@@ -138,19 +112,21 @@
                                 v-model="city"
                             />
                         </span>
-                    </div>
-                    <div class="block blockAddr">
-                        <p>Code Postal</p>
-                        <span class="p-input-icon-left">
+                            </li>
+
+                            <li class="row">
+                                <div class="key1">Code Postal</div>
+                                <span class="p-input-icon-left">
                             <InputNumber
                                 class="postalCode"
                                 v-model="postalCode"
                             />
                         </span>
-                    </div>
-                    <div class="block blockAddr">
-                        <p>Pays</p>
-                        <span class="p-input-icon-left">
+                            </li>
+
+                            <li class="row">
+                                <div class="key1">pays</div>
+                                <span class="p-input-icon-left">
                             <i class="pi pi-map" />
                             <InputText
                                 placeholder="Pays (FRA)"
@@ -158,54 +134,58 @@
                                 v-model="country"
                             />
                         </span>
+                            </li>
+                        </ul>
                     </div>
-                </div>
-            </div>
-        </div>
-
-        <div class="line"></div>
-        <div class="studiesBlock">
-            <div class="label">
-                <label class="title">Etudes</label>
+                </Fieldset>
             </div>
 
-            <div class="studiesInput">
-                <div class="card flex flex-wrap justify-content class">
-                    <div class="block">
-                        <p>Promotion</p>
-                        <span class="p-input-icon-left">
+            <Fieldset legend="Autres infos">
+                <div class="surface-section">
+                    <ul class="list-none p-0 m-0">
+                        <li class="row">
+                            <div class="key2">Promotion</div>
+                            <span class="p-input-icon-left">
                             <Calendar
                                 v-model="yearDiploma"
                                 view="year"
                                 dateFormat="yy"
                             />
                         </span>
-                    </div>
-                    <div class="block">
-                        <p>Filière</p>
-                        <Dropdown
+                        </li>
+                        <li class="row">
+                            <div class="key2">Nationalité</div>
+                            <span class="p-input-icon-left">
+                            <i class="pi pi-map" />
+                            <InputText
+                                placeholder="Type:FRA"
+                                v-model="nationality"
+                            />
+                        </span>
+                        </li>
+                        <li class="row">
+                            <div class="key2">Filière</div>
+                            <Dropdown
                             v-model="selectedField"
                             :options="field"
                             optionLabel="name"
                             placeholder="Filière"
                             class="select"
                         />
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <div class="line"></div>
-        <div class="adhesionBlock">
-            <div class="label">
-                <label class="title">Adhésion</label>
-            </div>
-
-            <div class="adhesionInput">
-                <div class="card flex flex-wrap justify-content payment">
-                    <div class="block">
-                        <p>Date de cotisation</p>
-                        <span class="p-input-icon-left">
+                        </li>
+                        <li class="row">
+                            <div class="key2">moyenPaiement</div>
+                            <Dropdown
+                            v-model="selectedPayment"
+                            :options="payment"
+                            optionLabel="name"
+                            placeholder="Moyen de paiement"
+                            class="select"
+                        />
+                        </li>
+                        <li class="row">
+                            <div class="key2">Date de cotisation</div>
+                            <span class="p-input-icon-left">
                             <Calendar
                                 class="calendar"
                                 v-model="adhesionDate"
@@ -213,27 +193,61 @@
                                 showIcon
                             />
                         </span>
-                    </div>
-                    <div class="block">
-                        <p>Moyen de paiement</p>
-                        <Dropdown
-                            v-model="selectedPayment"
-                            :options="payment"
-                            optionLabel="name"
-                            placeholder="Moyen de paiement"
-                            class="select"
-                        />
-                    </div>
+                        </li>
+                    </ul>
+
                 </div>
-            </div>
-            <Button
-                id="user-add"
-                class="button"
-                label="Valider"
-                @click="addUser()"
-            />
-        </div>
-    </div>
+            </Fieldset>
+
+            <Fieldset legend="Infos confidentielles" :toggleable="true">
+                <div class="surface-section">
+                    <ul class="list-none p-0 m-0">
+                        <li class="row">
+                            <div class="key2">Date de Naissance</div>
+                            <span class="p-input-icon-left">
+                            <Calendar
+                                class="calendar"
+                                v-model="birthDate"
+                                dateFormat="dd/mm/yy"
+                                showIcon
+                            />
+                        </span>
+                        </li>
+                        <li class="row">
+                            <div class="key2">Lieu de Naissance</div>
+                            <span class="p-input-icon-left">
+                            <i class="pi pi-compass" />
+                            <InputText
+                                placeholder="Lieu de naissance"
+                                v-model="birthPlace"
+                            />
+                        </span>
+                        </li>
+                    </ul>
+                </div>
+            </Fieldset>
+
+            <!-- <Fieldset legend="Poste" v-if="have_poste" :toggleable="true">
+                <div class="surface-section">
+                    <ul class="list-none p-0 m-0">
+                        <li class="row">
+                            <div class="key2">Nom du poste</div>
+                            <div class="value">{{ poste.nom }}</div>
+                        </li>
+                        <li class="row">
+                            <div class="key2">Description</div>
+                            <div class="value">{{ poste.description }}</div>
+                        </li>
+                    </ul>
+                </div>
+            </Fieldset> -->
+        </template>
+        <Toast />
+        <ConfirmDialog></ConfirmDialog>
+        <template #footer>
+            <Button icon="pi pi-check" label="Valider" @click="addUser()" />
+        </template>
+    </Card>
 </template>
 
 <script setup lang="ts">
@@ -482,90 +496,21 @@ function addUser() {
         });
 }
 </script>
-<style lang="scss" scoped>
-@import "../assets/colors.scss";
 
-.identity,
-.birth,
-.contact {
-    width: 100%;
-    margin: 0 0.5em;
-    padding: 0.5em;
+<style scoped lang="scss">
+@import "primeflex/primeflex.scss";
+.row {
+    @include styleclass(
+        "grid align-items-center py-3 px-2 border-top-1 surface-border"
+    );
 }
-
-.address,
-.complement {
-    margin: 0 0.5em;
-    padding: 0.5em;
-    min-height: 100%;
+.key1 {
+    @include styleclass("md:min-w-max col-3 text-500 font-medium");
 }
-
-.cityCountry,
-.class,
-.payment {
-    margin: 0 0.5em;
-    padding: 0.5em;
-    display: flex;
-    align-items: stretch;
-    justify-content: space-between;
+.key2 {
+    @include styleclass("md:min-w-max col-2 text-500 font-medium");
 }
-
-.title {
-    font-size: larger;
-    text-decoration-line: underline;
-}
-.block {
-    margin: 0.5em;
-}
-
-.p-input-icon-left,
-.select {
-    margin-top: 2%;
-}
-
-.line {
-    margin: 2%;
-    padding: 1%;
-    background: $light-blue;
-}
-
-.personnalInformationInput {
-    width: 100%;
-    padding: 1em;
-    display: flex;
-    align-items: stretch;
-    justify-content: space-around;
-}
-
-.address_text {
-    width: 60em;
-}
-
-.studiesInput,
-.adhesionInput {
-    width: 100%;
-    padding: 1em;
-}
-.addressInput {
-    width: 100%;
-    padding: 1em;
-}
-
-.personnalInformationBlock,
-.addressBlock,
-.studiesBlock,
-.adhesionBlock {
-    margin: 1em;
-}
-
-.label {
-    text-align: center;
-}
-
-.button {
-    margin: 1em;
-    width: 15%;
-    float: right;
+.value {
+    @include styleclass("col text-left text-900 w-full");
 }
 </style>
--->

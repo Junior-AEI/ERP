@@ -6,9 +6,16 @@
                     <div
                         class="flex flex-wrap justify-content-between align-items-center w-full"
                     >
-                        <span class="flex flex-wrap button">{{ doc.nom }}</span>
                         <div
-                            class="flex flex-wrap justify-content-center align-items-center gap-3"
+                            class="flex flex-wrap justify-content-center align-content-center column-gap-2"
+                        >
+                            <i class="pi pi-file"></i>
+                            <span class="flex flex-wrap button">{{
+                                doc.nom
+                            }}</span>
+                        </div>
+                        <div
+                            class="flex flex-wrap justify-content-center align-items-center column-gap-2"
                         >
                             <Tag
                                 :value="doc.statut"
@@ -20,31 +27,40 @@
                                 "
                                 class="flex flex-wrap button"
                                 icon="pi pi-download"
+                                :disabled="doc.versions.length === 0"
                             ></Button>
                             <Button
                                 @click="preUpload(doc.id)"
                                 class="flex flex-wrap button"
-                                icon="pi pi-upload"
+                                icon="pi pi-cloud-upload"
                             ></Button>
                         </div>
                     </div>
                 </template>
-                <Timeline :value="doc.versions">
+                <Timeline
+                    :value="doc.versions"
+                    class="flex flex-wrap customized-timeline justify-content-center"
+                >
                     <template #opposite="v">
                         {{ new Date(v.item.createdAt).toLocaleString() }}
                     </template>
                     <template #content="v">
-                        <span>{{ fileName(doc, v.index) }}</span>
-                        <a
-                            @click="
-                                downloadFile(v.item.id, fileName(doc, v.index))
-                            "
-                            href="#"
-                            ><i
-                                class="pi pi-download"
-                                style="color: darkblue"
-                            ></i
-                        ></a>
+                        <div class="flex flex-wrap gap-3">
+                            <span>{{ fileName(doc, v.index) }}</span>
+                            <a
+                                @click="
+                                    downloadFile(
+                                        v.item.id,
+                                        fileName(doc, v.index)
+                                    )
+                                "
+                                href="#"
+                                ><i
+                                    class="pi pi-download"
+                                    style="color: darkblue"
+                                ></i
+                            ></a>
+                        </div>
                     </template>
                 </Timeline>
 
@@ -134,22 +150,9 @@ const getSeverity = (doc: any) => {
     }
 };
 
+defineExpose({ getTreeTableNodes });
+
 onMounted(() => {
     getTreeTableNodes();
 });
 </script>
-
-<style scoped>
-.accordion-custom i span {
-    vertical-align: middle;
-}
-
-.accordion-custom span {
-    margin: 0 0.5rem;
-}
-
-.p-accordion p {
-    line-height: 1.5;
-    margin: 0;
-}
-</style>

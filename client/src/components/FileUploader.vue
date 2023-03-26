@@ -22,18 +22,21 @@
                     <div class="flex gap-2">
                         <SplitButton
                             @click="chooseCallback()"
+                            label="Ajouter"
                             icon="pi pi-file-pdf"
                             :model="STATUTS"
                         >
                         </SplitButton>
                         <Button
                             @click="uploadCallback"
+                            label="Uploader"
                             icon="pi pi-cloud-upload"
                             severity="success"
                             :disabled="!files || files.length === 0"
                         ></Button>
                         <Button
                             @click="clearCallback()"
+                            label="Supprimer"
                             icon="pi pi-times"
                             severity="danger"
                             :disabled="!files || files.length === 0"

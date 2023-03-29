@@ -49,7 +49,6 @@ export const up: Migration = async ({ context: sequelize }) => {
             type: DataType.STRING,
             allowNull: false,
             validate: { notEmpty: true },
-            unique: true,
             field: "nom",
         },
         statut: {

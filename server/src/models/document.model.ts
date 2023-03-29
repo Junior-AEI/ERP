@@ -21,7 +21,6 @@ export class Document extends Model {
         "Signé",
     ];
 
-    @Unique
     @NotEmpty
     @Column({
         type: DataType.STRING,

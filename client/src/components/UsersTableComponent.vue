@@ -58,8 +58,8 @@
             headerStyle="width: 4rem; text-align: center"
             bodyStyle="text-align: center; overflow: visible"
         >
-            <template #body>
-                <Button class="button" icon="pi pi-user-edit"></Button>
+            <template #body="{data}">
+                <Button class="button" icon="pi pi-user-edit" @click="editUser(data)"></Button>
             </template>
         </Column>
     </DataTable>
@@ -68,11 +68,12 @@
         id="user-add"
         class="button"
         label="Ajouter un utilisateur"
-        @click="handleClick()"
+        @click="addUser()"
     />
 </template>
 
 <script setup lang="ts">
+import { propsToAttrMap } from "@vue/shared";
 import axios from "axios";
 import { FilterMatchMode } from "primevue/api";
 import { onMounted, ref } from "vue";
@@ -80,7 +81,7 @@ import { useRouter } from "vue-router";
 
 const router = useRouter();
 
-function handleClick() {
+function addUser() {
     console.log("ajout utilisateur");
     window.location.href = "../adduser";
 }
@@ -89,6 +90,13 @@ const selectedUser = ref();
 const onRowSelect = (event: any) => {
     router.push(`/users/${event.data.id}`);
 };
+
+const editUser = (data :any)=> {
+    
+    window.location.href = "./"+data.id+"/update";
+
+}
+
 
 const filters = ref({
     nom: { value: null, matchMode: FilterMatchMode.STARTS_WITH },

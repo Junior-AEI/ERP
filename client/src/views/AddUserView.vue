@@ -47,9 +47,10 @@
                                 <div class="key1">Telephone Mobile</div>
                                 <span class="p-input-icon-left">
                             <i class="pi pi-phone" />
-                            <InputText
+                            <InputMask
                                 placeholder="Téléphone"
                                 v-model="phoneNumber"
+                                mask="+99999999999"
                             />
                         </span>
                             </li>
@@ -128,10 +129,11 @@
                                 <div class="key1">pays</div>
                                 <span class="p-input-icon-left">
                             <i class="pi pi-map" />
-                            <InputText
+                            <InputMask
                                 placeholder="Pays (FRA)"
                                 class="country"
                                 v-model="country"
+                                mask="aaa"
                             />
                         </span>
                             </li>
@@ -157,9 +159,10 @@
                             <div class="key2">Nationalité</div>
                             <span class="p-input-icon-left">
                             <i class="pi pi-map" />
-                            <InputText
+                            <InputMask
                                 placeholder="Type:FRA"
                                 v-model="nationality"
+                                mask="aaa"
                             />
                         </span>
                         </li>
@@ -226,21 +229,6 @@
                     </ul>
                 </div>
             </Fieldset>
-
-            <!-- <Fieldset legend="Poste" v-if="have_poste" :toggleable="true">
-                <div class="surface-section">
-                    <ul class="list-none p-0 m-0">
-                        <li class="row">
-                            <div class="key2">Nom du poste</div>
-                            <div class="value">{{ poste.nom }}</div>
-                        </li>
-                        <li class="row">
-                            <div class="key2">Description</div>
-                            <div class="value">{{ poste.description }}</div>
-                        </li>
-                    </ul>
-                </div>
-            </Fieldset> -->
         </template>
         <Toast />
         <ConfirmDialog></ConfirmDialog>

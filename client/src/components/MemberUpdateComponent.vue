@@ -47,9 +47,10 @@
                                 <div class="key1">Telephone Mobile</div>
                                 <span class="p-input-icon-left">
                             <i class="pi pi-phone" />
-                            <InputText
+                            <InputMask
                                 placeholder="Téléphone"
                                 v-model="phoneNumber"
+                                mask="+99999999999"
                             />
                         </span>
                             </li>
@@ -128,10 +129,11 @@
                                 <div class="key1">pays</div>
                                 <span class="p-input-icon-left">
                             <i class="pi pi-map" />
-                            <InputText
+                            <InputMask
                                 placeholder="Pays (FRA)"
                                 class="country"
                                 v-model="country"
+                                mask="aaa"
                             />
                         </span>
                             </li>
@@ -157,9 +159,10 @@
                             <div class="key2">Nationalité</div>
                             <span class="p-input-icon-left">
                             <i class="pi pi-map" />
-                            <InputText
+                            <InputMask
                                 placeholder="Type:FRA"
                                 v-model="nationality"
+                                mask="aaa"
                             />
                         </span>
                         </li>
@@ -241,7 +244,6 @@ import { useConfirm } from "primevue/useconfirm";
 import { useToast } from "primevue/usetoast";
 import axios from "axios";
 import { useRouter } from "vue-router";
-import MemberInfoComponent from "./MemberInfoComponent.vue";
 
 const confirm = useConfirm();
 const toast = useToast();

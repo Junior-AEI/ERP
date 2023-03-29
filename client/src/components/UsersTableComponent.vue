@@ -83,7 +83,7 @@ const router = useRouter();
 
 function addUser() {
     console.log("ajout utilisateur");
-    window.location.href = "../adduser";
+    router.push(`/adduser`);
 }
 
 const selectedUser = ref();
@@ -92,8 +92,7 @@ const onRowSelect = (event: any) => {
 };
 
 const editUser = (data :any)=> {
-    
-    window.location.href = "./"+data.id+"/update";
+    router.push(`/users/${data.id}/update`);
 
 }
 

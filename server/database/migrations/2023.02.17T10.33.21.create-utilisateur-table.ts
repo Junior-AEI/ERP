@@ -107,6 +107,6 @@ export const up: Migration = async ({ context: sequelize }) => {
 };
 
 export const down: Migration = async ({ context: sequelize }) => {
-    await sequelize.getQueryInterface().dropTable("Utilisateur");
-    await sequelize.getQueryInterface().dropTable("Poste");
+    await sequelize.getQueryInterface().dropTable("Utilisateurs");
+    await sequelize.getQueryInterface().dropTable("Postes");
 };

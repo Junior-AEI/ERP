@@ -24,6 +24,13 @@ export const up: Migration = async ({ context: sequelize }) => {
             onDelete: "CASCADE",
             onUpdate: "CASCADE",
         },
+        statut: {
+            type: DataType.ENUM,
+            values: ["À relire", "À modifier", "Validé", "Signé"],
+            allowNull: false,
+            validate: { isIn: [["À relire", "À modifier", "Validé", "Signé"]] },
+            field: "statut",
+        },
         createdAt: {
             type: DataType.DATE,
             allowNull: false,
@@ -50,13 +57,6 @@ export const up: Migration = async ({ context: sequelize }) => {
             allowNull: false,
             validate: { notEmpty: true },
             field: "nom",
-        },
-        statut: {
-            type: DataType.ENUM,
-            values: ["À relire", "À modifier", "Validé", "Signé"],
-            allowNull: false,
-            validate: { isIn: [["À relire", "À modifier", "Validé", "Signé"]] },
-            field: "statut",
         },
         createdAt: {
             type: DataType.DATE,

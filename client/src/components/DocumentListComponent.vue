@@ -4,7 +4,7 @@
             <AccordionTab v-for="doc in documents">
                 <template #header>
                     <div
-                        class="flex flex-wrap justify-content-between align-items-center w-full"
+                        class="flex justify-content-between align-items-center w-full"
                     >
                         <div
                             class="flex flex-wrap justify-content-center align-content-center column-gap-2"
@@ -18,8 +18,8 @@
                             class="flex flex-wrap justify-content-center align-items-center column-gap-2"
                         >
                             <Tag
-                                :value="doc.statut"
-                                :severity="getSeverity(doc)"
+                                :value="getDocumentStatus(doc.versions[0])"
+                                :severity="getSeverity(doc.versions[0])"
                             />
                             <Button
                                 @click="
@@ -37,17 +37,26 @@
                         </div>
                     </div>
                 </template>
-                <Timeline
-                    :value="doc.versions"
-                    class="flex flex-wrap customized-timeline justify-content-center"
-                >
-                    <template #opposite="v">
-                        {{ new Date(v.item.createdAt).toLocaleString() }}
+                <Timeline :value="doc.versions">
+                    <template #marker="v" class="align-self-center">
+                        <Tag
+                            :value="v.item.statut"
+                            :severity="getSeverity(v.item)"
+                            class="w-5rem"
+                        />
+                    </template>
+                    <template #opposite="v" class="p-3">
+                        <span>{{
+                            new Date(v.item.createdAt).toLocaleString()
+                        }}</span>
                     </template>
                     <template #content="v">
-                        <div class="flex flex-wrap gap-3">
-                            <span>{{ fileName(doc, v.index) }}</span>
+                        <div class="flex align-self-center gap-3">
+                            <span class="flex align-items-center">{{
+                                fileName(doc, v.index)
+                            }}</span>
                             <a
+                                class="flex align-items-center"
                                 @click="
                                     downloadFile(
                                         v.item.id,
@@ -107,6 +116,13 @@ const postUpload = () => {
     getTreeTableNodes();
 };
 
+const getDocumentStatus = (file: any | undefined) => {
+    if (file !== undefined) {
+        return file.statut || "À relire";
+    } else {
+        return "Vide";
+    }
+};
 const getTreeTableNodes = () => {
     axios.get("http://localhost:5000/api/document").then((data) => {
         documents.value = data.data;
@@ -131,8 +147,11 @@ const downloadFile = (fileId: number, filename: string) => {
         });
 };
 
-const getSeverity = (doc: any) => {
-    switch (doc.statut) {
+const getSeverity = (file: any | undefined) => {
+    if (file === undefined) {
+        return "danger";
+    }
+    switch (file.statut) {
         case "À relire":
             return "warning";
 
@@ -156,3 +175,12 @@ onMounted(() => {
     getTreeTableNodes();
 });
 </script>
+
+<style>
+.p-timeline-event-opposite,
+.p-timeline-event-content {
+    margin: 0.35rem;
+    margin-right: 1.5rem;
+    margin-left: 1.5rem;
+}
+</style>

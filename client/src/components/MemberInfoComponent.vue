@@ -223,6 +223,7 @@ onMounted(() => {
 
 function modifyUser() {
     console.log("modify User");
+    window.location.href = "./"+user.value.id+"/update";
 }
 
 function delUser() {
@@ -251,10 +252,25 @@ function delUser() {
 
 function convertDate(date: string) {
     const d = new Date(date);
+    let day;
+    let month;
+    let year = d.getFullYear().toString();
     if (d == undefined) {
         return date;
     }
-    return d.getDate() + "/" + d.getMonth() + "/" + d.getFullYear();
+    if (d.getDate() < 10) {
+        day = '0'+ d.getDate();
+    }
+    else {
+        day = d.getDate().toString();
+    }
+    if (d.getMonth() < 10) {
+        month = '0'+ (d.getMonth() + 1);
+    }
+    else {
+        month = (d.getMonth() +1).toString();
+    }
+    return day + "/" + month + "/" + year;
 }
 
 // To complete when back is working

@@ -25,6 +25,7 @@ import Checkbox from "primevue/checkbox";
 import ProgressBar from "primevue/progressbar";
 import Fieldset from "primevue/fieldset";
 import SplitButton from "primevue/splitbutton";
+import InputMask from 'primevue/inputmask';
 
 import ConfirmationService from "primevue/confirmationservice";
 import ConfirmDialog from "primevue/confirmdialog";
@@ -105,6 +106,7 @@ app.component("DataTable", DataTable);
 app.component("Button", Button);
 app.component("InputText", InputText);
 app.component("InputNumber", InputNumber);
+app.component("InputMask", InputMask);
 app.component("Column", Column);
 app.component("ColumnGroup", ColumnGroup);
 app.component("Row", Row);

@@ -14,7 +14,6 @@ const documentController = {
 async function createDocument(req: Request, res: Response) {
     await Document.create({
         nom: req.body.nom,
-        statut: "À relire",
     })
         .then((doc) => res.json({ id: doc.id }))
         .catch((err) => controllerErrorHandler(err, res));
@@ -42,6 +41,7 @@ async function uploadNewVersion(req: Request, res: Response) {
                 let version = await Fichier.create({
                     chemin: file.path,
                     documentId: doc.id,
+                    statut: req.params.statut,
                 });
                 return { doc, version };
             })
@@ -49,7 +49,10 @@ async function uploadNewVersion(req: Request, res: Response) {
                 input.doc.$add("version", input.version);
                 return input.doc;
             })
-            .then((doc) => doc.update({ statut: req.params.statut }))
+            .then((doc) => {
+                doc.changed("updatedAt", true);
+                return doc.update({ updatedAt: new Date() });
+            })
             .then(() => res.status(200).json("File uploaded successfully"))
             .catch((err) => controllerErrorHandler(err, res));
     }

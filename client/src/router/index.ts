@@ -4,6 +4,7 @@ import UsersView from "../views/UsersView.vue";
 import ClientsView from "../views/ClientsView.vue";
 import PostsView from "../views/PostsView.vue";
 import MemberView from "../views/MemberView.vue";
+import MemberUpdateView from "../views/MemberUpdateView.vue";
 import AddUserView from "../views/AddUserView.vue";
 import DocumentView from "../views/DocumentView.vue";
 
@@ -26,6 +27,11 @@ const router = createRouter({
             path: "/users/:id",
             name: "member",
             component: MemberView,
+        },
+        {
+            path: "/users/:id/update",
+            name: "updateMember",
+            component: MemberUpdateView,
         },
         {
             path: "/clients",

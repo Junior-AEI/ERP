@@ -7,6 +7,7 @@ import {
     DataType,
     NotEmpty,
     IsDate,
+    IsIn,
     CreatedAt,
     UpdatedAt,
     ForeignKey,
@@ -16,6 +17,13 @@ import {
 
 @Table
 export class Fichier extends Model {
+    public static readonly STATUT = [
+        "À relire",
+        "À modifier",
+        "Validé",
+        "Signé",
+    ];
+
     @PrimaryKey
     @Column({
         type: DataType.INTEGER,
@@ -41,6 +49,14 @@ export class Fichier extends Model {
 
     @BelongsTo(() => Document)
     document!: Document;
+
+    @IsIn([Fichier.STATUT])
+    @Column({
+        type: DataType.ENUM,
+        values: Fichier.STATUT,
+        allowNull: false,
+    })
+    statut!: string;
 
     @IsDate
     @CreatedAt

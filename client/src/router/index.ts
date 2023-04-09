@@ -6,7 +6,12 @@ import PostsView from "../views/PostsView.vue";
 import MemberView from "../views/MemberView.vue";
 import MemberUpdateView from "../views/MemberUpdateView.vue";
 import AddUserView from "../views/AddUserView.vue";
+import AddClientView from "../views/AddClientView.vue";
+import ChooseCompanyView from "../views/ChooseCompanyView.vue";
+
+
 import DocumentView from "../views/DocumentView.vue";
+import AddCompanies from "../views/AddCompaniesView.vue"
 
 import axios from "axios";
 
@@ -48,6 +53,23 @@ const router = createRouter({
             name: "adduser",
             component: AddUserView,
         },
+        {
+            path: "/addclient",
+            name: "addclient",
+            component: AddClientView,
+        },
+        
+        {
+            path: "/choosecompany",
+            name: "choosecompany",
+            component: ChooseCompanyView,
+        },
+        {
+            path: "/addCompanies",
+            name: "addCompanies",
+            component: AddCompanies,
+        },
+
         {
             path: "/about",
             name: "about",

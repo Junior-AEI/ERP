@@ -44,6 +44,8 @@ import SelectButton from "primevue/selectbutton";
 import Calendar from "primevue/calendar";
 import InputNumber from "primevue/inputnumber";
 
+import Listbox from 'primevue/listbox';
+
 import FileUpload from "primevue/fileupload";
 
 /*import "primeflex/primeflex.css";*/
@@ -129,6 +131,8 @@ app.component("Message", Message);
 app.component("SelectButton", SelectButton);
 app.component("Calendar", Calendar);
 app.component("SplitButton", SplitButton);
+app.component("Listbox", Listbox);
+
 
 app.component("FileUpload", FileUpload);
 app.component("ProgressBar", ProgressBar);

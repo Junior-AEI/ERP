@@ -318,7 +318,6 @@ let payment = ref([
 ]);
 
 
-
 axios
         .get(`/adherent/${props.id_user}`)
         .then((data) => {

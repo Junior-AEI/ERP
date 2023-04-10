@@ -1,6 +1,6 @@
 <template>
     <DataTable
-        :value="posts"
+        :value="postes"
         responsiveLayout="scroll"
         dataKey="id"
         v-model:filters="filters"
@@ -43,8 +43,6 @@
                 />
             </template>
         </Column>
-        <Column field="createdAt" header="createdAt" :sortable="true"></Column>
-        <Column field="updatedAt" header="updatedAt" :sortable="true"></Column>
         <Column
             headerStyle="width: 4rem; text-align: center"
             bodyStyle="text-align: center; overflow: visible"
@@ -54,13 +52,9 @@
             </template>
         </Column>
     </DataTable>
-
-    <Button
-        id="post-add"
-        class="button"
-        label="Ajouter un post"
-        @click="handleClick()"
-    />
+    <RouterLink to="/addposte">
+        <Button id="post-add" class="button" label="Ajouter un post" />
+    </RouterLink>
 </template>
 
 <script setup lang="ts">
@@ -69,13 +63,22 @@ import { onMounted, ref } from "vue";
 import axios from "axios";
 
 function handleClick() {
-    console.log("ajout prospect");
+    window.location.href = "../addposte";
 }
 
 const filters = ref({
     nom: { value: null, matchMode: FilterMatchMode.STARTS_WITH },
     description: { value: null, matchMode: FilterMatchMode.STARTS_WITH },
     Pole: { value: null, matchMode: FilterMatchMode.STARTS_WITH },
+});
+
+let postes = ref([]);
+
+onMounted(() => {
+    axios.get("/poste").then((data) => {
+        //console.log(data.data);
+        postes.value = data.data;
+    });
 });
 </script>
 <style lang="scss" scoped>

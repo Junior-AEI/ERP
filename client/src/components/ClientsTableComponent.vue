@@ -72,9 +72,13 @@
 import { FilterMatchMode } from "primevue/api";
 import { onMounted, ref } from "vue";
 import axios from "axios";
+import { useRouter } from "vue-router";
+
+const router = useRouter();
 
 function handleClick() {
     console.log("ajout prospect");
+    router.push(`/choosecompany`);
 }
 
 const filters = ref({

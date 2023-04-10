@@ -1,7 +1,7 @@
 import { hashSync } from "bcrypt";
 import type { Seeder } from "../../src/migrations/umzug";
 
-const utilistateurSamples = [
+const utilisateurSamples = [
     {
         id: 1,
         nomUtilisateur: "lorene.marques",
@@ -57,16 +57,16 @@ const utilistateurSamples = [
 ];
 
 export const up: Seeder = async ({ context: sequelize }) => {
-    utilistateurSamples.forEach((user) => {
+    utilisateurSamples.forEach((user) => {
         user.motDePasse = hashSync(user.motDePasse, 10);
     });
     sequelize
         .getQueryInterface()
-        .bulkInsert("Utilisateurs", utilistateurSamples);
+        .bulkInsert("Utilisateurs", utilisateurSamples);
 };
 
 export const down: Seeder = async ({ context: sequelize }) => {
     await sequelize.getQueryInterface().bulkDelete("Utilisateurs", {
-        id: utilistateurSamples.map((u) => u.id),
+        id: utilisateurSamples.map((u) => u.id),
     });
 };

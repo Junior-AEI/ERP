@@ -14,6 +14,7 @@ const utilisateurSamples = [
         mailJE: "lorene.marques@junior-aei.com",
         createdAt: new Date(),
         updatedAt: new Date(),
+        adherentId: 3,
     },
     {
         id: 2,
@@ -27,6 +28,7 @@ const utilisateurSamples = [
         mailJE: "tahir.bouhassoun@junior-aei.com",
         createdAt: new Date(),
         updatedAt: new Date(),
+        adherentId: 4,
     },
     {
         id: 3,
@@ -40,6 +42,7 @@ const utilisateurSamples = [
         mailJE: "clement.zilliox@junior-aei.com",
         createdAt: new Date(),
         updatedAt: new Date(),
+        adherentId: 5,
     },
     {
         id: 4,
@@ -53,6 +56,7 @@ const utilisateurSamples = [
         mailJE: "tristan.le-meur@junior-aei.com",
         createdAt: new Date(),
         updatedAt: new Date(),
+        adherentId: 6,
     },
 ];
 

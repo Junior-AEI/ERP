@@ -20,6 +20,7 @@ describe("Test `utilisateur` model", () => {
         "posteId",
         "createdAt",
         "updatedAt",
+        "adherentId",
     ];
 
     //get token for request
@@ -68,14 +69,15 @@ describe("Test `utilisateur` model", () => {
         let idNewUser: number;
 
         const newUser: User = {
-            nomUtilisateur: "nadjime.barteau",
+            nomUtilisateur: "marine.vovard",
             derniereConnexion: "1970-01-01T00:00:00.000Z",
             motDePasse: "azerty",
             estActif: true,
-            mailJE: "nadjime.barteau@dfvgbrzgteafv.cd",
+            mailJE: "marine.vovard@dfvgbrzgteafv.cd",
             posteId: 2,
             debutMandat: "2022-04-01T00:00:00.000Z",
             finMandat: "2023-03-31T22:59:59.000Z",
+            adherentId: 1,
         };
 
         describe("POST / Create user", () => {

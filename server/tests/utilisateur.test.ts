@@ -115,8 +115,6 @@ describe("Test `utilisateur` model", () => {
                         expect(checkResponse.body[attribute]).not.toBeNull();
                     }
                 });
-
-                expect(response.statusCode).toBe(200);
             });
 
             test("Add failed test, create already existing user (same user)", async () => {

@@ -1,5 +1,5 @@
 import { Request, Response } from "express";
-import { Pole } from "../models/pole.model";
+import Pole from "../models/pole.model";
 import { controllerErrorHandler } from "./utils.controller";
 import createHttpError from "http-errors";
 

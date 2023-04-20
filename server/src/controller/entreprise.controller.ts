@@ -1,6 +1,5 @@
 import { Request, Response } from "express";
-import { Entreprise } from "../models/entreprise.model";
-import { Adresse } from "../models/adresse.model";
+import Entreprise from "../models/entreprise.model";
 import {
     checkExistingId,
     checkIdIsNotNaN,

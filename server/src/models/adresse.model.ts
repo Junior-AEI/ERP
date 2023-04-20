@@ -1,4 +1,3 @@
-import { sequelize } from "../config/database.config";
 import {
     Table,
     Column,
@@ -13,7 +12,7 @@ import {
 import validator from "validator";
 
 @Table
-export class Adresse extends Model {
+export default class Adresse extends Model {
     @PrimaryKey
     @Column({
         type: DataType.INTEGER,

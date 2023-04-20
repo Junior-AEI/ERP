@@ -7,7 +7,7 @@ import {
     JWT_ISSUER,
     JWT_SECRET_KEY,
 } from "../config/auth.config";
-import { Utilisateur } from "../models/utilisateur.model";
+import Utilisateur from "../models/utilisateur.model";
 import { controllerErrorHandler } from "./utils.controller";
 
 const authController = {

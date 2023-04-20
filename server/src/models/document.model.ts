@@ -9,9 +9,9 @@ import {
     CreatedAt,
     UpdatedAt,
 } from "sequelize-typescript";
-import { Fichier } from "./fichier.model";
+import Fichier from "./fichier.model";
 @Table
-export class Document extends Model {
+export default class Document extends Model {
     @NotEmpty
     @Column({
         type: DataType.STRING,

@@ -1,5 +1,5 @@
 import { Request, Response } from "express";
-import { Adresse } from "../models/adresse.model";
+import Adresse from "../models/adresse.model";
 import { Op } from "sequelize";
 import {
     checkExistingId,

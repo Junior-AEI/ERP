@@ -11,11 +11,11 @@ import {
     BelongsTo,
     ForeignKey,
 } from "sequelize-typescript";
-import { Utilisateur } from "./utilisateur.model";
-import { Pole } from "./pole.model";
+import Utilisateur from "./utilisateur.model";
+import Pole from "./pole.model";
 
 @Table
-export class Poste extends Model<Poste> {
+export default class Poste extends Model<Poste> {
     @NotEmpty
     @Column({
         type: DataType.STRING,

@@ -1,9 +1,2 @@
-import { defineConfig } from "vitest/config";
-
-export default defineConfig({
-    test: {
-        coverage: {
-            provider: "istanbul",
-        },
-    },
-});
+import config from "./src/config/sequelize.config";
+export default config;

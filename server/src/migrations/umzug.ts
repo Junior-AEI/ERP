@@ -40,7 +40,7 @@ const config: UmzugConfig = {
     },
 };
 
-if (process.env.NODE_ENV === "dev") {
+if (process.env.NODE_ENV === "dev" || process.env.NODE_ENV === "test") {
     config.models = ["../models/**/*.ts"];
 }
 

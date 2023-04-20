@@ -1,4 +1,3 @@
-import { sequelize } from "../config/database.config";
 import {
     Table,
     Column,
@@ -13,12 +12,12 @@ import {
     IsEmail,
 } from "sequelize-typescript";
 import validator from "validator";
-import { Entreprise } from "./entreprise.model";
+import Entreprise from "./entreprise.model";
 
 const GENDER = ["F", "M", "O"];
 
 @Table
-export class Client extends Model {
+export default class Client extends Model {
     @Column({
         type: DataType.INTEGER,
         allowNull: false,
@@ -112,5 +111,3 @@ export class Client extends Model {
     })
     updatedAt!: Date;
 }
-
-sequelize.addModels([Client, Entreprise]);

@@ -1,4 +1,3 @@
-import { sequelize } from "../config/database.config";
 import {
     Table,
     Column,
@@ -18,15 +17,14 @@ import {
     HasOne,
 } from "sequelize-typescript";
 import validator from "validator";
-import { Adresse } from "./adresse.model";
-import { Utilisateur } from "./utilisateur.model";
+import Adresse from "./adresse.model";
 
 const GENDER = ["F", "M", "O"];
 const PAYMENTS = ["Esp", "CB", "Vir", "Lydia"];
 const COURSES = ["Info", "Elec", "Telecom", "Matmeca", "R&I", "SEE"];
 
 @Table
-export class Adherent extends Model {
+export default class Adherent extends Model {
     @Column({
         type: DataType.STRING,
         allowNull: false,

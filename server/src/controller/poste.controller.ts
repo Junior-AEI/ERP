@@ -1,7 +1,7 @@
 import { Request, Response } from "express";
 import { Op } from "sequelize";
 import createHttpError from "http-errors";
-import { Poste } from "../models/poste.model";
+import Poste from "../models/poste.model";
 import {
     checkExistingId,
     checkIdIsNotNaN,

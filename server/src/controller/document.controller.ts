@@ -1,7 +1,7 @@
 import { Request, Response } from "express";
-import { Fichier } from "../models/fichier.model";
 import { sequelize } from "../config/database.config";
-import { Document } from "../models/document.model";
+import Fichier from "../models/fichier.model";
+import Document from "../models/document.model";
 import { controllerErrorHandler } from "./utils.controller";
 
 const documentController = {
@@ -39,7 +39,7 @@ async function uploadNewVersion(req: Request, res: Response) {
             })
             .then(async (doc) => {
                 const file = req.file || { path: "" };
-                let version = await Fichier.create({
+                const version = await Fichier.create({
                     chemin: file.path,
                     documentId: doc.id,
                     statut: req.params.statut,

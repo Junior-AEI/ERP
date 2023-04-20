@@ -2,8 +2,8 @@ import { Request, Response } from "express";
 import { hash } from "bcrypt";
 import { Op } from "sequelize";
 import createHttpError from "http-errors";
-import { Utilisateur } from "../models/utilisateur.model";
-import { Poste } from "../models/poste.model";
+import Utilisateur from "../models/utilisateur.model";
+import Poste from "../models/poste.model";
 import {
     checkExistingId,
     checkIdIsNotNaN,

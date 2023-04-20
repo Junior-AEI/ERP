@@ -5,12 +5,12 @@ import config from "./sequelize.config";
 // Database configuration depending of NODE_ENV variable (dev or production)
 dotenv.config();
 const env = process.env.NODE_ENV || "dev";
+console.log(process.env.NODE_ENV);
 const databaseConfig = config[env];
-
+console.log(databaseConfig.models);
 // ORM initialization
 const sequelize = new Sequelize(databaseConfig);
 
-// Test de la connexion à la base de donnée
 const testConnection = async () => {
     try {
         await sequelize.authenticate();

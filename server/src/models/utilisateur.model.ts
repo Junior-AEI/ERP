@@ -1,4 +1,3 @@
-import { sequelize } from "../config/database.config";
 import {
     Table,
     Column,
@@ -14,12 +13,19 @@ import {
     Unique,
     PrimaryKey,
 } from "sequelize-typescript";
-import { Poste } from "./poste.model";
-import { Pole } from "./pole.model";
-import { Adherent } from "./adherent.model";
+import Poste from "./poste.model";
 
 @Table
-export class Utilisateur extends Model {
+export default class Utilisateur extends Model {
+    @PrimaryKey
+    @Column({
+        type: DataType.INTEGER,
+        allowNull: false,
+        primaryKey: true,
+        autoIncrement: true,
+    })
+    id!: number;
+
     @NotEmpty
     @Unique
     @Column({
@@ -110,4 +116,3 @@ export class Utilisateur extends Model {
     })
     updatedAt!: Date;
 }
-sequelize.addModels([Poste, Pole, Utilisateur, Adherent]);

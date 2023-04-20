@@ -1,6 +1,5 @@
 import { Request, Response } from "express";
-import { Adherent } from "../models/adherent.model";
-import { Adresse } from "../models/adresse.model";
+import Adherent from "../models/adherent.model";
 import {
     checkExistingId,
     checkIdIsNotNaN,

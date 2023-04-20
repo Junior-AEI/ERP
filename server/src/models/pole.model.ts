@@ -10,10 +10,10 @@ import {
     Table,
     UpdatedAt,
 } from "sequelize-typescript";
-import { Poste } from "./poste.model";
+import Poste from "./poste.model";
 
 @Table
-export class Pole extends Model<Pole> {
+export default class Pole extends Model<Pole> {
     @PrimaryKey
     @NotEmpty
     @Column({

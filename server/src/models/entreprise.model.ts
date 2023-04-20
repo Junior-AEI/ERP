@@ -1,4 +1,3 @@
-import { sequelize } from "../config/database.config";
 import {
     Table,
     Column,
@@ -10,10 +9,10 @@ import {
     BelongsTo,
     IsDate,
 } from "sequelize-typescript";
-import { Adresse } from "./adresse.model";
+import Adresse from "./adresse.model";
 
 @Table
-export class Entreprise extends Model {
+export default class Entreprise extends Model {
     @Column({
         type: DataType.INTEGER,
         allowNull: false,
@@ -60,5 +59,3 @@ export class Entreprise extends Model {
     })
     updatedAt!: Date;
 }
-
-sequelize.addModels([Entreprise]);

@@ -1,5 +1,3 @@
-import { sequelize } from "../config/database.config";
-import { Document } from "./document.model";
 import {
     Table,
     Column,
@@ -14,9 +12,10 @@ import {
     BelongsTo,
     PrimaryKey,
 } from "sequelize-typescript";
+import Document from "./document.model";
 
 @Table
-export class Fichier extends Model {
+export default class Fichier extends Model {
     public static readonly STATUT = [
         "À relire",
         "À modifier",
@@ -74,5 +73,3 @@ export class Fichier extends Model {
     })
     updatedAt!: Date;
 }
-
-sequelize.addModels([Document, Fichier]);

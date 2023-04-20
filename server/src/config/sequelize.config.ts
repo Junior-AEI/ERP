@@ -12,7 +12,13 @@ const configuration: { [key: string]: SequelizeOptions } = {
     dev: {
         storage: "database/database.sqlite",
         dialect: "sqlite",
-        models: ["./src/models/**/"],
+        models: [__dirname + "/../models"],
+    },
+    // Test database configuration (SQLite)
+    test: {
+        storage: "database/database.sqlite",
+        dialect: "sqlite",
+        models: [__dirname + "/../models"],
     },
 
     // Prod database server configuration (from .env file)

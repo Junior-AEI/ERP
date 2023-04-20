@@ -15,9 +15,11 @@ import {
     IsNumeric,
     Max,
     Min,
+    HasOne,
 } from "sequelize-typescript";
 import validator from "validator";
 import { Adresse } from "./adresse.model";
+import { Utilisateur } from "./utilisateur.model";
 
 const GENDER = ["F", "M", "O"];
 const PAYMENTS = ["Esp", "CB", "Vir", "Lydia"];
@@ -25,14 +27,6 @@ const COURSES = ["Info", "Elec", "Telecom", "Matmeca", "R&I", "SEE"];
 
 @Table
 export class Adherent extends Model {
-    @Column({
-        type: DataType.INTEGER,
-        allowNull: false,
-        primaryKey: true,
-        autoIncrement: true,
-    })
-    id!: number;
-
     @Column({
         type: DataType.STRING,
         allowNull: false,
@@ -148,6 +142,9 @@ export class Adherent extends Model {
     })
     createdAt!: Date;
 
+    @HasOne(() => Utilisateur)
+    utilisateur!: Utilisateur;
+
     @IsDate
     @UpdatedAt
     @Column({
@@ -156,5 +153,3 @@ export class Adherent extends Model {
     })
     updatedAt!: Date;
 }
-
-sequelize.addModels([Adherent, Adresse]);

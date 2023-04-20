@@ -61,4 +61,4 @@ export class Entreprise extends Model {
     updatedAt!: Date;
 }
 
-sequelize.addModels([Entreprise, Adresse]);
+sequelize.addModels([Entreprise]);

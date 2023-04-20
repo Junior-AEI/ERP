@@ -16,18 +16,10 @@ import {
 } from "sequelize-typescript";
 import { Poste } from "./poste.model";
 import { Pole } from "./pole.model";
+import { Adherent } from "./adherent.model";
 
 @Table
 export class Utilisateur extends Model {
-    @PrimaryKey
-    @Column({
-        type: DataType.INTEGER,
-        allowNull: false,
-        primaryKey: true,
-        autoIncrement: true,
-    })
-    id!: number;
-
     @NotEmpty
     @Unique
     @Column({
@@ -92,6 +84,16 @@ export class Utilisateur extends Model {
     @BelongsTo(() => Poste)
     poste!: Poste;
 
+    @ForeignKey(() => Adherent)
+    @Column({
+        type: DataType.INTEGER,
+        allowNull: false,
+    })
+    adherentId!: number;
+
+    @BelongsTo(() => Adherent)
+    adherent!: Adherent;
+
     @IsDate
     @CreatedAt
     @Column({
@@ -108,4 +110,4 @@ export class Utilisateur extends Model {
     })
     updatedAt!: Date;
 }
-sequelize.addModels([Utilisateur, Poste, Pole]);
+sequelize.addModels([Poste, Pole, Utilisateur, Adherent]);

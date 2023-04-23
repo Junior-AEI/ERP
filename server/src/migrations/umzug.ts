@@ -1,8 +1,10 @@
 import { Umzug, SequelizeStorage } from "umzug";
-import { sequelize } from "../config/database.config";
+import { sequelize, sequelizeInit } from "../config/database.config";
 import { Sequelize } from "sequelize-typescript";
 import fs from "fs";
 import path from "path";
+
+sequelizeInit();
 
 interface UmzugConfig {
     migrations: {

@@ -83,5 +83,3 @@ export default class Adresse extends Model {
     })
     updatedAt!: Date;
 }
-
-sequelize.addModels([Adresse]);

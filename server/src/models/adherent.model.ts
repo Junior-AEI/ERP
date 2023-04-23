@@ -18,6 +18,7 @@ import {
 } from "sequelize-typescript";
 import validator from "validator";
 import Adresse from "./adresse.model";
+import Utilisateur from "./utilisateur.model";
 
 const GENDER = ["F", "M", "O"];
 const PAYMENTS = ["Esp", "CB", "Vir", "Lydia"];

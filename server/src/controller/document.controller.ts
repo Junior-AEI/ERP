@@ -1,5 +1,4 @@
 import { Request, Response } from "express";
-import { sequelize } from "../config/database.config";
 import Fichier from "../models/fichier.model";
 import Document from "../models/document.model";
 import { controllerErrorHandler } from "./utils.controller";
@@ -16,7 +15,7 @@ async function createDocument(req: Request, res: Response) {
     await Document.create({
         nom: req.body.nom,
     })
-        .then((doc) => res.json({ id: doc.id }))
+        .then((doc) => res.status(200).json({ id: doc.id }))
         .catch((err) => controllerErrorHandler(err, res));
 }
 
@@ -27,9 +26,7 @@ async function uploadNewVersion(req: Request, res: Response) {
             message: "Error! in file upload.",
         });
     } else {
-        sequelize
-            .transaction()
-            .then(() => Document.findByPk(req.params.id))
+        Document.findByPk(req.params.id)
             .then((doc) => {
                 if (doc === null) {
                     throw new Error("Document not found");

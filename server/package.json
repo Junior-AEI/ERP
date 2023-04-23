@@ -42,6 +42,7 @@
         "@types/umzug": "^2.3.3",
         "@vitest/coverage-istanbul": "^0.29.8",
         "@vitest/ui": "^0.29.8",
+        "node-mocks-http": "^1.12.2",
         "nodemon": "^2.0.22",
         "sequelize-cli": "^6.6.0",
         "sequelize-typescript": "^2.1.5",

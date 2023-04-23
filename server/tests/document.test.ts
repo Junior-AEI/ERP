@@ -1,44 +1,75 @@
-import { describe, expect, test, beforeAll, assertType } from "vitest";
-import { mockRequest, mockResponse } from "./expressMock";
+import {
+    describe,
+    expect,
+    test,
+    beforeAll,
+    afterEach,
+    assertType,
+} from "vitest";
+
+import { createRequest, createResponse } from "node-mocks-http";
+
 import request from "supertest";
 import Fichier from "../src/models/fichier.model";
 import Document from "../src/models/document.model";
 
 import documentController from "../src/controller/document.controller";
+import { sequelize, sequelizeInit } from "../src/config/database.config";
 
 const baseURL = "http://localhost:5000/api";
 
 describe("Test `Document` controller", () => {
+    beforeAll(async () => {
+        await sequelizeInit();
+        sequelize.addModels([Document, Fichier]);
+    });
     describe("createDocument controller", () => {
         test("Empty name", async () => {
-            const name = "";
             const expectedError = {
-                message: "notNull Violation: Document.nom cannot be null",
+                message: "Validation error: Validation notEmpty on nom failed",
                 status: 500,
             };
-            const req = mockRequest({ nom: name });
-            const res = mockResponse();
+            const req = createRequest({ body: { nom: "" } });
+            const res = createResponse();
             await documentController.createDocument(req, res);
-            expect(res.status).toHaveBeenCalledWith(500);
-            expect(res.json).toHaveBeenCalledWith(expectedError);
+            expect(res.statusCode).toBe(500);
+            expect(res._getJSONData()).toStrictEqual(expectedError);
         });
         test("Create Document", async () => {
             const name = "Test Document";
-            const req = mockRequest({}, { nom: name });
-            const res = mockResponse();
+            const req = createRequest({ body: { nom: name } });
+            console.log(req);
+            const res = createResponse();
             await documentController.createDocument(req, res);
-            expect(res.status).toHaveBeenCalledWith(200);
-            //const doc = await Document.findAll({ where: { nom: name } });
-            //expect(doc).toBe("");
-            //const trash = Document.findAll({ where: { nom: name } });
-            //(await trash).forEach((d) => d.destroy());
+            expect(res._getJSONData().message).toBeUndefined();
+            console.log(res);
+            expect(res.statusCode).toBe(200);
+            expect(res._getJSONData()).toBeDefined();
+            const doc: Document[] = await Document.findAll({
+                where: { nom: name },
+            });
+            expect(doc[0].nom).toBe(name);
+            const trash = Document.findAll({ where: { nom: name } });
+            (await trash).forEach((d) => d.destroy());
         });
     });
-    test("getAllDocuments controller", async () => {
-        const req = mockRequest();
-        const res = mockResponse();
-        await documentController.getAllDocuments(req, res);
-        expect(res.status).toHaveBeenCalledWith(200);
+    describe("getAllDocuments controller", async () => {
+        test("No documents in database", async () => {
+            const req = createRequest();
+            const res = createResponse();
+            const trash = Document.findAll();
+            (await trash).forEach((d) => d.destroy());
+            await documentController.getAllDocuments(req, res);
+            expect(res.statusCode).toBe(200);
+            expect(res._getJSONData()).toStrictEqual([]);
+        });
+        test("With documents", async () => {});
+    });
+    afterEach(async () => {
+        const files = Fichier.findAll();
+        (await files).forEach((d) => d.destroy());
+        const docs = Document.findAll();
+        (await docs).forEach((f) => f.destroy());
     });
 });
 
@@ -62,7 +93,6 @@ describe("Test `Document` API", () => {
                 .set("Authorization", token);
 
             expect(res.statusCode).toBe(200);
-
             res.body.forEach((ele: Document) => {
                 assertType<Document>(ele);
                 ele.versions.forEach((v: Fichier) => {

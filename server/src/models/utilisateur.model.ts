@@ -14,6 +14,7 @@ import {
     PrimaryKey,
 } from "sequelize-typescript";
 import Poste from "./poste.model";
+import Adherent from "./adherent.model";
 
 @Table
 export default class Utilisateur extends Model {

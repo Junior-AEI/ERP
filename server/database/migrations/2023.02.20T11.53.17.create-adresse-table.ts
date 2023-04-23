@@ -1,6 +1,5 @@
 import type { Migration } from "../../src/migrations/umzug";
 import { DataType } from "sequelize-typescript";
-import { Adresse } from "../../src/models/adresse.model";
 import validator from "validator";
 
 export const up: Migration = async ({ context: sequelize }) => {

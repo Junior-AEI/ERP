@@ -4,6 +4,7 @@ import express from "express";
 import bodyParser from "body-parser";
 import routes from "./routes/routes";
 import cors from "cors";
+import { sequelizeInit } from "./config/database.config";
 
 const app = express();
 app.use(cors());
@@ -16,3 +17,5 @@ const port = process.env.PORT;
 app.listen(port, () => {
     console.log(`Express app listening on port ${port}`);
 });
+
+sequelizeInit();

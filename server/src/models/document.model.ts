@@ -3,6 +3,7 @@ import {
     Column,
     Model,
     DataType,
+    PrimaryKey,
     NotEmpty,
     HasMany,
     IsDate,
@@ -12,6 +13,15 @@ import {
 import Fichier from "./fichier.model";
 @Table
 export default class Document extends Model {
+    @PrimaryKey
+    @Column({
+        type: DataType.INTEGER,
+        allowNull: false,
+        primaryKey: true,
+        autoIncrement: true,
+    })
+    id!: number;
+
     @NotEmpty
     @Column({
         type: DataType.STRING,

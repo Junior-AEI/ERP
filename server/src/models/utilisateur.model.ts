@@ -13,9 +13,11 @@ import {
     NotEmpty,
     Unique,
     PrimaryKey,
+    HasMany,
 } from "sequelize-typescript";
 import { Poste } from "./poste.model";
 import { Pole } from "./pole.model";
+import { Permission } from "./permission.model";
 
 @Table
 export class Utilisateur extends Model {
@@ -92,6 +94,9 @@ export class Utilisateur extends Model {
     @BelongsTo(() => Poste)
     poste!: Poste;
 
+    @HasMany(() => Permission)
+    permissions!: Permission[];
+
     @IsDate
     @CreatedAt
     @Column({
@@ -108,4 +113,4 @@ export class Utilisateur extends Model {
     })
     updatedAt!: Date;
 }
-sequelize.addModels([Utilisateur, Poste, Pole]);
+sequelize.addModels([Utilisateur, Poste, Pole, Permission]);

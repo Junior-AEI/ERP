@@ -5,6 +5,7 @@ import {
     JWT_ISSUER,
     JWT_SECRET_KEY,
 } from "../config/auth.config";
+import { Utilisateur } from "../models/utilisateur.model";
 
 function extractBearerToken(headerValue: string) {
     const matches = headerValue.match(/(bearer)\s+(\S+)/i);
@@ -21,10 +22,25 @@ function getUsername(req: Request, res: Response, next: () => void) {
             issuer: JWT_ISSUER,
             audience: JWT_AUDIENCE,
         })
-            .then((result) => {
-                res.locals.user = result.payload.username;
-                console.log(result.payload);
-                next();
+            .then(async (result) => {
+                const user = await Utilisateur.findOne({
+                    where: {
+                        nomUtilisateur: result.payload.username,
+                    },
+                });
+                // console.log(user);
+                if (user) {
+                    res.locals.user = {
+                        id: user.id,
+                        nomUtilisateur: user.nomUtilisateur,
+                    };
+                    next();
+                } else {
+                    return res.status(401).json({
+                        status: "error",
+                        message: "Failed to fetch user",
+                    });
+                }
             })
             .catch((error) => {
                 return res.status(401).json({

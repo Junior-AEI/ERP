@@ -6,15 +6,15 @@ import {
     afterEach,
     assertType,
 } from "vitest";
-
 import { createRequest, createResponse } from "node-mocks-http";
-
 import request from "supertest";
+
+require("ts-node/register");
+
+import { sequelize, sequelizeInit } from "../src/config/database.config";
 import Fichier from "../src/models/fichier.model";
 import Document from "../src/models/document.model";
-
 import documentController from "../src/controller/document.controller";
-import { sequelize, sequelizeInit } from "../src/config/database.config";
 
 const baseURL = "http://localhost:5000/api";
 
@@ -38,11 +38,9 @@ describe("Test `Document` controller", () => {
         test("Create Document", async () => {
             const name = "Test Document";
             const req = createRequest({ body: { nom: name } });
-            console.log(req);
             const res = createResponse();
             await documentController.createDocument(req, res);
             expect(res._getJSONData().message).toBeUndefined();
-            console.log(res);
             expect(res.statusCode).toBe(200);
             expect(res._getJSONData()).toBeDefined();
             const doc: Document[] = await Document.findAll({
@@ -54,22 +52,21 @@ describe("Test `Document` controller", () => {
         });
     });
     describe("getAllDocuments controller", async () => {
-        test("No documents in database", async () => {
+        test("With documents", async () => {
             const req = createRequest();
             const res = createResponse();
-            const trash = Document.findAll();
-            (await trash).forEach((d) => d.destroy());
             await documentController.getAllDocuments(req, res);
             expect(res.statusCode).toBe(200);
-            expect(res._getJSONData()).toStrictEqual([]);
+            const docs = res._getJSONData();
+            expect(docs[0].id).toStrictEqual(2);
+            expect(docs[1].id).toStrictEqual(1);
+            expect(docs[0].versions[0].id).toStrictEqual(0);
+            expect(docs[1].versions[0].id).toStrictEqual(3);
+            expect(docs[1].versions[1].id).toStrictEqual(1);
         });
-        test("With documents", async () => {});
     });
     afterEach(async () => {
-        const files = Fichier.findAll();
-        (await files).forEach((d) => d.destroy());
-        const docs = Document.findAll();
-        (await docs).forEach((f) => f.destroy());
+        //(await import("../src/migrations/umzug")).seeder.up();
     });
 });
 

@@ -32,17 +32,7 @@
                 />
             </template>
         </Column>
-        <Column field="Pole" header="Pole" :sortable="true">
-            <template #filter="{ filterModel, filterCallback }">
-                <InputText
-                    type="text"
-                    v-model="filterModel.value"
-                    @keydown.enter="filterCallback()"
-                    class="p-column-filter"
-                    :placeholder="`Pole`"
-                />
-            </template>
-        </Column>
+        <Column field="nomPole" header="nomPole" :sortable="true"> </Column>
         <Column
             headerStyle="width: 4rem; text-align: center"
             bodyStyle="text-align: center; overflow: visible"
@@ -52,8 +42,8 @@
             </template>
         </Column>
     </DataTable>
-    <RouterLink to="/addposte">
-        <Button id="post-add" class="button" label="Ajouter un post" />
+    <RouterLink to="/addpost">
+        <Button id="post-add" class="button" label="Ajouter un poste" />
     </RouterLink>
 </template>
 
@@ -61,10 +51,6 @@
 import { FilterMatchMode } from "primevue/api";
 import { onMounted, ref } from "vue";
 import axios from "axios";
-
-function handleClick() {
-    window.location.href = "../addposte";
-}
 
 const filters = ref({
     nom: { value: null, matchMode: FilterMatchMode.STARTS_WITH },

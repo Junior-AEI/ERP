@@ -3,15 +3,15 @@ import HomeView from "../views/HomeView.vue";
 import UsersView from "../views/UsersView.vue";
 import ClientsView from "../views/ClientsView.vue";
 import PostsView from "../views/PostsView.vue";
+import addPost from "../views/AddPoste.vue";
 import MemberView from "../views/MemberView.vue";
 import MemberUpdateView from "../views/MemberUpdateView.vue";
 import AddUserView from "../views/AddUserView.vue";
 import AddClientView from "../views/AddClientView.vue";
 import ChooseCompanyView from "../views/ChooseCompanyView.vue";
 
-
 import DocumentView from "../views/DocumentView.vue";
-import AddCompanies from "../views/AddCompaniesView.vue"
+import AddCompanies from "../views/AddCompaniesView.vue";
 
 import axios from "axios";
 
@@ -49,6 +49,11 @@ const router = createRouter({
             component: PostsView,
         },
         {
+            path: "/addpost",
+            name: "addpost",
+            component: addPost,
+        },
+        {
             path: "/adduser",
             name: "adduser",
             component: AddUserView,
@@ -58,7 +63,7 @@ const router = createRouter({
             name: "addclient",
             component: AddClientView,
         },
-        
+
         {
             path: "/choosecompany",
             name: "choosecompany",

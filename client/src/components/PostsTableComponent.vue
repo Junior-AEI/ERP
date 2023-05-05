@@ -37,8 +37,12 @@
             headerStyle="width: 4rem; text-align: center"
             bodyStyle="text-align: center; overflow: visible"
         >
-            <template #body>
-                <Button class="button" icon="pi pi-user-edit"></Button>
+            <template #body="{ data }">
+                <Button
+                    class="button"
+                    icon="pi pi-user-edit"
+                    @click="editPost(data)"
+                ></Button>
             </template>
         </Column>
     </DataTable>
@@ -51,13 +55,25 @@
 import { FilterMatchMode } from "primevue/api";
 import { onMounted, ref } from "vue";
 import axios from "axios";
+import { useRouter } from "vue-router";
 
+const router = useRouter();
 const filters = ref({
     nom: { value: null, matchMode: FilterMatchMode.STARTS_WITH },
     description: { value: null, matchMode: FilterMatchMode.STARTS_WITH },
     Pole: { value: null, matchMode: FilterMatchMode.STARTS_WITH },
 });
 
+const editPost = (data: any) => {
+    router.push({
+        path: "/posts/${data.id}/update",
+        params: {
+            nom: data.nom,
+            description: data.description,
+            nomPole: data.nomPole,
+        },
+    });
+};
 let postes = ref([]);
 
 onMounted(() => {

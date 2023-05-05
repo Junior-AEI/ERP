@@ -18,7 +18,7 @@
                                     <i class="pi pi-user" />
                                     <InputText
                                         placeholder="Nom"
-                                        v-model="Name"
+                                        v-model="Pole_Name"
                                     />
                                 </span>
                             </li>
@@ -64,13 +64,16 @@ const toast1 = useToast();
 const toast2 = useToast();
 
 //Data needed to create a post
-const Name = ref();
-const Description = ref();
 interface pole {
     nom: string;
 }
-const names = [];
+interface Post {
+    [id: string]: any;
+}
+const Pole_Name = ref();
+const Description = ref();
 const selectedPole = ref();
+const names = [];
 const pole = ref(names);
 
 axios.get("/pole").then((data) => {
@@ -82,9 +85,9 @@ axios.get("/pole").then((data) => {
 function addPoste() {
     // if fields are empty the address is removed
     if (
-        Name.value == undefined ||
+        Pole_Name.value == undefined ||
         Description.value == undefined ||
-        pole.value == undefined
+        selectedPole.value == undefined
     ) {
         confirm1.require({
             message: "Tous les champs ne sont pas remplis",
@@ -102,16 +105,13 @@ function addPoste() {
             },
         });
     }
-    interface Post {
-        [key: string]: any;
-    }
+
     //Add post :
     const newPost: Post = {
-        nom: Name.value,
+        nom: Pole_Name.value,
         description: Description.value,
-        Pole: pole.value,
+        nomPole: selectedPole.value.name,
     };
-    console.log(newPost);
     //Case where there is no problem to add member
     axios
         .post("/poste", newPost)
@@ -120,7 +120,7 @@ function addPoste() {
             toast2.add({
                 severity: "info",
                 summary: "Succès",
-                detail: "Utilisateur a été ajouté",
+                detail: "le poste a été ajouté",
                 life: 3000,
             });
             window.location.href = "../posts";

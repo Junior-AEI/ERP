@@ -63,22 +63,15 @@ const filters = ref({
     description: { value: null, matchMode: FilterMatchMode.STARTS_WITH },
     Pole: { value: null, matchMode: FilterMatchMode.STARTS_WITH },
 });
-
 const editPost = (data: any) => {
     router.push({
-        path: "/posts/${data.id}/update",
-        params: {
-            nom: data.nom,
-            description: data.description,
-            nomPole: data.nomPole,
-        },
+        path: "/posts/" + data.id + "/update",
     });
 };
 let postes = ref([]);
 
 onMounted(() => {
     axios.get("/poste").then((data) => {
-        //console.log(data.data);
         postes.value = data.data;
     });
 });

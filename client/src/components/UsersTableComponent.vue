@@ -58,8 +58,12 @@
             headerStyle="width: 4rem; text-align: center"
             bodyStyle="text-align: center; overflow: visible"
         >
-            <template #body="{data}">
-                <Button class="button" icon="pi pi-user-edit" @click="editUser(data)"></Button>
+            <template #body="{ data }">
+                <Button
+                    class="button"
+                    icon="pi pi-user-edit"
+                    @click="editUser(data)"
+                ></Button>
             </template>
         </Column>
     </DataTable>
@@ -91,11 +95,9 @@ const onRowSelect = (event: any) => {
     router.push(`/users/${event.data.id}`);
 };
 
-const editUser = (data :any)=> {
+const editUser = (data: any) => {
     router.push(`/users/${data.id}/update`);
-
-}
-
+};
 
 const filters = ref({
     nom: { value: null, matchMode: FilterMatchMode.STARTS_WITH },

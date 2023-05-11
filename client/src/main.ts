@@ -25,7 +25,7 @@ import Checkbox from "primevue/checkbox";
 import ProgressBar from "primevue/progressbar";
 import Fieldset from "primevue/fieldset";
 import SplitButton from "primevue/splitbutton";
-import InputMask from 'primevue/inputmask';
+import InputMask from "primevue/inputmask";
 
 import ConfirmationService from "primevue/confirmationservice";
 import ConfirmDialog from "primevue/confirmdialog";
@@ -43,9 +43,7 @@ import Message from "primevue/message";
 import SelectButton from "primevue/selectbutton";
 import Calendar from "primevue/calendar";
 import InputNumber from "primevue/inputnumber";
-
-import Listbox from 'primevue/listbox';
-
+import Listbox from "primevue/listbox";
 import FileUpload from "primevue/fileupload";
 
 /*import "primeflex/primeflex.css";*/
@@ -132,7 +130,6 @@ app.component("SelectButton", SelectButton);
 app.component("Calendar", Calendar);
 app.component("SplitButton", SplitButton);
 app.component("Listbox", Listbox);
-
 
 app.component("FileUpload", FileUpload);
 app.component("ProgressBar", ProgressBar);

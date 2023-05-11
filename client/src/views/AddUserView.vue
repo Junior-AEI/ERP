@@ -6,7 +6,9 @@
                     <template #legend>
                         <div class="flex align-items-center">
                             <span class="pi pi-user mr-2"></span>
-                            <span class="font-bold">Informations personnelles</span>
+                            <span class="font-bold"
+                                >Informations personnelles</span
+                            >
                         </div>
                     </template>
 
@@ -16,7 +18,10 @@
                                 <div class="key1">Nom</div>
                                 <span class="p-input-icon-left">
                                     <i class="pi pi-user" />
-                                    <InputText placeholder="Nom" v-model="lastName" />
+                                    <InputText
+                                        placeholder="Nom"
+                                        v-model="lastName"
+                                    />
                                 </span>
                             </li>
 
@@ -24,20 +29,32 @@
                                 <div class="key1">Prenom</div>
                                 <span class="p-input-icon-left">
                                     <i class="pi pi-user" />
-                                    <InputText placeholder="Prénom" v-model="firstName" />
+                                    <InputText
+                                        placeholder="Prénom"
+                                        v-model="firstName"
+                                    />
                                 </span>
                             </li>
                             <li class="row">
                                 <div class="key1">Genre</div>
-                                <Dropdown v-model="selectedGender" :options="gender" optionLabel="name" placeholder="Genre"
-                                    class="select" />
+                                <Dropdown
+                                    v-model="selectedGender"
+                                    :options="gender"
+                                    optionLabel="name"
+                                    placeholder="Genre"
+                                    class="select"
+                                />
                             </li>
 
                             <li class="row">
                                 <div class="key1">Telephone Mobile</div>
                                 <span class="p-input-icon-left">
                                     <i class="pi pi-phone" />
-                                    <InputMask placeholder="Téléphone" v-model="phoneNumber" mask="+99999999999" />
+                                    <InputMask
+                                        placeholder="Téléphone"
+                                        v-model="phoneNumber"
+                                        mask="+99999999999"
+                                    />
                                 </span>
                             </li>
 
@@ -45,7 +62,11 @@
                                 <div class="key1">Email</div>
                                 <span class="p-input-icon-left">
                                     <i class="pi pi-envelope" />
-                                    <InputText placeholder="E-mail" class="email_text" v-model="emailAddress" />
+                                    <InputText
+                                        placeholder="E-mail"
+                                        class="email_text"
+                                        v-model="emailAddress"
+                                    />
                                 </span>
                             </li>
                         </ul>
@@ -66,7 +87,11 @@
                                 <div class="key1">Adresse</div>
                                 <span class="p-input-icon-left">
                                     <i class="pi pi-map-marker" />
-                                    <InputText placeholder="Adresse" class="address_text" v-model="address" />
+                                    <InputText
+                                        placeholder="Adresse"
+                                        class="address_text"
+                                        v-model="address"
+                                    />
                                 </span>
                             </li>
 
@@ -74,22 +99,32 @@
                                 <div class="key1">Complément d'adresse</div>
                                 <span class="p-input-icon-left">
                                     <i class="pi pi-map-marker" />
-                                    <InputText placeholder="Complément d'adresse" class="address_text"
-                                        v-model="addressComplement" />
+                                    <InputText
+                                        placeholder="Complément d'adresse"
+                                        class="address_text"
+                                        v-model="addressComplement"
+                                    />
                                 </span>
                             </li>
                             <li class="row">
                                 <div class="key1">Ville</div>
                                 <span class="p-input-icon-left">
                                     <i class="pi pi-map" />
-                                    <InputText placeholder="Ville" class="city" v-model="city" />
+                                    <InputText
+                                        placeholder="Ville"
+                                        class="city"
+                                        v-model="city"
+                                    />
                                 </span>
                             </li>
 
                             <li class="row">
                                 <div class="key1">Code Postal</div>
                                 <span class="p-input-icon-left">
-                                    <InputNumber class="postalCode" v-model="postalCode" />
+                                    <InputNumber
+                                        class="postalCode"
+                                        v-model="postalCode"
+                                    />
                                 </span>
                             </li>
 
@@ -97,7 +132,12 @@
                                 <div class="key1">pays</div>
                                 <span class="p-input-icon-left">
                                     <i class="pi pi-map" />
-                                    <InputMask placeholder="Pays (FRA)" class="country" v-model="country" mask="aaa" />
+                                    <InputMask
+                                        placeholder="Pays (FRA)"
+                                        class="country"
+                                        v-model="country"
+                                        mask="aaa"
+                                    />
                                 </span>
                             </li>
                         </ul>
@@ -111,30 +151,53 @@
                         <li class="row">
                             <div class="key2">Promotion</div>
                             <span class="p-input-icon-left">
-                                <Calendar v-model="yearDiploma" view="year" dateFormat="yy" />
+                                <Calendar
+                                    v-model="yearDiploma"
+                                    view="year"
+                                    dateFormat="yy"
+                                />
                             </span>
                         </li>
                         <li class="row">
                             <div class="key2">Nationalité</div>
                             <span class="p-input-icon-left">
                                 <i class="pi pi-map" />
-                                <InputMask placeholder="Type:FRA" v-model="nationality" mask="aaa" />
+                                <InputMask
+                                    placeholder="Type:FRA"
+                                    v-model="nationality"
+                                    mask="aaa"
+                                />
                             </span>
                         </li>
                         <li class="row">
                             <div class="key2">Filière</div>
-                            <Dropdown v-model="selectedField" :options="field" optionLabel="name" placeholder="Filière"
-                                class="select" />
+                            <Dropdown
+                                v-model="selectedField"
+                                :options="field"
+                                optionLabel="name"
+                                placeholder="Filière"
+                                class="select"
+                            />
                         </li>
                         <li class="row">
                             <div class="key2">moyenPaiement</div>
-                            <Dropdown v-model="selectedPayment" :options="payment" optionLabel="name"
-                                placeholder="Moyen de paiement" class="select" />
+                            <Dropdown
+                                v-model="selectedPayment"
+                                :options="payment"
+                                optionLabel="name"
+                                placeholder="Moyen de paiement"
+                                class="select"
+                            />
                         </li>
                         <li class="row">
                             <div class="key2">Date de cotisation</div>
                             <span class="p-input-icon-left">
-                                <Calendar class="calendar" v-model="adhesionDate" dateFormat="dd/mm/yy" showIcon />
+                                <Calendar
+                                    class="calendar"
+                                    v-model="adhesionDate"
+                                    dateFormat="dd/mm/yy"
+                                    showIcon
+                                />
                             </span>
                         </li>
                     </ul>
@@ -147,14 +210,22 @@
                         <li class="row">
                             <div class="key2">Date de Naissance</div>
                             <span class="p-input-icon-left">
-                                <Calendar class="calendar" v-model="birthDate" dateFormat="dd/mm/yy" showIcon />
+                                <Calendar
+                                    class="calendar"
+                                    v-model="birthDate"
+                                    dateFormat="dd/mm/yy"
+                                    showIcon
+                                />
                             </span>
                         </li>
                         <li class="row">
                             <div class="key2">Lieu de Naissance</div>
                             <span class="p-input-icon-left">
                                 <i class="pi pi-compass" />
-                                <InputText placeholder="Lieu de naissance" v-model="birthPlace" />
+                                <InputText
+                                    placeholder="Lieu de naissance"
+                                    v-model="birthPlace"
+                                />
                             </span>
                         </li>
                     </ul>
@@ -226,7 +297,7 @@ function convertDateToSpecialFormat(date: any) {
     const minutesOffset = String(
         Math.floor(
             (absTimezoneOffsetInHours - Math.floor(absTimezoneOffsetInHours)) *
-            60
+                60
         )
     ).padStart(2, "0");
     const sign = timezoneOffsetInHours > 0 ? "-" : "+";
@@ -234,18 +305,18 @@ function convertDateToSpecialFormat(date: any) {
     const isoString = `${date.getFullYear()}-${(date.getMonth() + 1)
         .toString()
         .padStart(2, "0")}-${date.getDate().toString().padStart(2, "0")}T${date
-            .getHours()
-            .toString()
-            .padStart(2, "0")}:${date
-                .getMinutes()
-                .toString()
-                .padStart(2, "0")}:${date
-                    .getSeconds()
-                    .toString()
-                    .padStart(2, "0")}.${date
-                        .getMilliseconds()
-                        .toString()
-                        .padStart(3, "0")}${offset}`;
+        .getHours()
+        .toString()
+        .padStart(2, "0")}:${date
+        .getMinutes()
+        .toString()
+        .padStart(2, "0")}:${date
+        .getSeconds()
+        .toString()
+        .padStart(2, "0")}.${date
+        .getMilliseconds()
+        .toString()
+        .padStart(3, "0")}${offset}`;
     return isoString;
 }
 
@@ -420,7 +491,8 @@ function addUser() {
 @import "primeflex/primeflex.scss";
 
 .row {
-    @include styleclass("grid align-items-center py-3 px-2 border-top-1 surface-border"
+    @include styleclass(
+        "grid align-items-center py-3 px-2 border-top-1 surface-border"
     );
 }
 

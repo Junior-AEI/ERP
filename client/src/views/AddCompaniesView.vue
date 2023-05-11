@@ -6,49 +6,54 @@
                     <template #legend>
                         <div class="flex align-items-center">
                             <span class="pi pi-user mr-2"></span>
-                            <span class="font-bold"
-                                >Choix Entreprise</span
-                            >
+                            <span class="font-bold">Choix Entreprise</span>
                         </div>
                     </template>
-        <!-- <Card id="choiceCompany" style="width: 48%; margin: 10px; float: left;"> -->
-            <div class="surface-section">
+                    <!-- <Card id="choiceCompany" style="width: 48%; margin: 10px; float: left;"> -->
+                    <div class="surface-section">
                         <ul class="list-none p-0 m-0">
                             <li class="row">
                                 <span class="p-input-icon-left">
-                    <Listbox v-model="selectedCompany" :options="company" filter optionLabel="nom" class="w-full md:w-14rem" />
-                </span>
+                                    <Listbox
+                                        v-model="selectedCompany"
+                                        :options="company"
+                                        filter
+                                        optionLabel="nom"
+                                        class="w-full md:w-14rem"
+                                    />
+                                </span>
                             </li>
 
                             <li class="row">
-                                <span class="p-input-icon-left"> 
-            <Button icon="pi pi-check" label="Valider" @click="displayCompany" />
-            <Button
-                icon="pi pi-briefcase"
-                label="Ajouter une nouvelle entreprise"
-                severity="secondary"
-                style="margin-left: 0.5em"
-                @click="showAddCompany"
-            />
-        </span>
+                                <span class="p-input-icon-left">
+                                    <Button
+                                        icon="pi pi-check"
+                                        label="Valider"
+                                        @click="displayCompany"
+                                    />
+                                    <Button
+                                        icon="pi pi-briefcase"
+                                        label="Ajouter une nouvelle entreprise"
+                                        severity="secondary"
+                                        style="margin-left: 0.5em"
+                                        @click="showAddCompany"
+                                    />
+                                </span>
                             </li>
-
                         </ul>
                     </div>
-                
-                
-            </Fieldset>
-            <Fieldset class="flex-auto" style="width: 50%; visibility:hidden ;">
+                </Fieldset>
+                <Fieldset
+                    class="flex-auto"
+                    style="width: 50%; visibility: hidden"
+                >
+                </Fieldset>
 
-            </Fieldset>
-    
-    <Fieldset id="AddCompany" class="flex-auto">
-        <template #legend>
+                <Fieldset id="AddCompany" class="flex-auto">
+                    <template #legend>
                         <div class="flex align-items-center">
                             <span class="pi pi-user mr-2"></span>
-                            <span class="font-bold"
-                                >Ajout Entreprise</span
-                            >
+                            <span class="font-bold">Ajout Entreprise</span>
                         </div>
                     </template>
 
@@ -58,7 +63,10 @@
                                 <div class="key1">Nom</div>
                                 <span class="p-input-icon-left">
                                     <i class="pi pi-user" />
-                                    <InputText placeholder="Nom" v-model="name" />
+                                    <InputText
+                                        placeholder="Nom"
+                                        v-model="name"
+                                    />
                                 </span>
                             </li>
 
@@ -66,10 +74,12 @@
                                 <div class="key1">Entité juridique</div>
                                 <span class="p-input-icon-left">
                                     <i class="pi pi-user" />
-                                    <InputText placeholder="entité" v-model="legalEntity" />
+                                    <InputText
+                                        placeholder="entité"
+                                        v-model="legalEntity"
+                                    />
                                 </span>
                             </li>
-
                         </ul>
                     </div>
                 </Fieldset>
@@ -78,9 +88,7 @@
                     <template #legend>
                         <div class="flex align-items-center">
                             <span class="pi pi-user mr-2"></span>
-                            <span class="font-bold"
-                                >Adresse</span
-                            >
+                            <span class="font-bold">Adresse</span>
                         </div>
                     </template>
 
@@ -90,7 +98,11 @@
                                 <div class="key1">Adresse</div>
                                 <span class="p-input-icon-left">
                                     <i class="pi pi-map-marker" />
-                                    <InputText placeholder="Adresse" class="address_text" v-model="address" />
+                                    <InputText
+                                        placeholder="Adresse"
+                                        class="address_text"
+                                        v-model="address"
+                                    />
                                 </span>
                             </li>
 
@@ -98,22 +110,32 @@
                                 <div class="key1">Complément d'adresse</div>
                                 <span class="p-input-icon-left">
                                     <i class="pi pi-map-marker" />
-                                    <InputText placeholder="Complément d'adresse" class="address_text"
-                                        v-model="addressComplement" />
+                                    <InputText
+                                        placeholder="Complément d'adresse"
+                                        class="address_text"
+                                        v-model="addressComplement"
+                                    />
                                 </span>
                             </li>
                             <li class="row">
                                 <div class="key1">Ville</div>
                                 <span class="p-input-icon-left">
                                     <i class="pi pi-map" />
-                                    <InputText placeholder="Ville" class="city" v-model="city" />
+                                    <InputText
+                                        placeholder="Ville"
+                                        class="city"
+                                        v-model="city"
+                                    />
                                 </span>
                             </li>
 
                             <li class="row">
                                 <div class="key1">Code Postal</div>
                                 <span class="p-input-icon-left">
-                                    <InputNumber class="postalCode" v-model="postalCode" />
+                                    <InputNumber
+                                        class="postalCode"
+                                        v-model="postalCode"
+                                    />
                                 </span>
                             </li>
 
@@ -121,30 +143,34 @@
                                 <div class="key1">pays</div>
                                 <span class="p-input-icon-left">
                                     <i class="pi pi-map" />
-                                    <InputMask placeholder="Pays (FRA)" class="country" v-model="country" mask="aaa" />
+                                    <InputMask
+                                        placeholder="Pays (FRA)"
+                                        class="country"
+                                        v-model="country"
+                                        mask="aaa"
+                                    />
                                 </span>
                             </li>
                         </ul>
-                        </div>
-                
+                    </div>
                 </Fieldset>
-
-
-                </div>
-                <div id="AddCompanyButton">
-                <Button icon="pi pi-check" label="Ajouter l'entreprise" @click="addCompany" />    
-            </div>  
+            </div>
+            <div id="AddCompanyButton">
+                <Button
+                    icon="pi pi-check"
+                    label="Ajouter l'entreprise"
+                    @click="addCompany"
+                />
+            </div>
             <div id="AddClient">
-                <Button icon="pi pi-check" label="Ajouter un client pour cette entreprise" @click="addClient" />    
-            </div>                    
-
-                </template>
-
-
-
-            </Card>
-
-
+                <Button
+                    icon="pi pi-check"
+                    label="Ajouter un client pour cette entreprise"
+                    @click="addClient"
+                />
+            </div>
+        </template>
+    </Card>
 </template>
 
 <script setup lang="ts">
@@ -165,16 +191,14 @@ const country = ref();
 //Useful to create some popup
 const confirm1 = useConfirm();
 const toast1 = useToast();
-const toast2 = useToast();    
+const toast2 = useToast();
 
-
-interface Company  {
+interface Company {
     nom: string;
     entiteJuridique: string;
     adresseId: string;
-
 }
-    interface Address {
+interface Address {
     adresse: string;
     complementAdresse: string;
     ville: string;
@@ -182,30 +206,26 @@ interface Company  {
     pays: string;
 }
 
-
 let company = ref([]);
 let selectedCompany = ref({} as Company);
 
 axios.get("/entreprise").then((data) => {
-    
-    company.value = data.data; 
-    console.log(data.data)
-    //selectedCompany = data.data[0];      
+    company.value = data.data;
+    console.log(data.data);
+    //selectedCompany = data.data[0];
     // console.log(selectedCompany);
 });
 
-function displayCompany(){
+function displayCompany() {
     console.log(JSON.stringify(selectedCompany));
-    document.cookie = "selectedCompany=" + JSON.stringify(selectedCompany.value) +"; SameSite=None";
+    document.cookie =
+        "selectedCompany=" +
+        JSON.stringify(selectedCompany.value) +
+        "; SameSite=None";
     router.push("/addclient");
-    
-
 }
 
-
-
-
-function showAddCompany(){
+function showAddCompany() {
     console.log("show add company");
     document.getElementById("AddCompany").style.visibility = "visible";
     document.getElementById("AddAddress").style.visibility = "visible";
@@ -214,7 +234,6 @@ function showAddCompany(){
     document.getElementById("AddCompany").style.height = "auto";
     document.getElementById("AddAddress").style.height = "auto";
     document.getElementById("AddCompanyButton").style.height = "auto";
-
 }
 
 //Find the id of the last address which has been added to link it with an adherent
@@ -232,12 +251,10 @@ function findIdAddress(data: any) {
     }
 }
 
-
 function addCompany() {
     console.log("Validation ajout entreprise dans la base");
 
-
-  //  Add address of the adherent :
+    //  Add address of the adherent :
     const newAddress: Address = {
         adresse: address.value,
         complementAdresse: addressComplement.value,
@@ -259,10 +276,7 @@ function addCompany() {
                 allAddress = data.data;
 
                 // if fields are empty the address is removed
-                if (
-                    name.value == undefined ||
-                    legalEntity.value == undefined 
-                ) {
+                if (name.value == undefined || legalEntity.value == undefined) {
                     const addr = "/adresse/" + findIdAddress(allAddress);
                     axios.delete(addr);
                     confirm1.require({
@@ -301,12 +315,17 @@ function addCompany() {
                             detail: "Entreprise a été ajoutée",
                             life: 3000,
                         });
-                        console.log(newCompany)
-                        document.cookie = "selectedCompany=" + JSON.stringify(newCompany) +"; SameSite=None";
-                        document.getElementById("AddClient").style.visibility = "visible";
+                        console.log(newCompany);
+                        document.cookie =
+                            "selectedCompany=" +
+                            JSON.stringify(newCompany) +
+                            "; SameSite=None";
+                        document.getElementById("AddClient").style.visibility =
+                            "visible";
 
-                        document.getElementById("AddClient").style.height = "auto";
-                        
+                        document.getElementById("AddClient").style.height =
+                            "auto";
+
                         //Error because some fields are incorrect
                     })
                     .catch(function (error) {
@@ -352,12 +371,9 @@ function addCompany() {
         });
 }
 
-function addClient(){
+function addClient() {
     router.push("/addclient");
 }
-
-
-
 </script>
 
 <style scoped lang="scss">
@@ -376,11 +392,11 @@ function addClient(){
 .value {
     @include styleclass("col text-left text-900 w-full");
 }
-#AddAddress, #AddCompany, #AddCompanyButton, #AddClient {
-
+#AddAddress,
+#AddCompany,
+#AddCompanyButton,
+#AddClient {
     visibility: hidden;
-    height : 0;
+    height: 0;
 }
-
-
 </style>

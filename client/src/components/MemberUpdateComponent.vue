@@ -17,54 +17,57 @@
                             <li class="row">
                                 <div class="key1">Nom</div>
                                 <span class="p-input-icon-left">
-                            <i class="pi pi-user" />
-                            <InputText placeholder="Nom" v-model="lastName" />
-                        </span>
+                                    <i class="pi pi-user" />
+                                    <InputText
+                                        placeholder="Nom"
+                                        v-model="lastName"
+                                    />
+                                </span>
                             </li>
 
                             <li class="row">
                                 <div class="key1">Prenom</div>
                                 <span class="p-input-icon-left">
-                            <i class="pi pi-user" />
-                            <InputText
-                                placeholder="Prénom"
-                                v-model="firstName"
-                            />
-                        </span>
+                                    <i class="pi pi-user" />
+                                    <InputText
+                                        placeholder="Prénom"
+                                        v-model="firstName"
+                                    />
+                                </span>
                             </li>
                             <li class="row">
                                 <div class="key1">Genre</div>
                                 <Dropdown
-                            v-model="selectedGender"
-                            :options="gender"
-                            optionLabel="name"
-                            placeholder="Genre"
-                            class="select"
-                        />
+                                    v-model="selectedGender"
+                                    :options="gender"
+                                    optionLabel="name"
+                                    placeholder="Genre"
+                                    class="select"
+                                />
                             </li>
 
                             <li class="row">
                                 <div class="key1">Telephone Mobile</div>
                                 <span class="p-input-icon-left">
-                            <i class="pi pi-phone" />
-                            <InputMask
-                                placeholder="Téléphone"
-                                v-model="phoneNumber"
-                                mask="+99999999999"
-                            />
-                        </span>
+                                    <i class="pi pi-phone" />
+                                    <InputMask
+                                        placeholder="Téléphone"
+                                        v-model="phoneNumber"
+                                        mask="+99999999999"
+                                    />
+                                </span>
                             </li>
 
                             <li class="row">
                                 <div class="key1">Email</div>
                                 <span class="p-input-icon-left">
-                            <i class="pi pi-envelope" />
-                            <InputText
-                                placeholder="E-mail"
-                                class="email_text"
-                                v-model="emailAddress"
-                            />
-                        </span>
+                                    <i class="pi pi-envelope" />
+                                    <InputText
+                                        placeholder="E-mail"
+                                        class="email_text"
+                                        v-model="emailAddress"
+                                    />
+                                </span>
                             </li>
                         </ul>
                     </div>
@@ -83,59 +86,59 @@
                             <li class="row">
                                 <div class="key1">Adresse</div>
                                 <span class="p-input-icon-left">
-                            <i class="pi pi-map-marker" />
-                            <InputText
-                                placeholder="Adresse"
-                                class="address_text"
-                                v-model="address"
-                            />
-                        </span>
+                                    <i class="pi pi-map-marker" />
+                                    <InputText
+                                        placeholder="Adresse"
+                                        class="address_text"
+                                        v-model="address"
+                                    />
+                                </span>
                             </li>
 
                             <li class="row">
                                 <div class="key1">Complément d'adresse</div>
                                 <span class="p-input-icon-left">
-                            <i class="pi pi-map-marker" />
-                            <InputText
-                                placeholder="Complément d'adresse"
-                                class="address_text"
-                                v-model="addressComplement"
-                            />
-                        </span>
+                                    <i class="pi pi-map-marker" />
+                                    <InputText
+                                        placeholder="Complément d'adresse"
+                                        class="address_text"
+                                        v-model="addressComplement"
+                                    />
+                                </span>
                             </li>
                             <li class="row">
                                 <div class="key1">Ville</div>
                                 <span class="p-input-icon-left">
-                            <i class="pi pi-map" />
-                            <InputText
-                                placeholder="Ville"
-                                class="city"
-                                v-model="city"
-                            />
-                        </span>
+                                    <i class="pi pi-map" />
+                                    <InputText
+                                        placeholder="Ville"
+                                        class="city"
+                                        v-model="city"
+                                    />
+                                </span>
                             </li>
 
                             <li class="row">
                                 <div class="key1">Code Postal</div>
                                 <span class="p-input-icon-left">
-                            <InputNumber
-                                class="postalCode"
-                                v-model="postalCode"
-                            />
-                        </span>
+                                    <InputNumber
+                                        class="postalCode"
+                                        v-model="postalCode"
+                                    />
+                                </span>
                             </li>
 
                             <li class="row">
                                 <div class="key1">pays</div>
                                 <span class="p-input-icon-left">
-                            <i class="pi pi-map" />
-                            <InputMask
-                                placeholder="Pays (FRA)"
-                                class="country"
-                                v-model="country"
-                                mask="aaa"
-                            />
-                        </span>
+                                    <i class="pi pi-map" />
+                                    <InputMask
+                                        placeholder="Pays (FRA)"
+                                        class="country"
+                                        v-model="country"
+                                        mask="aaa"
+                                    />
+                                </span>
                             </li>
                         </ul>
                     </div>
@@ -148,57 +151,56 @@
                         <li class="row">
                             <div class="key2">Promotion</div>
                             <span class="p-input-icon-left">
-                            <Calendar
-                                v-model="yearDiploma"
-                                view="year"
-                                dateFormat="yy"
-                            />
-                        </span>
+                                <Calendar
+                                    v-model="yearDiploma"
+                                    view="year"
+                                    dateFormat="yy"
+                                />
+                            </span>
                         </li>
                         <li class="row">
                             <div class="key2">Nationalité</div>
                             <span class="p-input-icon-left">
-                            <i class="pi pi-map" />
-                            <InputMask
-                                placeholder="Type:FRA"
-                                v-model="nationality"
-                                mask="aaa"
-                            />
-                        </span>
+                                <i class="pi pi-map" />
+                                <InputMask
+                                    placeholder="Type:FRA"
+                                    v-model="nationality"
+                                    mask="aaa"
+                                />
+                            </span>
                         </li>
                         <li class="row">
                             <div class="key2">Filière</div>
                             <Dropdown
-                            v-model="selectedField"
-                            :options="field"
-                            optionLabel="name"
-                            placeholder="Filière"
-                            class="select"
-                        />
+                                v-model="selectedField"
+                                :options="field"
+                                optionLabel="name"
+                                placeholder="Filière"
+                                class="select"
+                            />
                         </li>
                         <li class="row">
                             <div class="key2">moyenPaiement</div>
                             <Dropdown
-                            v-model="selectedPayment"
-                            :options="payment"
-                            optionLabel="name"
-                            placeholder="Moyen de paiement"
-                            class="select"
-                        />
+                                v-model="selectedPayment"
+                                :options="payment"
+                                optionLabel="name"
+                                placeholder="Moyen de paiement"
+                                class="select"
+                            />
                         </li>
                         <li class="row">
                             <div class="key2">Date de cotisation</div>
                             <span class="p-input-icon-left">
-                            <Calendar
-                                class="calendar"
-                                v-model="adhesionDate"
-                                dateFormat="dd/mm/yy"
-                                showIcon
-                            />
-                        </span>
+                                <Calendar
+                                    class="calendar"
+                                    v-model="adhesionDate"
+                                    dateFormat="dd/mm/yy"
+                                    showIcon
+                                />
+                            </span>
                         </li>
                     </ul>
-
                 </div>
             </Fieldset>
 
@@ -208,23 +210,23 @@
                         <li class="row">
                             <div class="key2">Date de Naissance</div>
                             <span class="p-input-icon-left">
-                            <Calendar
-                                class="calendar"
-                                v-model="birthDate"
-                                dateFormat="dd/mm/yy"
-                                showIcon
-                            />
-                        </span>
+                                <Calendar
+                                    class="calendar"
+                                    v-model="birthDate"
+                                    dateFormat="dd/mm/yy"
+                                    showIcon
+                                />
+                            </span>
                         </li>
                         <li class="row">
                             <div class="key2">Lieu de Naissance</div>
                             <span class="p-input-icon-left">
-                            <i class="pi pi-compass" />
-                            <InputText
-                                placeholder="Lieu de naissance"
-                                v-model="birthPlace"
-                            />
-                        </span>
+                                <i class="pi pi-compass" />
+                                <InputText
+                                    placeholder="Lieu de naissance"
+                                    v-model="birthPlace"
+                                />
+                            </span>
                         </li>
                     </ul>
                 </div>
@@ -248,7 +250,6 @@ import { useRouter } from "vue-router";
 const confirm = useConfirm();
 const toast = useToast();
 const router = useRouter();
-
 
 interface Member {
     id: string;
@@ -317,41 +318,39 @@ let payment = ref([
     { name: "Lydia" },
 ]);
 
-
 axios
-        .get(`/adherent/${props.id_user}`)
-        .then((data) => {
-            user.value = data.data;
-            lastName.value = user.value.nom;
-            firstName.value = user.value.prenom;
-            selectedGender = ref({ name: user.value.sexe });
-            birthDate.value = convertDate(user.value.dateNaissance);
-            birthPlace.value = user.value.lieuNaissance;
-            nationality.value = user.value.nationalite;
-            phoneNumber.value = user.value.telephoneMobile;
-            emailAddress.value = user.value.email;
-            yearDiploma.value = convertDate(user.value.promotion);
-            selectedField = ref({ name: user.value.filiere });;
-            adhesionDate.value = convertDate(user.value.dateCotisation);
-            selectedPayment = ref({name: user.value.moyenPaiement});
+    .get(`/adherent/${props.id_user}`)
+    .then((data) => {
+        user.value = data.data;
+        lastName.value = user.value.nom;
+        firstName.value = user.value.prenom;
+        selectedGender = ref({ name: user.value.sexe });
+        birthDate.value = convertDate(user.value.dateNaissance);
+        birthPlace.value = user.value.lieuNaissance;
+        nationality.value = user.value.nationalite;
+        phoneNumber.value = user.value.telephoneMobile;
+        emailAddress.value = user.value.email;
+        yearDiploma.value = convertDate(user.value.promotion);
+        selectedField = ref({ name: user.value.filiere });
+        adhesionDate.value = convertDate(user.value.dateCotisation);
+        selectedPayment = ref({ name: user.value.moyenPaiement });
 
-            return data.data;
-        })
-        .then(
-            (res) => {
-                axios.get(`/adresse/${res.adresseId}`).then((data) => {
-                    adresse.value = data.data;
-                    address.value = adresse.value.adresse;
-                    addressComplement.value = adresse.value.complementAdresse;
-                    city.value = adresse.value.ville;
-                    postalCode.value = parseInt(adresse.value.codePostal);
-                    country.value = adresse.value.pays;
-                });
-            },
-            (failed: any) =>
-                console.log("Probleme avec la requete get adherent:", failed)
-        );
-
+        return data.data;
+    })
+    .then(
+        (res) => {
+            axios.get(`/adresse/${res.adresseId}`).then((data) => {
+                adresse.value = data.data;
+                address.value = adresse.value.adresse;
+                addressComplement.value = adresse.value.complementAdresse;
+                city.value = adresse.value.ville;
+                postalCode.value = parseInt(adresse.value.codePostal);
+                country.value = adresse.value.pays;
+            });
+        },
+        (failed: any) =>
+            console.log("Probleme avec la requete get adherent:", failed)
+    );
 
 //Convert date from calendar of primevue to DATEONLY of sequelize
 function convertDateToSpecialFormat(date: any) {
@@ -388,8 +387,6 @@ function convertDateToSpecialFormat(date: any) {
     return isoString;
 }
 
-
-
 function modifyUser() {
     console.log("Modif adhérent dans la base");
 
@@ -400,7 +397,7 @@ function modifyUser() {
         ville: city.value,
         codePostal: String(postalCode.value),
         pays: country.value,
-        id : adresse.value.id
+        id: adresse.value.id,
     };
     console.log(updatedAddress);
 
@@ -451,7 +448,7 @@ function modifyUser() {
 
                 //Update adherent with previous address :
 
-                console.log(yearDiploma.value)
+                console.log(yearDiploma.value);
                 const updatedMember: Member = {
                     id: user.value.id,
                     nom: lastName.value,
@@ -485,8 +482,7 @@ function modifyUser() {
                             acceptClass: "pi pi-button-check",
                             acceptLabel: "Ok",
                             accept: () => {
-                                window.location.href = "../"+user.value.id;
-
+                                window.location.href = "../" + user.value.id;
                             },
                         });
 
@@ -495,7 +491,8 @@ function modifyUser() {
                     .catch(function (error) {
                         console.log("error");
                         confirm.require({
-                            message: "Erreur lors de la modification de l'utilisateur",
+                            message:
+                                "Erreur lors de la modification de l'utilisateur",
                             header: "Erreur",
                             icon: "pi pi-info-circle",
                             acceptClass: "p-button-danger",
@@ -515,7 +512,8 @@ function modifyUser() {
         })
         .catch(function (error) {
             confirm.require({
-                message: "Erreur lors de la modification de l'adresse de l'utilisateur",
+                message:
+                    "Erreur lors de la modification de l'adresse de l'utilisateur",
                 header: "Erreur",
                 icon: "pi pi-info-circle",
                 acceptClass: "p-button-danger",
@@ -531,7 +529,6 @@ function modifyUser() {
             });
         });
 }
-
 
 // function convertDate(date: string) {
 //     const d = new Date(date);
@@ -556,10 +553,9 @@ function modifyUser() {
 //     return day + "/" + month + "/" + year;
 // }
 
-function convertDate(date:string) {
+function convertDate(date: string) {
     return new Date(date);
 }
-
 </script>
 
 <style scoped lang="scss">

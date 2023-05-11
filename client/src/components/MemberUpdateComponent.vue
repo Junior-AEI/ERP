@@ -480,7 +480,7 @@ function modifyUser() {
                         console.log(response);
                         confirm.require({
                             message: "Utilisateur modifié avec succès",
-                            header: "Erreur",
+                            header: "Succès",
                             icon: "pi pi-info-circle",
                             acceptClass: "pi pi-button-check",
                             acceptLabel: "Ok",

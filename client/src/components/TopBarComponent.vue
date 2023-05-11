@@ -48,6 +48,10 @@ const items = [
     {
         label: "Se déconnecter",
         icon: "pi pi-sign-out",
+        command: () => {
+            router.push(`/`);
+            sessionStorage.removeItem("token");
+        },
     },
     {
         label: "Supprimer mon compte",

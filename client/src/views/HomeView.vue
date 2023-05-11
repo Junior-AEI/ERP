@@ -71,21 +71,8 @@
 <script setup lang="ts">
 /*
 Suite du dev :
-TODO : ajouter les regex pour les mails
-TODO : transformer la page en component vue
-TODO : regarder les vars globales (à défricher)
-TODO : ajouter les regex pour les mots de passe
-TODO : refaire la connexion avec Pinia (à défricher)
-TODO : vérifier si le storage est disponible
-TODO : nettoyer page de login (suppression des autres vues)
-TODO : catch des erreurs
-TODO : mauvais mot de passe ou login
-TODO : changement de page après connexion
-TODO : bouton se souvenir de moi (à garder ou pas ?)
-TODO : popup mot de passe oublié
-TODO : régler les problèmes de warnings
-TODO : suppression autre page de login (après fin de dev de celle-ci)
-TODO : régler le problème de non réapparition de message
+faire une page de connexion
+
  */
 
 /*function storageAvailable(type : any) {
@@ -131,12 +118,24 @@ async function connection(login: string, password: string) {
         })
         .then((res) => {
             sessionStorage.setItem("token", res.data.token);
+            login = "";
+            password = "";
+            router.push(`/about`);
         })
         .catch(() => {
             wrongValue.value = true;
             setTimeout(() => (wrongValue.value = false), 3000);
         });
 }
+
+document.addEventListener("keypress", function (e) {
+    if (e.key === "Enter") {
+        connection(
+            document.getElementById("login").value,
+            document.getElementById("password").value
+        );
+    }
+});
 </script>
 <style lang="scss">
 @import "/node_modules/primeflex/primeflex.css";

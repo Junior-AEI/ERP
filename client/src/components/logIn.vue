@@ -43,6 +43,7 @@
 
 <script lang="ts">
 import axios from "axios";
+
 export default {
     data: () => ({
         checked1: false,

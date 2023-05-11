@@ -12,9 +12,11 @@ import {
     NotEmpty,
     Unique,
     PrimaryKey,
+    HasMany,
 } from "sequelize-typescript";
 import Poste from "./poste.model";
 import Adherent from "./adherent.model";
+import Permission from "./permission.model";
 
 @Table
 export default class Utilisateur extends Model {
@@ -100,6 +102,9 @@ export default class Utilisateur extends Model {
 
     @BelongsTo(() => Adherent)
     adherent!: Adherent;
+
+    @HasMany(() => Permission)
+    permissions!: Permission[];
 
     @IsDate
     @CreatedAt

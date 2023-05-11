@@ -223,7 +223,7 @@ onMounted(() => {
 
 function modifyUser() {
     console.log("modify User");
-    window.location.href = "./"+user.value.id+"/update";
+    window.location.href = "./" + user.value.id + "/update";
 }
 
 function delUser() {
@@ -259,16 +259,14 @@ function convertDate(date: string) {
         return date;
     }
     if (d.getDate() < 10) {
-        day = '0'+ d.getDate();
-    }
-    else {
+        day = "0" + d.getDate();
+    } else {
         day = d.getDate().toString();
     }
     if (d.getMonth() < 10) {
-        month = '0'+ (d.getMonth() + 1);
-    }
-    else {
-        month = (d.getMonth() +1).toString();
+        month = "0" + (d.getMonth() + 1);
+    } else {
+        month = (d.getMonth() + 1).toString();
     }
     return day + "/" + month + "/" + year;
 }

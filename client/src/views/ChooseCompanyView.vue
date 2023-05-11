@@ -1,34 +1,34 @@
 <template>
-    <Fieldset id=findCompany class="flex-auto">
-                    <template #legend>
-                        <div class="flex align-items-center">
-                            <span class="pi pi-home mr-2"></span>
-                            <span class="font-bold">Entreprise</span>
-                        </div>
-                    </template>
+    <Fieldset id="findCompany" class="flex-auto">
+        <template #legend>
+            <div class="flex align-items-center">
+                <span class="pi pi-home mr-2"></span>
+                <span class="font-bold">Entreprise</span>
+            </div>
+        </template>
 
-                    <div class="surface-section">
-                        <ul class="list-none p-0 m-0">
-                            <li class="row">
-                            <div class="key2">Entreprise</div>
-                            <span class="p-input-icon-left">
-                                <Button label="Trouver une entreprise" @click="searchCompany()" />
-                            </span>
-                        </li>
-                        </ul>
-                    </div>
-                </Fieldset>
+        <div class="surface-section">
+            <ul class="list-none p-0 m-0">
+                <li class="row">
+                    <div class="key2">Entreprise</div>
+                    <span class="p-input-icon-left">
+                        <Button
+                            label="Trouver une entreprise"
+                            @click="searchCompany()"
+                        />
+                    </span>
+                </li>
+            </ul>
+        </div>
+    </Fieldset>
 </template>
 
 <script setup lang="ts">
 import router from "@/router";
 
-
-function searchCompany(){
+function searchCompany() {
     router.push("/addCompanies");
 }
-
-
 </script>
 
 <style scoped lang="scss">

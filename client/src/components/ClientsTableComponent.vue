@@ -55,7 +55,7 @@
             bodyStyle="text-align: center; overflow: visible"
         >
             <template #body>
-                <Button class="button" icon="pi pi-user-edit"></Button>
+                <Button id="updateClient" class="button" icon="pi pi-user-edit"></Button>
             </template>
         </Column>
     </DataTable>
@@ -91,13 +91,30 @@ const filters = ref({
 });
 
 let clients = ref([]);
+console.log(clients.value);
 
 onMounted(() => {
     axios.get("/client").then((data) => {
-        //console.log(data.data);
-        clients.value = data.data;
+        // //clients.value = data.data;
+        for (let i = 0; i <data.data.length; ++i) {
+            //console.log((data.data)[i])
+
+            axios.get("/entreprise/"+data.data[i].entrepriseId).then((data2) => {
+                data.data[i]["entreprise"] = data2.data.nom;
+
+                if (i === data.data.length - 1) {
+                    clients.value = data.data;
+                    console.log(clients.value);
+                
+                }
+            });
+        }
+            
+            
     });
-});
+
+    });
+
 </script>
 <style lang="scss" scoped>
 @import "../assets/colors.scss";
@@ -108,4 +125,10 @@ onMounted(() => {
 #client-add {
     margin: 1em 1em 1em 1em;
 }
+
+#updateClient {
+  pointer-events: none;
+  opacity: .65;
+}
+
 </style>

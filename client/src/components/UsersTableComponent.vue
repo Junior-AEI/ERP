@@ -42,7 +42,7 @@
             :sortable="true"
         ></Column>
         <Column field="email" header="Email" :sortable="true"></Column>
-        <Column field="Poste" header="Poste" :sortable="true"></Column>
+        <Column field="poste" header="Poste" :sortable="true"></Column>
         <Column field="promotion" header="Promotion" :sortable="true">
             <template #filter="{ filterModel, filterCallback }">
                 <InputText
@@ -113,8 +113,28 @@ let users = ref([]);
 onMounted(() => {
     axios.get("/adherent").then((data) => {
         console.log(data.data);
-        users.value = data.data;
-    });
+        // users.value = data.data;
+        axios.get("/utilisateur").then((data2) => {
+            for (let i = 0; i < data2.data.length; ++i){
+                if (data2.data[i].adherentId !== null) {
+                    axios.get("/poste"+data2.data[i].posteId).then((data3) => {
+                        data.data[i]["poste"] = data3.data.nom;
+                    });
+                }
+                else {
+                    data.data[i]["poste"] = "∅";
+                }
+                if (i === data2.data.length - 1) {
+                    users.value = data.data;
+                
+                }
+}
+        });
+        
+  
+   
+});
+
 });
 </script>
 <style lang="scss" scoped>

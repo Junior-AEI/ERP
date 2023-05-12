@@ -16,27 +16,32 @@
                     <div class="surface-section">
                         <ul class="list-none p-0 m-0">
                             <li class="row">
+                                <div class="req">*</div>
                                 <div class="key1">Nom</div>
                                 <span class="p-input-icon-left">
                                     <i class="pi pi-user" />
                                     <InputText
                                         placeholder="Nom"
                                         v-model="lastName"
+                                        required
                                     />
                                 </span>
                             </li>
 
                             <li class="row">
+                                <div class="req">*</div>
                                 <div class="key1">Prenom</div>
                                 <span class="p-input-icon-left">
                                     <i class="pi pi-user" />
                                     <InputText
                                         placeholder="Prénom"
                                         v-model="firstName"
+                                        required
                                     />
                                 </span>
                             </li>
                             <li class="row">
+                                <div class="req">*</div>
                                 <div class="key1">Genre</div>
                                 <Dropdown
                                     v-model="selectedGender"
@@ -44,10 +49,12 @@
                                     optionLabel="name"
                                     placeholder="Genre"
                                     class="select"
+                                    required
                                 />
                             </li>
 
                             <li class="row">
+                                <div class="req">*</div>
                                 <div class="key1">
                                     Fonction dans l'entreprise
                                 </div>
@@ -56,10 +63,12 @@
                                     <InputText
                                         placeholder="fonction"
                                         v-model="position"
+                                        required
                                     />
                                 </span>
                             </li>
                             <li class="row">
+                                <div class="req">*</div>
                                 <div class="key1">Telephone Fixe</div>
                                 <span class="p-input-icon-left">
                                     <i class="pi pi-phone" />
@@ -67,11 +76,13 @@
                                         placeholder="Téléphone"
                                         v-model="phoneNumber"
                                         mask="+99999999999"
+                                        required
                                     />
                                 </span>
                             </li>
 
                             <li class="row">
+                                <div class="req">*</div>
                                 <div class="key1">Telephone Mobile</div>
                                 <span class="p-input-icon-left">
                                     <i class="pi pi-mobile" />
@@ -79,11 +90,13 @@
                                         placeholder="Téléphone"
                                         v-model="mobilePhone"
                                         mask="+99999999999"
+                                        required
                                     />
                                 </span>
                             </li>
 
                             <li class="row">
+                                <div class="req">*</div>
                                 <div class="key1">Email</div>
                                 <span class="p-input-icon-left">
                                     <i class="pi pi-envelope" />
@@ -91,6 +104,7 @@
                                         placeholder="E-mail"
                                         class="email_text"
                                         v-model="emailAddress"
+                                        required
                                     />
                                 </span>
                             </li>
@@ -167,6 +181,7 @@ import axios from "axios";
 import { useConfirm } from "primevue/useconfirm";
 import { useToast } from "primevue/usetoast";
 import router from "@/router";
+import validator from "validator";
 
 //Useful to create some popup
 const confirm1 = useConfirm();
@@ -194,8 +209,9 @@ axios.get("/adresse/" + selectedCompany.adresseId).then((data) => {
 
 const lastName = ref();
 const firstName = ref();
-const selectedGender = ref({ name: "M" });
-const gender = ref([{ name: "F" }, { name: "M" }, { name: "O" }]);
+const selectedGender = ref({ name: "Homme" });
+const gender = ref([{ name: "Femme" }, { name: "Homme" }, { name: "Autre" }]);
+const convertGender: { [key: string]: string } = {"Femme":"F", "Homme":"M", "Autre":"O"};
 
 const phoneNumber = ref();
 const mobilePhone = ref();
@@ -203,6 +219,8 @@ const mobilePhone = ref();
 const emailAddress = ref();
 
 const position = ref();
+
+
 
 interface Address {
     id: string;
@@ -249,7 +267,7 @@ function addClient() {
         const newClient: Client = {
             nom: lastName.value,
             prenom: firstName.value,
-            sexe: selectedGender.value.name,
+            sexe: convertGender[selectedGender.value.name],
             telephoneFixe: phoneNumber.value,
             telephoneMobile: mobilePhone.value,
             email: emailAddress.value,
@@ -273,7 +291,98 @@ function addClient() {
                 //Error because some fields are incorrect
             })
             .catch(function (error) {
-                console.log("error");
+                console.log("erreur ajout prospect")
+                console.log(error)
+
+// if fields are empty 
+if (
+                    lastName.value == undefined ||
+                    firstName.value == undefined ||
+                    selectedGender.value == undefined ||
+                    phoneNumber.value == undefined ||
+                    mobilePhone.value == undefined ||
+                    emailAddress.value == undefined ||
+                    position.value == undefined 
+                ) {
+                    confirm1.require({
+                        message: "Tous les champs ne sont pas remplis",
+                        header: "Erreur",
+                        icon: "pi pi-info-circle",
+                        acceptClass: "p-button-danger",
+                        acceptLabel: "Ok",
+                        accept: () => {
+                            toast1.add({
+                                severity: "info",
+                                summary: "Erreur",
+                                detail: "Champs vides",
+                                life: 3000,
+                            });
+                        },
+                    });
+                }
+
+                    //phoneNumber is incorrect
+                    else if ( ! validator.isMobilePhone(phoneNumber.value)) {
+                    confirm1.require({
+                        message: "Numéro de téléphone fixe incorrect",
+                        header: "Erreur",
+                        icon: "pi pi-info-circle",
+                        acceptClass: "p-button-danger",
+                        acceptLabel: "Ok",
+                        accept: () => {
+                            toast1.add({
+                                severity: "info",
+                                summary: "Erreur",
+                                detail: "Numéro de téléphone fixe incorrect",
+                                life: 3000,
+                            });
+                        },
+                    });
+
+                }
+
+                    //phoneNumber is incorrect
+                    else if ( ! validator.isMobilePhone(mobilePhone.value)) {
+                    confirm1.require({
+                        message: "Numéro de téléphone portable incorrect",
+                        header: "Erreur",
+                        icon: "pi pi-info-circle",
+                        acceptClass: "p-button-danger",
+                        acceptLabel: "Ok",
+                        accept: () => {
+                            toast1.add({
+                                severity: "info",
+                                summary: "Erreur",
+                                detail: "Numéro de téléphone portable incorrect",
+                                life: 3000,
+                            });
+                        },
+                    });
+
+                }
+
+                //emailAdress is incorrect
+                else if ( ! validator.isEmail(emailAddress.value)) {
+                    confirm1.require({
+                        message: "Adresse Email incorrecte",
+                        header: "Erreur",
+                        icon: "pi pi-info-circle",
+                        acceptClass: "p-button-danger",
+                        acceptLabel: "Ok",
+                        accept: () => {
+                            toast1.add({
+                                severity: "info",
+                                summary: "Erreur",
+                                detail: "Adresse Email incorrecte",
+                                life: 3000,
+                            });
+                        },
+                    });
+
+                }
+
+
+                else {
                 confirm1.require({
                     message: "Erreur lors de l'ajout du prospect",
                     header: "Erreur",
@@ -289,6 +398,7 @@ function addClient() {
                         });
                     },
                 });
+            }
             });
     });
 }
@@ -321,5 +431,9 @@ function addClient() {
 
 #findCompany {
     visibility: visible;
+}
+
+.req {
+  color:maroon;
 }
 </style>

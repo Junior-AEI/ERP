@@ -15,27 +15,32 @@
                     <div class="surface-section">
                         <ul class="list-none p-0 m-0">
                             <li class="row">
+                                <div class="req">*</div>
                                 <div class="key1">Nom</div>
                                 <span class="p-input-icon-left">
                                     <i class="pi pi-user" />
                                     <InputText
                                         placeholder="Nom"
                                         v-model="lastName"
+                                        required
                                     />
                                 </span>
                             </li>
 
                             <li class="row">
+                                <div class="req">*</div>
                                 <div class="key1">Prenom</div>
                                 <span class="p-input-icon-left">
                                     <i class="pi pi-user" />
                                     <InputText
                                         placeholder="Prénom"
                                         v-model="firstName"
+                                        required
                                     />
                                 </span>
                             </li>
                             <li class="row">
+                                <div class="req">*</div>
                                 <div class="key1">Genre</div>
                                 <Dropdown
                                     v-model="selectedGender"
@@ -43,10 +48,12 @@
                                     optionLabel="name"
                                     placeholder="Genre"
                                     class="select"
+                                    required
                                 />
                             </li>
 
                             <li class="row">
+                                <div class="req">*</div>
                                 <div class="key1">Telephone Mobile</div>
                                 <span class="p-input-icon-left">
                                     <i class="pi pi-phone" />
@@ -54,11 +61,13 @@
                                         placeholder="Téléphone"
                                         v-model="phoneNumber"
                                         mask="+99999999999"
+                                        required
                                     />
                                 </span>
                             </li>
 
                             <li class="row">
+                                <div class="req">*</div>
                                 <div class="key1">Email</div>
                                 <span class="p-input-icon-left">
                                     <i class="pi pi-envelope" />
@@ -66,6 +75,7 @@
                                         placeholder="E-mail"
                                         class="email_text"
                                         v-model="emailAddress"
+                                        required
                                     />
                                 </span>
                             </li>
@@ -84,6 +94,7 @@
                     <div class="surface-section">
                         <ul class="list-none p-0 m-0">
                             <li class="row">
+                                <div class="req">*</div>
                                 <div class="key1">Adresse</div>
                                 <span class="p-input-icon-left">
                                     <i class="pi pi-map-marker" />
@@ -91,6 +102,7 @@
                                         placeholder="Adresse"
                                         class="address_text"
                                         v-model="address"
+                                        required
                                     />
                                 </span>
                             </li>
@@ -103,10 +115,12 @@
                                         placeholder="Complément d'adresse"
                                         class="address_text"
                                         v-model="addressComplement"
+                                        
                                     />
                                 </span>
                             </li>
                             <li class="row">
+                                <div class="req">*</div>
                                 <div class="key1">Ville</div>
                                 <span class="p-input-icon-left">
                                     <i class="pi pi-map" />
@@ -114,21 +128,25 @@
                                         placeholder="Ville"
                                         class="city"
                                         v-model="city"
+                                        required
                                     />
                                 </span>
                             </li>
 
                             <li class="row">
+                                <div class="req">*</div>
                                 <div class="key1">Code Postal</div>
                                 <span class="p-input-icon-left">
                                     <InputNumber
                                         class="postalCode"
                                         v-model="postalCode"
+                                        required
                                     />
                                 </span>
                             </li>
 
                             <li class="row">
+                                <div class="req">*</div>
                                 <div class="key1">pays</div>
                                 <span class="p-input-icon-left">
                                     <i class="pi pi-map" />
@@ -137,6 +155,7 @@
                                         class="country"
                                         v-model="country"
                                         mask="aaa"
+                                        required
                                     />
                                 </span>
                             </li>
@@ -149,16 +168,19 @@
                 <div class="surface-section">
                     <ul class="list-none p-0 m-0">
                         <li class="row">
+                            <div class="req">*</div>
                             <div class="key2">Promotion</div>
                             <span class="p-input-icon-left">
                                 <Calendar
                                     v-model="yearDiploma"
                                     view="year"
                                     dateFormat="yy"
+                                    required
                                 />
                             </span>
                         </li>
                         <li class="row">
+                            <div class="req">*</div>
                             <div class="key2">Nationalité</div>
                             <span class="p-input-icon-left">
                                 <i class="pi pi-map" />
@@ -166,10 +188,12 @@
                                     placeholder="Type:FRA"
                                     v-model="nationality"
                                     mask="aaa"
+                                    required
                                 />
                             </span>
                         </li>
                         <li class="row">
+                            <div class="req">*</div>
                             <div class="key2">Filière</div>
                             <Dropdown
                                 v-model="selectedField"
@@ -177,9 +201,11 @@
                                 optionLabel="name"
                                 placeholder="Filière"
                                 class="select"
+                                required
                             />
                         </li>
                         <li class="row">
+                            <div class="req">*</div>
                             <div class="key2">moyenPaiement</div>
                             <Dropdown
                                 v-model="selectedPayment"
@@ -187,9 +213,11 @@
                                 optionLabel="name"
                                 placeholder="Moyen de paiement"
                                 class="select"
+                                required
                             />
                         </li>
                         <li class="row">
+                            <div class="req">*</div>
                             <div class="key2">Date de cotisation</div>
                             <span class="p-input-icon-left">
                                 <Calendar
@@ -197,6 +225,7 @@
                                     v-model="adhesionDate"
                                     dateFormat="dd/mm/yy"
                                     showIcon
+                                    required
                                 />
                             </span>
                         </li>
@@ -208,6 +237,7 @@
                 <div class="surface-section">
                     <ul class="list-none p-0 m-0">
                         <li class="row">
+                            <div class="req">*</div>
                             <div class="key2">Date de Naissance</div>
                             <span class="p-input-icon-left">
                                 <Calendar
@@ -215,16 +245,19 @@
                                     v-model="birthDate"
                                     dateFormat="dd/mm/yy"
                                     showIcon
+                                    required
                                 />
                             </span>
                         </li>
                         <li class="row">
+                            <div class="req">*</div>
                             <div class="key2">Lieu de Naissance</div>
                             <span class="p-input-icon-left">
                                 <i class="pi pi-compass" />
                                 <InputText
                                     placeholder="Lieu de naissance"
                                     v-model="birthPlace"
+                                    required
                                 />
                             </span>
                         </li>
@@ -246,6 +279,7 @@ import { useConfirm } from "primevue/useconfirm";
 import { useToast } from "primevue/usetoast";
 import axios from "axios";
 import { useRouter } from "vue-router";
+import validator from "validator"
 
 const confirm = useConfirm();
 const toast = useToast();
@@ -288,7 +322,9 @@ let adresse = ref({} as Address);
 let lastName = ref();
 let firstName = ref();
 let selectedGender = ref();
-let gender = ref([{ name: "F" }, { name: "M" }, { name: "O" }]);
+const gender = ref([{ name: "Femme" }, { name: "Homme" }, { name: "Autre" }]);
+const convertGenderToLetter: { [key: string]: string } = {"Femme":"F", "Homme":"M", "Autre":"O"};
+const convertLetterToGender : { [key: string]: string } = {"F":"Femme", "M":"Homme", "O":"Autre"};
 let birthDate = ref();
 let birthPlace = ref();
 let nationality = ref();
@@ -324,7 +360,7 @@ axios
         user.value = data.data;
         lastName.value = user.value.nom;
         firstName.value = user.value.prenom;
-        selectedGender = ref({ name: user.value.sexe });
+        selectedGender = ref({ name: convertLetterToGender[user.value.sexe] });
         birthDate.value = convertDate(user.value.dateNaissance);
         birthPlace.value = user.value.lieuNaissance;
         nationality.value = user.value.nationalite;
@@ -388,7 +424,32 @@ function convertDateToSpecialFormat(date: any) {
 }
 
 function modifyUser() {
-    console.log("Modif adhérent dans la base");
+
+    if (
+        address.value == undefined ||
+                    city.value == undefined ||
+                    postalCode.value == undefined ||
+                    country.value == undefined 
+                ) {
+
+
+                    //Address fields are empty
+                    confirm.require({
+                        message: "Des champs obligatoires pour l'adresse sont vides",
+                        header: "Erreur",
+                        icon: "pi pi-info-circle",
+                        acceptClass: "p-button-danger",
+                        acceptLabel: "Ok",
+                        accept: () => {
+                            toast.add({
+                                severity: "info",
+                                summary: "Erreur",
+                                detail: "Champs vides",
+                                life: 3000,
+                            });
+                        },
+                    });
+                }
 
     //Add address of the adherent :
     const updatedAddress: Address = {
@@ -399,7 +460,6 @@ function modifyUser() {
         pays: country.value,
         id: adresse.value.id,
     };
-    console.log(updatedAddress);
 
     axios
         .put("/adresse", updatedAddress)
@@ -453,7 +513,7 @@ function modifyUser() {
                     id: user.value.id,
                     nom: lastName.value,
                     prenom: firstName.value,
-                    sexe: selectedGender.value.name,
+                    sexe: convertGenderToLetter[selectedGender.value.name],
                     telephoneMobile: phoneNumber.value,
                     email: emailAddress.value,
                     dateNaissance: convertDateToSpecialFormat(
@@ -490,6 +550,67 @@ function modifyUser() {
                     })
                     .catch(function (error) {
                         console.log("error");
+                        //phoneNumber is incorrect
+                    if ( ! validator.isMobilePhone(phoneNumber.value)) {
+                    confirm.require({
+                        message: "Numéro de téléphone incorrect",
+                        header: "Erreur",
+                        icon: "pi pi-info-circle",
+                        acceptClass: "p-button-danger",
+                        acceptLabel: "Ok",
+                        accept: () => {
+                            toast.add({
+                                severity: "info",
+                                summary: "Erreur",
+                                detail: "Numéro de téléphone incorrect",
+                                life: 3000,
+                            });
+                        },
+                    });
+
+                }
+
+                //emailAdress is incorrect
+                else if ( ! validator.isEmail(emailAddress.value)) {
+                    confirm.require({
+                        message: "Adresse Email incorrecte",
+                        header: "Erreur",
+                        icon: "pi pi-info-circle",
+                        acceptClass: "p-button-danger",
+                        acceptLabel: "Ok",
+                        accept: () => {
+                            toast.add({
+                                severity: "info",
+                                summary: "Erreur",
+                                detail: "Adresse Email incorrecte",
+                                life: 3000,
+                            });
+                        },
+                    });
+
+                }
+
+                //nationality code is incorrect
+                else if ( ! validator.isISO31661Alpha3(nationality.value)) {
+                    confirm.require({
+                        message: "Code Nationalité incorrect",
+                        header: "Erreur",
+                        icon: "pi pi-info-circle",
+                        acceptClass: "p-button-danger",
+                        acceptLabel: "Ok",
+                        accept: () => {
+                            toast.add({
+                                severity: "info",
+                                summary: "Erreur",
+                                detail: "Code Nationalité incorrect",
+                                life: 3000,
+                            });
+                        },
+                    });
+
+                }
+
+                        else {
                         confirm.require({
                             message:
                                 "Erreur lors de la modification de l'utilisateur",
@@ -506,11 +627,53 @@ function modifyUser() {
                                 });
                             },
                         });
+                    }
                     });
             });
             //Error because some fields are incorrect
         })
         .catch(function (error) {
+
+             //Country code is incorrect
+             if ( ! validator.isISO31661Alpha3(country.value)) {
+                    confirm.require({
+                        message: "Code Pays incorrect",
+                        header: "Erreur",
+                        icon: "pi pi-info-circle",
+                        acceptClass: "p-button-danger",
+                        acceptLabel: "Ok",
+                        accept: () => {
+                            toast.add({
+                                severity: "info",
+                                summary: "Erreur",
+                                detail: "Code Pays incorrect",
+                                life: 3000,
+                            });
+                        },
+                    });
+                }
+
+                //Postal code is incorrect
+            else if ( ! validator.isPostalCode(String(postalCode.value), "any")) {
+                confirm.require({
+                        message: "Code Postal incorrect",
+                        header: "Erreur",
+                        icon: "pi pi-info-circle",
+                        acceptClass: "p-button-danger",
+                        acceptLabel: "Ok",
+                        accept: () => {
+                            toast.add({
+                                severity: "info",
+                                summary: "Erreur",
+                                detail: "Code Postal incorrect",
+                                life: 3000,
+                            });
+                        },
+                    });
+                }
+            else {
+
+                //Error in the address not detected previously
             confirm.require({
                 message:
                     "Erreur lors de la modification de l'adresse de l'utilisateur",
@@ -527,31 +690,9 @@ function modifyUser() {
                     });
                 },
             });
+        }
         });
 }
-
-// function convertDate(date: string) {
-//     const d = new Date(date);
-//     let day;
-//     let month;
-//     let year = d.getFullYear().toString();
-//     if (d == undefined) {
-//         return date;
-//     }
-//     if (d.getDate() < 10) {
-//         day = '0'+ d.getDate();
-//     }
-//     else {
-//         day = d.getDate().toString();
-//     }
-//     if (d.getMonth() < 10) {
-//         month = '0'+ (d.getMonth() + 1);
-//     }
-//     else {
-//         month = (d.getMonth() +1).toString();
-//     }
-//     return day + "/" + month + "/" + year;
-// }
 
 function convertDate(date: string) {
     return new Date(date);
@@ -574,4 +715,9 @@ function convertDate(date: string) {
 .value {
     @include styleclass("col text-left text-900 w-full");
 }
+
+.req {
+  color:maroon;
+}
+
 </style>

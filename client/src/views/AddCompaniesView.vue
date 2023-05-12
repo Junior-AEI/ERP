@@ -60,23 +60,27 @@
                     <div class="surface-section">
                         <ul class="list-none p-0 m-0">
                             <li class="row">
+                                <div class="req">*</div>
                                 <div class="key1">Nom</div>
                                 <span class="p-input-icon-left">
                                     <i class="pi pi-user" />
                                     <InputText
                                         placeholder="Nom"
                                         v-model="name"
+                                        required
                                     />
                                 </span>
                             </li>
 
                             <li class="row">
+                                <div class="req">*</div>
                                 <div class="key1">Entité juridique</div>
                                 <span class="p-input-icon-left">
                                     <i class="pi pi-user" />
                                     <InputText
                                         placeholder="entité"
                                         v-model="legalEntity"
+                                        required
                                     />
                                 </span>
                             </li>
@@ -95,6 +99,7 @@
                     <div class="surface-section">
                         <ul class="list-none p-0 m-0">
                             <li class="row">
+                                <div class="req">*</div>
                                 <div class="key1">Adresse</div>
                                 <span class="p-input-icon-left">
                                     <i class="pi pi-map-marker" />
@@ -102,6 +107,7 @@
                                         placeholder="Adresse"
                                         class="address_text"
                                         v-model="address"
+                                        required
                                     />
                                 </span>
                             </li>
@@ -118,6 +124,7 @@
                                 </span>
                             </li>
                             <li class="row">
+                                <div class="req">*</div>
                                 <div class="key1">Ville</div>
                                 <span class="p-input-icon-left">
                                     <i class="pi pi-map" />
@@ -125,21 +132,25 @@
                                         placeholder="Ville"
                                         class="city"
                                         v-model="city"
+                                        required
                                     />
                                 </span>
                             </li>
 
                             <li class="row">
+                                <div class="req">*</div>
                                 <div class="key1">Code Postal</div>
                                 <span class="p-input-icon-left">
                                     <InputNumber
                                         class="postalCode"
                                         v-model="postalCode"
+                                        required
                                     />
                                 </span>
                             </li>
 
                             <li class="row">
+                                <div class="req">*</div>
                                 <div class="key1">pays</div>
                                 <span class="p-input-icon-left">
                                     <i class="pi pi-map" />
@@ -148,6 +159,7 @@
                                         class="country"
                                         v-model="country"
                                         mask="aaa"
+                                        required
                                     />
                                 </span>
                             </li>
@@ -179,6 +191,7 @@ import axios from "axios";
 import { useConfirm } from "primevue/useconfirm";
 import { useToast } from "primevue/usetoast";
 import router from "@/router";
+import validator from "validator";
 
 const name = ref();
 const legalEntity = ref();
@@ -217,13 +230,34 @@ axios.get("/entreprise").then((data) => {
 });
 
 function displayCompany() {
-    console.log(JSON.stringify(selectedCompany));
+    console.log(JSON.stringify(selectedCompany.value));
+    if (JSON.stringify(selectedCompany.value) !== "{}") {
     document.cookie =
         "selectedCompany=" +
         JSON.stringify(selectedCompany.value) +
-        "; SameSite=None";
+        "; SameSite=secure";
     router.push("/addclient");
-}
+    }
+
+    else {
+        confirm1.require({
+                        message: "Aucune entreprise sélectionnée",
+                        header: "Erreur",
+                        icon: "pi pi-info-circle",
+                        acceptClass: "p-button-danger",
+                        acceptLabel: "Ok",
+                        accept: () => {
+                            toast1.add({
+                                severity: "info",
+                                summary: "Erreur",
+                                detail: "Aucune entreprise sélectionnée",
+                                life: 3000,
+                            });
+                        },
+                    });
+                }
+    }
+
 
 function showAddCompany() {
     console.log("show add company");
@@ -252,35 +286,19 @@ function findIdAddress(data: any) {
 }
 
 function addCompany() {
-    console.log("Validation ajout entreprise dans la base");
 
-    //  Add address of the adherent :
-    const newAddress: Address = {
-        adresse: address.value,
-        complementAdresse: addressComplement.value,
-        ville: city.value,
-        codePostal: String(postalCode.value),
-        pays: country.value,
-    };
-    console.log(newAddress);
+    //Address fields are empty
+    if (
+        address.value == undefined ||
+                    city.value == undefined ||
+                    postalCode.value == undefined ||
+                    country.value == undefined 
+                ) {
 
-    axios
-        .post("/adresse", newAddress)
-        .then(function (response) {
-            console.log(response);
 
-            let allAddress = ref([]);
-
-            //Find the address which was previously added
-            axios.get("/adresse").then((data) => {
-                allAddress = data.data;
-
-                // if fields are empty the address is removed
-                if (name.value == undefined || legalEntity.value == undefined) {
-                    const addr = "/adresse/" + findIdAddress(allAddress);
-                    axios.delete(addr);
+                    
                     confirm1.require({
-                        message: "Tous les champs ne sont pas remplis",
+                        message: "Des champs obligatoires pour l'adresse sont vides",
                         header: "Erreur",
                         icon: "pi pi-info-circle",
                         acceptClass: "p-button-danger",
@@ -296,6 +314,27 @@ function addCompany() {
                     });
                 }
 
+
+    //  Add address of the adherent :
+    const newAddress: Address = {
+        adresse: address.value,
+        complementAdresse: addressComplement.value,
+        ville: city.value,
+        codePostal: String(postalCode.value),
+        pays: country.value,
+    };
+
+    axios
+        .post("/adresse", newAddress)
+        .then(function (response) {
+            console.log(response);
+
+            let allAddress = ref([]);
+
+            //Find the address which was previously added
+            axios.get("/adresse").then((data) => {
+                allAddress = data.data;
+                
                 const newCompany: Company = {
                     nom: name.value,
                     entiteJuridique: legalEntity.value,
@@ -329,7 +368,26 @@ function addCompany() {
                         //Error because some fields are incorrect
                     })
                     .catch(function (error) {
-                        console.log("error");
+
+                        // if fields are empty the address is removed
+                if (name.value == undefined || legalEntity.value == undefined) {
+                    confirm1.require({
+                        message: "Tous les champs ne sont pas remplis",
+                        header: "Erreur",
+                        icon: "pi pi-info-circle",
+                        acceptClass: "p-button-danger",
+                        acceptLabel: "Ok",
+                        accept: () => {
+                            toast1.add({
+                                severity: "info",
+                                summary: "Erreur",
+                                detail: "Champs vides",
+                                life: 3000,
+                            });
+                        },
+                    });
+                }
+                else {
                         confirm1.require({
                             message: "Erreur lors de l'ajout de l'entreprise",
                             header: "Erreur",
@@ -345,14 +403,55 @@ function addCompany() {
                                 });
                             },
                         });
+                    }
                         const addr = "/adresse/" + findIdAddress(allAddress);
                         axios.delete(addr);
                     });
+                
             });
             //Error because some fields are incorrect
         })
         .catch(function (error) {
-            console.log("error");
+
+            //Country code is incorrect
+            if ( ! validator.isISO31661Alpha3(country.value)) {
+                    confirm1.require({
+                        message: "Code Pays incorrect",
+                        header: "Erreur",
+                        icon: "pi pi-info-circle",
+                        acceptClass: "p-button-danger",
+                        acceptLabel: "Ok",
+                        accept: () => {
+                            toast1.add({
+                                severity: "info",
+                                summary: "Erreur",
+                                detail: "Code Pays incorrect",
+                                life: 3000,
+                            });
+                        },
+                    });
+                }
+
+                //Postal code is incorrect
+            else if ( ! validator.isPostalCode(String(postalCode.value), "any")) {
+                confirm1.require({
+                        message: "Code Postal incorrect",
+                        header: "Erreur",
+                        icon: "pi pi-info-circle",
+                        acceptClass: "p-button-danger",
+                        acceptLabel: "Ok",
+                        accept: () => {
+                            toast1.add({
+                                severity: "info",
+                                summary: "Erreur",
+                                detail: "Code Postal incorrect",
+                                life: 3000,
+                            });
+                        },
+                    });
+                }
+
+                else {
             confirm1.require({
                 message: "Erreur lors de l'ajout de l'entreprise",
                 header: "Erreur",
@@ -368,6 +467,7 @@ function addCompany() {
                     });
                 },
             });
+        }
         });
 }
 
@@ -398,5 +498,8 @@ function addClient() {
 #AddClient {
     visibility: hidden;
     height: 0;
+}
+.req {
+  color:maroon;
 }
 </style>

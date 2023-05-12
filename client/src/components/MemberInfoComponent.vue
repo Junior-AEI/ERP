@@ -25,7 +25,7 @@
                             </li>
                             <li class="row">
                                 <div class="key1">Sexe</div>
-                                <div class="value">{{ user.sexe }}</div>
+                                <div class="value">{{ convertLetterToGender[user.sexe] }}</div>
                             </li>
 
                             <li class="row">
@@ -165,6 +165,8 @@ import { useRouter } from "vue-router";
 const confirm = useConfirm();
 const toast = useToast();
 const router = useRouter();
+
+const convertLetterToGender : { [key: string]: string } = {"F":"Femme", "M":"Homme", "O":"Autre"};
 
 interface Adherent {
     id: string;

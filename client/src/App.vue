@@ -1,6 +1,6 @@
 <template>
     <Toast />
-    <div class="container">
+    <div v-if="!$route.meta.loginPage" class="container">
         <div class="grid-left">
             <Sidebar class="sidebar" />
         </div>
@@ -10,6 +10,9 @@
                 <RouterView />
             </div>
         </div>
+    </div>
+    <div v-else>
+        <RouterView />
     </div>
 </template>
 

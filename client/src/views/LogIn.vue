@@ -1,7 +1,8 @@
 <template>
     <div class="flex justify-content-center h-full">
         <div
-            class="surface-card p-4 shadow-2 border-round align-self-center lg:w-6"
+            class="surface-card p-4 shadow-2 border-round lg:w-4"
+            id="main_box"
         >
             <div class="text-center mb-5">
                 <img
@@ -70,37 +71,6 @@
 </template>
 
 <script setup lang="ts">
-/*
-Suite du dev :
-faire une page de connexion
-
- */
-
-/*function storageAvailable(type : any) {
-    let storage;
-    try {
-        storage = window[type];
-        const x = '__storage_test__';
-        storage.setItem(x, x);
-        storage.removeItem(x);
-        return true;
-    }
-    catch (e) {
-        return e instanceof DOMException && (
-                // everything except Firefox
-                e.code === 22 ||
-                // Firefox
-                e.code === 1014 ||
-                // test name field too, because code might not be present
-                // everything except Firefox
-                e.name === 'QuotaExceededError' ||
-                // Firefox
-                e.name === 'NS_ERROR_DOM_QUOTA_REACHED') &&
-            // acknowledge QuotaExceededError only if there's something already stored
-            (storage && storage.length !== 0);
-    }
-}*/
-
 import router from "@/router";
 import axios from "axios";
 import { ref } from "vue";
@@ -139,4 +109,11 @@ document.addEventListener("keypress", function (e) {
 </script>
 <style lang="scss">
 @import "/node_modules/primeflex/primeflex.css";
+#main_box {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    margin-right: -50%;
+    transform: translate(-50%, -50%);
+}
 </style>

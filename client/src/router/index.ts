@@ -10,7 +10,7 @@ import MemberUpdateView from "../views/MemberUpdateView.vue";
 import AddUserView from "../views/AddUserView.vue";
 import AddClientView from "../views/AddClientView.vue";
 import ChooseCompanyView from "../views/ChooseCompanyView.vue";
-
+import LogIn from "../views/LogIn.vue";
 import DocumentView from "../views/DocumentView.vue";
 import AddCompanies from "../views/AddCompaniesView.vue";
 
@@ -21,6 +21,11 @@ const router = createRouter({
     routes: [
         {
             path: "/",
+            name: "loginpage",
+            component: LogIn,
+        },
+        {
+            path: "/home",
             name: "home",
             component: HomeView,
         },

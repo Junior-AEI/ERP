@@ -22,40 +22,40 @@ export default {
             items: [
                 {
                     label: "Membres",
-                    icon: "pi pi-fw pi-user",
+                    icon: "pi pi-fw pi-users",
                     items: [
                         {
                             icon: "pi pi-fw pi-bars",
-                            label: "List",
+                            label: "Liste",
                             to: "/users",
                         },
                     ],
                 },
                 {
                     label: "Prospects",
-                    icon: "pi pi-fw pi-user",
+                    icon: "pi pi-fw pi-briefcase",
                     items: [
                         {
                             icon: "pi pi-fw pi-bars",
-                            label: "List",
+                            label: "Liste",
                             to: "/clients",
                         },
                     ],
                 },
                 {
-                    label: "Posts",
-                    icon: "pi pi-fw pi-user",
+                    label: "Postes",
+                    icon: "pi pi-fw pi-id-card",
                     items: [
                         {
                             icon: "pi pi-fw pi-bars",
-                            label: "List",
-                            to: "/Posts",
+                            label: "Liste",
+                            to: "/posts",
                         },
                     ],
                 },
                 {
                     label: "Documents",
-                    icon: "pi pi-fw pi-doc",
+                    icon: "pi pi-fw pi-folder",
                     items: [
                         {
                             icon: "pi pi-fw pi-bars",

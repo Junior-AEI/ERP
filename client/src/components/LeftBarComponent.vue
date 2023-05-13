@@ -1,7 +1,7 @@
 <template>
     <div class="nav">
         <div class="img-container">
-            <RouterLink to="/">
+            <RouterLink to="/home">
                 <img
                     class="logo"
                     src="../assets/logos/logo-bi-ff.svg"

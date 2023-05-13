@@ -85,9 +85,9 @@ const items = [
     },
 ];
 
-const home = { icon: "pi pi-home", to: "/" };
+const home = { icon: "pi pi-home", to: "/home" };
 const router = useRouter();
-let itemsBreadcrumb = ref([{ label: "Home", to: "/" }]);
+let itemsBreadcrumb = ref([{ label: "Home", to: "/home" }]);
 watch(router.currentRoute, (route) => {
     let totalRoute = "/";
     itemsBreadcrumb.value = route.fullPath

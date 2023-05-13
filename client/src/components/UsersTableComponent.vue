@@ -113,27 +113,28 @@ let users = ref([]);
 onMounted(() => {
     axios.get("/adherent").then((data) => {
         console.log(data.data);
-        // users.value = data.data;
         axios.get("/utilisateur").then((data2) => {
+            console.log(data2.data)
             for (let i = 0; i < data2.data.length; ++i){
                 if (data2.data[i].adherentId !== null) {
                     axios.get("/poste"+data2.data[i].posteId).then((data3) => {
-                        data.data[i]["poste"] = data3.data.nom;
+                        data.data[data2.data[i].adherentId]["poste"] = data3.data.nom;
                     });
                 }
-                else {
-                    data.data[i]["poste"] = "∅";
+            }
+
+            for (let j = 0; j < data.data.length; ++j) {
+                if (data.data[j]["poste"] === undefined) {
+                    data.data[j]["poste"] = "∅";
                 }
-                if (i === data2.data.length - 1) {
-                    users.value = data.data;
-                
-                }
-}
+            }
+            users.value = data.data;
+});
         });
         
   
    
-});
+
 
 });
 </script>

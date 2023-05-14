@@ -9,7 +9,7 @@ export const up: Migration = async ({ context: sequelize }) => {
             allowNull: true,
             field: "adherentId",
             references: { model: "Adherents", key: "id" },
-            onDelete: "NO ACTION",
+            onDelete: "CASCADE",
             onUpdate: "CASCADE",
         });
 };

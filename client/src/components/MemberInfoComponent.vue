@@ -225,7 +225,7 @@ onMounted(() => {
                 });
             },
             (failed: any) =>
-                console.log("Probleme avec la requete get adherent:", failed)
+                console.log("Probleme avec la requête get adherent:", failed)
         );
 });
 
@@ -235,23 +235,32 @@ function modifyUser() {
 
 function delUser() {
     confirm.require({
-        message: "Es-tu certain de vouloir supprimer cet adhérent ?",
+        message: "Es-tu certain de vouloir supprimer cet⋅te adhérent⋅e ?",
         header: "Suppression",
         icon: "pi pi-info-circle",
         acceptClass: "p-button-danger",
         acceptLabel: "Oui",
         rejectLabel: "Non",
         accept: () => {
-            axios.delete(`/adresse/${adresse.value.id}`).then(() => {
-                axios.delete(`/adherent/${props.id_user}`);
-            });
-            router.push(`/members`);
-            toast.add({
-                severity: "error",
-                summary: "Suppression validée",
-                detail: "Adhérent supprimé",
-                life: 3000,
-            });
+            axios
+                .delete(`/adherent/${props.id_user}`)
+                .then(() => router.push(`/members`))
+                .then(() =>
+                    toast.add({
+                        severity: "success",
+                        summary: "Suppression validée",
+                        detail: "Adhérent supprimé",
+                        life: 3000,
+                    })
+                )
+                .catch(() =>
+                    toast.add({
+                        severity: "error",
+                        summary: "Échec de suppression",
+                        detail: "Suppression annulée",
+                        life: 3000,
+                    })
+                );
         },
         reject: () => {},
     });

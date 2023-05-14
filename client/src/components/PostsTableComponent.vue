@@ -21,18 +21,18 @@
                 />
             </template>
         </Column>
-        <Column field="description" header="description" :sortable="true">
+        <Column field="description" header="Description" :sortable="true">
             <template #filter="{ filterModel, filterCallback }">
                 <InputText
                     type="text"
                     v-model="filterModel.value"
                     @keydown.enter="filterCallback()"
                     class="p-column-filter"
-                    :placeholder="`description`"
+                    :placeholder="`Description`"
                 />
             </template>
         </Column>
-        <Column field="nomPole" header="nomPole" :sortable="true"> </Column>
+        <Column field="nomPole" header="Pôle" :sortable="true"> </Column>
         <Column
             headerStyle="width: 4rem; text-align: center"
             bodyStyle="text-align: center; overflow: visible"

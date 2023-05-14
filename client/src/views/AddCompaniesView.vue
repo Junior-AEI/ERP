@@ -232,7 +232,7 @@ function displayCompany() {
             "selectedCompany=" +
             JSON.stringify(selectedCompany.value) +
             "; SameSite=secure";
-        router.push("/addclient");
+        router.push("/clients/new");
     } else {
         confirm1.require({
             message: "Aucune entreprise sélectionnée",
@@ -451,26 +451,31 @@ function addCompany() {
 }
 
 function addClient() {
-    router.push("/addclient");
+    router.push("/new");
 }
 </script>
 
 <style scoped lang="scss">
 @import "primeflex/primeflex.scss";
+
 .row {
     @include styleclass(
         "grid align-items-center py-3 px-2 border-top-1 surface-border"
     );
 }
+
 .key1 {
     @include styleclass("md:min-w-max col-3 text-500 font-medium");
 }
+
 .key2 {
     @include styleclass("md:min-w-max col-2 text-500 font-medium");
 }
+
 .value {
     @include styleclass("col text-left text-900 w-full");
 }
+
 #AddAddress,
 #AddCompany,
 #AddCompanyButton,
@@ -478,6 +483,7 @@ function addClient() {
     visibility: hidden;
     height: 0;
 }
+
 .req {
     color: maroon;
 }

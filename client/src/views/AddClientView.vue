@@ -241,13 +241,14 @@ function addClient() {
         axios
             .post("/client", newClient)
             .then(function (response) {
-                toast2.add({
-                    severity: "info",
-                    summary: "Succès",
-                    detail: "Prospect a été ajouté",
-                    life: 3000,
-                });
-                router.push("/clients");
+                toast2
+                    .add({
+                        severity: "info",
+                        summary: "Succès",
+                        detail: "Prospect a été ajouté",
+                        life: 3000,
+                    })
+                    .then(() => router.push("/clients"));
 
                 //Error because some fields are incorrect
             })

@@ -16,10 +16,7 @@
                                 <div class="key1">Nom</div>
                                 <span class="p-input-icon-left">
                                     <i class="pi pi-user" />
-                                    <InputText
-                                        placeholder="Nom"
-                                        v-model="Pole_Name"
-                                    />
+                                    <InputText placeholder="Nom" v-model="Pole_Name" />
                                 </span>
                             </li>
 
@@ -27,21 +24,13 @@
                                 <div class="key1">Description</div>
                                 <span class="p-input-icon-left">
                                     <i class="pi pi-user" />
-                                    <InputText
-                                        placeholder="Description"
-                                        v-model="Description"
-                                    />
+                                    <InputText placeholder="Description" v-model="Description" />
                                 </span>
                             </li>
                             <li class="row">
                                 <div class="key2">Pole</div>
-                                <Dropdown
-                                    v-model="selectedPole"
-                                    :options="pole"
-                                    optionLabel="name"
-                                    placeholder="Pole"
-                                    class="select"
-                                />
+                                <Dropdown v-model="selectedPole" :options="pole" optionLabel="name" placeholder="Pole"
+                                    class="select" />
                             </li>
                         </ul>
                     </div>
@@ -59,6 +48,7 @@ import { ref } from "vue";
 import axios from "axios";
 import { useConfirm } from "primevue/useconfirm";
 import { useToast } from "primevue/usetoast";
+import router from "@/router";
 const confirm1 = useConfirm();
 const toast1 = useToast();
 const toast2 = useToast();
@@ -115,13 +105,14 @@ function addPoste() {
     axios
         .post("/poste", newPost)
         .then(function (response) {
-            toast2.add({
-                severity: "info",
-                summary: "Succès",
-                detail: "le poste a été ajouté",
-                life: 3000,
-            });
-            window.location.href = "../posts";
+            toast2
+                .add({
+                    severity: "info",
+                    summary: "Succès",
+                    detail: "le poste a été ajouté",
+                    life: 3000,
+                })
+                .then(() => router.push("/posts"));
         })
         .catch(function (error) {
             confirm1.require({
@@ -147,8 +138,7 @@ function addPoste() {
 @import "primeflex/primeflex.scss";
 
 .row {
-    @include styleclass(
-        "grid align-items-center py-3 px-2 border-top-1 surface-border"
+    @include styleclass("grid align-items-center py-3 px-2 border-top-1 surface-border"
     );
 }
 

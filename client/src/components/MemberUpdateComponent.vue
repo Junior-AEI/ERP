@@ -453,14 +453,13 @@ function modifyUser() {
                             acceptClass: "pi pi-button-check",
                             acceptLabel: "Ok",
                             accept: () => {
-                                window.location.href = "../" + user.value.id;
+                                router.push(`members/${user.value.id}`);
                             },
                         });
 
                         //Error because some fields are incorrect
                     })
                     .catch(function (error) {
-                        console.log("error");
                         //phoneNumber is incorrect
                         if (!validator.isMobilePhone(phoneNumber.value)) {
                             confirm.require({

@@ -14,14 +14,12 @@ import LogIn from "../views/LogIn.vue";
 import DocumentView from "../views/DocumentView.vue";
 import AddCompanies from "../views/AddCompaniesView.vue";
 
-import axios from "axios";
-
 const router = createRouter({
     history: createWebHistory(import.meta.env.BASE_URL),
     routes: [
         {
             path: "/",
-            name: "loginpage",
+            name: "Connexion",
             component: LogIn,
             meta: {
                 loginPage: true,
@@ -29,77 +27,101 @@ const router = createRouter({
         },
         {
             path: "/home",
-            name: "home",
+            name: "Accueil",
             component: HomeView,
         },
         {
-            path: "/users",
-            name: "users",
-            component: UsersView,
-        },
-        {
-            path: "/users/:id",
-            name: "member",
-            component: MemberView,
-        },
-        {
-            path: "/users/:id/update",
-            name: "updateMember",
-            component: MemberUpdateView,
-        },
-        {
-            path: "/clients",
-            name: "clients",
-            component: ClientsView,
+            path: "/members",
+            children: [
+                {
+                    path: "",
+                    name: "Lises des membres",
+                    component: UsersView,
+                },
+                {
+                    path: ":id",
+                    children: [
+                        {
+                            path: "",
+                            name: "Détails",
+                            component: MemberView,
+                        },
+                        {
+                            path: "update",
+                            name: "Modifier un membre",
+                            component: MemberUpdateView,
+                        },
+                    ],
+                },
+                {
+                    path: "new",
+                    name: "Nouvel adhérent",
+                    component: AddUserView,
+                },
+            ],
         },
         {
             path: "/posts",
-            name: "posts",
-            component: PostsView,
-        },
-        {
-            path: "/posts/:id/update",
-            name: "updatepost",
-            component: PostUpdateView,
-        },
-        {
-            path: "/addpost",
-            name: "addpost",
-            component: addPost,
-        },
-        {
-            path: "/adduser",
-            name: "adduser",
-            component: AddUserView,
-        },
-        {
-            path: "/addclient",
-            name: "addclient",
-            component: AddClientView,
+            children: [
+                {
+                    path: "",
+                    name: "Liste des postes",
+                    component: PostsView,
+                },
+                {
+                    path: ":id/update",
+                    name: "Modifier un poste",
+                    component: PostUpdateView,
+                },
+                {
+                    path: "new",
+                    name: "Nouveau poste",
+                    component: addPost,
+                },
+            ],
         },
 
         {
-            path: "/choosecompany",
-            name: "choosecompany",
-            component: ChooseCompanyView,
+            path: "/clients",
+            children: [
+                {
+                    path: "",
+                    component: ClientsView,
+                    name: "Carnet d'adresse client",
+                },
+                {
+                    path: "new",
+                    children: [
+                        {
+                            path: "",
+                            name: "Nouveau client",
+                            component: AddClientView,
+                        },
+                        {
+                            path: "chooseCompany",
+                            name: "Choix d'une entreprise",
+                            component: ChooseCompanyView,
+                        },
+                        {
+                            path: "newCompany",
+                            name: "Nouvelle entreprise",
+                            component: AddCompanies,
+                        },
+                    ],
+                },
+            ],
         },
-        {
-            path: "/addCompanies",
-            name: "addCompanies",
-            component: AddCompanies,
-        },
-
         {
             path: "/about",
-            name: "about",
+            name: "À propos",
             // route level code-splitting
             // this generates a separate chunk (About.[hash].js) for this route
             // which is lazy-loaded when the route is visited.
             component: () => import("../views/AboutView.vue"),
         },
         {
-            path: "/doc",
-            name: "doc",
+            path: "/documents",
+            name: "Gestion des documents",
             component: DocumentView,
         },
     ],

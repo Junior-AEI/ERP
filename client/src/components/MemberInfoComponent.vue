@@ -6,9 +6,7 @@
                     <template #legend>
                         <div class="flex align-items-center">
                             <span class="pi pi-user mr-2"></span>
-                            <span class="font-bold"
-                                >Informations personnelles</span
-                            >
+                            <span class="font-bold">Informations personnelles</span>
                         </div>
                     </template>
 
@@ -146,13 +144,7 @@
         <ConfirmDialog></ConfirmDialog>
         <template #footer>
             <Button icon="pi pi-check" label="Modifier" @click="modifyUser" />
-            <Button
-                icon="pi pi-times"
-                label="Supprimer"
-                severity="secondary"
-                style="margin-left: 0.5em"
-                @click="delUser"
-            />
+            <Button icon="pi pi-times" label="Supprimer" severity="secondary" style="margin-left: 0.5em" @click="delUser" />
         </template>
     </Card>
 </template>
@@ -230,7 +222,7 @@ onMounted(() => {
 });
 
 function modifyUser() {
-    window.location.href = "./" + user.value.id + "/update";
+    router.push(`/members/${user.value.id}/update`);
 }
 
 function delUser() {
@@ -245,7 +237,7 @@ function delUser() {
             axios.delete(`/adresse/${adresse.value.id}`).then(() => {
                 axios.delete(`/adherent/${props.id_user}`);
             });
-            router.push(`/users`);
+            router.push(`/members`);
             toast.add({
                 severity: "error",
                 summary: "Suppression validée",
@@ -253,7 +245,7 @@ function delUser() {
                 life: 3000,
             });
         },
-        reject: () => {},
+        reject: () => { },
     });
 }
 
@@ -289,17 +281,20 @@ const poste = {
 
 <style scoped lang="scss">
 @import "primeflex/primeflex.scss";
+
 .row {
-    @include styleclass(
-        "grid align-items-center py-3 px-2 border-top-1 surface-border"
+    @include styleclass("grid align-items-center py-3 px-2 border-top-1 surface-border"
     );
 }
+
 .key1 {
     @include styleclass("md:min-w-max col-3 text-500 font-medium");
 }
+
 .key2 {
     @include styleclass("md:min-w-max col-2 text-500 font-medium");
 }
+
 .value {
     @include styleclass("col text-left text-900 w-full");
 }

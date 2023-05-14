@@ -41,7 +41,7 @@ import { useRouter } from "vue-router";
 const router = useRouter();
 
 function handleClick() {
-    router.push(`/choosecompany`);
+    router.push(`/clients/new/chooseCompany`);
 }
 
 const filters = ref({
@@ -57,9 +57,7 @@ let clients = ref([]);
 
 onMounted(() => {
     axios.get("/client").then((data) => {
-        // //clients.value = data.data;
         for (let i = 0; i < data.data.length; ++i) {
-            //console.log((data.data)[i])
 
             axios
                 .get("/entreprise/" + data.data[i].entrepriseId)
@@ -68,7 +66,6 @@ onMounted(() => {
 
                     if (i === data.data.length - 1) {
                         clients.value = data.data;
-                        console.log(clients.value);
                     }
                 });
         }

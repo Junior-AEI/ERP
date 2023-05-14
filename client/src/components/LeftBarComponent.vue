@@ -27,7 +27,7 @@ export default {
                         {
                             icon: "pi pi-fw pi-bars",
                             label: "Liste",
-                            to: "/users",
+                            to: "/members",
                         },
                     ],
                 },
@@ -60,7 +60,7 @@ export default {
                         {
                             icon: "pi pi-fw pi-bars",
                             label: "Upload",
-                            to: "/doc",
+                            to: "/documents",
                         },
 
                         // {

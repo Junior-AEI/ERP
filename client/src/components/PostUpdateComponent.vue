@@ -112,7 +112,7 @@ function modifyPost() {
                 acceptClass: "pi pi-button-check",
                 acceptLabel: "Ok",
                 accept: () => {
-                    window.location.href = "../";
+                    router.push("/posts");
                 },
             });
 
@@ -140,17 +140,21 @@ function modifyPost() {
 
 <style scoped lang="scss">
 @import "primeflex/primeflex.scss";
+
 .row {
     @include styleclass(
         "grid align-items-center py-3 px-2 border-top-1 surface-border"
     );
 }
+
 .key1 {
     @include styleclass("md:min-w-max col-3 text-500 font-medium");
 }
+
 .key2 {
     @include styleclass("md:min-w-max col-2 text-500 font-medium");
 }
+
 .value {
     @include styleclass("col text-left text-900 w-full");
 }

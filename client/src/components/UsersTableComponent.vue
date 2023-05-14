@@ -42,16 +42,16 @@ import { useRouter } from "vue-router";
 const router = useRouter();
 
 function addUser() {
-    router.push(`/adduser`);
+    router.push(`/members/new`);
 }
 
 const selectedUser = ref();
 const onRowSelect = (event: any) => {
-    router.push(`/users/${event.data.id}`);
+    router.push(`/members/${event.data.id}`);
 };
 
 const editUser = (data: any) => {
-    router.push(`/users/${data.id}/update`);
+    router.push(`/members/${data.id}/update`);
 };
 
 const filters = ref({

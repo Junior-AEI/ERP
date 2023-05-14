@@ -46,7 +46,7 @@
             </template>
         </Column>
     </DataTable>
-    <RouterLink to="/addpost">
+    <RouterLink to="/posts/new">
         <Button id="post-add" class="button" label="Ajouter un poste" />
     </RouterLink>
 </template>
@@ -78,6 +78,7 @@ onMounted(() => {
 </script>
 <style lang="scss" scoped>
 @import "../assets/colors.scss";
+
 .button {
     float: right;
 }

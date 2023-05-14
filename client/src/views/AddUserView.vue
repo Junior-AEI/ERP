@@ -192,6 +192,7 @@ import axios from "axios";
 import { useConfirm } from "primevue/useconfirm";
 import { useToast } from "primevue/usetoast";
 import validator from "validator";
+import router from "@/router";
 
 //Useful to create some popup
 const confirm1 = useConfirm();
@@ -404,13 +405,14 @@ function addUser() {
                 axios
                     .post("/adherent", newMember)
                     .then(function (response) {
-                        toast2.add({
-                            severity: "info",
-                            summary: "Succès",
-                            detail: "Utilisateur a été ajouté",
-                            life: 3000,
-                        });
-                        window.location.href = "../users";
+                        toast2
+                            .add({
+                                severity: "info",
+                                summary: "Succès",
+                                detail: "Utilisateur a été ajouté",
+                                life: 3000,
+                            })
+                            .then(() => router.push("/members"));
 
                         //Error because some fields are incorrect
                     })

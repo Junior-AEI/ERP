@@ -67,15 +67,17 @@ export default class Adherent extends Model {
     email!: string;
 
     @IsDate
+    @NotEmpty
     @Column({
-        type: DataType.DATEONLY,
+        type: DataType.DATE,
+        allowNull: false,
     })
     dateNaissance!: Date;
 
-    // TODO : Is birth place useful ?
     @NotEmpty
     @Column({
         type: DataType.STRING,
+        allowNull: false,
     })
     lieuNaissance!: string;
 

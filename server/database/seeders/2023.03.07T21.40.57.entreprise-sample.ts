@@ -3,16 +3,16 @@ import type { Seeder } from "../../src/migrations/umzug";
 const entrepriseSample = [
     {
         id: 1,
-        nom: "AEI",
-        entiteJuridique: "CNJE",
+        nom: "Entreprise 1",
+        entiteJuridique: "Sarl",
         adresseId: 1,
         createdAt: new Date(),
         updatedAt: new Date(),
     },
     {
         id: 2,
-        nom: "Top1 CAC40",
-        entiteJuridique: "Moi",
+        nom: "Entreprise 2",
+        entiteJuridique: "SA",
         adresseId: 2,
         createdAt: new Date(),
         updatedAt: new Date(),

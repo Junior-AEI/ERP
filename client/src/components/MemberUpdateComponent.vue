@@ -368,14 +368,14 @@ axios
         lastName.value = user.value.nom;
         firstName.value = user.value.prenom;
         selectedGender = ref({ name: convertLetterToGender[user.value.sexe] });
-        birthDate.value = convertDate(user.value.dateNaissance);
+        birthDate.value = new Date(user.value.dateNaissance);
         birthPlace.value = user.value.lieuNaissance;
         nationality.value = user.value.nationalite;
         phoneNumber.value = user.value.telephoneMobile;
         emailAddress.value = user.value.email;
-        yearDiploma.value = convertDate(user.value.promotion);
+        yearDiploma.value = new Date(user.value.promotion);
         selectedField = ref({ name: user.value.filiere });
-        adhesionDate.value = convertDate(user.value.dateCotisation);
+        adhesionDate.value = new Date(user.value.dateCotisation);
         selectedPayment = ref({ name: user.value.moyenPaiement });
 
         return data.data;
@@ -387,48 +387,15 @@ axios
                 address.value = adresse.value.adresse;
                 addressComplement.value = adresse.value.complementAdresse;
                 city.value = adresse.value.ville;
-                postalCode.value = parseInt(adresse.value.codePostal);
+                postalCode.value = parseInt(
+                    adresse.value.codePostal.replace(" ", "")
+                );
                 country.value = adresse.value.pays;
             });
         },
         (failed: any) =>
             console.log("Probleme avec la requete get adherent:", failed)
     );
-
-//Convert date from calendar of primevue to DATEONLY of sequelize
-function convertDateToSpecialFormat(date: any) {
-    const timezoneOffsetInMinutes = date.getTimezoneOffset();
-    const timezoneOffsetInHours = timezoneOffsetInMinutes / 60;
-    const absTimezoneOffsetInHours = Math.abs(timezoneOffsetInHours);
-    const hoursOffset = String(Math.floor(absTimezoneOffsetInHours)).padStart(
-        2,
-        "0"
-    );
-    const minutesOffset = String(
-        Math.floor(
-            (absTimezoneOffsetInHours - Math.floor(absTimezoneOffsetInHours)) *
-                60
-        )
-    ).padStart(2, "0");
-    const sign = timezoneOffsetInHours > 0 ? "-" : "+";
-    const offset = `${sign}${hoursOffset}:${minutesOffset}`;
-    const isoString = `${date.getFullYear()}-${(date.getMonth() + 1)
-        .toString()
-        .padStart(2, "0")}-${date.getDate().toString().padStart(2, "0")}T${date
-        .getHours()
-        .toString()
-        .padStart(2, "0")}:${date
-        .getMinutes()
-        .toString()
-        .padStart(2, "0")}:${date
-        .getSeconds()
-        .toString()
-        .padStart(2, "0")}.${date
-        .getMilliseconds()
-        .toString()
-        .padStart(3, "0")}${offset}`;
-    return isoString;
-}
 
 function modifyUser() {
     if (
@@ -472,7 +439,7 @@ function modifyUser() {
 
             //Find the address which was previously added
             axios.get("/adresse").then((data) => {
-                allAddress = data.data;
+                allAddress.value = data.data;
 
                 // if fields are empty the address is removed
                 if (
@@ -516,9 +483,7 @@ function modifyUser() {
                     sexe: convertGenderToLetter[selectedGender.value.name],
                     telephoneMobile: phoneNumber.value,
                     email: emailAddress.value,
-                    dateNaissance: convertDateToSpecialFormat(
-                        new Date(birthDate.value.toISOString())
-                    ),
+                    dateNaissance: birthDate.value.toISOString(),
                     lieuNaissance: birthPlace.value,
                     nationalite: nationality.value,
                     promotion: yearDiploma.value.getFullYear().toString(),
@@ -682,10 +647,6 @@ function modifyUser() {
                 });
             }
         });
-}
-
-function convertDate(date: string) {
-    return new Date(date);
 }
 </script>
 

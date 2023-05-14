@@ -46,12 +46,14 @@ export const up: Migration = async ({ context: sequelize }) => {
             field: "email",
         },
         dateNaissance: {
-            type: DataType.DATEONLY,
-            validate: { isDate: true },
+            type: DataType.DATE,
+            allowNull: false,
+            validate: { isDate: true, notEmpty: true },
             field: "dateNaissance",
         },
         lieuNaissance: {
             type: DataType.STRING,
+            allowNull: false,
             validate: { notEmpty: true },
             field: "lieuNaissance",
         },

@@ -69,9 +69,19 @@ const router = createRouter({
                     component: PostsView,
                 },
                 {
-                    path: ":id/update",
-                    name: "Modifier un poste",
-                    component: PostUpdateView,
+                    path: ":id",
+                    children: [
+                        {
+                            path: "update",
+                            name: "Modifier",
+                            component: PostUpdateView,
+                        },
+                        {
+                            path: "",
+                            name: "Poste",
+                            redirect: "/posts",
+                        },
+                    ],
                 },
                 {
                     path: "new",

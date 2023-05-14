@@ -6,6 +6,36 @@ const polesSamples = [
         createdAt: new Date(),
         updatedAt: new Date(),
     },
+    {
+        nom: "Suivie d'Étude",
+        createdAt: new Date(),
+        updatedAt: new Date(),
+    },
+    {
+        nom: "Développement Commercial",
+        createdAt: new Date(),
+        updatedAt: new Date(),
+    },
+    {
+        nom: "Communication",
+        createdAt: new Date(),
+        updatedAt: new Date(),
+    },
+    {
+        nom: "Trésorerie",
+        createdAt: new Date(),
+        updatedAt: new Date(),
+    },
+    {
+        nom: "Qualité",
+        createdAt: new Date(),
+        updatedAt: new Date(),
+    },
+    {
+        nom: "Systèmes d'Information",
+        createdAt: new Date(),
+        updatedAt: new Date(),
+    },
 ];
 export const up: Seeder = async ({ context: sequelize }) => {
     await sequelize.getQueryInterface().bulkInsert("Poles", polesSamples);

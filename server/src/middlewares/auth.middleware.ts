@@ -28,7 +28,6 @@ function getUsername(req: Request, res: Response, next: () => void) {
                         nomUtilisateur: result.payload.username,
                     },
                 });
-                // console.log(user);
                 if (user) {
                     res.locals.user = {
                         id: user.id,

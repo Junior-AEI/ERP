@@ -36,7 +36,6 @@ async function createPole(req: Request, res: Response) {
         .then(() => Pole.findByPk(req.body.nom))
         .then((pole) => {
             if (pole !== null) {
-                console.log("Pole already exist");
                 res.status(409).json({ message: "Pole already exist" });
                 return;
             }

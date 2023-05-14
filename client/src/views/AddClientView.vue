@@ -193,7 +193,6 @@ function findCookie(nameCookie: string) {
     for (const cookie of cookies) {
         const [name, value] = cookie.split("=");
         if (name == nameCookie) {
-            console.log(value);
             return value;
         }
     }
@@ -201,10 +200,8 @@ function findCookie(nameCookie: string) {
 }
 
 let selectedCompany = JSON.parse(findCookie("selectedCompany"));
-console.log(selectedCompany);
 axios.get("/adresse/" + selectedCompany.adresseId).then((data) => {
     adresse.value = data.data;
-    console.log(adresse.value);
 });
 
 const lastName = ref();
@@ -262,7 +259,6 @@ function findIdCompany(companies: any, company: any) {
 function addClient() {
     axios.get("/entreprise/").then((data) => {
         let companies = data.data;
-        console.log("Ajout client dans la base");
 
         const newClient: Client = {
             nom: lastName.value,
@@ -278,8 +274,6 @@ function addClient() {
         axios
             .post("/client", newClient)
             .then(function (response) {
-                console.log(response);
-
                 toast2.add({
                     severity: "info",
                     summary: "Succès",
@@ -291,11 +285,8 @@ function addClient() {
                 //Error because some fields are incorrect
             })
             .catch(function (error) {
-                console.log("erreur ajout prospect")
-                console.log(error)
-
-// if fields are empty 
-if (
+            // if fields are empty 
+            if (
                     lastName.value == undefined ||
                     firstName.value == undefined ||
                     selectedGender.value == undefined ||

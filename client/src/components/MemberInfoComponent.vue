@@ -224,7 +224,6 @@ onMounted(() => {
 });
 
 function modifyUser() {
-    console.log("modify User");
     window.location.href = "./" + user.value.id + "/update";
 }
 

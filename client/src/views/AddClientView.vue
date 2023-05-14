@@ -30,7 +30,7 @@
 
                             <li class="row">
                                 <div class="req">*</div>
-                                <div class="key1">Prenom</div>
+                                <div class="key1">Prénom</div>
                                 <span class="p-input-icon-left">
                                     <i class="pi pi-user" />
                                     <InputText
@@ -69,7 +69,7 @@
                             </li>
                             <li class="row">
                                 <div class="req">*</div>
-                                <div class="key1">Telephone Fixe</div>
+                                <div class="key1">Téléphone Fixe</div>
                                 <span class="p-input-icon-left">
                                     <i class="pi pi-phone" />
                                     <InputMask
@@ -83,7 +83,7 @@
 
                             <li class="row">
                                 <div class="req">*</div>
-                                <div class="key1">Telephone Mobile</div>
+                                <div class="key1">Téléphone Mobile</div>
                                 <span class="p-input-icon-left">
                                     <i class="pi pi-mobile" />
                                     <InputMask
@@ -158,7 +158,7 @@
                             </li>
 
                             <li class="row">
-                                <div class="key1">pays</div>
+                                <div class="key1">Pays</div>
 
                                 <div class="value">{{ adresse.pays }}</div>
                             </li>
@@ -184,9 +184,7 @@ import router from "@/router";
 import validator from "validator";
 
 //Useful to create some popup
-const confirm1 = useConfirm();
-const toast1 = useToast();
-const toast2 = useToast();
+const toast = useToast();
 
 function findCookie(nameCookie: string) {
     const cookies = document.cookie.split("; ");
@@ -259,136 +257,87 @@ function findIdCompany(companies: any, company: any) {
 }
 
 function addClient() {
-    axios.get("/entreprise/").then((data) => {
-        let companies = data.data;
+    axios
+        .get("/entreprise/")
+        .then((data) => {
+            let companies = data.data;
 
-        const newClient: Client = {
-            nom: lastName.value,
-            prenom: firstName.value,
-            sexe: convertGender[selectedGender.value.name],
-            telephoneFixe: phoneNumber.value,
-            telephoneMobile: mobilePhone.value,
-            email: emailAddress.value,
-            fonction: position.value,
-            entrepriseId: findIdCompany(companies, selectedCompany),
-        };
-
-        axios
-            .post("/client", newClient)
-            .then(function (response) {
-                toast2
-                    .add({
-                        severity: "info",
-                        summary: "Succès",
-                        detail: "Prospect a été ajouté",
-                        life: 3000,
-                    })
-                    .then(() => router.push("/clients"));
-
-                //Error because some fields are incorrect
+            return {
+                nom: lastName.value,
+                prenom: firstName.value,
+                sexe: convertGender[selectedGender.value.name],
+                telephoneFixe: phoneNumber.value,
+                telephoneMobile: mobilePhone.value,
+                email: emailAddress.value,
+                fonction: position.value,
+                entrepriseId: findIdCompany(companies, selectedCompany),
+            };
+        })
+        .then((newClient) => axios.post("/client", newClient))
+        .then((response) =>
+            toast.add({
+                severity: "success",
+                summary: "Succès",
+                detail: "Prospect ajouté",
+                life: 3000,
             })
-            .catch(function (error) {
-                // if fields are empty
-                if (
-                    lastName.value == undefined ||
-                    firstName.value == undefined ||
-                    selectedGender.value == undefined ||
-                    phoneNumber.value == undefined ||
-                    mobilePhone.value == undefined ||
-                    emailAddress.value == undefined ||
-                    position.value == undefined
-                ) {
-                    confirm1.require({
-                        message: "Tous les champs ne sont pas remplis",
-                        header: "Erreur",
-                        icon: "pi pi-info-circle",
-                        acceptClass: "p-button-danger",
-                        acceptLabel: "Ok",
-                        accept: () => {
-                            toast1.add({
-                                severity: "info",
-                                summary: "Erreur",
-                                detail: "Champs vides",
-                                life: 3000,
-                            });
-                        },
-                    });
-                }
+        )
+        .then(() => router.push("/clients"))
+        .catch(function (error) {
+            //Error because some fields are incorrect
+            // if fields are empty
+            if (
+                lastName.value == undefined ||
+                firstName.value == undefined ||
+                selectedGender.value == undefined ||
+                phoneNumber.value == undefined ||
+                mobilePhone.value == undefined ||
+                emailAddress.value == undefined ||
+                position.value == undefined
+            ) {
+                toast.add({
+                    severity: "error",
+                    summary: "Champs incomplets",
+                    detail: "Tous les champs ne sont pas remplis",
+                    life: 3000,
+                });
+            }
 
-                //phoneNumber is incorrect
-                else if (!validator.isMobilePhone(phoneNumber.value)) {
-                    confirm1.require({
-                        message: "Numéro de téléphone fixe incorrect",
-                        header: "Erreur",
-                        icon: "pi pi-info-circle",
-                        acceptClass: "p-button-danger",
-                        acceptLabel: "Ok",
-                        accept: () => {
-                            toast1.add({
-                                severity: "info",
-                                summary: "Erreur",
-                                detail: "Numéro de téléphone fixe incorrect",
-                                life: 3000,
-                            });
-                        },
-                    });
-                }
-
-                //phoneNumber is incorrect
-                else if (!validator.isMobilePhone(mobilePhone.value)) {
-                    confirm1.require({
-                        message: "Numéro de téléphone portable incorrect",
-                        header: "Erreur",
-                        icon: "pi pi-info-circle",
-                        acceptClass: "p-button-danger",
-                        acceptLabel: "Ok",
-                        accept: () => {
-                            toast1.add({
-                                severity: "info",
-                                summary: "Erreur",
-                                detail: "Numéro de téléphone portable incorrect",
-                                life: 3000,
-                            });
-                        },
-                    });
-                }
-
-                //emailAdress is incorrect
-                else if (!validator.isEmail(emailAddress.value)) {
-                    confirm1.require({
-                        message: "Adresse Email incorrecte",
-                        header: "Erreur",
-                        icon: "pi pi-info-circle",
-                        acceptClass: "p-button-danger",
-                        acceptLabel: "Ok",
-                        accept: () => {
-                            toast1.add({
-                                severity: "info",
-                                summary: "Erreur",
-                                detail: "Adresse Email incorrecte",
-                                life: 3000,
-                            });
-                        },
-                    });
-                } else {
-                    confirm1.require({
-                        message: "Erreur lors de l'ajout du prospect",
-                        header: "Erreur",
-                        icon: "pi pi-info-circle",
-                        acceptClass: "p-button-danger",
-                        acceptLabel: "Ok",
-                        accept: () => {
-                            toast1.add({
-                                severity: "info",
-                                summary: "Erreur",
-                                detail: "Le prospect n'a pas été ajouté",
-                                life: 3000,
-                            });
-                        },
-                    });
-                }
-            });
-    });
+            //phoneNumber is incorrect
+            else if (!validator.isMobilePhone(phoneNumber.value)) {
+                toast.add({
+                    severity: "error",
+                    summary: "Erreur",
+                    detail: "Numéro de téléphone fixe incorrect",
+                    life: 3000,
+                });
+            }
+            //phoneNumber is incorrect
+            else if (!validator.isMobilePhone(mobilePhone.value)) {
+                toast.add({
+                    severity: "error",
+                    summary: "Erreur",
+                    detail: "Numéro de téléphone portable incorrect",
+                    life: 3000,
+                });
+            }
+            //emailAdress is incorrect
+            else if (!validator.isEmail(emailAddress.value)) {
+                toast.add({
+                    severity: "error",
+                    summary: "Erreur",
+                    detail: "Adresse Email incorrecte",
+                    life: 3000,
+                });
+            } else {
+                toast.add({
+                    severity: "info",
+                    summary: "Erreur",
+                    detail: "Le prospect n'a pas été ajouté",
+                    life: 3000,
+                });
+            }
+        });
 }
 </script>
 

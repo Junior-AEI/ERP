@@ -151,7 +151,7 @@
 
                             <li class="row">
                                 <div class="req">*</div>
-                                <div class="key1">pays</div>
+                                <div class="key1">Pays</div>
                                 <span class="p-input-icon-left">
                                     <i class="pi pi-map" />
                                     <InputMask
@@ -242,7 +242,7 @@ function displayCompany() {
             acceptLabel: "Ok",
             accept: () => {
                 toast1.add({
-                    severity: "info",
+                    severity: "error",
                     summary: "Erreur",
                     detail: "Aucune entreprise sélectionnée",
                     life: 3000,
@@ -293,7 +293,7 @@ function addCompany() {
             acceptLabel: "Ok",
             accept: () => {
                 toast1.add({
-                    severity: "info",
+                    severity: "error",
                     summary: "Erreur",
                     detail: "Champs vides",
                     life: 3000,
@@ -331,7 +331,7 @@ function addCompany() {
                     .post("/entreprise", newCompany)
                     .then(function (response) {
                         toast2.add({
-                            severity: "info",
+                            severity: "success",
                             summary: "Succès",
                             detail: "Entreprise a été ajoutée",
                             life: 3000,
@@ -362,7 +362,7 @@ function addCompany() {
                                 acceptLabel: "Ok",
                                 accept: () => {
                                     toast1.add({
-                                        severity: "info",
+                                        severity: "error",
                                         summary: "Erreur",
                                         detail: "Champs vides",
                                         life: 3000,
@@ -379,7 +379,7 @@ function addCompany() {
                                 acceptLabel: "Ok",
                                 accept: () => {
                                     toast1.add({
-                                        severity: "info",
+                                        severity: "error",
                                         summary: "Erreur",
                                         detail: "L'entreprise n'a pas été ajoutée",
                                         life: 3000,
@@ -404,7 +404,7 @@ function addCompany() {
                     acceptLabel: "Ok",
                     accept: () => {
                         toast1.add({
-                            severity: "info",
+                            severity: "error",
                             summary: "Erreur",
                             detail: "Code Pays incorrect",
                             life: 3000,
@@ -423,7 +423,7 @@ function addCompany() {
                     acceptLabel: "Ok",
                     accept: () => {
                         toast1.add({
-                            severity: "info",
+                            severity: "error",
                             summary: "Erreur",
                             detail: "Code Postal incorrect",
                             life: 3000,
@@ -439,7 +439,7 @@ function addCompany() {
                     acceptLabel: "Ok",
                     accept: () => {
                         toast1.add({
-                            severity: "info",
+                            severity: "error",
                             summary: "Erreur",
                             detail: "L'entreprise n'a pas été ajoutée",
                             life: 3000,

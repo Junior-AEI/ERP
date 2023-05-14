@@ -29,7 +29,7 @@
 
                             <li class="row">
                                 <div class="req">*</div>
-                                <div class="key1">Prenom</div>
+                                <div class="key1">Prénom</div>
                                 <span class="p-input-icon-left">
                                     <i class="pi pi-user" />
                                     <InputText
@@ -54,7 +54,7 @@
 
                             <li class="row">
                                 <div class="req">*</div>
-                                <div class="key1">Telephone Mobile</div>
+                                <div class="key1">Téléphone Mobile</div>
                                 <span class="p-input-icon-left">
                                     <i class="pi pi-phone" />
                                     <InputMask
@@ -146,7 +146,7 @@
 
                             <li class="row">
                                 <div class="req">*</div>
-                                <div class="key1">pays</div>
+                                <div class="key1">Pays</div>
                                 <span class="p-input-icon-left">
                                     <i class="pi pi-map" />
                                     <InputMask
@@ -205,7 +205,7 @@
                         </li>
                         <li class="row">
                             <div class="req">*</div>
-                            <div class="key2">moyenPaiement</div>
+                            <div class="key2">Moyen de paiement</div>
                             <Dropdown
                                 v-model="selectedPayment"
                                 :options="payment"
@@ -406,7 +406,7 @@ function addUser() {
             acceptLabel: "Ok",
             accept: () => {
                 toast1.add({
-                    severity: "info",
+                    severity: "error",
                     summary: "Erreur",
                     detail: "Champs vides",
                     life: 3000,
@@ -458,7 +458,7 @@ function addUser() {
                         acceptLabel: "Ok",
                         accept: () => {
                             toast1.add({
-                                severity: "info",
+                                severity: "error",
                                 summary: "Erreur",
                                 detail: "Champs vides",
                                 life: 3000,
@@ -492,7 +492,7 @@ function addUser() {
                     .then(function (response) {
                         toast2
                             .add({
-                                severity: "info",
+                                severity: "success",
                                 summary: "Succès",
                                 detail: "Utilisateur a été ajouté",
                                 life: 3000,
@@ -515,7 +515,7 @@ function addUser() {
                                 acceptLabel: "Ok",
                                 accept: () => {
                                     toast1.add({
-                                        severity: "info",
+                                        severity: "error",
                                         summary: "Erreur",
                                         detail: "Numéro de téléphone incorrect",
                                         life: 3000,
@@ -537,7 +537,7 @@ function addUser() {
                                 acceptLabel: "Ok",
                                 accept: () => {
                                     toast1.add({
-                                        severity: "info",
+                                        severity: "error",
                                         summary: "Erreur",
                                         detail: "Adresse Email incorrecte",
                                         life: 3000,
@@ -561,7 +561,7 @@ function addUser() {
                                 acceptLabel: "Ok",
                                 accept: () => {
                                     toast1.add({
-                                        severity: "info",
+                                        severity: "error",
                                         summary: "Erreur",
                                         detail: "Code Nationalité incorrect",
                                         life: 3000,
@@ -581,7 +581,7 @@ function addUser() {
                                 acceptLabel: "Ok",
                                 accept: () => {
                                     toast1.add({
-                                        severity: "info",
+                                        severity: "error",
                                         summary: "Erreur",
                                         detail: "L'utilisateur n'a pas été ajouté",
                                         life: 3000,
@@ -606,7 +606,7 @@ function addUser() {
                     acceptLabel: "Ok",
                     accept: () => {
                         toast1.add({
-                            severity: "info",
+                            severity: "error",
                             summary: "Erreur",
                             detail: "Code Pays incorrect",
                             life: 3000,
@@ -625,7 +625,7 @@ function addUser() {
                     acceptLabel: "Ok",
                     accept: () => {
                         toast1.add({
-                            severity: "info",
+                            severity: "error",
                             summary: "Erreur",
                             detail: "Code Postal incorrect",
                             life: 3000,
@@ -642,7 +642,7 @@ function addUser() {
                     acceptLabel: "Ok",
                     accept: () => {
                         toast1.add({
-                            severity: "info",
+                            severity: "error",
                             summary: "Erreur",
                             detail: "Adresse incorrecte",
                             life: 3000,

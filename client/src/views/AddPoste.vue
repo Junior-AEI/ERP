@@ -55,17 +55,16 @@
 </template>
 
 <script setup lang="ts">
-import { ref } from "vue";
+import { onMounted, ref } from "vue";
 import axios from "axios";
 import { useConfirm } from "primevue/useconfirm";
 import { useToast } from "primevue/usetoast";
 import router from "@/router";
 const confirm1 = useConfirm();
-const toast1 = useToast();
-const toast2 = useToast();
+const toast = useToast();
 
 //Data needed to create a post
-interface pole {
+interface Pole {
     nom: string;
 }
 interface Post {
@@ -74,15 +73,10 @@ interface Post {
 const Pole_Name = ref();
 const Description = ref();
 const selectedPole = ref();
-const names = [];
+const names = [] as Array<any>;
 const pole = ref(names);
 
-axios.get("/pole").then((data) => {
-    data.data.forEach((element) => {
-        names.push({ name: [element.nom][0] });
-    });
-});
-function addPoste() {
+async function addPoste() {
     // if fields are empty the address is removed
     if (
         Pole_Name.value == undefined ||
@@ -96,53 +90,60 @@ function addPoste() {
             acceptClass: "p-button-danger",
             acceptLabel: "Ok",
             accept: () => {
-                toast1.add({
-                    severity: "info",
+                toast.add({
+                    severity: "error",
                     summary: "Erreur",
                     detail: "Champs vides",
                     life: 3000,
                 });
             },
         });
-    }
-
-    //Add post :
-    const newPost: Post = {
-        nom: Pole_Name.value,
-        description: Description.value,
-        nomPole: selectedPole.value.name,
-    };
-    //Case where there is no problem to add member
-    axios
-        .post("/poste", newPost)
-        .then(function (response) {
-            toast2
-                .add({
-                    severity: "info",
+    } else {
+        //Add post :
+        const newPost: Post = {
+            nom: Pole_Name.value,
+            description: Description.value,
+            nomPole: selectedPole.value.name,
+        };
+        //Case where there is no problem to add member
+        await axios
+            .post("/poste", newPost)
+            .then(() =>
+                toast.add({
+                    severity: "success",
                     summary: "Succès",
                     detail: "le poste a été ajouté",
                     life: 3000,
                 })
-                .then(() => router.push("/posts"));
-        })
-        .catch(function (error) {
-            confirm1.require({
-                message: "Erreur lors de l'ajout d'un poste",
-                header: "Erreur",
-                icon: "pi pi-info-circle",
-                acceptClass: "p-button-danger",
-                acceptLabel: "Ok",
-                accept: () => {
-                    toast1.add({
-                        severity: "info",
-                        summary: "Erreur",
-                        detail: "Le poste n'a pas été ajouté",
-                        life: 3000,
-                    });
-                },
-            });
-        });
+            )
+            .catch(() =>
+                confirm1.require({
+                    message: "Erreur lors de l'ajout d'un poste",
+                    header: "Erreur",
+                    icon: "pi pi-info-circle",
+                    acceptClass: "p-button-danger",
+                    acceptLabel: "Ok",
+                    accept: () => {
+                        toast.add({
+                            severity: "error",
+                            summary: "Erreur",
+                            detail: "Le poste n'a pas été ajouté",
+                            life: 3000,
+                        });
+                    },
+                })
+            )
+            .then(() => router.push("/posts"));
+    }
 }
+
+onMounted(() =>
+    axios.get("/pole").then((data) => {
+        data.data.forEach((element: any) => {
+            names.push({ name: [element.nom][0] });
+        });
+    })
+);
 </script>
 
 <style scoped lang="scss">

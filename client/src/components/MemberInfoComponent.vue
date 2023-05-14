@@ -20,7 +20,7 @@
                             </li>
 
                             <li class="row">
-                                <div class="key1">Prenom</div>
+                                <div class="key1">Prénom</div>
                                 <div class="value">{{ user.prenom }}</div>
                             </li>
                             <li class="row">
@@ -31,7 +31,7 @@
                             </li>
 
                             <li class="row">
-                                <div class="key1">Telephone Mobile</div>
+                                <div class="key1">Téléphone Mobile</div>
                                 <div class="value">
                                     {{ user.telephoneMobile }}
                                 </div>
@@ -79,7 +79,7 @@
                             </li>
 
                             <li class="row">
-                                <div class="key1">pays</div>
+                                <div class="key1">Pays</div>
                                 <div class="value">{{ adresse.pays }}</div>
                             </li>
                         </ul>
@@ -103,7 +103,7 @@
                             <div class="value">{{ user.filiere }}</div>
                         </li>
                         <li class="row">
-                            <div class="key2">moyenPaiement</div>
+                            <div class="key2">Moyen de paiement</div>
                             <div class="value">{{ user.moyenPaiement }}</div>
                         </li>
                     </ul>

@@ -106,8 +106,8 @@ function modifyPost() {
         .put("/poste", updatedPost)
         .then(function (response) {
             confirm.require({
-                message: "poste modifié avec succès",
-                header: "Erreur",
+                message: "Poste modifié avec succès",
+                header: "Succès",
                 icon: "pi pi-info-circle",
                 acceptClass: "pi pi-button-check",
                 acceptLabel: "Ok",
@@ -127,7 +127,7 @@ function modifyPost() {
                 acceptLabel: "Ok",
                 accept: () => {
                     toast.add({
-                        severity: "info",
+                        severity: "error",
                         summary: "Erreur",
                         detail: "L'utilisateur n'a pas été modifié",
                         life: 3000,

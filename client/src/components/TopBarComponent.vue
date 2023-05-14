@@ -75,7 +75,7 @@ const items = [
                 rejectLabel: "Non",
                 accept: () => {
                     toast.add({
-                        severity: "info",
+                        severity: "success",
                         summary: "Confirmé",
                         detail: "Compte supprimé",
                         life: 3000,

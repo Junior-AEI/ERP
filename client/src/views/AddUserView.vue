@@ -6,9 +6,7 @@
                     <template #legend>
                         <div class="flex align-items-center">
                             <span class="pi pi-user mr-2"></span>
-                            <span class="font-bold"
-                                >Informations personnelles</span
-                            >
+                            <span class="font-bold">Informations personnelles</span>
                         </div>
                     </template>
 
@@ -19,11 +17,7 @@
                                 <div class="key1">Nom</div>
                                 <span class="p-input-icon-left">
                                     <i class="pi pi-user" />
-                                    <InputText
-                                        placeholder="Nom"
-                                        v-model="lastName"
-                                        required
-                                    />
+                                    <InputText placeholder="Nom" v-model="lastName" required />
                                 </span>
                             </li>
 
@@ -32,24 +26,14 @@
                                 <div class="key1">Prenom</div>
                                 <span class="p-input-icon-left">
                                     <i class="pi pi-user" />
-                                    <InputText
-                                        placeholder="Prénom"
-                                        v-model="firstName"
-                                        required
-                                    />
+                                    <InputText placeholder="Prénom" v-model="firstName" required />
                                 </span>
                             </li>
                             <li class="row">
                                 <div class="req">*</div>
                                 <div class="key1">Genre</div>
-                                <Dropdown
-                                    v-model="selectedGender"
-                                    :options="gender"
-                                    optionLabel="name"
-                                    placeholder="Genre"
-                                    class="select"
-                                    required
-                                />
+                                <Dropdown v-model="selectedGender" :options="gender" optionLabel="name" placeholder="Genre"
+                                    class="select" required />
                             </li>
 
                             <li class="row">
@@ -57,12 +41,7 @@
                                 <div class="key1">Telephone Mobile</div>
                                 <span class="p-input-icon-left">
                                     <i class="pi pi-phone" />
-                                    <InputMask
-                                        placeholder="Téléphone"
-                                        v-model="phoneNumber"
-                                        mask="+99999999999"
-                                        required
-                                    />
+                                    <InputMask placeholder="Téléphone" v-model="phoneNumber" mask="+99999999999" required />
                                 </span>
                             </li>
 
@@ -71,12 +50,7 @@
                                 <div class="key1">Email</div>
                                 <span class="p-input-icon-left">
                                     <i class="pi pi-envelope" />
-                                    <InputText
-                                        placeholder="E-mail"
-                                        class="email_text"
-                                        v-model="emailAddress"
-                                        required
-                                    />
+                                    <InputText placeholder="E-mail" class="email_text" v-model="emailAddress" required />
                                 </span>
                             </li>
                         </ul>
@@ -98,12 +72,7 @@
                                 <div class="key1">Adresse</div>
                                 <span class="p-input-icon-left">
                                     <i class="pi pi-map-marker" />
-                                    <InputText
-                                        placeholder="Adresse"
-                                        class="address_text"
-                                        v-model="address"
-                                        required
-                                    />
+                                    <InputText placeholder="Adresse" class="address_text" v-model="address" required />
                                 </span>
                             </li>
 
@@ -111,11 +80,8 @@
                                 <div class="key1">Complément d'adresse</div>
                                 <span class="p-input-icon-left">
                                     <i class="pi pi-map-marker" />
-                                    <InputText
-                                        placeholder="Complément d'adresse"
-                                        class="address_text"
-                                        v-model="addressComplement"
-                                    />
+                                    <InputText placeholder="Complément d'adresse" class="address_text"
+                                        v-model="addressComplement" />
                                 </span>
                             </li>
                             <li class="row">
@@ -123,12 +89,7 @@
                                 <div class="key1">Ville</div>
                                 <span class="p-input-icon-left">
                                     <i class="pi pi-map" />
-                                    <InputText
-                                        placeholder="Ville"
-                                        class="city"
-                                        v-model="city"
-                                        required
-                                    />
+                                    <InputText placeholder="Ville" class="city" v-model="city" required />
                                 </span>
                             </li>
 
@@ -136,11 +97,7 @@
                                 <div class="req">*</div>
                                 <div class="key1">Code Postal</div>
                                 <span class="p-input-icon-left">
-                                    <InputNumber
-                                        class="postalCode"
-                                        v-model="postalCode"
-                                        required
-                                    />
+                                    <InputNumber class="postalCode" v-model="postalCode" required />
                                 </span>
                             </li>
 
@@ -149,13 +106,8 @@
                                 <div class="key1">pays</div>
                                 <span class="p-input-icon-left">
                                     <i class="pi pi-map" />
-                                    <InputMask
-                                        placeholder="Pays (FRA)"
-                                        class="country"
-                                        v-model="country"
-                                        mask="aaa"
-                                        required
-                                    />
+                                    <InputMask placeholder="Pays (FRA)" class="country" v-model="country" mask="aaa"
+                                        required />
                                 </span>
                             </li>
                         </ul>
@@ -170,12 +122,7 @@
                             <div class="req">*</div>
                             <div class="key2">Promotion</div>
                             <span class="p-input-icon-left">
-                                <Calendar
-                                    v-model="yearDiploma"
-                                    view="year"
-                                    dateFormat="yy"
-                                    required
-                                />
+                                <Calendar v-model="yearDiploma" view="year" dateFormat="yy" required />
                             </span>
                         </li>
                         <li class="row">
@@ -183,49 +130,26 @@
                             <div class="key2">Nationalité</div>
                             <span class="p-input-icon-left">
                                 <i class="pi pi-map" />
-                                <InputMask
-                                    placeholder="Type:FRA"
-                                    v-model="nationality"
-                                    mask="aaa"
-                                    required
-                                />
+                                <InputMask placeholder="Type:FRA" v-model="nationality" mask="aaa" required />
                             </span>
                         </li>
                         <li class="row">
                             <div class="req">*</div>
                             <div class="key2">Filière</div>
-                            <Dropdown
-                                v-model="selectedField"
-                                :options="field"
-                                optionLabel="name"
-                                placeholder="Filière"
-                                class="select"
-                                required
-                            />
+                            <Dropdown v-model="selectedField" :options="field" optionLabel="name" placeholder="Filière"
+                                class="select" required />
                         </li>
                         <li class="row">
                             <div class="req">*</div>
                             <div class="key2">moyenPaiement</div>
-                            <Dropdown
-                                v-model="selectedPayment"
-                                :options="payment"
-                                optionLabel="name"
-                                placeholder="Moyen de paiement"
-                                class="select"
-                                required
-                            />
+                            <Dropdown v-model="selectedPayment" :options="payment" optionLabel="name"
+                                placeholder="Moyen de paiement" class="select" required />
                         </li>
                         <li class="row">
                             <div class="req">*</div>
                             <div class="key2">Date de cotisation</div>
                             <span class="p-input-icon-left">
-                                <Calendar
-                                    class="calendar"
-                                    v-model="adhesionDate"
-                                    dateFormat="dd/mm/yy"
-                                    showIcon
-                                    required
-                                />
+                                <Calendar class="calendar" v-model="adhesionDate" dateFormat="dd/mm/yy" showIcon required />
                             </span>
                         </li>
                     </ul>
@@ -239,13 +163,7 @@
                             <div class="req">*</div>
                             <div class="key2">Date de Naissance</div>
                             <span class="p-input-icon-left">
-                                <Calendar
-                                    class="calendar"
-                                    v-model="birthDate"
-                                    dateFormat="dd/mm/yy"
-                                    showIcon
-                                    required
-                                />
+                                <Calendar class="calendar" v-model="birthDate" dateFormat="dd/mm/yy" showIcon required />
                             </span>
                         </li>
                         <li class="row">
@@ -253,11 +171,7 @@
                             <div class="key2">Lieu de Naissance</div>
                             <span class="p-input-icon-left">
                                 <i class="pi pi-compass" />
-                                <InputText
-                                    placeholder="Lieu de naissance"
-                                    v-model="birthPlace"
-                                    required
-                                />
+                                <InputText placeholder="Lieu de naissance" v-model="birthPlace" required />
                             </span>
                         </li>
                     </ul>
@@ -284,13 +198,16 @@ const confirm1 = useConfirm();
 const toast1 = useToast();
 const toast2 = useToast();
 
-
 //Data needed to create an adherent
 const lastName = ref();
 const firstName = ref();
 const selectedGender = ref({ name: "Homme" });
 const gender = ref([{ name: "Femme" }, { name: "Homme" }, { name: "Autre" }]);
-const convertGender: { [key: string]: string } = {"Femme":"F", "Homme":"M", "Autre":"O"};
+const convertGender: { [key: string]: string } = {
+    Femme: "F",
+    Homme: "M",
+    Autre: "O",
+};
 const birthDate = ref();
 const birthPlace = ref();
 const nationality = ref();
@@ -320,7 +237,6 @@ const payment = ref([
     { name: "Lydia" },
 ]);
 
-
 const genders = ["F", "M", "O"];
 
 //Convert date from calendar of primevue to DATEONLY of sequelize
@@ -335,7 +251,7 @@ function convertDateToSpecialFormat(date: any) {
     const minutesOffset = String(
         Math.floor(
             (absTimezoneOffsetInHours - Math.floor(absTimezoneOffsetInHours)) *
-                60
+            60
         )
     ).padStart(2, "0");
     const sign = timezoneOffsetInHours > 0 ? "-" : "+";
@@ -343,18 +259,18 @@ function convertDateToSpecialFormat(date: any) {
     const isoString = `${date.getFullYear()}-${(date.getMonth() + 1)
         .toString()
         .padStart(2, "0")}-${date.getDate().toString().padStart(2, "0")}T${date
-        .getHours()
-        .toString()
-        .padStart(2, "0")}:${date
-        .getMinutes()
-        .toString()
-        .padStart(2, "0")}:${date
-        .getSeconds()
-        .toString()
-        .padStart(2, "0")}.${date
-        .getMilliseconds()
-        .toString()
-        .padStart(3, "0")}${offset}`;
+            .getHours()
+            .toString()
+            .padStart(2, "0")}:${date
+                .getMinutes()
+                .toString()
+                .padStart(2, "0")}:${date
+                    .getSeconds()
+                    .toString()
+                    .padStart(2, "0")}.${date
+                        .getMilliseconds()
+                        .toString()
+                        .padStart(3, "0")}${offset}`;
     return isoString;
 }
 
@@ -388,33 +304,29 @@ interface Address {
 // If some fields are incorrect a popup and an error occur
 // Else the member is added and the user is redirected in the page with the userTable
 function addUser() {
-
-
     if (
         address.value == undefined ||
-                    city.value == undefined ||
-                    postalCode.value == undefined ||
-                    country.value == undefined 
-                ) {
-
-
-                    //Address fields are empty
-                    confirm1.require({
-                        message: "Des champs obligatoires pour l'adresse sont vides",
-                        header: "Erreur",
-                        icon: "pi pi-info-circle",
-                        acceptClass: "p-button-danger",
-                        acceptLabel: "Ok",
-                        accept: () => {
-                            toast1.add({
-                                severity: "info",
-                                summary: "Erreur",
-                                detail: "Champs vides",
-                                life: 3000,
-                            });
-                        },
-                    });
-                }
+        city.value == undefined ||
+        postalCode.value == undefined ||
+        country.value == undefined
+    ) {
+        //Address fields are empty
+        confirm1.require({
+            message: "Des champs obligatoires pour l'adresse sont vides",
+            header: "Erreur",
+            icon: "pi pi-info-circle",
+            acceptClass: "p-button-danger",
+            acceptLabel: "Ok",
+            accept: () => {
+                toast1.add({
+                    severity: "info",
+                    summary: "Erreur",
+                    detail: "Champs vides",
+                    life: 3000,
+                });
+            },
+        });
+    }
 
     //Add address of the adherent :
     const newAddress: Address = {
@@ -424,7 +336,6 @@ function addUser() {
         codePostal: String(postalCode.value),
         pays: country.value,
     };
-        
 
     axios
         .post("/adresse", newAddress)
@@ -488,8 +399,7 @@ function addUser() {
                     adresseId: findIdAddress(allAddress),
                 };
 
-                
-                
+
                 //Case where there is no problem to add member
                 axios
                     .post("/adherent", newMember)
@@ -505,91 +415,93 @@ function addUser() {
                         //Error because some fields are incorrect
                     })
                     .catch(function (error) {
-                    //phoneNumber is incorrect
-                    if ( ! validator.isMobilePhone(phoneNumber.value)) {
-                    const addr = "/adresse/" + findIdAddress(allAddress);
-                    axios.delete(addr);
-                    confirm1.require({
-                        message: "Numéro de téléphone incorrect",
-                        header: "Erreur",
-                        icon: "pi pi-info-circle",
-                        acceptClass: "p-button-danger",
-                        acceptLabel: "Ok",
-                        accept: () => {
-                            toast1.add({
-                                severity: "info",
-                                summary: "Erreur",
-                                detail: "Numéro de téléphone incorrect",
-                                life: 3000,
+                        //phoneNumber is incorrect
+                        if (!validator.isMobilePhone(phoneNumber.value)) {
+                            const addr = "/adresse/" + findIdAddress(allAddress);
+                            axios.delete(addr);
+                            confirm1.require({
+                                message: "Numéro de téléphone incorrect",
+                                header: "Erreur",
+                                icon: "pi pi-info-circle",
+                                acceptClass: "p-button-danger",
+                                acceptLabel: "Ok",
+                                accept: () => {
+                                    toast1.add({
+                                        severity: "info",
+                                        summary: "Erreur",
+                                        detail: "Numéro de téléphone incorrect",
+                                        life: 3000,
+                                    });
+                                },
                             });
-                        },
-                    });
 
-                }
+                        }
 
-                //emailAdress is incorrect
-                else if ( ! validator.isEmail(emailAddress.value)) {
-                    const addr = "/adresse/" + findIdAddress(allAddress);
-                    axios.delete(addr);
-                    confirm1.require({
-                        message: "Adresse Email incorrecte",
-                        header: "Erreur",
-                        icon: "pi pi-info-circle",
-                        acceptClass: "p-button-danger",
-                        acceptLabel: "Ok",
-                        accept: () => {
-                            toast1.add({
-                                severity: "info",
-                                summary: "Erreur",
-                                detail: "Adresse Email incorrecte",
-                                life: 3000,
+                        //emailAdress is incorrect
+                        else if (!validator.isEmail(emailAddress.value)) {
+                            const addr =
+                                "/adresse/" + findIdAddress(allAddress);
+                            axios.delete(addr);
+                            confirm1.require({
+                                message: "Adresse Email incorrecte",
+                                header: "Erreur",
+                                icon: "pi pi-info-circle",
+                                acceptClass: "p-button-danger",
+                                acceptLabel: "Ok",
+                                accept: () => {
+                                    toast1.add({
+                                        severity: "info",
+                                        summary: "Erreur",
+                                        detail: "Adresse Email incorrecte",
+                                        life: 3000,
+                                    });
+                                },
                             });
-                        },
-                    });
+                        }
 
-                }
-
-                //nationality code is incorrect
-                else if ( ! validator.isISO31661Alpha3(nationality.value)) {
-                    const addr = "/adresse/" + findIdAddress(allAddress);
-                    axios.delete(addr);
-                    confirm1.require({
-                        message: "Code Nationalité incorrect",
-                        header: "Erreur",
-                        icon: "pi pi-info-circle",
-                        acceptClass: "p-button-danger",
-                        acceptLabel: "Ok",
-                        accept: () => {
-                            toast1.add({
-                                severity: "info",
-                                summary: "Erreur",
-                                detail: "Code Nationalité incorrect",
-                                life: 3000,
+                        //nationality code is incorrect
+                        else if (
+                            !validator.isISO31661Alpha3(nationality.value)
+                        ) {
+                            const addr =
+                                "/adresse/" + findIdAddress(allAddress);
+                            axios.delete(addr);
+                            confirm1.require({
+                                message: "Code Nationalité incorrect",
+                                header: "Erreur",
+                                icon: "pi pi-info-circle",
+                                acceptClass: "p-button-danger",
+                                acceptLabel: "Ok",
+                                accept: () => {
+                                    toast1.add({
+                                        severity: "info",
+                                        summary: "Erreur",
+                                        detail: "Code Nationalité incorrect",
+                                        life: 3000,
+                                    });
+                                },
                             });
-                        },
-                    });
+                        }
 
-                }
-
-
-                //othr errors not detected previously
-                else {
-                        confirm1.require({
-                            message: "Erreur lors de l'ajout de l'utilisateur",
-                            header: "Erreur",
-                            icon: "pi pi-info-circle",
-                            acceptClass: "p-button-danger",
-                            acceptLabel: "Ok",
-                            accept: () => {
-                                toast1.add({
-                                    severity: "info",
-                                    summary: "Erreur",
-                                    detail: "L'utilisateur n'a pas été ajouté",
-                                    life: 3000,
-                                });
-                            },
-                        });
-                    }
+                        //othr errors not detected previously
+                        else {
+                            confirm1.require({
+                                message:
+                                    "Erreur lors de l'ajout de l'utilisateur",
+                                header: "Erreur",
+                                icon: "pi pi-info-circle",
+                                acceptClass: "p-button-danger",
+                                acceptLabel: "Ok",
+                                accept: () => {
+                                    toast1.add({
+                                        severity: "info",
+                                        summary: "Erreur",
+                                        detail: "L'utilisateur n'a pas été ajouté",
+                                        life: 3000,
+                                    });
+                                },
+                            });
+                        }
                         const addr = "/adresse/" + findIdAddress(allAddress);
                         axios.delete(addr);
                     });
@@ -597,62 +509,60 @@ function addUser() {
             //Error because some fields are incorrect
         })
         .catch(function (error) {
-
             //Country code is incorrect
-            if ( ! validator.isISO31661Alpha3(country.value)) {
-                    confirm1.require({
-                        message: "Code Pays incorrect",
-                        header: "Erreur",
-                        icon: "pi pi-info-circle",
-                        acceptClass: "p-button-danger",
-                        acceptLabel: "Ok",
-                        accept: () => {
-                            toast1.add({
-                                severity: "info",
-                                summary: "Erreur",
-                                detail: "Code Pays incorrect",
-                                life: 3000,
-                            });
-                        },
-                    });
-                }
-
-                //Postal code is incorrect
-            else if ( ! validator.isPostalCode(String(postalCode.value), "any")) {
+            if (!validator.isISO31661Alpha3(country.value)) {
                 confirm1.require({
-                        message: "Code Postal incorrect",
-                        header: "Erreur",
-                        icon: "pi pi-info-circle",
-                        acceptClass: "p-button-danger",
-                        acceptLabel: "Ok",
-                        accept: () => {
-                            toast1.add({
-                                severity: "info",
-                                summary: "Erreur",
-                                detail: "Code Postal incorrect",
-                                life: 3000,
-                            });
-                        },
-                    });
-                }
-            else {
+                    message: "Code Pays incorrect",
+                    header: "Erreur",
+                    icon: "pi pi-info-circle",
+                    acceptClass: "p-button-danger",
+                    acceptLabel: "Ok",
+                    accept: () => {
+                        toast1.add({
+                            severity: "info",
+                            summary: "Erreur",
+                            detail: "Code Pays incorrect",
+                            life: 3000,
+                        });
+                    },
+                });
+            }
+
+            //Postal code is incorrect
+            else if (!validator.isPostalCode(String(postalCode.value), "any")) {
+                confirm1.require({
+                    message: "Code Postal incorrect",
+                    header: "Erreur",
+                    icon: "pi pi-info-circle",
+                    acceptClass: "p-button-danger",
+                    acceptLabel: "Ok",
+                    accept: () => {
+                        toast1.add({
+                            severity: "info",
+                            summary: "Erreur",
+                            detail: "Code Postal incorrect",
+                            life: 3000,
+                        });
+                    },
+                });
+            } else {
                 //Errors in the address not detected previously
-            confirm1.require({
-                message: "Adresse incorrecte",
-                header: "Erreur",
-                icon: "pi pi-info-circle",
-                acceptClass: "p-button-danger",
-                acceptLabel: "Ok",
-                accept: () => {
-                    toast1.add({
-                        severity: "info",
-                        summary: "Erreur",
-                        detail: "Adresse incorrecte",
-                        life: 3000,
-                    });
-                },
-            });
-        }
+                confirm1.require({
+                    message: "Adresse incorrecte",
+                    header: "Erreur",
+                    icon: "pi pi-info-circle",
+                    acceptClass: "p-button-danger",
+                    acceptLabel: "Ok",
+                    accept: () => {
+                        toast1.add({
+                            severity: "info",
+                            summary: "Erreur",
+                            detail: "Adresse incorrecte",
+                            life: 3000,
+                        });
+                    },
+                });
+            }
         });
 }
 </script>
@@ -661,8 +571,7 @@ function addUser() {
 @import "primeflex/primeflex.scss";
 
 .row {
-    @include styleclass(
-        "grid align-items-center py-3 px-2 border-top-1 surface-border"
+    @include styleclass("grid align-items-center py-3 px-2 border-top-1 surface-border"
     );
 }
 
@@ -679,6 +588,6 @@ function addUser() {
 }
 
 .req {
-  color:maroon;
+    color: maroon;
 }
 </style>

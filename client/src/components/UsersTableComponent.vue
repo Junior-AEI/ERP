@@ -1,83 +1,39 @@
 <template>
-    <DataTable
-        v-model:selection="selectedUser"
-        selectionMode="single"
-        :metaKeySelection="false"
-        @rowSelect="onRowSelect"
-        :value="users"
-        responsiveLayout="scroll"
-        dataKey="id"
-        v-model:filters="filters"
-        filterDisplay="row"
-        sortField="Nom"
-        :sortOrder="1"
-        :paginator="true"
-        :rows="10"
-    >
+    <DataTable v-model:selection="selectedUser" selectionMode="single" :metaKeySelection="false" @rowSelect="onRowSelect"
+        :value="adherents" responsiveLayout="scroll" dataKey="id" v-model:filters="filters" filterDisplay="row"
+        sortField="Nom" :sortOrder="1" :paginator="true" :rows="10">
         <Column field="nom" header="Nom" :sortable="true">
             <template #filter="{ filterModel, filterCallback }">
-                <InputText
-                    type="text"
-                    v-model="filterModel.value"
-                    @keydown.enter="filterCallback()"
-                    class="p-column-filter"
-                    :placeholder="`Nom`"
-                />
+                <InputText v-model="filterModel.value" type="text" @input="filterCallback()" class="p-column-filter"
+                    placeholder="Search by name" />
             </template>
         </Column>
         <Column field="prenom" header="Prénom" :sortable="true">
             <template #filter="{ filterModel, filterCallback }">
-                <InputText
-                    type="text"
-                    v-model="filterModel.value"
-                    @keydown.enter="filterCallback()"
-                    class="p-column-filter"
-                    :placeholder="`Prénom`"
-                />
+                <InputText type="text" v-model="filterModel.value" @keydown.enter="filterCallback()" class="p-column-filter"
+                    :placeholder="`Prénom`" />
             </template>
         </Column>
-        <Column
-            field="telephoneMobile"
-            header="Téléphone"
-            :sortable="true"
-        ></Column>
+        <Column field="telephoneMobile" header="Téléphone" :sortable="true"></Column>
         <Column field="email" header="Email" :sortable="true"></Column>
-        <Column field="poste" header="Poste" :sortable="true"></Column>
+        <Column field="utilisateur.poste.nom" header="Poste" :sortable="true"></Column>
         <Column field="promotion" header="Promotion" :sortable="true">
             <template #filter="{ filterModel, filterCallback }">
-                <InputText
-                    type="text"
-                    v-model="filterModel.value"
-                    @keydown.enter="filterCallback()"
-                    class="p-column-filter"
-                    :placeholder="`Promotion`"
-                />
+                <InputText type="text" v-model="filterModel.value" @keydown.enter="filterCallback()" class="p-column-filter"
+                    :placeholder="`Promotion`" />
             </template>
         </Column>
-        <Column
-            headerStyle="width: 4rem; text-align: center"
-            bodyStyle="text-align: center; overflow: visible"
-        >
+        <Column headerStyle="width: 4rem; text-align: center" bodyStyle="text-align: center; overflow: visible">
             <template #body="{ data }">
-                <Button
-                    class="button"
-                    icon="pi pi-user-edit"
-                    @click="editUser(data)"
-                ></Button>
+                <Button class="button" icon="pi pi-user-edit" @click="editUser(data)"></Button>
             </template>
         </Column>
     </DataTable>
 
-    <Button
-        id="user-add"
-        class="button"
-        label="Ajouter un utilisateur"
-        @click="addUser()"
-    />
+    <Button id="user-add" class="button" label="Ajouter un utilisateur" @click="addUser()" />
 </template>
 
 <script setup lang="ts">
-import { propsToAttrMap } from "@vue/shared";
 import axios from "axios";
 import { FilterMatchMode } from "primevue/api";
 import { onMounted, ref } from "vue";
@@ -107,36 +63,17 @@ const filters = ref({
     },
 });
 
-let users = ref([]);
+let adherents = ref([]);
 
 onMounted(() => {
     axios.get("/adherent").then((data) => {
-        axios.get("/utilisateur").then((data2) => {
-            for (let i = 0; i < data2.data.length; ++i){
-                if (data2.data[i].adherentId !== null) {
-                    axios.get("/poste"+data2.data[i].posteId).then((data3) => {
-                        data.data[data2.data[i].adherentId]["poste"] = data3.data.nom;
-                    });
-                }
-            }
-
-            for (let j = 0; j < data.data.length; ++j) {
-                if (data.data[j]["poste"] === undefined) {
-                    data.data[j]["poste"] = "∅";
-                }
-            }
-            users.value = data.data;
-});
-        });
-        
-  
-   
-
-
+        adherents.value = data.data;
+    });
 });
 </script>
 <style lang="scss" scoped>
 @import "../assets/colors.scss";
+
 .button {
     float: right;
 }

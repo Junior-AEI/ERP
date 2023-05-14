@@ -7,9 +7,7 @@
                     <template #legend>
                         <div class="flex align-items-center">
                             <span class="pi pi-user mr-2"></span>
-                            <span class="font-bold"
-                                >Informations personnelles</span
-                            >
+                            <span class="font-bold">Informations personnelles</span>
                         </div>
                     </template>
 
@@ -20,11 +18,7 @@
                                 <div class="key1">Nom</div>
                                 <span class="p-input-icon-left">
                                     <i class="pi pi-user" />
-                                    <InputText
-                                        placeholder="Nom"
-                                        v-model="lastName"
-                                        required
-                                    />
+                                    <InputText placeholder="Nom" v-model="lastName" required />
                                 </span>
                             </li>
 
@@ -33,24 +27,14 @@
                                 <div class="key1">Prenom</div>
                                 <span class="p-input-icon-left">
                                     <i class="pi pi-user" />
-                                    <InputText
-                                        placeholder="Prénom"
-                                        v-model="firstName"
-                                        required
-                                    />
+                                    <InputText placeholder="Prénom" v-model="firstName" required />
                                 </span>
                             </li>
                             <li class="row">
                                 <div class="req">*</div>
                                 <div class="key1">Genre</div>
-                                <Dropdown
-                                    v-model="selectedGender"
-                                    :options="gender"
-                                    optionLabel="name"
-                                    placeholder="Genre"
-                                    class="select"
-                                    required
-                                />
+                                <Dropdown v-model="selectedGender" :options="gender" optionLabel="name" placeholder="Genre"
+                                    class="select" required />
                             </li>
 
                             <li class="row">
@@ -60,11 +44,7 @@
                                 </div>
                                 <span class="p-input-icon-left">
                                     <i class="pi pi-sitemap" />
-                                    <InputText
-                                        placeholder="fonction"
-                                        v-model="position"
-                                        required
-                                    />
+                                    <InputText placeholder="fonction" v-model="position" required />
                                 </span>
                             </li>
                             <li class="row">
@@ -72,12 +52,7 @@
                                 <div class="key1">Telephone Fixe</div>
                                 <span class="p-input-icon-left">
                                     <i class="pi pi-phone" />
-                                    <InputMask
-                                        placeholder="Téléphone"
-                                        v-model="phoneNumber"
-                                        mask="+99999999999"
-                                        required
-                                    />
+                                    <InputMask placeholder="Téléphone" v-model="phoneNumber" mask="+99999999999" required />
                                 </span>
                             </li>
 
@@ -86,12 +61,7 @@
                                 <div class="key1">Telephone Mobile</div>
                                 <span class="p-input-icon-left">
                                     <i class="pi pi-mobile" />
-                                    <InputMask
-                                        placeholder="Téléphone"
-                                        v-model="mobilePhone"
-                                        mask="+99999999999"
-                                        required
-                                    />
+                                    <InputMask placeholder="Téléphone" v-model="mobilePhone" mask="+99999999999" required />
                                 </span>
                             </li>
 
@@ -100,12 +70,7 @@
                                 <div class="key1">Email</div>
                                 <span class="p-input-icon-left">
                                     <i class="pi pi-envelope" />
-                                    <InputText
-                                        placeholder="E-mail"
-                                        class="email_text"
-                                        v-model="emailAddress"
-                                        required
-                                    />
+                                    <InputText placeholder="E-mail" class="email_text" v-model="emailAddress" required />
                                 </span>
                             </li>
                         </ul>
@@ -208,7 +173,11 @@ const lastName = ref();
 const firstName = ref();
 const selectedGender = ref({ name: "Homme" });
 const gender = ref([{ name: "Femme" }, { name: "Homme" }, { name: "Autre" }]);
-const convertGender: { [key: string]: string } = {"Femme":"F", "Homme":"M", "Autre":"O"};
+const convertGender: { [key: string]: string } = {
+    Femme: "F",
+    Homme: "M",
+    Autre: "O",
+};
 
 const phoneNumber = ref();
 const mobilePhone = ref();
@@ -216,8 +185,6 @@ const mobilePhone = ref();
 const emailAddress = ref();
 
 const position = ref();
-
-
 
 interface Address {
     id: string;
@@ -285,15 +252,15 @@ function addClient() {
                 //Error because some fields are incorrect
             })
             .catch(function (error) {
-            // if fields are empty 
-            if (
+                // if fields are empty 
+                if (
                     lastName.value == undefined ||
                     firstName.value == undefined ||
                     selectedGender.value == undefined ||
                     phoneNumber.value == undefined ||
                     mobilePhone.value == undefined ||
                     emailAddress.value == undefined ||
-                    position.value == undefined 
+                    position.value == undefined
                 ) {
                     confirm1.require({
                         message: "Tous les champs ne sont pas remplis",
@@ -312,8 +279,8 @@ function addClient() {
                     });
                 }
 
-                    //phoneNumber is incorrect
-                    else if ( ! validator.isMobilePhone(phoneNumber.value)) {
+                //phoneNumber is incorrect
+                else if (!validator.isMobilePhone(phoneNumber.value)) {
                     confirm1.require({
                         message: "Numéro de téléphone fixe incorrect",
                         header: "Erreur",
@@ -329,11 +296,10 @@ function addClient() {
                             });
                         },
                     });
-
                 }
 
-                    //phoneNumber is incorrect
-                    else if ( ! validator.isMobilePhone(mobilePhone.value)) {
+                //phoneNumber is incorrect
+                else if (!validator.isMobilePhone(mobilePhone.value)) {
                     confirm1.require({
                         message: "Numéro de téléphone portable incorrect",
                         header: "Erreur",
@@ -349,11 +315,10 @@ function addClient() {
                             });
                         },
                     });
-
                 }
 
                 //emailAdress is incorrect
-                else if ( ! validator.isEmail(emailAddress.value)) {
+                else if (!validator.isEmail(emailAddress.value)) {
                     confirm1.require({
                         message: "Adresse Email incorrecte",
                         header: "Erreur",
@@ -369,27 +334,23 @@ function addClient() {
                             });
                         },
                     });
-
+                } else {
+                    confirm1.require({
+                        message: "Erreur lors de l'ajout du prospect",
+                        header: "Erreur",
+                        icon: "pi pi-info-circle",
+                        acceptClass: "p-button-danger",
+                        acceptLabel: "Ok",
+                        accept: () => {
+                            toast1.add({
+                                severity: "info",
+                                summary: "Erreur",
+                                detail: "Le prospect n'a pas été ajouté",
+                                life: 3000,
+                            });
+                        },
+                    });
                 }
-
-
-                else {
-                confirm1.require({
-                    message: "Erreur lors de l'ajout du prospect",
-                    header: "Erreur",
-                    icon: "pi pi-info-circle",
-                    acceptClass: "p-button-danger",
-                    acceptLabel: "Ok",
-                    accept: () => {
-                        toast1.add({
-                            severity: "info",
-                            summary: "Erreur",
-                            detail: "Le prospect n'a pas été ajouté",
-                            life: 3000,
-                        });
-                    },
-                });
-            }
             });
     });
 }
@@ -399,8 +360,7 @@ function addClient() {
 @import "primeflex/primeflex.scss";
 
 .row {
-    @include styleclass(
-        "grid align-items-center py-3 px-2 border-top-1 surface-border"
+    @include styleclass("grid align-items-center py-3 px-2 border-top-1 surface-border"
     );
 }
 
@@ -425,6 +385,6 @@ function addClient() {
 }
 
 .req {
-  color:maroon;
+    color: maroon;
 }
 </style>

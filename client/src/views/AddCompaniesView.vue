@@ -228,32 +228,29 @@ axios.get("/entreprise").then((data) => {
 
 function displayCompany() {
     if (JSON.stringify(selectedCompany.value) !== "{}") {
-    document.cookie =
-        "selectedCompany=" +
-        JSON.stringify(selectedCompany.value) +
-        "; SameSite=secure";
-    router.push("/addclient");
-    }
-
-    else {
+        document.cookie =
+            "selectedCompany=" +
+            JSON.stringify(selectedCompany.value) +
+            "; SameSite=secure";
+        router.push("/addclient");
+    } else {
         confirm1.require({
-                        message: "Aucune entreprise sélectionnée",
-                        header: "Erreur",
-                        icon: "pi pi-info-circle",
-                        acceptClass: "p-button-danger",
-                        acceptLabel: "Ok",
-                        accept: () => {
-                            toast1.add({
-                                severity: "info",
-                                summary: "Erreur",
-                                detail: "Aucune entreprise sélectionnée",
-                                life: 3000,
-                            });
-                        },
-                    });
-                }
+            message: "Aucune entreprise sélectionnée",
+            header: "Erreur",
+            icon: "pi pi-info-circle",
+            acceptClass: "p-button-danger",
+            acceptLabel: "Ok",
+            accept: () => {
+                toast1.add({
+                    severity: "info",
+                    summary: "Erreur",
+                    detail: "Aucune entreprise sélectionnée",
+                    life: 3000,
+                });
+            },
+        });
     }
-
+}
 
 function showAddCompany() {
     document.getElementById("AddCompany").style.visibility = "visible";
@@ -281,34 +278,29 @@ function findIdAddress(data: any) {
 }
 
 function addCompany() {
-
     //Address fields are empty
     if (
         address.value == undefined ||
-                    city.value == undefined ||
-                    postalCode.value == undefined ||
-                    country.value == undefined 
-                ) {
-
-
-                    
-                    confirm1.require({
-                        message: "Des champs obligatoires pour l'adresse sont vides",
-                        header: "Erreur",
-                        icon: "pi pi-info-circle",
-                        acceptClass: "p-button-danger",
-                        acceptLabel: "Ok",
-                        accept: () => {
-                            toast1.add({
-                                severity: "info",
-                                summary: "Erreur",
-                                detail: "Champs vides",
-                                life: 3000,
-                            });
-                        },
-                    });
-                }
-
+        city.value == undefined ||
+        postalCode.value == undefined ||
+        country.value == undefined
+    ) {
+        confirm1.require({
+            message: "Des champs obligatoires pour l'adresse sont vides",
+            header: "Erreur",
+            icon: "pi pi-info-circle",
+            acceptClass: "p-button-danger",
+            acceptLabel: "Ok",
+            accept: () => {
+                toast1.add({
+                    severity: "info",
+                    summary: "Erreur",
+                    detail: "Champs vides",
+                    life: 3000,
+                });
+            },
+        });
+    }
 
     //  Add address of the adherent :
     const newAddress: Address = {
@@ -327,7 +319,7 @@ function addCompany() {
             //Find the address which was previously added
             axios.get("/adresse").then((data) => {
                 allAddress = data.data;
-                
+
                 const newCompany: Company = {
                     nom: name.value,
                     entiteJuridique: legalEntity.value,
@@ -357,106 +349,104 @@ function addCompany() {
                         //Error because some fields are incorrect
                     })
                     .catch(function (error) {
-
                         // if fields are empty the address is removed
-                if (name.value == undefined || legalEntity.value == undefined) {
-                    confirm1.require({
-                        message: "Tous les champs ne sont pas remplis",
-                        header: "Erreur",
-                        icon: "pi pi-info-circle",
-                        acceptClass: "p-button-danger",
-                        acceptLabel: "Ok",
-                        accept: () => {
-                            toast1.add({
-                                severity: "info",
-                                summary: "Erreur",
-                                detail: "Champs vides",
-                                life: 3000,
+                        if (
+                            name.value == undefined ||
+                            legalEntity.value == undefined
+                        ) {
+                            confirm1.require({
+                                message: "Tous les champs ne sont pas remplis",
+                                header: "Erreur",
+                                icon: "pi pi-info-circle",
+                                acceptClass: "p-button-danger",
+                                acceptLabel: "Ok",
+                                accept: () => {
+                                    toast1.add({
+                                        severity: "info",
+                                        summary: "Erreur",
+                                        detail: "Champs vides",
+                                        life: 3000,
+                                    });
+                                },
                             });
-                        },
-                    });
-                }
-                else {
-                        confirm1.require({
-                            message: "Erreur lors de l'ajout de l'entreprise",
-                            header: "Erreur",
-                            icon: "pi pi-info-circle",
-                            acceptClass: "p-button-danger",
-                            acceptLabel: "Ok",
-                            accept: () => {
-                                toast1.add({
-                                    severity: "info",
-                                    summary: "Erreur",
-                                    detail: "L'entreprise n'a pas été ajoutée",
-                                    life: 3000,
-                                });
-                            },
-                        });
-                    }
+                        } else {
+                            confirm1.require({
+                                message:
+                                    "Erreur lors de l'ajout de l'entreprise",
+                                header: "Erreur",
+                                icon: "pi pi-info-circle",
+                                acceptClass: "p-button-danger",
+                                acceptLabel: "Ok",
+                                accept: () => {
+                                    toast1.add({
+                                        severity: "info",
+                                        summary: "Erreur",
+                                        detail: "L'entreprise n'a pas été ajoutée",
+                                        life: 3000,
+                                    });
+                                },
+                            });
+                        }
                         const addr = "/adresse/" + findIdAddress(allAddress);
                         axios.delete(addr);
                     });
-                
             });
             //Error because some fields are incorrect
         })
         .catch(function (error) {
-
             //Country code is incorrect
-            if ( ! validator.isISO31661Alpha3(country.value)) {
-                    confirm1.require({
-                        message: "Code Pays incorrect",
-                        header: "Erreur",
-                        icon: "pi pi-info-circle",
-                        acceptClass: "p-button-danger",
-                        acceptLabel: "Ok",
-                        accept: () => {
-                            toast1.add({
-                                severity: "info",
-                                summary: "Erreur",
-                                detail: "Code Pays incorrect",
-                                life: 3000,
-                            });
-                        },
-                    });
-                }
-
-                //Postal code is incorrect
-            else if ( ! validator.isPostalCode(String(postalCode.value), "any")) {
+            if (!validator.isISO31661Alpha3(country.value)) {
                 confirm1.require({
-                        message: "Code Postal incorrect",
-                        header: "Erreur",
-                        icon: "pi pi-info-circle",
-                        acceptClass: "p-button-danger",
-                        acceptLabel: "Ok",
-                        accept: () => {
-                            toast1.add({
-                                severity: "info",
-                                summary: "Erreur",
-                                detail: "Code Postal incorrect",
-                                life: 3000,
-                            });
-                        },
-                    });
-                }
+                    message: "Code Pays incorrect",
+                    header: "Erreur",
+                    icon: "pi pi-info-circle",
+                    acceptClass: "p-button-danger",
+                    acceptLabel: "Ok",
+                    accept: () => {
+                        toast1.add({
+                            severity: "info",
+                            summary: "Erreur",
+                            detail: "Code Pays incorrect",
+                            life: 3000,
+                        });
+                    },
+                });
+            }
 
-                else {
-            confirm1.require({
-                message: "Erreur lors de l'ajout de l'entreprise",
-                header: "Erreur",
-                icon: "pi pi-info-circle",
-                acceptClass: "p-button-danger",
-                acceptLabel: "Ok",
-                accept: () => {
-                    toast1.add({
-                        severity: "info",
-                        summary: "Erreur",
-                        detail: "L'entreprise n'a pas été ajoutée",
-                        life: 3000,
-                    });
-                },
-            });
-        }
+            //Postal code is incorrect
+            else if (!validator.isPostalCode(String(postalCode.value), "any")) {
+                confirm1.require({
+                    message: "Code Postal incorrect",
+                    header: "Erreur",
+                    icon: "pi pi-info-circle",
+                    acceptClass: "p-button-danger",
+                    acceptLabel: "Ok",
+                    accept: () => {
+                        toast1.add({
+                            severity: "info",
+                            summary: "Erreur",
+                            detail: "Code Postal incorrect",
+                            life: 3000,
+                        });
+                    },
+                });
+            } else {
+                confirm1.require({
+                    message: "Erreur lors de l'ajout de l'entreprise",
+                    header: "Erreur",
+                    icon: "pi pi-info-circle",
+                    acceptClass: "p-button-danger",
+                    acceptLabel: "Ok",
+                    accept: () => {
+                        toast1.add({
+                            severity: "info",
+                            summary: "Erreur",
+                            detail: "L'entreprise n'a pas été ajoutée",
+                            life: 3000,
+                        });
+                    },
+                });
+            }
         });
 }
 
@@ -489,6 +479,6 @@ function addClient() {
     height: 0;
 }
 .req {
-  color:maroon;
+    color: maroon;
 }
 </style>

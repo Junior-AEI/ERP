@@ -46,7 +46,10 @@ async function checkExistingAdherent(req: Request): Promise<void> {
  *  - 500 error
  */
 async function getAllAdherents(req: Request, res: Response) {
-    await Adherent.findAll({ attributes: { exclude: ["motDePasse"] } })
+    await Adherent.findAll({
+        attributes: { exclude: ["motDePasse"] },
+        include: { all: true, nested: true },
+    })
         .then((member) => res.status(200).json(member))
         .catch((err) => controllerErrorHandler(err, res));
 }

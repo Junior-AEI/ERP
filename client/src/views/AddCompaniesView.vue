@@ -451,7 +451,7 @@ function addCompany() {
 }
 
 function addClient() {
-    router.push("/new");
+    router.push("/clients/new");
 }
 </script>
 

@@ -105,7 +105,7 @@ watch(router.currentRoute, (route) => {
         .map((item) => {
             totalRoute += item + "/";
             return {
-                label: item.charAt(0).toUpperCase() + item.slice(1),
+                label: router.resolve(totalRoute).name,
                 to: totalRoute,
             };
         });

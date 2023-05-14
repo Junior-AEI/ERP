@@ -539,7 +539,7 @@ function modifyUser() {
                             acceptClass: "pi pi-button-check",
                             acceptLabel: "Ok",
                             accept: () => {
-                                router.push(`members/${user.value.id}`);
+                                router.push(`/members/${user.value.id}`);
                             },
                         });
 

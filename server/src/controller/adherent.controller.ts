@@ -1,5 +1,6 @@
 import { Request, Response } from "express";
 import Adherent from "../models/adherent.model";
+import Utilisateur from "../models/utilisateur.model";
 import {
     checkExistingId,
     checkIdIsNotNaN,

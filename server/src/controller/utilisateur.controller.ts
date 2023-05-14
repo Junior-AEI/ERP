@@ -3,6 +3,7 @@ import { hash } from "bcrypt";
 import { Op } from "sequelize";
 import createHttpError from "http-errors";
 import Utilisateur from "../models/utilisateur.model";
+import Adherent from "../models/adherent.model";
 import Poste from "../models/poste.model";
 import {
     checkExistingId,
@@ -80,6 +81,15 @@ async function getUtilisateurById(req: Request, res: Response) {
             // Find requested user by primary key (id)
             Utilisateur.findByPk(req.params.id, {
                 attributes: { exclude: ["motDePasse"] },
+                include: [
+                    {
+                        model: Adherent,
+                        attributes: ["nom", "prenom"],
+                    },
+                    {
+                        model: Poste,
+                    },
+                ],
             })
         )
         .then((poste) => res.status(200).json(poste))

@@ -1,62 +1,34 @@
 <template>
-    <Card style="width: 100%; margin: 10px; height: 100%">
-        <template #content>
-            <div>
-                <p v-if="print" class="font-bold">
-                    Bienvenue {{ adherent.prenom }} {{ adherent.nom }}
-                </p>
-                <p v-if="print">Poste actuel : {{ utilisateur.poste }}</p>
-            </div>
-            <!-- <span>
-                <p>Dernière connexion : {{ utilisateur.derniereConnexion }}</p>
-            </span> -->
-        </template>
-    </Card>
+    <div class="p-6 text-center md:text-left align-items-center">
+        <p class="text-4xl text-primary font-bold mb-3 w-full">
+            Bienvenue sur le nouvel ERP d'AEI, {{ prenom }}
+        </p>
+        <p class="mt-0 mb-4 text-700 line-height-3">
+            Nom : {{ nom }}<br />
+            Prénom : {{ prenom }}<br />
+            Poste actuel : {{ poste }}<br />
+        </p>
+    </div>
 </template>
 
 <script setup lang="ts">
 import { onBeforeMount, ref } from "vue";
 import axios from "axios";
 
-interface Adherent {
-    nom: string;
-    prenom: string;
-}
+let prenom = ref();
+let nom = ref();
+let poste = ref();
 
-interface Utilisateur {
-    poste: string;
-    //derniereConnexion: Date;
-}
-let adherent = ref({} as Adherent);
-let utilisateur = ref({} as Utilisateur);
-
-const adherent_id = sessionStorage.getItem("adherent_id");
 const utilisateur_id = sessionStorage.getItem("utilisateur_id");
 let print = ref(false);
 
-onBeforeMount(async () => {
-    await axios
-        .get(`/adherent/${adherent_id}`)
-        .then((data) => {
-            adherent.value.nom = data.data.nom;
-            adherent.value.prenom = data.data.prenom;
-        })
-        .catch((failed: any) =>
-            console.log("Probleme avec la requete get adherent:", failed)
-        );
-    await axios
+onBeforeMount(() => {
+    axios
         .get(`/utilisateur/${utilisateur_id}`)
-        .then(async (data) => {
-            await axios
-                .get(`/poste/${data.data.posteId}`)
-                .then((data2) => {
-                    utilisateur.value.poste = data2.data.nom;
-                })
-                .catch((failed: any) =>
-                    console.log("Probleme avec la requete get poste:", failed)
-                );
-
-            //utilisateur.value.derniereConnexion = data.data.derniereConnexion;
+        .then((data) => {
+            prenom.value = data.data.adherent.prenom;
+            nom.value = data.data.adherent.nom;
+            poste.value = data.data.poste.nom;
         })
         .catch((failed: any) =>
             console.log("Probleme avec la requete get users:", failed)

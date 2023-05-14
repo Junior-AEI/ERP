@@ -6,7 +6,9 @@
                     <template #legend>
                         <div class="flex align-items-center">
                             <span class="pi pi-user mr-2"></span>
-                            <span class="font-bold">Informations personnelles</span>
+                            <span class="font-bold"
+                                >Informations personnelles</span
+                            >
                         </div>
                     </template>
 
@@ -144,7 +146,13 @@
         <ConfirmDialog></ConfirmDialog>
         <template #footer>
             <Button icon="pi pi-check" label="Modifier" @click="modifyUser" />
-            <Button icon="pi pi-times" label="Supprimer" severity="secondary" style="margin-left: 0.5em" @click="delUser" />
+            <Button
+                icon="pi pi-times"
+                label="Supprimer"
+                severity="secondary"
+                style="margin-left: 0.5em"
+                @click="delUser"
+            />
         </template>
     </Card>
 </template>
@@ -245,7 +253,7 @@ function delUser() {
                 life: 3000,
             });
         },
-        reject: () => { },
+        reject: () => {},
     });
 }
 
@@ -283,7 +291,8 @@ const poste = {
 @import "primeflex/primeflex.scss";
 
 .row {
-    @include styleclass("grid align-items-center py-3 px-2 border-top-1 surface-border"
+    @include styleclass(
+        "grid align-items-center py-3 px-2 border-top-1 surface-border"
     );
 }
 

@@ -16,7 +16,10 @@
                                 <div class="key1">Nom</div>
                                 <span class="p-input-icon-left">
                                     <i class="pi pi-user" />
-                                    <InputText placeholder="Nom" v-model="Pole_Name" />
+                                    <InputText
+                                        placeholder="Nom"
+                                        v-model="Pole_Name"
+                                    />
                                 </span>
                             </li>
 
@@ -24,13 +27,21 @@
                                 <div class="key1">Description</div>
                                 <span class="p-input-icon-left">
                                     <i class="pi pi-user" />
-                                    <InputText placeholder="Description" v-model="Description" />
+                                    <InputText
+                                        placeholder="Description"
+                                        v-model="Description"
+                                    />
                                 </span>
                             </li>
                             <li class="row">
                                 <div class="key2">Pole</div>
-                                <Dropdown v-model="selectedPole" :options="pole" optionLabel="name" placeholder="Pole"
-                                    class="select" />
+                                <Dropdown
+                                    v-model="selectedPole"
+                                    :options="pole"
+                                    optionLabel="name"
+                                    placeholder="Pole"
+                                    class="select"
+                                />
                             </li>
                         </ul>
                     </div>
@@ -138,7 +149,8 @@ function addPoste() {
 @import "primeflex/primeflex.scss";
 
 .row {
-    @include styleclass("grid align-items-center py-3 px-2 border-top-1 surface-border"
+    @include styleclass(
+        "grid align-items-center py-3 px-2 border-top-1 surface-border"
     );
 }
 

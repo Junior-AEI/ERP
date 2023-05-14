@@ -86,7 +86,6 @@ import { useRouter } from "vue-router";
 const router = useRouter();
 
 function addUser() {
-    console.log("ajout utilisateur");
     router.push(`/adduser`);
 }
 
@@ -112,9 +111,7 @@ let users = ref([]);
 
 onMounted(() => {
     axios.get("/adherent").then((data) => {
-        console.log(data.data);
         axios.get("/utilisateur").then((data2) => {
-            console.log(data2.data)
             for (let i = 0; i < data2.data.length; ++i){
                 if (data2.data[i].adherentId !== null) {
                     axios.get("/poste"+data2.data[i].posteId).then((data3) => {

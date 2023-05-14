@@ -429,8 +429,6 @@ function addUser() {
     axios
         .post("/adresse", newAddress)
         .then(function (response) {
-            console.log(response);
-
             let allAddress = ref([]);
 
             //Find the address which was previously added
@@ -496,7 +494,6 @@ function addUser() {
                 axios
                     .post("/adherent", newMember)
                     .then(function (response) {
-                        console.log(response);
                         toast2.add({
                             severity: "info",
                             summary: "Succès",
@@ -508,9 +505,7 @@ function addUser() {
                         //Error because some fields are incorrect
                     })
                     .catch(function (error) {
-                        console.log("error");
-
-                        //phoneNumber is incorrect
+                    //phoneNumber is incorrect
                     if ( ! validator.isMobilePhone(phoneNumber.value)) {
                     const addr = "/adresse/" + findIdAddress(allAddress);
                     axios.delete(addr);

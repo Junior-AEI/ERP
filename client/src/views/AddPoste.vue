@@ -79,7 +79,6 @@ const pole = ref(names);
 axios.get("/pole").then((data) => {
     data.data.forEach((element) => {
         names.push({ name: [element.nom][0] });
-        //console.log([element.nom][0]);
     });
 });
 function addPoste() {
@@ -116,7 +115,6 @@ function addPoste() {
     axios
         .post("/poste", newPost)
         .then(function (response) {
-            console.log(response);
             toast2.add({
                 severity: "info",
                 summary: "Succès",
@@ -126,7 +124,6 @@ function addPoste() {
             window.location.href = "../posts";
         })
         .catch(function (error) {
-            console.log("error");
             confirm1.require({
                 message: "Erreur lors de l'ajout d'un poste",
                 header: "Erreur",

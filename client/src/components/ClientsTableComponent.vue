@@ -77,7 +77,6 @@ import { useRouter } from "vue-router";
 const router = useRouter();
 
 function handleClick() {
-    console.log("ajout prospect");
     router.push(`/choosecompany`);
 }
 
@@ -91,21 +90,16 @@ const filters = ref({
 });
 
 let clients = ref([]);
-console.log(clients.value);
 
 onMounted(() => {
     axios.get("/client").then((data) => {
         // //clients.value = data.data;
         for (let i = 0; i <data.data.length; ++i) {
-            //console.log((data.data)[i])
-
             axios.get("/entreprise/"+data.data[i].entrepriseId).then((data2) => {
                 data.data[i]["entreprise"] = data2.data.nom;
 
                 if (i === data.data.length - 1) {
-                    clients.value = data.data;
-                    console.log(clients.value);
-                
+                    clients.value = data.data;                
                 }
             });
         }

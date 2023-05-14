@@ -224,13 +224,9 @@ let selectedCompany = ref({} as Company);
 
 axios.get("/entreprise").then((data) => {
     company.value = data.data;
-    console.log(data.data);
-    //selectedCompany = data.data[0];
-    // console.log(selectedCompany);
 });
 
 function displayCompany() {
-    console.log(JSON.stringify(selectedCompany.value));
     if (JSON.stringify(selectedCompany.value) !== "{}") {
     document.cookie =
         "selectedCompany=" +
@@ -260,7 +256,6 @@ function displayCompany() {
 
 
 function showAddCompany() {
-    console.log("show add company");
     document.getElementById("AddCompany").style.visibility = "visible";
     document.getElementById("AddAddress").style.visibility = "visible";
     document.getElementById("AddCompanyButton").style.visibility = "visible";
@@ -327,8 +322,6 @@ function addCompany() {
     axios
         .post("/adresse", newAddress)
         .then(function (response) {
-            console.log(response);
-
             let allAddress = ref([]);
 
             //Find the address which was previously added
@@ -341,20 +334,16 @@ function addCompany() {
                     adresseId: findIdAddress(allAddress),
                 };
 
-                console.log(newCompany);
-
                 //Case where there is no problem to add member
                 axios
                     .post("/entreprise", newCompany)
                     .then(function (response) {
-                        console.log(response);
                         toast2.add({
                             severity: "info",
                             summary: "Succès",
                             detail: "Entreprise a été ajoutée",
                             life: 3000,
                         });
-                        console.log(newCompany);
                         document.cookie =
                             "selectedCompany=" +
                             JSON.stringify(newCompany) +

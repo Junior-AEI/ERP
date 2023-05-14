@@ -464,8 +464,6 @@ function modifyUser() {
     axios
         .put("/adresse", updatedAddress)
         .then(function (response) {
-            console.log(response);
-
             let allAddress = ref([]);
 
             //Find the address which was previously added
@@ -507,8 +505,6 @@ function modifyUser() {
                 }
 
                 //Update adherent with previous address :
-
-                console.log(yearDiploma.value);
                 const updatedMember: Member = {
                     id: user.value.id,
                     nom: lastName.value,
@@ -528,13 +524,10 @@ function modifyUser() {
                     adresseId: adresse.value.id,
                 };
 
-                console.log(updatedMember);
-
                 //Case where there is no problem to update member
                 axios
                     .put("/adherent", updatedMember)
                     .then(function (response) {
-                        console.log(response);
                         confirm.require({
                             message: "Utilisateur modifié avec succès",
                             header: "Succès",
@@ -549,8 +542,7 @@ function modifyUser() {
                         //Error because some fields are incorrect
                     })
                     .catch(function (error) {
-                        console.log("error");
-                        //phoneNumber is incorrect
+                    //phoneNumber is incorrect
                     if ( ! validator.isMobilePhone(phoneNumber.value)) {
                     confirm.require({
                         message: "Numéro de téléphone incorrect",

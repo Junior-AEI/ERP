@@ -89,7 +89,6 @@ axios.get("/pole").then((data) => {
 });
 
 axios.get(`/poste/${props.post_id}`).then((data) => {
-    console.log(data.data.nom);
     nom.value = data.data.nom;
     description.value = data.data.description;
     selectedPole = ref({ name: data.data.nomPole });
@@ -106,7 +105,6 @@ function modifyPost() {
     axios
         .put("/poste", updatedPost)
         .then(function (response) {
-            console.log(response);
             confirm.require({
                 message: "poste modifié avec succès",
                 header: "Erreur",
@@ -121,7 +119,6 @@ function modifyPost() {
             //Error because some fields are incorrect
         })
         .catch(function (error) {
-            console.log("error");
             confirm.require({
                 message: "Erreur lors de la modification de l'utilisateur",
                 header: "Erreur",

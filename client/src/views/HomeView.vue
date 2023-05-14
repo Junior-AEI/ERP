@@ -15,7 +15,7 @@
 </template>
 
 <script setup lang="ts">
-import { onMounted, ref } from "vue";
+import { onBeforeMount, ref } from "vue";
 import axios from "axios";
 
 interface Adherent {
@@ -31,11 +31,9 @@ let adherent = ref({} as Adherent);
 let utilisateur = ref({} as Utilisateur);
 
 const adherent_id = sessionStorage.getItem("adherent_id");
-
-console.log("Test est là : ", adherent_id);
 const utilisateur_id = sessionStorage.getItem("utilisateur_id");
 
-onMounted(() => {
+onBeforeMount(() => {
     axios
         .get(`/adherent/${adherent_id}`)
         .then((data) => {

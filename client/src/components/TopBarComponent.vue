@@ -46,11 +46,20 @@ const toast = useToast();
 const visibleRight = ref(false);
 const items = [
     {
+        label: "Mon profil",
+        icon: "pi pi-user-edit",
+        command: () => {
+            router.push(`/users/${sessionStorage.getItem("adherent_id")}`);
+        },
+    },
+    {
         label: "Se déconnecter",
         icon: "pi pi-sign-out",
         command: () => {
             router.push(`/`);
             sessionStorage.removeItem("token");
+            sessionStorage.removeItem("utilisateur_id");
+            sessionStorage.removeItem("adherent_id");
         },
     },
     {
@@ -126,6 +135,7 @@ function shallowMount(
 <style scoped lang="scss">
 @import "../assets/colors.scss";
 $height: 110px;
+
 .container {
     display: flex;
     justify-content: space-between;

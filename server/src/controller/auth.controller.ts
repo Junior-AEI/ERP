@@ -31,6 +31,8 @@ async function login(req: Request, res: Response) {
                         return res.status(200).json({
                             status: "success",
                             token: token,
+                            adherent_id: user.adherentId,
+                            utilisateur_id: user.id,
                         });
                     } else {
                         return res.status(401).json({

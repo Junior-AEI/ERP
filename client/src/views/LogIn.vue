@@ -88,6 +88,8 @@ async function connection(login: string, password: string) {
         })
         .then((res) => {
             sessionStorage.setItem("token", res.data.token);
+            sessionStorage.setItem("adherent_id", res.data.adherent_id);
+            sessionStorage.setItem("utilisateur_id", res.data.utilisateur_id);
             login = "";
             password = "";
             router.push(`/home`);

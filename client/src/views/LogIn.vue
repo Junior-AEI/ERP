@@ -1,7 +1,7 @@
 <template>
     <div class="flex justify-content-center h-full">
         <div
-            class="surface-card p-4 shadow-2 border-round lg:w-3"
+            class="surface-card p-4 shadow-2 border-round lg:w-5"
             id="main_box"
         >
             <div class="text-center mb-5">

@@ -1,51 +1,36 @@
+// Copyright (C) 2023 Nesrine ABID, Nadjime BARTEAU, Mathieu DUPOUX, Léo-Paul MAZIÈRE, Maël PAUL, Antoine RAOULT, Lisa VEILLAT, Marine VOVARD
+
+// Authors: Nesrine ABID, Nadjime BARTEAU, Mathieu DUPOUX, Léo-Paul MAZIÈRE, Maël PAUL, Antoine RAOULT, Lisa VEILLAT, Marine VOVARD
+// Maintainer: contact@junior-aei.com
+
+// This file is part of LATIME.
+
+// LATIME is free software: you can redistribute it and/or modify it under the terms of the GNU Affero General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
+
+// LATIME is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more details.
+
+// You should have received a copy of the GNU Affero General Public License along with LATIME. If not, see <https://www.gnu.org/licenses/>.
 import { Request, Response } from "express";
 import { SignJWT } from "jose";
-import { compare, hash } from "bcrypt";
+import { compare } from "bcrypt";
 import {
     JWT_AUDIENCE,
     JWT_EXPIRATION,
     JWT_ISSUER,
     JWT_SECRET_KEY,
 } from "../config/auth.config";
-import { Utilisateur } from "../models/utilisateur.model";
+import Utilisateur from "../models/utilisateur.model";
+import { controllerErrorHandler } from "./utils.controller";
 
 const authController = {
-    register,
     login,
 };
 
-async function register(req: Request, res: Response) {
-    await Utilisateur.findOne({
-        where: { nomUtilisateur: req.body.username },
-    }).then((user) => {
-        if (user) {
-            res.status(409).json({
-                status: "error",
-                message: "Username already exists",
-            });
-        } else {
-            hash(req.body.password, 10).then((hash) => {
-                Utilisateur.create({
-                    nomUtilisateur: req.body.username,
-                    motDePasse: hash,
-                    estActive: true,
-                    derniereConnexion: new Date(),
-                })
-                    .then(() => res.status(200).json({ status: "success" }))
-                    .catch((err) =>
-                        res.status(500).json({ status: "error", message: err })
-                    );
-            });
-        }
-    });
-}
-
 async function login(req: Request, res: Response) {
-    const username = req.body.username;
-    const password = req.body.password;
-
-    Utilisateur.findOne({ where: { nomUtilisateur: username } }).then(
-        (user) => {
+    const username = req.body.nomUtilisateur || "";
+    const password = req.body.motDePasse || "";
+    Utilisateur.findOne({ where: { nomUtilisateur: username } })
+        .then((user) => {
             if (user) {
                 compare(password, user.motDePasse).then(async (result) => {
                     if (result) {
@@ -58,6 +43,8 @@ async function login(req: Request, res: Response) {
                         return res.status(200).json({
                             status: "success",
                             token: token,
+                            adherent_id: user.adherentId,
+                            utilisateur_id: user.id,
                         });
                     } else {
                         return res.status(401).json({
@@ -72,8 +59,8 @@ async function login(req: Request, res: Response) {
                     message: "Invalid username or password",
                 });
             }
-        }
-    );
+        })
+        .catch((err) => controllerErrorHandler(err, res));
 }
 
 export default authController;

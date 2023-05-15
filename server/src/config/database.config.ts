@@ -3,14 +3,7 @@ import dotenv from "dotenv";
 import config from "./sequelize.config";
 
 // Database configuration depending of NODE_ENV variable (dev or production)
-dotenv.config();
-const env = process.env.NODE_ENV || "dev";
-const databaseConfig = config[env];
-
-// ORM initialization
-const sequelize = new Sequelize(databaseConfig);
-
-// Test de la connexion à la base de donnée
+let sequelize: Sequelize;
 const testConnection = async () => {
     try {
         await sequelize.authenticate();
@@ -20,6 +13,13 @@ const testConnection = async () => {
     }
 };
 
-testConnection();
+export const sequelizeInit = async () => {
+    dotenv.config();
+    const env = process.env.NODE_ENV || "dev";
+    const databaseConfig = config[env];
+    // ORM initialization
+    sequelize = new Sequelize(databaseConfig);
+    testConnection();
+};
 
 export { sequelize };

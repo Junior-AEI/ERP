@@ -1,8 +1,10 @@
 import { Umzug, SequelizeStorage } from "umzug";
-import { sequelize } from "../config/database.config";
+import { sequelize, sequelizeInit } from "../config/database.config";
 import { Sequelize } from "sequelize-typescript";
 import fs from "fs";
 import path from "path";
+
+sequelizeInit();
 
 interface UmzugConfig {
     migrations: {
@@ -40,7 +42,7 @@ const config: UmzugConfig = {
     },
 };
 
-if (process.env.NODE_ENV === "dev") {
+if (process.env.NODE_ENV === "dev" || process.env.NODE_ENV === "test") {
     config.models = ["../models/**/*.ts"];
 }
 
@@ -66,7 +68,7 @@ export const seeder = new Umzug({
                 filepath,
                 fs
                     .readFileSync(
-                        path.join(__dirname, "templates/sample-seeders.ts")
+                        path.join(__dirname, "templates/sample-seeder.ts")
                     )
                     .toString(),
             ],

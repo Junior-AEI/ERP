@@ -2,3 +2,7 @@
 *.env
 node_modules
 package-lock.json
+.vscode/
+*.sqlite
+coverage
+server/database/documents/**

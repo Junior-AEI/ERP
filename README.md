@@ -110,3 +110,31 @@ Don't forget to update the `routes.ts` file with your new route.
 
 Try your function using Postman (example of url `http://localhost:5000/api/utilisateur`).
 How to test your route with token comming soon.
+
+# Deploy for use in production
+
+To deploy for use in production, you need to build the images for both client and server side. After that, you need to deploy your built image by using the ```docker-compose.yaml``` files located in its respective folders.
+
+## Config app before build
+
+Before doing this, make sure : 
+- your ```.env``` file in the server side folder is correct.
+- Execution ports in the ```docker-compose.yaml``` files are correct, set by default to 80 for client and 3000 for server.
+- API Url variable in ```client/src/index.ts``` is correct. Should be accorded with the execution port for API.
+
+## Client
+
+```
+cd client
+sudo docker build -t erp-aei-client:latest .
+sudo docker-compose up
+```
+
+
+## Server
+
+```
+cd server
+sudo docker build -t erp-aei-server:latest .
+sudo docker-compose up
+```

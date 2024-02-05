@@ -6,3 +6,4 @@ package-lock.json
 *.sqlite
 coverage
 server/database/documents/**
+server/dist

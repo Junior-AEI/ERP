@@ -63,7 +63,7 @@ export const up: Seeder = async ({ context: sequelize }) => {
                 "Trésorier⋅ère",
                 "Secrétaire Général",
             ],
-        }
+        },
     );
 };
 export const down: Seeder = async ({ context: sequelize }) => {
@@ -79,7 +79,7 @@ export const down: Seeder = async ({ context: sequelize }) => {
                 "Trésorier⋅ère",
                 "Secrétaire Général",
             ],
-        }
+        },
     );
     await sequelize.getQueryInterface().bulkDelete("Poles", {
         nom: polesSamples.map((pole) => pole.nom),

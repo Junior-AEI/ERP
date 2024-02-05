@@ -85,7 +85,7 @@ async function getAdresseById(req: Request, res: Response) {
     await checkIdIsNotNaN(req.params.id)
         .then(() =>
             // Find requested address by primary key (id)
-            Adresse.findByPk(req.params.id)
+            Adresse.findByPk(req.params.id),
         )
         .then((adresse) => res.status(200).json(adresse))
         .catch((err) => controllerErrorHandler(err, res));
@@ -150,7 +150,7 @@ async function deleteAdresseById(req: Request, res: Response) {
     await checkExistingId<Adresse>(req.params.id, Adresse)
         .then(() =>
             // Delete requested address by its id
-            Adresse.destroy({ where: { id: req.params.id } })
+            Adresse.destroy({ where: { id: req.params.id } }),
         )
         .then((adresse) => res.status(204).json(adresse))
         .catch((err) => controllerErrorHandler(err, res));

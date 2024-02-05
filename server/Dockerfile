@@ -11,17 +11,25 @@ WORKDIR /var/www
 COPY .sequelizerc /var/www/.sequelizerc
 COPY nodemon.json /var/www/nodemon.json
 COPY tsconfig.json /var/www/tsconfig.json
+COPY .env /var/www/.env
 
 # Dependancies
 COPY package.json /var/www/package.json
-COPY package-lock.json /var/www/package-lock.js
+COPY package-lock.json /var/www/package-lock.json
 RUN npm install
 
 # Copy the rest of files
-# TODO database folder ?
+COPY database /var/www/database
 COPY src /var/www/src
 
 # Build app
+
+# CURRENTLY NOT WORKING 
+
+RUN npm run migrate -- up 
+RUN npm run seed -- up 
+
+RUN npm install -g typescript
 RUN tsc
 
 # Permission

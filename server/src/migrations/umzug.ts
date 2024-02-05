@@ -34,7 +34,7 @@ const config: UmzugConfig = {
                 filepath,
                 fs
                     .readFileSync(
-                        path.join(__dirname, "templates/sample-migration.ts")
+                        path.join(__dirname, "templates/sample-migration.ts"),
                     )
                     .toString(),
             ],
@@ -68,7 +68,7 @@ export const seeder = new Umzug({
                 filepath,
                 fs
                     .readFileSync(
-                        path.join(__dirname, "templates/sample-seeder.ts")
+                        path.join(__dirname, "templates/sample-seeder.ts"),
                     )
                     .toString(),
             ],

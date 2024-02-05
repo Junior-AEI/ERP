@@ -61,7 +61,7 @@ describe("Test `pole` model", () => {
                 });
             });
             expect(response.body.map((ele: Post) => ele.nom)).toContain(
-                randomName
+                randomName,
             );
         });
     });

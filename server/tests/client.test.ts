@@ -104,7 +104,7 @@ describe("Test `client` model", () => {
                         attribute != "updatedAt"
                     ) {
                         expect(checkResponse.body[attribute]).toBe(
-                            newCustomer[attribute]
+                            newCustomer[attribute],
                         );
                     } else {
                         expect(checkResponse.body[attribute]).toBeDefined();

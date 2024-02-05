@@ -21,7 +21,7 @@ router.get("/:id", adherentController.getAdherentById);
 router.post(
     "/",
     verifyPermission("createAdherent"),
-    adherentController.createAdherent
+    adherentController.createAdherent,
 );
 router.put("/", adherentController.updateAdherent);
 router.delete("/:id", adherentController.deleteAdherentById);

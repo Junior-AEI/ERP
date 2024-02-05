@@ -118,7 +118,7 @@ To deploy for use in production, you need to build the images for both client an
 ## Config app before build
 
 Before doing this, make sure : 
-- your ```.env``` file in the server side folder is correct.
+- your ```.env``` file in the server side folder is correct. If you don't already have a ```.env```, just copy the ```.env.example``` and rename the copy. Then, set ```NODE_ENV``` to ```prod``` and eventually update environment variables.
 - Execution ports in the ```docker-compose.yaml``` files are correct, set by default to 80 for client and 3000 for server.
 - API Url variable in ```client/src/index.ts``` is correct. Should be accorded with the execution port for API.
 

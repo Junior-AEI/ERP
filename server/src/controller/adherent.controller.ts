@@ -82,7 +82,7 @@ async function getAdherentById(req: Request, res: Response) {
             // Find requested member by primary key (id)
             Adherent.findByPk(req.params.id, {
                 attributes: { exclude: ["motDePasse"] },
-            })
+            }),
         )
         .then((adherent) => res.status(200).json(adherent))
         .catch((err) => controllerErrorHandler(err, res));
@@ -147,7 +147,7 @@ async function deleteAdherentById(req: Request, res: Response) {
     await checkExistingId<Adherent>(req.params.id, Adherent)
         .then(() =>
             // Delete requested member by its id
-            Adherent.destroy({ where: { id: req.params.id } })
+            Adherent.destroy({ where: { id: req.params.id } }),
         )
         .then((member) => res.status(204).json(member))
         .catch((err) => controllerErrorHandler(err, res));

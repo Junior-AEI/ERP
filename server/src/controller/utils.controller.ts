@@ -34,13 +34,13 @@ export async function checkIdIsNotNaN(id: number | string) {
  */
 export async function checkExistingId<M extends Model>(
     id: number | string,
-    model: ModelStatic<M>
+    model: ModelStatic<M>,
 ) {
     // Check is id is a number
     return checkIdIsNotNaN(id)
         .then(() =>
             // Check if requested role id exist in database
-            model.findByPk(id)
+            model.findByPk(id),
         )
         .then(async (existingPoste) => {
             if (existingPoste === null) {

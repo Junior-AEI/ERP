@@ -99,7 +99,7 @@ describe("Test `adresse` model", () => {
                         attribute != "codePostal"
                     ) {
                         expect(checkResponse.body[attribute]).toBe(
-                            newAddress[attribute]
+                            newAddress[attribute],
                         );
                     }
                     if (attribute == "codePostal") {

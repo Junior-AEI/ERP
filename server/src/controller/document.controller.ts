@@ -76,7 +76,7 @@ async function downloadFileById(req: Request, res: Response) {
             } else {
                 res.download(
                     __dirname + "/../../" + file.chemin,
-                    file.document.nom + ".pdf"
+                    file.document.nom + ".pdf",
                 );
             }
         })

@@ -108,7 +108,7 @@ describe("Test `utilisateur` model", () => {
                         attribute != "motDePasse"
                     ) {
                         expect(checkResponse.body[attribute]).toBe(
-                            newUser[attribute]
+                            newUser[attribute],
                         );
                     } else {
                         expect(checkResponse.body[attribute]).toBeDefined();

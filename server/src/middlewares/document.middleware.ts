@@ -21,20 +21,20 @@ const storage = multer.diskStorage({
     destination: function (
         req: Request,
         file: Express.Multer.File,
-        cb: (error: Error | null, filename: string) => void
+        cb: (error: Error | null, filename: string) => void,
     ) {
         cb(null, basedir);
     },
     filename: function (
         req: Request,
         file: Express.Multer.File,
-        cb: (error: Error | null, filename: string) => void
+        cb: (error: Error | null, filename: string) => void,
     ) {
         cb(
             null,
             `${createHash("sha256")
                 .update(file.originalname + new Date())
-                .digest("hex")}.${getExtension(file.mimetype)}`
+                .digest("hex")}.${getExtension(file.mimetype)}`,
         );
     },
 });

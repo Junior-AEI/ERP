@@ -76,7 +76,7 @@ async function getEntrepriseById(req: Request, res: Response) {
     await checkIdIsNotNaN(req.params.id)
         .then(() =>
             // Find requested company by primary key (id)
-            Entreprise.findByPk(req.params.id)
+            Entreprise.findByPk(req.params.id),
         )
         .then((entreprise) => res.status(200).json(entreprise))
         .catch((err) => controllerErrorHandler(err, res));
@@ -142,7 +142,7 @@ async function deleteEntrepriseById(req: Request, res: Response) {
     await checkExistingId<Entreprise>(req.params.id, Entreprise)
         .then(() =>
             // Delete requested company by its id
-            Entreprise.destroy({ where: { id: req.params.id } })
+            Entreprise.destroy({ where: { id: req.params.id } }),
         )
         .then((entreprise) => res.status(204).json(entreprise))
         .catch((err) => controllerErrorHandler(err, res));

@@ -79,7 +79,7 @@ async function getClientById(req: Request, res: Response) {
     await checkIdIsNotNaN(req.params.id)
         .then(() =>
             // Find requested customer by primary key (id)
-            Client.findByPk(req.params.id)
+            Client.findByPk(req.params.id),
         )
         .then((client) => res.status(200).json(client))
         .catch((err) => controllerErrorHandler(err, res));
@@ -144,7 +144,7 @@ async function deleteClientById(req: Request, res: Response) {
     await checkExistingId<Client>(req.params.id, Client)
         .then(() =>
             // Delete requested customer by its id
-            Client.destroy({ where: { id: req.params.id } })
+            Client.destroy({ where: { id: req.params.id } }),
         )
         .then((client) => res.status(204).json(client))
         .catch((err) => controllerErrorHandler(err, res));

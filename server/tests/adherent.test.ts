@@ -115,7 +115,7 @@ describe("Test `adherent` model", () => {
                         attribute != "dateNaissance"
                     ) {
                         expect(checkResponse.body[attribute]).toBe(
-                            newMember[attribute]
+                            newMember[attribute],
                         );
                     } else {
                         expect(checkResponse.body[attribute]).toBeDefined();

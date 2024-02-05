@@ -93,7 +93,7 @@ describe("Test `poste` model", () => {
                         attribute != "updatedAt"
                     ) {
                         expect(checkResponse.body[attribute]).toBe(
-                            newPost[attribute]
+                            newPost[attribute],
                         );
                     } else {
                         expect(checkResponse.body[attribute]).toBeDefined();

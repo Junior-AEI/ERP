@@ -102,7 +102,7 @@ async function getUtilisateurById(req: Request, res: Response) {
                         model: Poste,
                     },
                 ],
-            })
+            }),
         )
         .then((poste) => res.status(200).json(poste))
         .catch((err) => controllerErrorHandler(err, res));
@@ -181,7 +181,7 @@ async function deleteUtilisateurById(req: Request, res: Response) {
     await checkExistingId<Utilisateur>(req.params.id, Utilisateur)
         .then(() =>
             // Delete requested user by its id
-            Utilisateur.destroy({ where: { id: req.params.id } })
+            Utilisateur.destroy({ where: { id: req.params.id } }),
         )
         .then((user) => res.status(204).json(user))
         .catch((err) => controllerErrorHandler(err, res));

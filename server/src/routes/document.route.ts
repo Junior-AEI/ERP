@@ -21,7 +21,7 @@ router.get("/file/:id", documentController.downloadFileById);
 router.post(
     "/:id/:statut",
     upload.single("file"),
-    documentController.uploadNewVersion
+    documentController.uploadNewVersion,
 );
 
 export default router;

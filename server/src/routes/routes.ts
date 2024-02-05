@@ -35,7 +35,7 @@ router.use(
     "/utilisateur",
     getUsername,
     verifyAuthentication,
-    utilisateurRouter
+    utilisateurRouter,
 );
 router.use("/adresse", getUsername, verifyAuthentication, adresseRoute);
 router.use("/adherent", getUsername, verifyAuthentication, adherentRoute);

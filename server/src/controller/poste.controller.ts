@@ -91,7 +91,7 @@ async function getPosteById(req: Request, res: Response) {
     await checkIdIsNotNaN(req.params.id)
         .then(() =>
             // Find requested role by primary key (id)
-            Poste.findByPk(req.params.id)
+            Poste.findByPk(req.params.id),
         )
         .then((poste) => res.status(200).json(poste))
         .catch((err) => controllerErrorHandler(err, res));
@@ -132,7 +132,7 @@ async function updatePoste(req: Request, res: Response) {
     await checkEmptyName(req.body.nom)
         .then(() =>
             // Check if given role or role id doesn't already exist
-            checkExistingId<Poste>(req.body.id, Poste)
+            checkExistingId<Poste>(req.body.id, Poste),
         )
         .then(() => checkExistingPoste(req))
         .then(() => {
@@ -159,7 +159,7 @@ async function deletePosteById(req: Request, res: Response) {
     await checkExistingId<Poste>(req.params.id, Poste)
         .then(() =>
             // Delete requested role by its id
-            Poste.destroy({ where: { id: req.params.id } })
+            Poste.destroy({ where: { id: req.params.id } }),
         )
         .then((poste) => res.status(204).json(poste))
         .catch((err) => controllerErrorHandler(err, res));

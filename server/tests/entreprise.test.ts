@@ -94,7 +94,7 @@ describe("Test `entreprise` model", () => {
                         attribute != "updatedAt"
                     ) {
                         expect(checkResponse.body[attribute]).toBe(
-                            newCompany[attribute]
+                            newCompany[attribute],
                         );
                     } else {
                         expect(checkResponse.body[attribute]).toBeDefined();

@@ -11,8 +11,7 @@
     },
     "scripts": {
         "prepare": "husky install",
-        "lint": "eslint . --ext .vue,.js,.jsx,.cjs,.mjs,.ts,.tsx,.cts,.mts --fix --ignore-path .gitignore",
-        "commit": "gitmoji "
+        "lint": "eslint . --ext .vue,.js,.jsx,.cjs,.mjs,.ts,.tsx,.cts,.mts --fix --ignore-path .gitignore"
     },
     "dependencies": {
         "gitmoji-cli": "^9.1.0"

@@ -1,7 +1,7 @@
 import { createRouter, createWebHistory } from 'vue-router'
 import DashboardView from '../views/DashboardView.vue'
 
-const APP_NAME = "ERP - Junior AEI";
+const APP_NAME = 'ERP - Junior AEI'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -10,15 +10,14 @@ const router = createRouter({
       path: '/',
       name: 'Dashboard',
       component: DashboardView
-    },
+    }
   ]
 })
 
-
 router.beforeEach((to, _from, next) => {
-  document.title = `${to.name as string} | ${APP_NAME}`;
-  window.scrollTo(0, 0);
-  next();
-});
+  document.title = `${to.name as string} | ${APP_NAME}`
+  window.scrollTo(0, 0)
+  next()
+})
 
 export default router

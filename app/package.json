@@ -19,7 +19,13 @@
     "@formkit/auto-animate": "^0.8.1",
     "@types/validator": "^13.11.9",
     "axios": "^1.6.7",
+    "class-variance-authority": "^0.7.0",
+    "clsx": "^2.1.0",
+    "lucide-vue-next": "^0.340.0",
     "pinia": "^2.1.7",
+    "radix-vue": "^1.4.8",
+    "tailwind-merge": "^2.2.1",
+    "tailwindcss-animate": "^1.0.7",
     "validator": "^13.11.0",
     "vue": "^3.4.15",
     "vue-router": "^4.2.5"

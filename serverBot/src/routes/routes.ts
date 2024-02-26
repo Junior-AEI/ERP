@@ -19,5 +19,5 @@ import botRoutes from "./bot.route";
 
 const router = express.Router();
 
-router.use("/bot",  botRoutes);
+router.use("/bot", botRoutes);
 export default router;

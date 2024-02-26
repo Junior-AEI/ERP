@@ -12,6 +12,8 @@ npm install
 cd ../server
 npm install
 cp .env.example .env
+cd ..
+./setup.sh
 ```
 
 # Running

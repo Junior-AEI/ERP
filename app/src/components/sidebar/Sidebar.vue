@@ -1,9 +1,9 @@
 <template>
-  <div class="flex text-3xl">
+  <div class="flex border-r bg-primary-foreground text-3xl" v-auto-animate>
     <ExpandedSidebar @reduce="reduce()" @search="search()" v-if="expanded" />
     <ReducedSidebar @expand="expand()" @search="search()" v-else />
-    <SearchSidebar @close="close()" v-if="displaySearch" />
   </div>
+  <SearchSidebar @close="close()" v-if="displaySearch" v-auto-animate />
 </template>
 
 <script setup lang="ts">

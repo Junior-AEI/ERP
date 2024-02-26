@@ -28,5 +28,6 @@ declare module 'vue' {
     Sidear: typeof import('./src/components/sidebar/Sidear.vue')['default']
     Sidebar: typeof import('./src/components/sidebar/Sidebar.vue')['default']
     SideBar: typeof import('./src/components/Sidebar/SideBar.vue')['default']
+    Titlebar: typeof import('./src/components/Titlebar.vue')['default']
   }
 }

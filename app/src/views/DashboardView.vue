@@ -3,6 +3,22 @@
     <Card>
       <Button> Coucou </Button>
     </Card>
+    <p>
+      Lorem ipsum dolor sit amet consectetur adipisicing elit. Cupiditate deserunt animi tempore
+      sunt, cum soluta magnam assumenda sint deleniti? Libero reprehenderit repellat, deleniti
+      accusantium natus nihil delectus laborum porro eveniet! Lorem ipsum dolor sit amet consectetur
+      adipisicing elit. Cupiditate deserunt animi tempore sunt, cum soluta magnam assumenda sint
+      deleniti? Libero reprehenderit repellat, deleniti accusantium natus nihil delectus laborum
+      porro eveniet! Lorem ipsum dolor sit amet consectetur adipisicing elit. Cupiditate deserunt
+      animi tempore sunt, cum soluta magnam assumenda sint deleniti? Libero reprehenderit repellat,
+      deleniti accusantium natus nihil delectus laborum porro eveniet! Lorem ipsum dolor sit amet
+      consectetur adipisicing elit. Cupiditate deserunt animi tempore sunt, cum soluta magnam
+      assumenda sint deleniti? Libero reprehenderit repellat, deleniti accusantium natus nihil
+      delectus laborum porro eveniet! Lorem ipsum dolor sit amet consectetur adipisicing elit.
+      Cupiditate deserunt animi tempore sunt, cum soluta magnam assumenda sint deleniti? Libero
+      reprehenderit repellat, deleniti accusantium natus nihil delectus laborum porro eveniet! Lorem
+      ipsum dolor sit amet consectetur adipisicing elit. Cupiditate deserunt animi tempore sunt, cum
+    </p>
   </main>
 </template>
 
@@ -11,7 +27,6 @@
 <style scoped>
 main {
   display: flex;
-  justify-content: center;
   align-items: center;
   height: 100%;
 }

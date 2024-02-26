@@ -22,13 +22,8 @@ import {
 import Utilisateur from "../models/utilisateur.model";
 import { controllerErrorHandler } from "./utils.controller";
 
-
-
-
 //ajout pour le bot Telegram
 import axios from "axios";
-
-
 
 const authController = {
     login,
@@ -50,9 +45,22 @@ async function login(req: Request, res: Response) {
                             .sign(JWT_SECRET_KEY);
                         // Envoi de la requête au serveur bot
                         try {
-                            axios.post('http://localhost:5001/api/bot/connexion');
+                            axios.post(
+                                "http://localhost:5001/api/bot/connexion",
+                            );
                         } catch (error) {
-                            console.error('Erreur lors de la requête POST vers /api/bot:', error);
+                            console.error(
+                                "Erreur lors de la requête POST vers /api/bot:",
+                                error,
+                            );
+                        }
+                        try {
+                            axios.post("http://localhost:5002/api/mail");
+                        } catch (error) {
+                            console.error(
+                                "Erreur lors de la requête POST vers /api/mail:",
+                                error,
+                            );
                         }
                         return res.status(200).json({
                             status: "success",

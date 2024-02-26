@@ -1,10 +1,10 @@
 <template>
   <Button variant="link" class="inherit-font-size" v-if="variant === 'clickable'">
-    <span class="material-symbols-rounded">
+    <span class="material-symbols-rounded text-xl">
       {{ name }}
     </span>
   </Button>
-  <span class="material-symbols-rounded" v-else>
+  <span class="material-symbols-rounded text-xl" v-else>
     {{ name }}
   </span>
 </template>
@@ -24,7 +24,7 @@ defineProps<{ name: IconNames; variant?: VariantType }>()
     'wght' 300,
     'GRAD' 0,
     'opsz' 24;
-  font-size: inherit;
+  font-size: 140%;
 }
 
 .inherit-font-size {

@@ -1,8 +1,8 @@
 <template>
   <div class="flex h-10 w-full justify-between border-b bg-primary-foreground">
-    <div class="test-base flex items-center text-lg">
+    <div class="flex items-center text-sm">
       <Icon name="folder" variant="clickable" />
-      <span class="text-sm text-primary">
+      <span class="text-primary">
         {{ routeName }}
       </span>
     </div>

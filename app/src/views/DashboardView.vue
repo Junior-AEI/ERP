@@ -1,33 +1,33 @@
 <template>
-  <main>
-    <Card>
-      <Button> Coucou </Button>
-    </Card>
-    <p>
-      Lorem ipsum dolor sit amet consectetur adipisicing elit. Cupiditate deserunt animi tempore
-      sunt, cum soluta magnam assumenda sint deleniti? Libero reprehenderit repellat, deleniti
-      accusantium natus nihil delectus laborum porro eveniet! Lorem ipsum dolor sit amet consectetur
-      adipisicing elit. Cupiditate deserunt animi tempore sunt, cum soluta magnam assumenda sint
-      deleniti? Libero reprehenderit repellat, deleniti accusantium natus nihil delectus laborum
-      porro eveniet! Lorem ipsum dolor sit amet consectetur adipisicing elit. Cupiditate deserunt
-      animi tempore sunt, cum soluta magnam assumenda sint deleniti? Libero reprehenderit repellat,
-      deleniti accusantium natus nihil delectus laborum porro eveniet! Lorem ipsum dolor sit amet
-      consectetur adipisicing elit. Cupiditate deserunt animi tempore sunt, cum soluta magnam
-      assumenda sint deleniti? Libero reprehenderit repellat, deleniti accusantium natus nihil
-      delectus laborum porro eveniet! Lorem ipsum dolor sit amet consectetur adipisicing elit.
-      Cupiditate deserunt animi tempore sunt, cum soluta magnam assumenda sint deleniti? Libero
-      reprehenderit repellat, deleniti accusantium natus nihil delectus laborum porro eveniet! Lorem
-      ipsum dolor sit amet consectetur adipisicing elit. Cupiditate deserunt animi tempore sunt, cum
-    </p>
+  <main class="flex flex-1 flex-col gap-6">
+    <Wrapper class="w-full">
+      <Card></Card>
+      <Card></Card>
+      <Card></Card>
+    </Wrapper>
+
+    <div class="flex gap-3">
+      <Wrapper class="flex-2 flex-col">
+        <h1 class="m-3 text-accent">Bonjour Hugo,</h1>
+        <Card>
+          <Button> Coucou </Button>
+        </Card>
+      </Wrapper>
+
+      <div class="flex h-fit flex-1 flex-col">
+        <Wrapper class="flex-col gap-3">
+          <Card>
+            <Button> Coucou </Button>
+          </Card>
+        </Wrapper>
+        <Wrapper class="flex-col">
+          <Card>
+            <Button> Coucou </Button>
+          </Card>
+        </Wrapper>
+      </div>
+    </div>
   </main>
 </template>
 
 <script setup lang="ts"></script>
-
-<style scoped>
-main {
-  display: flex;
-  align-items: center;
-  height: 100%;
-}
-</style>

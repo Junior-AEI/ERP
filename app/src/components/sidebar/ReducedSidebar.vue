@@ -1,5 +1,5 @@
 <template>
-  <div class="flex w-20 flex-col py-5">
+  <div class="flex w-20 flex-col py-3">
     <div class="flex flex-1 flex-col items-center gap-2">
       <Icon name="menu" variant="clickable" @click="$emit('expand')" />
       <RouterLink to="/">

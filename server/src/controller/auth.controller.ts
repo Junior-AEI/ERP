@@ -47,7 +47,7 @@ async function login(req: Request, res: Response) {
                         try {
                             axios.post(
                                 "http://localhost:5001/api/bot/connexion",
-                                username,
+                                { name: username },
                             );
                         } catch (error) {
                             console.error(

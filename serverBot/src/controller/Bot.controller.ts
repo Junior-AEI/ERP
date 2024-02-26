@@ -1,4 +1,5 @@
 import TelegramBot from "node-telegram-bot-api";
+import { Request, Response } from "express";
 
 const botController = {
     notif,
@@ -17,8 +18,8 @@ async function notif() {
     bot.sendMessage(881607628, message);
 }
 
-async function connexion(username: String) {
-    const message = "notif";
+async function connexion(req: Request, res: Response) {
+    const message = "Connexion de" + req.body.name;
     console.log("test");
     bot.sendMessage(881607628, message);
 }

@@ -10,11 +10,11 @@
 </template>
 
 <script lang="ts" setup>
-import type { MaterialSymbol } from 'material-symbols'
+import type { IconNames } from '@/types'
 
 type VariantType = 'clickable' | undefined
 
-defineProps<{ name: MaterialSymbol; variant?: VariantType }>()
+defineProps<{ name: IconNames; variant?: VariantType }>()
 </script>
 
 <style>

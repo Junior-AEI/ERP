@@ -1,9 +1,6 @@
 <template>
   <main>
-    <Button> Coucou </Button>
-
     <Card>
-      <h1>Dashboard</h1>
       <Button> Coucou </Button>
     </Card>
   </main>

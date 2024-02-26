@@ -1,5 +1,5 @@
 <template>
-  <SideBar v-if="showSideBar()" />
+  <Sidebar v-if="showSideBar()" />
   <RouterView class="flex flex-1" />
 </template>
 

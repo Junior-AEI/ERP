@@ -1,5 +1,6 @@
 import './assets/main.css'
 import './assets/inter/inter.css'
+import 'material-symbols'
 
 import { createApp } from 'vue'
 import { createPinia } from 'pinia'

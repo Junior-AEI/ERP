@@ -10,6 +10,11 @@ const router = createRouter({
       path: '/',
       name: 'Dashboard',
       component: DashboardView
+    },
+    {
+      path: '/login',
+      name: 'Se connecter',
+      component: () => import('../views/LoginView.vue')
     }
   ]
 })

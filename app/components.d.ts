@@ -19,6 +19,7 @@ declare module 'vue' {
     Icon: typeof import('./src/components/Icon.vue')['default']
     Icons: typeof import('./src/components/Icons.vue')['default']
     Input: typeof import('./src/components/ui/input/Input.vue')['default']
+    Link: typeof import('./src/components/ui/link/Link.vue')['default']
     MaterialSymbolIcon: typeof import('./src/components/MaterialSymbolIcon.vue')['default']
     ReducedSidebar: typeof import('./src/components/sidebar/ReducedSidebar.vue')['default']
     RouterLink: typeof import('vue-router')['RouterLink']

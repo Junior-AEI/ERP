@@ -1,7 +1,7 @@
 <template>
   <div class="flex border-r bg-primary-foreground text-xl" v-auto-animate>
-    <ExpandedSidebar @reduce="reduce()" @search="search()" v-if="expanded" />
-    <ReducedSidebar @expand="expand()" @search="search()" v-else />
+    <ExpandedSidebar @reduce="reduce()" @search="search()" @logout="logout()" v-if="expanded" />
+    <ReducedSidebar @expand="expand()" @search="search()" @logout="logout()" v-else />
   </div>
   <SearchSidebar @close="close()" v-if="displaySearch" v-auto-animate />
 </template>
@@ -28,5 +28,9 @@ const search = () => {
 
 const close = () => {
   displaySearch.value = false
+}
+
+const logout = () => {
+  alert('logout')
 }
 </script>

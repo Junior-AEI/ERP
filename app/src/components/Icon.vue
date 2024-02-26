@@ -1,10 +1,5 @@
 <template>
-  <Button variant="link" class="inherit-font-size" v-if="variant === 'clickable'">
-    <span class="material-symbols-rounded text-xl">
-      {{ name }}
-    </span>
-  </Button>
-  <span class="material-symbols-rounded text-xl" v-else>
+  <span class="material-symbols-rounded text-xl">
     {{ name }}
   </span>
 </template>
@@ -12,9 +7,7 @@
 <script lang="ts" setup>
 import type { IconNames } from '@/types'
 
-type VariantType = 'clickable' | undefined
-
-defineProps<{ name: IconNames; variant?: VariantType }>()
+defineProps<{ name: IconNames }>()
 </script>
 
 <style>

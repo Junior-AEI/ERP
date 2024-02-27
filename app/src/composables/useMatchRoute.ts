@@ -2,10 +2,8 @@ import { useRoute } from 'vue-router'
 
 const useMatchRoute = (path: string) => {
   const route = useRoute()
-  if (path === '/') {
-    return route.path === '/'
-  }
-  return route.path === path
+  const location = '/' + route.path.split('/')[1]
+  return location === path
 }
 
 export default useMatchRoute

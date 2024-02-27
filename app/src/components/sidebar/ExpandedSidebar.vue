@@ -11,16 +11,42 @@
       <Link to="/" icon="dashboard" class="w-full justify-start" :variant="matchRoute('/')">
         Tableau de bord
       </Link>
-      <Link
-        :to="route.path"
-        :icon="route.meta?.icon"
-        :variant="matchRoute(route.path)"
-        v-for="route in topRoutes"
-        :key="route.path"
-        class="w-full justify-start"
-      >
-        {{ route.name }}
-      </Link>
+
+      <div v-for="route in topRoutes" :key="route.path" class="w-full">
+        <Link
+          v-if="!route.children"
+          :to="route.path"
+          :icon="route.meta?.icon"
+          :variant="matchRoute(route.path)"
+          class="w-full justify-start"
+        >
+          {{ route.name }}
+        </Link>
+
+        <CollapsibleMenu v-else>
+          <template v-slot:parent>
+            <Link
+              :to="route.path"
+              :icon="route.meta?.icon"
+              :variant="matchRoute(route.path)"
+              class="w-full justify-start"
+            >
+              {{ route.name }}
+            </Link>
+          </template>
+          <template v-slot:children>
+            <Link
+              v-for="child in route.children"
+              :to="route.path + '/' + child.path"
+              :key="child.path"
+              class="p-1"
+            >
+              {{ child.name }}
+            </Link>
+          </template>
+        </CollapsibleMenu>
+      </div>
+
       <Link to="/administration" icon="build" :variant="matchRoute('/administration')">
         Administration
       </Link>

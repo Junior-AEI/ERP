@@ -2,7 +2,7 @@
   <div class="flex flex-col gap-2 py-3">
     <Button icon="menu" variant="link" size="icon" @click="$emit('expand')"></Button>
 
-    <div class="flex w-full flex-1 flex-col items-center gap-2 overflow-scroll px-3 pb-6">
+    <div class="flex w-full flex-1 flex-col items-center gap-2 overflow-scroll px-2 pb-6">
       <Link to="/" icon="dashboard" :variant="matchRoute('/')"></Link>
       <Button icon="search" variant="link" size="icon" @click="$emit('search')"></Button>
 

@@ -58,7 +58,5 @@ router.beforeEach((to, _from, next) => {
   next()
 })
 
-
 export default router
 export { modules }
-

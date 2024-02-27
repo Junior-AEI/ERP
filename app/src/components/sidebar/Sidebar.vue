@@ -1,5 +1,5 @@
 <template>
-  <div class="flex border-r bg-primary-foreground text-xl" v-auto-animate>
+  <div class="flex h-screen border-r bg-primary-foreground text-lg" v-auto-animate>
     <ExpandedSidebar @reduce="reduce()" @search="search()" @logout="logout()" v-if="expanded" />
     <ReducedSidebar @expand="expand()" @search="search()" @logout="logout()" v-else />
   </div>

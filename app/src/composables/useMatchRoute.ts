@@ -5,7 +5,7 @@ const useMatchRoute = (path: string) => {
     if (path === '/') {
         return route.path === '/'
     }
-    return route.path === '/' + path
+    return route.path === path
 
 }
 

@@ -1,23 +1,41 @@
 import { createRouter, createWebHistory } from 'vue-router'
 import DashboardView from '../views/DashboardView.vue'
 import NotFound from '../views/NotFound.vue'
+import type { Route } from './routes'
+import { modules, subRoutes } from './routes'
 
 const APP_NAME = 'ERP - Junior AEI'
+
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
   routes: [
-    { path: '/:pathMatch(.*)*', name: 'NotFound', component: NotFound },
     {
       path: '/',
-      name: 'Dashboard',
-      component: DashboardView
+      name: 'Tableau de bord',
+      component: DashboardView,
+      meta: {
+        icon: 'dashboard'
+      },
     },
     {
       path: '/login',
       name: 'Se connecter',
-      component: () => import('../views/LoginView.vue')
-    }
+      component: () => import('../views/LoginView.vue'),
+      meta: {
+        icon: 'login'
+      }
+    },
+    {
+      path: '/:pathMatch(.*)*',
+      name: 'NotFound',
+      component: NotFound,
+      meta: {
+        icon: 'troubleshoot'
+      }
+    },
+    ...modules,
+    ...subRoutes
   ]
 })
 
@@ -27,6 +45,15 @@ router.beforeEach((to, _from, next) => {
   next()
 })
 
+const registerModule = (module: Route) => {
+  modules.push(module)
+  router.addRoute(module)
+  module.meta.subRoutes?.forEach(subRoute => {
+    subRoutes.push(subRoute)
+    router.addRoute(subRoute)
+  })
+}
 
 
 export default router
+export { registerModule }

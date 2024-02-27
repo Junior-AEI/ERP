@@ -1,10 +1,9 @@
 import type { Module } from '@/types'
 import router from '@/router'
-import { modules } from '@/router/routes'
+import { modules } from '@/router'
 
 export function registerModule(module: Module) {
 
-    console.log('registerModule', module.name)
 
     const routes = module.routes
 

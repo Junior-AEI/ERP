@@ -5,7 +5,6 @@ import 'material-symbols'
 
 import { createApp } from 'vue'
 
-
 import App from './App.vue'
 
 const app = createApp(App)
@@ -14,9 +13,21 @@ const app = createApp(App)
 /* <!> Il faut les importer avant de définir le router <!> */
 
 import { registerModule } from '@/lib/registerModule'
-import { relectures } from '@/modules/relectures'
+import { membresModule } from '@/modules/membresModule'
+import { etudesModule } from '@/modules/etudesModule'
+import { relecturesModule } from '@/modules/relecturesModule'
+import { evenementsModule } from '@/modules/evenementsModule'
+import { tresorerieModule } from '@/modules/tresorerieModule'
+import { supportModule } from '@/modules/supportModule'
+import { demandeNFGModule } from '@/modules/demandeNFGModule'
 
-registerModule(relectures)
+registerModule(membresModule)
+registerModule(etudesModule)
+registerModule(relecturesModule)
+registerModule(evenementsModule)
+registerModule(tresorerieModule)
+registerModule(supportModule)
+registerModule(demandeNFGModule)
 
 /* Définition des stores */
 

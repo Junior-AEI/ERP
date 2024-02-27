@@ -1,6 +1,6 @@
 import type { Module } from '@/types'
 
-export const relectures: Module = {
+export const relecturesModule: Module = {
     name: 'Relectures',
     routes: [
         {
@@ -8,7 +8,7 @@ export const relectures: Module = {
             name: 'Relectures',
             component: () => import('./views/Relectures.vue'),
             meta: {
-                icon: 'overview',
+                icon: 'ink_highlighter_move',
             }
         }
     ]

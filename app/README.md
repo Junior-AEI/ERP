@@ -1,5 +1,7 @@
 # app
 
+> À refaire
+
 This template should help get you started developing with Vue 3 in Vite.
 
 ## Recommended IDE Setup
@@ -66,3 +68,65 @@ npm run test:e2e
 ```sh
 npm run lint
 ```
+
+
+# Modules
+
+L'application est découpée en module. Un module est un ensemble de composants, routes et stores qui forment une fonctionnalité de l'application.
+Les modules sont situés dans le dossier `app/modules`. Chaque module est un dossier qui contient au moins un fichier `index.ts`. Ce fichier est le point d'entrée du module et doit exporter un objet qui contient les composants, routes et stores du module.
+Les routes sont affichées dans la sidebar de l'application. Les routes enfants sont affichées dans un sous-menu déroulant.
+
+Exemple de module:
+
+```ts
+import type { Module } from '@/types'
+
+export const exampleModule: Module = {
+    name: 'Example',
+    routes: [
+        {
+            path: '/example',
+            name: 'Example',
+            component: () => import('./views/Relectures.vue'),
+            meta: {
+                icon: 'overview',
+            },
+            children: [
+                {
+                    path: 'first',
+                    name: 'First child route',
+                    component: () => import('./views/Relectures.vue'),
+                },
+                {
+                    path: 'second',
+                    name: 'Second child route',
+                    component: () => import('./views/Relectures.vue'),
+                },
+            ],
+        },
+        {
+            path: '/AnotherExample',
+            name: 'Example detail',
+            component: () => import('./views/Relectures.vue'),
+            meta: {
+                icon: 'overview',
+            }
+        },
+        ...
+    ]
+}
+```
+
+Ces modules doivent ensuite être importés dans le fichier `@/main.ts` pour être chargés par l'application.
+
+```ts
+
+import { registerModule } from '@/lib/registerModule'
+
+import { exampleModule } from './modules/example'
+import { anotherModule } from './modules/anotherModule'
+
+registerModule(exampleModule)
+registerModule(anotherModule)
+```
+

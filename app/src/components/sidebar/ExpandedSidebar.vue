@@ -9,8 +9,8 @@
 
     <div class="flex flex-1 flex-col items-start gap-1 overflow-scroll pb-6">
       <Link to="/" icon="dashboard" class="w-full justify-start" :variant="matchRoute('/')">
-        Tableau de bord</Link
-      >
+        Tableau de bord
+      </Link>
       <Link
         :to="route.path"
         :icon="route.meta?.icon"
@@ -20,6 +20,9 @@
         class="w-full justify-start"
       >
         {{ route.name }}
+      </Link>
+      <Link to="/administration" icon="build" :variant="matchRoute('/administration')">
+        Administration
       </Link>
     </div>
     <div
@@ -51,8 +54,8 @@ import useMatchRoute from '@/composables/useMatchRoute'
 
 const matchRoute = (route: string) => (useMatchRoute(route) ? 'active' : 'default')
 
-import { modules } from '@/router/routes'
-import type { Route } from '@/router/routes'
+import { modules } from '@/router'
+import type { Route } from '@/types'
 
 const bottomRoutes: Array<Route> = []
 const topRoutes: Array<Route> = []

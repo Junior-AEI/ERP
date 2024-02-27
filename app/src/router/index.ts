@@ -1,7 +1,9 @@
 import { createRouter, createWebHistory } from 'vue-router'
 import DashboardView from '../views/DashboardView.vue'
-import NotFound from '../views/NotFound.vue'
-import { modules } from './routes'
+
+import type { Route } from '@/types'
+
+const modules: Array<Route> = []
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -15,6 +17,14 @@ const router = createRouter({
       }
     },
     {
+      path: '/administration',
+      name: 'Administration',
+      component: () => import('../views/Construction.vue'),
+      meta: {
+        icon: 'build'
+      }
+    },
+    {
       path: '/login',
       name: 'Se connecter',
       component: () => import('../views/LoginView.vue'),
@@ -25,7 +35,7 @@ const router = createRouter({
     {
       path: '/:pathMatch(.*)*',
       name: 'NotFound',
-      component: NotFound,
+      component: () => import('../views/NotFound.vue'),
       meta: {
         icon: 'troubleshoot'
       }
@@ -42,4 +52,5 @@ router.beforeEach((to, _from, next) => {
 
 
 export default router
+export { modules }
 

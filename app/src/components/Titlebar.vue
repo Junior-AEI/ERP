@@ -21,5 +21,5 @@ const routeName = computed(() => {
   return route.name
 })
 
-const icon = computed<IconNames>(() => (route.meta['icon'] as IconNames) ?? 'question_mark')
+const icon = computed<IconNames>(() => (route.meta['icon'] as IconNames) ?? 'draft')
 </script>

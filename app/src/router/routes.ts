@@ -1,15 +1,4 @@
-import type { IconNames, PositionInSidebar } from '@/types'
-
-interface Route {
-  path: string
-  name: string
-  component: any
-  meta: {
-    icon: IconNames
-    subRoutes?: Array<Route>
-    positionInSidebar?: PositionInSidebar
-  }
-}
+import type { Route } from '@/types'
 
 const modules: Array<Route> = [
   {
@@ -80,7 +69,5 @@ const modules: Array<Route> = [
   }
 ]
 
-const subRoutes: Array<Route> = []
 
-export type { Route }
-export { modules, subRoutes }
+export { modules }

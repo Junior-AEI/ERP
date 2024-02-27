@@ -1,10 +1,7 @@
 import { createRouter, createWebHistory } from 'vue-router'
 import DashboardView from '../views/DashboardView.vue'
 import NotFound from '../views/NotFound.vue'
-import type { Route } from './routes'
-import { modules, subRoutes } from './routes'
-
-const APP_NAME = 'ERP - Junior AEI'
+import { modules } from './routes'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -33,25 +30,16 @@ const router = createRouter({
         icon: 'troubleshoot'
       }
     },
-    ...modules,
-    ...subRoutes
+    ...modules
   ]
 })
 
 router.beforeEach((to, _from, next) => {
-  document.title = `${to.name as string} | ${APP_NAME}`
+  document.title = `${to.name as string} | ${import.meta.env.VITE_APP_NAME}`
   window.scrollTo(0, 0)
   next()
 })
 
-const registerModule = (module: Route) => {
-  modules.push(module)
-  router.addRoute(module)
-  module.meta.subRoutes?.forEach((subRoute) => {
-    subRoutes.push(subRoute)
-    router.addRoute(subRoute)
-  })
-}
 
 export default router
-export { registerModule }
+

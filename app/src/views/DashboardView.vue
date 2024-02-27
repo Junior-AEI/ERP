@@ -1,9 +1,15 @@
 <template>
   <main class="flex flex-1 flex-col gap-6">
     <Wrapper class="w-full">
-      <Card></Card>
-      <Card></Card>
-      <Card></Card>
+      <Card>
+        <CardContent> </CardContent>
+      </Card>
+      <Card>
+        <CardContent> </CardContent>
+      </Card>
+      <Card>
+        <CardContent> </CardContent>
+      </Card>
     </Wrapper>
 
     <div class="flex flex-col gap-3 md:flex-row">
@@ -14,19 +20,33 @@
             <Icon name="star" />
             <span class="text-accent"> Liens favoris </span>
           </CardHeader>
-          <Button> Coucou </Button>
+          <CardContent>
+            <Button variant="outline"> Coucou </Button>
+          </CardContent>
         </Card>
       </Wrapper>
 
       <div class="flex h-fit flex-1 flex-col gap-3">
-        <Wrapper class="flex-col gap-3">
-          <Card>
-            <Button> Coucou </Button>
-          </Card>
-        </Wrapper>
         <Wrapper class="flex-col">
           <Card>
-            <Button> Coucou </Button>
+            <CardHeader>
+              <Icon name="notifications" />
+              <span class="text-accent">Notifications</span>
+            </CardHeader>
+            <CardContent>
+              <Button> Coucou </Button>
+            </CardContent>
+          </Card>
+        </Wrapper>
+        <Wrapper class="flex-col gap-3">
+          <Card>
+            <CardHeader>
+              <Icon name="pin_drop" />
+              <span class="text-accent">Prochains évènements </span>
+            </CardHeader>
+            <CardContent>
+              <Button>Coucou </Button>
+            </CardContent>
           </Card>
         </Wrapper>
       </div>
@@ -34,4 +54,6 @@
   </main>
 </template>
 
-<script setup lang="ts"></script>
+<script setup lang="ts">
+import { CardContent } from '@/components/ui/card'
+</script>

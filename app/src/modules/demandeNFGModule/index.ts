@@ -8,7 +8,7 @@ export const demandeNFGModule: Module = {
       name: 'Demander une note de frais',
       component: () => import('@/views/Construction.vue'),
       meta: {
-        icon: 'savings',
+        icon: 'receipt_long',
         positionInSidebar: 'bottom'
       }
     }

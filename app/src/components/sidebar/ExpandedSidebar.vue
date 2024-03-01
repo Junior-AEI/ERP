@@ -7,7 +7,7 @@
 
     <Input @click="$emit('search')" placeholder="Rechercher" />
 
-    <div class="flex flex-1 flex-col items-start gap-1 overflow-scroll pb-6">
+    <div class="flex flex-1 flex-col items-start gap-1 overflow-x-auto pb-6">
       <Link to="/" icon="dashboard" class="w-full justify-start" :variant="matchRoute('/')">
         Tableau de bord
       </Link>

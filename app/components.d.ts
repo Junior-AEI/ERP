@@ -18,6 +18,7 @@ declare module 'vue' {
     CollapsibleContent: typeof import('./src/components/ui/collapsible/CollapsibleContent.vue')['default']
     CollapsibleMenu: typeof import('./src/components/sidebar/CollapsibleMenu.vue')['default']
     CollapsibleTrigger: typeof import('./src/components/ui/collapsible/CollapsibleTrigger.vue')['default']
+    Elevated: typeof import('./src/components/ui/elevated/Elevated.vue')['default']
     ExpandedSidebar: typeof import('./src/components/sidebar/ExpandedSidebar.vue')['default']
     ExtendedSidebar: typeof import('./src/components/sidebar/ExtendedSidebar.vue')['default']
     Icon: typeof import('./src/components/Icon.vue')['default']

@@ -68,7 +68,7 @@ function verifyAuthentication(req: Request, res: Response, next: () => void) {
     if (!res.locals.user) {
         return res.status(401).json({
             status: "error",
-            message: "Unauthorized gnagnagna",
+            message: "Unauthorized",
         });
     }
     next();

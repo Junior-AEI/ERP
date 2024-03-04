@@ -21,46 +21,59 @@ import {
 } from "../config/auth.config";
 import Utilisateur from "../models/utilisateur.model";
 import { controllerErrorHandler } from "./utils.controller";
+import { promisify } from "util";
+
+/**
+ * Login route
+ * @param req
+ * @param res
+ */
+const login = async (req: Request, res: Response) => {
+    // Get POST parameters
+    const username = req.body.nomUtilisateur || "";
+    const password = req.body.motDePasse || "";
+
+    // Try to fetch user
+
+    const user = await Utilisateur.findOne({
+        where: {
+            nomUtilisateur: username,
+        },
+    });
+
+    // Compare passwords
+    const match = await promisify(compare)(
+        password,
+        user ? user.motDePasse : "",
+    );
+
+    // If user not found or incorrect password then return an error
+    if (!user || !match) {
+        return res.status(401).json({
+            status: "error",
+            message: "Invalid username or password",
+        });
+    }
+
+    // Create a new JWT token
+    const token = await new SignJWT({ username: username })
+        .setProtectedHeader({ alg: "HS256" })
+        .setAudience(JWT_AUDIENCE)
+        .setIssuer(JWT_ISSUER)
+        .setExpirationTime(JWT_EXPIRATION)
+        .sign(JWT_SECRET_KEY);
+
+    // Return ok
+    return res.status(200).json({
+        status: "success",
+        token: token,
+        adherent_id: user.adherentId,
+        utilisateur_id: user.id,
+    });
+};
 
 const authController = {
     login,
 };
-
-async function login(req: Request, res: Response) {
-    const username = req.body.nomUtilisateur || "";
-    const password = req.body.motDePasse || "";
-    Utilisateur.findOne({ where: { nomUtilisateur: username } })
-        .then((user) => {
-            if (user) {
-                compare(password, user.motDePasse).then(async (result) => {
-                    if (result) {
-                        const token = await new SignJWT({ username: username })
-                            .setProtectedHeader({ alg: "HS256" })
-                            .setAudience(JWT_AUDIENCE)
-                            .setIssuer(JWT_ISSUER)
-                            .setExpirationTime(JWT_EXPIRATION)
-                            .sign(JWT_SECRET_KEY);
-                        return res.status(200).json({
-                            status: "success",
-                            token: token,
-                            adherent_id: user.adherentId,
-                            utilisateur_id: user.id,
-                        });
-                    } else {
-                        return res.status(401).json({
-                            status: "error",
-                            message: "Invalid username or password",
-                        });
-                    }
-                });
-            } else {
-                res.status(401).json({
-                    status: "error",
-                    message: "Invalid username or password",
-                });
-            }
-        })
-        .catch((err) => controllerErrorHandler(err, res));
-}
 
 export default authController;

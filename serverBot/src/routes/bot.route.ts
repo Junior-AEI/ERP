@@ -17,4 +17,5 @@ import botController from "../controller/Bot.controller";
 const router = express.Router();
 router.post("/", botController.notif);
 router.post("/connexion", botController.connexion);
+router.post("/uploadDoc", botController.uploadDoc);
 export default router;

@@ -16,6 +16,7 @@ import Document from "../models/document.model";
 import { controllerErrorHandler } from "./utils.controller";
 
 //ajout pour le bot Telegram
+import axios from "axios";
 
 const documentController = {
     createDocument,
@@ -55,6 +56,18 @@ async function uploadNewVersion(req: Request, res: Response) {
                     documentId: doc.id,
                     statut: req.params.statut,
                 });
+                axios
+                    .post("http://localhost:5001/api/bot/uploadDoc", {
+                        doc: doc.nom,
+                        statut: req.params.statut,
+                    })
+
+                    .catch((error) => {
+                        console.error(
+                            "Erreur lors de la requête POST vers /api/bot/uploadDoc:",
+                            error,
+                        );
+                    });
                 return { doc, version };
             })
             .then((input: { doc: Document; version: Fichier }) => {

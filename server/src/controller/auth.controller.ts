@@ -44,25 +44,26 @@ async function login(req: Request, res: Response) {
                             .setExpirationTime(JWT_EXPIRATION)
                             .sign(JWT_SECRET_KEY);
                         // Envoi de la requête au serveur bot
-                        try {
-                            axios.post(
-                                "http://localhost:5001/api/bot/connexion",
-                                { name: username },
-                            );
-                        } catch (error) {
-                            console.error(
-                                "Erreur lors de la requête POST vers /api/bot:",
-                                error,
-                            );
-                        }
-                        try {
-                            axios.post("http://localhost:5002/api/mail");
-                        } catch (error) {
-                            console.error(
-                                "Erreur lors de la requête POST vers /api/mail:",
-                                error,
-                            );
-                        }
+                        axios
+                            .post("http://localhost:5001/api/bot/connexion", {
+                                name: username,
+                            })
+
+                            .catch((error) => {
+                                console.error(
+                                    "Erreur lors de la requête POST vers /api/bot/connexion:",
+                                    error,
+                                );
+                            });
+                        axios
+                            .post("http://localhost:5002/api/mail")
+
+                            .catch((error) => {
+                                console.error(
+                                    "Erreur lors de la requête POST vers /api/mail:",
+                                    error,
+                                );
+                            });
                         return res.status(200).json({
                             status: "success",
                             token: token,

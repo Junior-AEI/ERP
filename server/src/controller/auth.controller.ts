@@ -20,7 +20,6 @@ import {
     JWT_SECRET_KEY,
 } from "../config/auth.config";
 import Utilisateur from "../models/utilisateur.model";
-import { controllerErrorHandler } from "./utils.controller";
 import { promisify } from "util";
 
 /**
@@ -34,7 +33,6 @@ const login = async (req: Request, res: Response) => {
     const password = req.body.motDePasse || "";
 
     // Try to fetch user
-
     const user = await Utilisateur.findOne({
         where: {
             nomUtilisateur: username,
@@ -72,8 +70,51 @@ const login = async (req: Request, res: Response) => {
     });
 };
 
+/**
+ * Forget password route
+ * @param req
+ * @param res
+ * @returns
+ */
+const forgetPassword = async (req, res) => {
+    // Get POST parameters
+    const username = req.body.nomUtilisateur || "";
+
+    // Try to fetch user
+    const user = await Utilisateur.findOne({
+        where: {
+            nomUtilisateur: username,
+        },
+    });
+
+    function generateToken() {
+        var characters =
+            "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+        var key = "";
+        for (var i = 0; i < 16; i++) {
+            var randomIndex = Math.floor(Math.random() * characters.length);
+            key += characters.charAt(randomIndex);
+        }
+        return key;
+    }
+
+    // If user found then generate a random token
+    if (user) {
+        const token = generateToken();
+
+        // Here TODO : Add token to DB with validity time and link to the user
+        // Here TODO : Send an email with a link
+    }
+
+    // Return ok
+    return res.status(200).json({
+        status: "success",
+    });
+};
+
 const authController = {
     login,
+    forgetPassword,
 };
 
 export default authController;

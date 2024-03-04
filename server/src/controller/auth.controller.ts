@@ -112,9 +112,24 @@ const forgetPassword = async (req, res) => {
     });
 };
 
+const askNewPassword = async (req, res) => {
+    // Get POST parameters
+    const newPassword = req.body.password || "";
+    const token = req.body.token || "";
+
+    // TODO Here check validity of token in database and get linked uer
+    // TODO Declare a new password in  databse
+
+    // Return ok
+    return res.status(200).json({
+        status: "success",
+    });
+};
+
 const authController = {
     login,
     forgetPassword,
+    askNewPassword,
 };
 
 export default authController;

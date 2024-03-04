@@ -21,7 +21,13 @@
           </div>
           <div class="flex flex-col gap-2">
             <Label for="description">Description</Label>
-            <Textarea id="description" placeholder="Décrivez brièvement le problème" />
+            <Textarea id="description" placeholder="Décrivez précisément le problème" />
+          </div>
+          <div class="flex flex-col gap-2">
+            <Label for="file"
+              >Déposer un fichier <span class="text-secondary-foreground">(facultatif)</span></Label
+            >
+            <Dropzone />
           </div>
         </CardContent>
 

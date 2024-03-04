@@ -37,6 +37,7 @@ declare module 'vue' {
     DialogScrollContent: typeof import('./src/components/ui/dialog/DialogScrollContent.vue')['default']
     DialogTitle: typeof import('./src/components/ui/dialog/DialogTitle.vue')['default']
     DialogTrigger: typeof import('./src/components/ui/dialog/DialogTrigger.vue')['default']
+    Dropzone: typeof import('./src/components/ui/dropzone/Dropzone.vue')['default']
     Elevated: typeof import('./src/components/ui/elevated/Elevated.vue')['default']
     ExpandedSidebar: typeof import('./src/components/sidebar/ExpandedSidebar.vue')['default']
     ExtendedSidebar: typeof import('./src/components/sidebar/ExtendedSidebar.vue')['default']

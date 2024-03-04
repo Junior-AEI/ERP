@@ -126,6 +126,11 @@ const askNewPassword = async (req, res) => {
     });
 };
 
+const logout = async (req, res) => {
+    // Get POST parameters
+    const token = req.body.token || "";
+};
+
 const authController = {
     login,
     forgetPassword,

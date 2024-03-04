@@ -36,6 +36,7 @@
     "
   />
   <div class="flex flex-wrap items-start gap-2">
+    <!-- Utiliser un tags input -->
     <Elevated class="p-2" v-for="file in files" :key="file?.name">{{ file?.name }}</Elevated>
   </div>
 </template>

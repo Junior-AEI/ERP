@@ -7,6 +7,7 @@ export {}
 
 declare module 'vue' {
   export interface GlobalComponents {
+    Badge: typeof import('./src/components/ui/badge/Badge.vue')['default']
     Button: typeof import('./src/components/ui/button/Button.vue')['default']
     Card: typeof import('./src/components/ui/card/Card.vue')['default']
     CardContent: typeof import('./src/components/ui/card/CardContent.vue')['default']
@@ -47,6 +48,7 @@ declare module 'vue' {
     Label: typeof import('./src/components/ui/label/Label.vue')['default']
     Link: typeof import('./src/components/ui/link/Link.vue')['default']
     MaterialSymbolIcon: typeof import('./src/components/MaterialSymbolIcon.vue')['default']
+    Message: typeof import('./src/components/Message.vue')['default']
     Popover: typeof import('./src/components/ui/popover/Popover.vue')['default']
     PopoverContent: typeof import('./src/components/ui/popover/PopoverContent.vue')['default']
     PopoverTrigger: typeof import('./src/components/ui/popover/PopoverTrigger.vue')['default']

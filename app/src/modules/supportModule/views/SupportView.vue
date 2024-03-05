@@ -6,7 +6,7 @@
         <TabsTrigger value="ask"> Demander de l'assistance </TabsTrigger>
       </TabsList>
       <TabsContent value="manage">
-        <div>admin</div>
+        <AdminSupport />
       </TabsContent>
       <TabsContent value="ask">
         <AskSupportForm />
@@ -18,6 +18,7 @@
 
 <script setup lang="ts">
 import AskSupportForm from '../components/AskSupportForm.vue'
+import AdminSupport from '../components/SupportAdmin.vue'
 
 const isAdmin = true
 </script>

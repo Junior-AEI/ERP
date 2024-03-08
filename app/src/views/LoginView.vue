@@ -21,9 +21,11 @@
             <Label for="password">Mot de passe</Label>
             <Input id="password" v-model="password" type="password" placeholder="·········" />
           </div>
-          <span v-if="error" class="text-sm font-light text-destructive">
-            Identifiant ou mot de passe incorrect
-          </span>
+          <div class="flex justify-center">
+            <span v-if="error" class="text-sm font-light text-destructive">
+              Identifiant ou mot de passe incorrect
+            </span>
+          </div>
           <Button class="w-full" @click="LoginAction">Se connecter</Button>
           <Button class="w-full" variant="outline" @click="console.log('Non Implémenté')">
             Mot de passe oublié

@@ -8,6 +8,10 @@
 
 <script setup lang="ts">
 import { ref } from 'vue'
+import { useAuthStore } from '@/stores/authStore'
+import router from '@/router'
+
+const authStore = useAuthStore()
 
 const expanded = ref(true)
 const displaySearch = ref(false)
@@ -31,6 +35,7 @@ const close = () => {
 }
 
 const logout = () => {
-  alert('logout')
+  authStore.logout()
+  router.push({ path: '/login' })
 }
 </script>

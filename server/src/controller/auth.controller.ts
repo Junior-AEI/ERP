@@ -1,6 +1,6 @@
-// Copyright (C) 2023 Nesrine ABID, Nadjime BARTEAU, Mathieu DUPOUX, Léo-Paul MAZIÈRE, Maël PAUL, Antoine RAOULT, Lisa VEILLAT, Marine VOVARD
+// Copyright (C) 2023 Nesrine ABID, Nadjime BARTEAU, Mathieu DUPOUX, Léo-Paul MAZIÈRE, Maël PAUL, Antoine RAOULT, Lisa VEILLAT, Marine VOletD
 
-// Authors: Nesrine ABID, Nadjime BARTEAU, Mathieu DUPOUX, Léo-Paul MAZIÈRE, Maël PAUL, Antoine RAOULT, Lisa VEILLAT, Marine VOVARD
+// Authors: Nesrine ABID, Nadjime BARTEAU, Mathieu DUPOUX, Léo-Paul MAZIÈRE, Maël PAUL, Antoine RAOULT, Lisa VEILLAT, Marine VOletD
 // Maintainer: contact@junior-aei.com
 
 // This file is part of LATIME.
@@ -76,7 +76,7 @@ const login = async (req: Request, res: Response) => {
  * @param res
  * @returns
  */
-const forgetPassword = async (req, res) => {
+const forgetPassword = async (req: Request, res: Response) => {
     // Get POST parameters
     const username = req.body.nomUtilisateur || "";
 
@@ -88,11 +88,11 @@ const forgetPassword = async (req, res) => {
     });
 
     function generateToken() {
-        var characters =
+        const characters =
             "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
-        var key = "";
-        for (var i = 0; i < 16; i++) {
-            var randomIndex = Math.floor(Math.random() * characters.length);
+        let key = "";
+        for (let i = 0; i < 16; i++) {
+            const randomIndex = Math.floor(Math.random() * characters.length);
             key += characters.charAt(randomIndex);
         }
         return key;
@@ -112,7 +112,7 @@ const forgetPassword = async (req, res) => {
     });
 };
 
-const askNewPassword = async (req, res) => {
+const askNewPassword = async (req: Request, res: Response) => {
     // Get POST parameters
     const newPassword = req.body.password || "";
     const token = req.body.token || "";
@@ -126,7 +126,7 @@ const askNewPassword = async (req, res) => {
     });
 };
 
-const logout = async (req, res) => {
+const logout = async (req: Request, res: Response) => {
     // Get POST parameters
     const token = req.body.token || "";
 };

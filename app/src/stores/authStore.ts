@@ -14,7 +14,7 @@ export const useAuthStore = defineStore("auth", {
     },
     actions: {
         login(username: string, password: string) {
-            const request = axios.post(`${import.meta.env.VITE_API_URL}/login`, {
+            const request = axios.post('/login', {
                 nomUtilisateur: username,
                 motDePasse: password,
             });
@@ -36,7 +36,7 @@ export const useAuthStore = defineStore("auth", {
             this.adherent_id = null;
         },
         redirectToLogin() {
-            router.push({ name: "Login" });
+            router.push({ path: "/login" });
         },
     },
     getters: {
@@ -78,7 +78,7 @@ export const useAuthStore = defineStore("auth", {
             return false;
         },
         getUser(): null | string {
-            return this.user;
+            return this.user_id;
         },
     },
 });

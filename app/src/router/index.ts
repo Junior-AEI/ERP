@@ -1,7 +1,10 @@
 import { createRouter, createWebHistory } from 'vue-router'
+import type { RouteLocationNormalized } from 'vue-router'
 import DashboardView from '../views/DashboardView.vue'
 
 import type { Route } from '@/types'
+import { useAuthStore } from '@/stores/authStore'
+
 
 const modules: Array<Route> = []
 
@@ -37,7 +40,9 @@ const router = createRouter({
       name: 'Se connecter',
       component: () => import('../views/LoginView.vue'),
       meta: {
-        icon: 'login'
+        icon: 'login',
+        public: true
+
       }
     },
     {
@@ -45,14 +50,24 @@ const router = createRouter({
       name: 'NotFound',
       component: () => import('../views/NotFound.vue'),
       meta: {
-        icon: 'troubleshoot'
+        icon: 'troubleshoot',
       }
     },
     ...modules
   ]
 })
 
+
+const isPublicRoute = (route: Route | RouteLocationNormalized) => {
+  return route.meta.public || false
+}
+
 router.beforeEach((to, _from, next) => {
+  const authStore = useAuthStore()
+  if (!isPublicRoute(to) && !authStore.isAuthenticated) {
+    return next({ path: '/login' })
+  }
+
   document.title = `${to.name as string} | ${import.meta.env.VITE_APP_NAME}`
   window.scrollTo(0, 0)
   next()

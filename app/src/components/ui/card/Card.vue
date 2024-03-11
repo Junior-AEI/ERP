@@ -11,7 +11,7 @@ const props = defineProps<{
   <div
     :class="
       cn(
-        'flex flex-col justify-center gap-3 rounded-xl border bg-card/70 text-card-foreground shadow-sm backdrop-blur-lg ',
+        'flex flex-col justify-center rounded-xl border bg-card/70 text-card-foreground shadow-sm backdrop-blur-lg ',
         props.class
       )
     "

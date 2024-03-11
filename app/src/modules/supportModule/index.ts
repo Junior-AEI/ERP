@@ -6,7 +6,7 @@ export const supportModule: Module = {
     {
       path: '/assistance',
       name: "Demande d'assistance",
-      component: () => import('@/views/Construction.vue'),
+      component: () => import('./views/SupportView.vue'),
       meta: {
         icon: 'support_agent',
         positionInSidebar: 'bottom'

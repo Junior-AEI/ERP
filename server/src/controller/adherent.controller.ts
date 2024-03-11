@@ -21,24 +21,25 @@ import {
 import { Op } from "sequelize";
 import createHttpError from "http-errors";
 
-const adherentController = {
-    getAllAdherents,
-    getAdherentById,
-    createAdherent,
-    deleteAdherentById,
-    updateAdherent,
-};
+// Functions in this controller :
+
+//     getAllMembers,
+//     getMemberById,
+//     createMember,
+//     deleteMemberById,
+//     updateMember,
 
 /**
  * Throws error if a member already exist in database
- * @param req Request to check (req.body used)
+ * @param req
  */
-async function checkExistingAdherent(req: Request): Promise<void> {
+
+const checkExistingMember = async (req: Request, res: Response) => {
     // if id isn't given (case of new member creation), set it to "null" (avoid database error)
     if (req.body.id === undefined) req.body.id = null;
 
     // Check is given member isn't already in database with another id
-    const existingAdherent = await Adherent.findOne({
+    const existingMember = await Adherent.findOne({
         where: {
             [Op.and]: [
                 { [Op.not]: { id: req.body.id } },
@@ -48,9 +49,21 @@ async function checkExistingAdherent(req: Request): Promise<void> {
             ],
         },
     });
-    if (existingAdherent !== null)
-        throw createHttpError(409, "Member already exist");
-}
+
+    // Return error Member already in DB
+    if (existingMember !== null) {
+        return res.status(409).json({
+            status: "error",
+            message: "Member already exists",
+        });
+    }
+    // Return Ok
+    else {
+        return res.status(200).json({
+            status: "succes",
+        });
+    }
+};
 
 /**
  * All members reader for GET route
@@ -58,14 +71,15 @@ async function checkExistingAdherent(req: Request): Promise<void> {
  *  - Members in database + 200 confirmation
  *  - 500 error
  */
-async function getAllAdherents(req: Request, res: Response) {
-    await Adherent.findAll({
+
+const getAllMembers = async (req: Request, res: Response) => {
+    const AllMembers = await Adherent.findAll({
         attributes: { exclude: ["motDePasse"] },
         include: { all: true, nested: true },
     })
         .then((member) => res.status(200).json(member))
         .catch((err) => controllerErrorHandler(err, res));
-}
+};
 
 /**
  * Specific member (by id) reader for GET route
@@ -75,7 +89,7 @@ async function getAllAdherents(req: Request, res: Response) {
  *  - 400 error if "id" is NaN
  *  - 500 error for database error
  */
-async function getAdherentById(req: Request, res: Response) {
+async function getMemberById(req: Request, res: Response) {
     // Check if req.params.id is a number
     await checkIdIsNotNaN(req.params.id)
         .then(() =>
@@ -152,5 +166,14 @@ async function deleteAdherentById(req: Request, res: Response) {
         .then((member) => res.status(204).json(member))
         .catch((err) => controllerErrorHandler(err, res));
 }
+
+const adherentController = {
+    getAllMembers,
+    getMemberById,
+    createAdherent,
+    deleteAdherentById,
+    updateAdherent,
+    checkExistingMember,
+};
 
 export default adherentController;

@@ -22,6 +22,11 @@ import {
 import Utilisateur from "../models/utilisateur.model";
 import { promisify } from "util";
 
+// Functions in this controller :
+//      login,
+//      forgetPassword,
+//      askNewPassword,
+
 /**
  * Login route
  * @param req
@@ -76,7 +81,7 @@ const login = async (req: Request, res: Response) => {
  * @param res
  * @returns
  */
-const forgetPassword = async (req, res) => {
+const forgetPassword = async (req: Request, res: Response) => {
     // Get POST parameters
     const username = req.body.nomUtilisateur || "";
 
@@ -112,7 +117,7 @@ const forgetPassword = async (req, res) => {
     });
 };
 
-const askNewPassword = async (req, res) => {
+const askNewPassword = async (req: Request, res: Response) => {
     // Get POST parameters
     const newPassword = req.body.password || "";
     const token = req.body.token || "";
@@ -126,7 +131,7 @@ const askNewPassword = async (req, res) => {
     });
 };
 
-const logout = async (req, res) => {
+const logout = async (req: Request, res: Response) => {
     // Get POST parameters
     const token = req.body.token || "";
 };

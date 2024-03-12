@@ -14,7 +14,7 @@
 
     <div class="flex flex-col gap-3 md:flex-row">
       <Wrapper class="flex-2 flex-col">
-        <h1 class="m-3 text-accent">Bonjour Hugo,</h1>
+        <h1 class="m-3 text-accent">Bonjour {{ user.prenom }},</h1>
         <Card>
           <CardHeader>
             <Icon name="star" />
@@ -34,7 +34,7 @@
               <span class="text-accent">Notifications</span>
             </CardHeader>
             <CardContent>
-              <Button> Coucou </Button>
+              <span class="text-muted-foreground">Vous êtes à jour</span>
             </CardContent>
           </Card>
         </Wrapper>
@@ -45,7 +45,7 @@
               <span class="text-accent">Prochains évènements </span>
             </CardHeader>
             <CardContent>
-              <Button>Coucou </Button>
+              <span class="text-muted-foreground">Aucun évènement à venir</span>
             </CardContent>
           </Card>
         </Wrapper>
@@ -55,5 +55,25 @@
 </template>
 
 <script setup lang="ts">
-import { CardContent } from '@/components/ui/card'
+import { ref } from 'vue'
+import axios from 'axios'
+import { useAuthStore } from '@/stores/authStore'
+
+const authStore = useAuthStore()
+
+const user = ref({
+  prenom: '',
+  nom: ''
+})
+
+axios
+  .get(`/utilisateur/${authStore.user_id}`)
+  .then((response) => {
+    console.log(response.data)
+    user.value.nom = response.data.adherent.nom
+    user.value.prenom = response.data.adherent.prenom
+  })
+  .catch((error) => {
+    console.log(error)
+  })
 </script>

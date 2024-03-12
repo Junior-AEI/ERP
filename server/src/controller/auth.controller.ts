@@ -1,6 +1,6 @@
-// Copyright (C) 2023 Nesrine ABID, Nadjime BARTEAU, Mathieu DUPOUX, Léo-Paul MAZIÈRE, Maël PAUL, Antoine RAOULT, Lisa VEILLAT, Marine VOVARD
+// Copyright (C) 2023 Nesrine ABID, Nadjime BARTEAU, Mathieu DUPOUX, Léo-Paul MAZIÈRE, Maël PAUL, Antoine RAOULT, Lisa VEILLAT, Marine VOletD
 
-// Authors: Nesrine ABID, Nadjime BARTEAU, Mathieu DUPOUX, Léo-Paul MAZIÈRE, Maël PAUL, Antoine RAOULT, Lisa VEILLAT, Marine VOVARD
+// Authors: Nesrine ABID, Nadjime BARTEAU, Mathieu DUPOUX, Léo-Paul MAZIÈRE, Maël PAUL, Antoine RAOULT, Lisa VEILLAT, Marine VOletD
 // Maintainer: contact@junior-aei.com
 
 // This file is part of LATIME.
@@ -20,47 +20,121 @@ import {
     JWT_SECRET_KEY,
 } from "../config/auth.config";
 import Utilisateur from "../models/utilisateur.model";
-import { controllerErrorHandler } from "./utils.controller";
+import { promisify } from "util";
+
+/**
+ * Login route
+ * @param req
+ * @param res
+ */
+const login = async (req: Request, res: Response) => {
+    // Get POST parameters
+    const username = req.body.nomUtilisateur || "";
+    const password = req.body.motDePasse || "";
+
+    // Try to fetch user
+    const user = await Utilisateur.findOne({
+        where: {
+            nomUtilisateur: username,
+        },
+    });
+
+    // Compare passwords
+    const match = await promisify(compare)(
+        password,
+        user ? user.motDePasse : "",
+    );
+
+    // If user not found or incorrect password then return an error
+    if (!user || !match) {
+        return res.status(401).json({
+            status: "error",
+            message: "Invalid username or password",
+        });
+    }
+
+    // Create a new JWT token
+    const token = await new SignJWT({ username: username })
+        .setProtectedHeader({ alg: "HS256" })
+        .setAudience(JWT_AUDIENCE)
+        .setIssuer(JWT_ISSUER)
+        .setExpirationTime(JWT_EXPIRATION)
+        .sign(JWT_SECRET_KEY);
+
+    // Return ok
+    return res.status(200).json({
+        status: "success",
+        token: token,
+        adherent_id: user.adherentId,
+        utilisateur_id: user.id,
+    });
+};
+
+/**
+ * Forget password route
+ * @param req
+ * @param res
+ * @returns
+ */
+const forgetPassword = async (req: Request, res: Response) => {
+    // Get POST parameters
+    const username = req.body.nomUtilisateur || "";
+
+    // Try to fetch user
+    const user = await Utilisateur.findOne({
+        where: {
+            nomUtilisateur: username,
+        },
+    });
+
+    function generateToken() {
+        const characters =
+            "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+        let key = "";
+        for (let i = 0; i < 16; i++) {
+            const randomIndex = Math.floor(Math.random() * characters.length);
+            key += characters.charAt(randomIndex);
+        }
+        return key;
+    }
+
+    // If user found then generate a random token
+    if (user) {
+        const token = generateToken();
+
+        // Here TODO : Add token to DB with validity time and link to the user
+        // Here TODO : Send an email with a link
+    }
+
+    // Return ok
+    return res.status(200).json({
+        status: "success",
+    });
+};
+
+const askNewPassword = async (req: Request, res: Response) => {
+    // Get POST parameters
+    const newPassword = req.body.password || "";
+    const token = req.body.token || "";
+
+    // TODO Here check validity of token in database and get linked uer
+    // TODO Declare a new password in  databse
+
+    // Return ok
+    return res.status(200).json({
+        status: "success",
+    });
+};
+
+const logout = async (req: Request, res: Response) => {
+    // Get POST parameters
+    const token = req.body.token || "";
+};
 
 const authController = {
     login,
+    forgetPassword,
+    askNewPassword,
 };
-
-async function login(req: Request, res: Response) {
-    const username = req.body.nomUtilisateur || "";
-    const password = req.body.motDePasse || "";
-    Utilisateur.findOne({ where: { nomUtilisateur: username } })
-        .then((user) => {
-            if (user) {
-                compare(password, user.motDePasse).then(async (result) => {
-                    if (result) {
-                        const token = await new SignJWT({ username: username })
-                            .setProtectedHeader({ alg: "HS256" })
-                            .setAudience(JWT_AUDIENCE)
-                            .setIssuer(JWT_ISSUER)
-                            .setExpirationTime(JWT_EXPIRATION)
-                            .sign(JWT_SECRET_KEY);
-                        return res.status(200).json({
-                            status: "success",
-                            token: token,
-                            adherent_id: user.adherentId,
-                            utilisateur_id: user.id,
-                        });
-                    } else {
-                        return res.status(401).json({
-                            status: "error",
-                            message: "Invalid username or password",
-                        });
-                    }
-                });
-            } else {
-                res.status(401).json({
-                    status: "error",
-                    message: "Invalid username or password",
-                });
-            }
-        })
-        .catch((err) => controllerErrorHandler(err, res));
-}
 
 export default authController;

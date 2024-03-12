@@ -14,6 +14,7 @@ export type Route = RouteRecordRaw & {
   meta: {
     icon: IconNames
     positionInSidebar?: PositionInSidebar
+    public?: boolean
   }
 }
 

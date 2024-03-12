@@ -1,19 +1,22 @@
 <template>
-  <Sidebar v-if="logedMode()" />
+  <Sidebar v-if="logedMode" />
   <div class="flex h-screen flex-1 flex-col overflow-y-scroll">
-    <Titlebar v-if="logedMode()" />
+    <Titlebar v-if="logedMode" />
     <RouterView class="flex flex-col p-6" v-auto-animate />
   </div>
 </template>
 
 <script setup lang="ts">
 import { RouterView, useRoute } from 'vue-router'
+import { watch, ref } from 'vue'
 
 const route = useRoute()
 
-const logedMode = () => {
-  return route.path !== '/login'
-}
+const logedMode = ref(false)
+
+watch(route, () => {
+  logedMode.value = route.path !== '/login'
+})
 </script>
 
 <style>

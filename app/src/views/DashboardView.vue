@@ -34,7 +34,7 @@
               <span class="text-accent">Notifications</span>
             </CardHeader>
             <CardContent>
-              <Button> Coucou </Button>
+              <span class="text-muted-foreground">Vous êtes à jour</span>
             </CardContent>
           </Card>
         </Wrapper>
@@ -45,7 +45,7 @@
               <span class="text-accent">Prochains évènements </span>
             </CardHeader>
             <CardContent>
-              <Button>Coucou </Button>
+              <span class="text-muted-foreground">Aucun évènement à venir</span>
             </CardContent>
           </Card>
         </Wrapper>

@@ -4,7 +4,7 @@
       <Icon name="chat" />
       <div class="flex flex-col">
         <span class="">{{ title }}</span>
-        <span class="text-xs text-primary/40">par {{ user }}, {{ day }} à {{ hour }}</span>
+        <span class="text-xs text-muted-foreground">par {{ user }}, {{ day }} à {{ hour }}</span>
       </div>
     </div>
     <Badge variant="outline" class="text-sm">Nouveau</Badge>
@@ -12,8 +12,6 @@
 </template>
 
 <script setup lang="ts">
-import { computed } from 'vue'
-
 const props = defineProps({
   title: {
     type: String,

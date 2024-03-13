@@ -55,13 +55,14 @@ export async function checkExistingId<M extends Model>(
  * @param res : Error status and message, 500 by default
  */
 export async function controllerErrorHandler(err: HttpError, res: Response) {
+    console.error(err);
     if (err.status === undefined) {
         err.status = 500;
     }
     if (err.message === undefined) {
         err.message = "Unknown error";
     }
-    res.status(err.status).json({
+    return res.status(err.status).json({
         status: err.status,
         message: err.message,
     });

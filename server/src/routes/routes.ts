@@ -16,7 +16,7 @@ import authRoutes from "./auth.route";
 import posteRoute from "./poste.route";
 import poleRoute from "./pole.route";
 import adresseRoute from "./adresse.route";
-import adherentRoute from "./adherent.route";
+import memberRoute from "./member.route";
 import entrepriseRoute from "./entreprise.route";
 import clientRoute from "./client.route";
 import documentRouter from "./document.route";
@@ -38,7 +38,7 @@ router.use(
     utilisateurRouter,
 );
 router.use("/adresse", getUsername, verifyAuthentication, adresseRoute);
-router.use("/adherent", getUsername, verifyAuthentication, adherentRoute);
+router.use("/adherent", getUsername, verifyAuthentication, memberRoute);
 router.use("/entreprise", getUsername, verifyAuthentication, entrepriseRoute);
 router.use("/client", getUsername, verifyAuthentication, clientRoute);
 router.use("/document", getUsername, verifyAuthentication, documentRouter);

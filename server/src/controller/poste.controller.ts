@@ -62,8 +62,8 @@ async function checkExistingPoste(req: Request): Promise<void> {
             ],
         },
     });
-    if (existingPoste !== null)
-        throw createHttpError(409, "Post already exist");
+    if (existingPoste !== null) console.log("Test");
+    throw createHttpError(409, "Post already exist");
 }
 
 /**

@@ -11,19 +11,19 @@
 
 // You should have received a copy of the GNU Affero General Public License along with LATIME. If not, see <https://www.gnu.org/licenses/>.
 import express from "express";
-import adherentController from "../controller/adherent.controller";
+import memberController from "../controller/member.controller";
 import { verifyPermission } from "../middlewares/permission.middleware";
 
 const router = express.Router();
 
-router.get("/", adherentController.getAllAdherents);
-router.get("/:id", adherentController.getAdherentById);
+router.get("/", memberController.getAllMembers);
+router.get("/:id", memberController.getMemberById);
 router.post(
     "/",
-    verifyPermission("createAdherent"),
-    adherentController.createAdherent,
+    verifyPermission("createMember"),
+    memberController.createMember,
 );
-router.put("/", adherentController.updateAdherent);
-router.delete("/:id", adherentController.deleteAdherentById);
+router.put("/", memberController.updateMember);
+router.delete("/:id", memberController.deleteMemberById);
 
 export default router;

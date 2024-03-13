@@ -21,7 +21,7 @@ import {
     BelongsTo,
     IsDate,
 } from "sequelize-typescript";
-import Adresse from "./adresse.model";
+import Adresse from "./address.model";
 
 @Table
 export default class Entreprise extends Model {

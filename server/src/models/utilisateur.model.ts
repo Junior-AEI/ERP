@@ -27,7 +27,7 @@ import {
     HasMany,
 } from "sequelize-typescript";
 import Poste from "./poste.model";
-import Adherent from "./adherent.model";
+import Adherent from "./member.model";
 import Permission from "./permission.model";
 
 @Table

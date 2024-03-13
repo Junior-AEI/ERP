@@ -15,7 +15,7 @@ import { hash } from "bcrypt";
 import { Op } from "sequelize";
 import createHttpError from "http-errors";
 import Utilisateur from "../models/utilisateur.model";
-import Adherent from "../models/adherent.model";
+import Adherent from "../models/member.model";
 import Poste from "../models/poste.model";
 import {
     checkExistingId,

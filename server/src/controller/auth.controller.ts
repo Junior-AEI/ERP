@@ -20,6 +20,7 @@ import {
     JWT_SECRET_KEY,
 } from "../config/auth.config";
 import Utilisateur from "../models/utilisateur.model";
+import Adherent from "../models/member.model";
 import { promisify } from "util";
 import { controllerErrorHandler } from "./utils.controller";
 
@@ -41,12 +42,18 @@ import { controllerErrorHandler } from "./utils.controller";
 const login = async (req: Request, res: Response) => {
     try {
         // Retrieve username and password from request body
-        const username = req.body.nomUtilisateur || "";
-        const password = req.body.motDePasse || "";
+        const username = req.body.username || "";
+        const password = req.body.password || "";
 
         // Find user in the database
         const user = await Utilisateur.findOne({
             where: { nomUtilisateur: username },
+            include: [
+                {
+                    model: Adherent,
+                    attributes: ["nom", "prenom"],
+                },
+            ],
         });
 
         // Return error if user not found
@@ -79,10 +86,12 @@ const login = async (req: Request, res: Response) => {
         // Return success with token and user details
         return res.status(200).json({
             status: "success",
-            token,
-            member_id: user.adherentId,
-            user_id: user.id,
+            userId: user.id,
+            memberId: user.adherentId,
             username: user.nomUtilisateur,
+            firstName: user.adherent.prenom,
+            lastName: user.adherent.nom,
+            token,
         });
     } catch (err: any) {
         // Handle errors
@@ -112,7 +121,7 @@ const forgetPassword = async (req: Request, res: Response) => {
         });
 
         // Function to generate random token
-        function generateToken() {
+        const generateToken = () => {
             const characters =
                 "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
             let token = "";
@@ -123,7 +132,7 @@ const forgetPassword = async (req: Request, res: Response) => {
                 token += characters.charAt(randomIndex);
             }
             return token;
-        }
+        };
 
         // If user is found, generate a random token
         if (user) {

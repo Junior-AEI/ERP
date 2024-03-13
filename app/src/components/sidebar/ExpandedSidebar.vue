@@ -1,7 +1,9 @@
 <template>
   <div class="flex w-full flex-col gap-3 px-6 py-5 sm:w-80">
     <div class="flex w-full justify-between">
-      <Link to="/profil" icon="person" :variant="matchRoute('/profil')">Hugo Bastien</Link>
+      <Link to="/profil" icon="person" :variant="matchRoute('/profil')"
+        >{{ user.firstName }} {{ user.lastName }}</Link
+      >
       <Button icon="chevron_left" size="icon" variant="link" @click="$emit('reduce')"></Button>
     </div>
 
@@ -74,6 +76,10 @@
 </template>
 
 <script setup lang="ts">
+import { useAuthStore } from '@/stores/authStore'
+
+const user = useAuthStore()
+
 defineEmits(['reduce', 'search', 'logout'])
 
 import useMatchRoute from '@/composables/useMatchRoute'

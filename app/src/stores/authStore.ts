@@ -7,23 +7,29 @@ export const useAuthStore = defineStore("auth", {
         if (localStorage.getItem("auth"))
             return JSON.parse(localStorage.getItem("auth") as string);
         return {
-            user_id: null,
-            adherent_id: null,
             token: null,
+            userId: null,
+            memberId: null,
+            username: null,
+            firstName: null,
+            lastName: null,
         };
     },
     actions: {
         login(username: string, password: string) {
             const request = axios.post('/login', {
-                nomUtilisateur: username,
-                motDePasse: password,
+                username: username,
+                password: password,
             });
             request
                 .then((response) => {
                     console.log(response.data)
                     this.token = response.data.token;
-                    this.user_id = response.data.utilisateur_id;
-                    this.adherent_id = response.data.adherent_id;
+                    this.userId = response.data.userId;
+                    this.memberId = response.data.memberId;
+                    this.username = response.data.username;
+                    this.firstName = response.data.firstName;
+                    this.lastName = response.data.lastName;
                 })
                 .catch((error) => {
                     console.log(error);
@@ -32,8 +38,13 @@ export const useAuthStore = defineStore("auth", {
         },
         logout() {
             this.token = null;
-            this.user_id = null;
-            this.adherent_id = null;
+            this.userId = null;
+            this.memberId = null;
+            this.username = null;
+            this.firstName = null;
+            this.lastName = null;
+            localStorage.removeItem("auth");
+            this.redirectToLogin();
         },
         redirectToLogin() {
             router.push({ path: "/login" });
@@ -59,9 +70,6 @@ export const useAuthStore = defineStore("auth", {
             }
             return null;
         },
-        getToken(): null | string {
-            return this.token;
-        },
         isAuthenticated(): boolean {
             if (this.token) {
                 const decodedToken = this.decodeJWT;
@@ -76,9 +84,6 @@ export const useAuthStore = defineStore("auth", {
                 }
             }
             return false;
-        },
-        getUser(): null | string {
-            return this.user_id;
-        },
+        }
     },
 });

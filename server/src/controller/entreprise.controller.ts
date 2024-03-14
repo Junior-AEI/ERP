@@ -10,23 +10,19 @@
 // LATIME is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more details.
 
 // You should have received a copy of the GNU Affero General Public License along with LATIME. If not, see <https://www.gnu.org/licenses/>.
-import { Request, Response } from "express";
-import Entreprise from "../models/entreprise.model";
-import {
-    checkExistingId,
-    checkIdIsNotNaN,
-    controllerErrorHandler,
-} from "./utils.controller";
-import { Op } from "sequelize";
-import createHttpError from "http-errors";
+import { Request, Response } from 'express'
+import Entreprise from '../models/entreprise.model'
+import { checkExistingId, checkIdIsNotNaN, controllerErrorHandler } from './utils.controller'
+import { Op } from 'sequelize'
+import createHttpError from 'http-errors'
 
 const entrepriseController = {
     getAllEntreprises,
     getEntrepriseById,
     createEntreprise,
     deleteEntrepriseById,
-    updateEntreprise,
-};
+    updateEntreprise
+}
 
 /**
  * Throws error if a company already exist in database
@@ -34,7 +30,7 @@ const entrepriseController = {
  */
 async function checkExistingEntreprise(req: Request): Promise<void> {
     // if id isn't given (case of new company creation), set it to "null" (avoid database error)
-    if (req.body.id === undefined) req.body.id = null;
+    if (req.body.id === undefined) req.body.id = null
 
     // Check is given company isn't already in database with another id
     const existingEntreprise = await Entreprise.findOne({
@@ -42,13 +38,12 @@ async function checkExistingEntreprise(req: Request): Promise<void> {
             [Op.and]: [
                 { [Op.not]: { id: req.body.id } },
                 {
-                    [Op.or]: [{ nom: req.body.nom }],
-                },
-            ],
-        },
-    });
-    if (existingEntreprise !== null)
-        throw createHttpError(409, "Company already exist");
+                    [Op.or]: [{ nom: req.body.nom }]
+                }
+            ]
+        }
+    })
+    if (existingEntreprise !== null) throw createHttpError(409, 'Company already exist')
 }
 
 /**
@@ -60,7 +55,7 @@ async function checkExistingEntreprise(req: Request): Promise<void> {
 async function getAllEntreprises(req: Request, res: Response) {
     await Entreprise.findAll()
         .then((entreprise) => res.status(200).json(entreprise))
-        .catch((err) => controllerErrorHandler(err, res));
+        .catch((err) => controllerErrorHandler(err, res))
 }
 
 /**
@@ -76,10 +71,10 @@ async function getEntrepriseById(req: Request, res: Response) {
     await checkIdIsNotNaN(req.params.id)
         .then(() =>
             // Find requested company by primary key (id)
-            Entreprise.findByPk(req.params.id),
+            Entreprise.findByPk(req.params.id)
         )
         .then((entreprise) => res.status(200).json(entreprise))
-        .catch((err) => controllerErrorHandler(err, res));
+        .catch((err) => controllerErrorHandler(err, res))
 }
 
 /**
@@ -95,13 +90,13 @@ async function createEntreprise(req: Request, res: Response) {
     await checkExistingEntreprise(req)
         .then(() => {
             // Clean useless creation and update dates if given (setup while creating company)
-            req.body.createdAt = null;
-            req.body.updatedAt = null;
+            req.body.createdAt = null
+            req.body.updatedAt = null
 
-            return Entreprise.create(req.body);
+            return Entreprise.create(req.body)
         })
         .then((entreprise) => res.status(201).json({ id: entreprise.id }))
-        .catch((err) => controllerErrorHandler(err, res));
+        .catch((err) => controllerErrorHandler(err, res))
 }
 
 /**
@@ -120,12 +115,12 @@ async function updateEntreprise(req: Request, res: Response) {
         .then(() => checkExistingEntreprise(req))
         .then(() => {
             // Clean useless update dates if given (setup while creating company)
-            req.body.updatedAt = null;
+            req.body.updatedAt = null
             // Update requested company with given body
-            return Entreprise.update(req.body, { where: { id: req.body.id } });
+            return Entreprise.update(req.body, { where: { id: req.body.id } })
         })
         .then((entreprise) => res.status(204).json(entreprise))
-        .catch((err) => controllerErrorHandler(err, res));
+        .catch((err) => controllerErrorHandler(err, res))
 }
 
 /**
@@ -142,10 +137,10 @@ async function deleteEntrepriseById(req: Request, res: Response) {
     await checkExistingId<Entreprise>(req.params.id, Entreprise)
         .then(() =>
             // Delete requested company by its id
-            Entreprise.destroy({ where: { id: req.params.id } }),
+            Entreprise.destroy({ where: { id: req.params.id } })
         )
         .then((entreprise) => res.status(204).json(entreprise))
-        .catch((err) => controllerErrorHandler(err, res));
+        .catch((err) => controllerErrorHandler(err, res))
 }
 
-export default entrepriseController;
+export default entrepriseController

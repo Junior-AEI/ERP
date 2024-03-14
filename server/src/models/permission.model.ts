@@ -21,11 +21,11 @@ import {
     Model,
     PrimaryKey,
     Table,
-    UpdatedAt,
-} from "sequelize-typescript";
-import Utilisateur from "./utilisateur.model";
+    UpdatedAt
+} from 'sequelize-typescript'
+import Utilisateur from './utilisateur.model'
 
-const PERMISSIONS = ["read", "write"];
+const PERMISSIONS = ['read', 'write']
 
 @Table
 export default class Permission extends Model {
@@ -33,41 +33,41 @@ export default class Permission extends Model {
     @Column({
         type: DataType.STRING,
         allowNull: false,
-        primaryKey: true,
+        primaryKey: true
     })
-    nomPermission!: string;
+    nomPermission!: string
 
     @IsIn([PERMISSIONS])
     @Column({
         type: DataType.ENUM,
         values: PERMISSIONS,
-        allowNull: false,
+        allowNull: false
     })
-    typePermission!: string;
+    typePermission!: string
 
     @ForeignKey(() => Utilisateur)
     @Column({
         type: DataType.INTEGER,
-        allowNull: false,
+        allowNull: false
     })
-    idUtilisateur!: number;
+    idUtilisateur!: number
 
     @BelongsTo(() => Utilisateur)
-    utilisateur!: Utilisateur;
+    utilisateur!: Utilisateur
 
     @IsDate
     @CreatedAt
     @Column({
         type: DataType.DATE,
-        allowNull: false,
+        allowNull: false
     })
-    createdAt!: Date;
+    createdAt!: Date
 
     @IsDate
     @UpdatedAt
     @Column({
         type: DataType.DATE,
-        allowNull: false,
+        allowNull: false
     })
-    updatedAt!: Date;
+    updatedAt!: Date
 }

@@ -10,15 +10,15 @@
 // LATIME is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more details.
 
 // You should have received a copy of the GNU Affero General Public License along with LATIME. If not, see <https://www.gnu.org/licenses/>.
-import express from "express";
-import clientController from "../controller/client.controller";
+import express from 'express'
+import clientController from '../controller/client.controller'
 
-const router = express.Router();
+const router = express.Router()
 
-router.get("/", clientController.getAllClients);
-router.get("/:id", clientController.getClientById);
-router.post("/", clientController.createClient);
-router.put("/", clientController.updateClient);
-router.delete("/:id", clientController.deleteClientById);
+router.get('/', clientController.getAllClients)
+router.get('/:id', clientController.getClientById)
+router.post('/', clientController.createClient)
+router.put('/', clientController.updateClient)
+router.delete('/:id', clientController.deleteClientById)
 
-export default router;
+export default router

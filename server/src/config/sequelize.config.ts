@@ -3,21 +3,21 @@
  * Must be build after each modification and before any execution or building
  */
 
-import { config } from "dotenv";
-import { SequelizeOptions } from "sequelize-typescript";
-config();
+import { config } from 'dotenv'
+import { SequelizeOptions } from 'sequelize-typescript'
+config()
 
 const configuration: { [key: string]: SequelizeOptions } = {
     // Dev database configuration (SQLite)
     dev: {
-        storage: "database/database.sqlite",
-        dialect: "sqlite",
-        models: [__dirname + "/../models"],
+        storage: 'database/database.sqlite',
+        dialect: 'sqlite',
+        models: [__dirname + '/../models']
     },
     // Test database configuration (SQLite)
     test: {
-        storage: "tests/dbTest.sqlite",
-        dialect: "sqlite",
+        storage: 'tests/dbTest.sqlite',
+        dialect: 'sqlite'
     },
 
     // Prod database server configuration (from .env file)
@@ -26,9 +26,9 @@ const configuration: { [key: string]: SequelizeOptions } = {
         password: process.env.DB_PASSWORD,
         database: process.env.DB,
         host: process.env.DB_HOST,
-        dialect: "mysql",
-    },
-};
+        dialect: 'mysql'
+    }
+}
 
 // export with "=" version for CommonJS version building of sequelize.config.js (module.exports)
-export = configuration;
+export = configuration

@@ -12,7 +12,7 @@
         "test_ui": "vitest --ui",
         "coverage": "vitest --config ./vitest.config.ts run --coverage",
         "lint": "eslint --fix .",
-        "format": "prettier --write ."
+        "format": "prettier --log-level warn --write ."
     },
     "keywords": [],
     "author": "",

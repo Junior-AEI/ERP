@@ -26,37 +26,37 @@ import {
     IsNumeric,
     Max,
     Min,
-    HasOne,
-} from "sequelize-typescript";
-import validator from "validator";
-import Adresse from "./address.model";
-import Utilisateur from "./utilisateur.model";
+    HasOne
+} from 'sequelize-typescript'
+import validator from 'validator'
+import Adresse from './address.model'
+import Utilisateur from './utilisateur.model'
 
-const GENDER = ["F", "M", "O"];
-const PAYMENTS = ["Esp", "CB", "Vir", "Lydia"];
-const COURSES = ["Info", "Elec", "Telecom", "Matmeca", "R&I", "SEE"];
+const GENDER = ['F', 'M', 'O']
+const PAYMENTS = ['Esp', 'CB', 'Vir', 'Lydia']
+const COURSES = ['Info', 'Elec', 'Telecom', 'Matmeca', 'R&I', 'SEE']
 
 @Table
 export default class Adherent extends Model {
     @Column({
         type: DataType.STRING,
-        allowNull: false,
+        allowNull: false
     })
-    nom!: string;
+    nom!: string
 
     @Column({
         type: DataType.STRING,
-        allowNull: false,
+        allowNull: false
     })
-    prenom!: string;
+    prenom!: string
 
     @IsIn([GENDER])
     @Column({
         type: DataType.ENUM,
         values: GENDER,
-        allowNull: false,
+        allowNull: false
     })
-    sexe!: string;
+    sexe!: string
 
     @Column({
         type: DataType.STRING,
@@ -64,34 +64,34 @@ export default class Adherent extends Model {
         validate: {
             checkPhone(str: string) {
                 if (!validator.isMobilePhone(str)) {
-                    throw new Error("Invalid phone number");
+                    throw new Error('Invalid phone number')
                 }
-            },
-        },
+            }
+        }
     })
-    telephoneMobile!: string;
+    telephoneMobile!: string
 
     @IsEmail
     @Column({
         type: DataType.STRING,
-        allowNull: false,
+        allowNull: false
     })
-    email!: string;
+    email!: string
 
     @IsDate
     @NotEmpty
     @Column({
         type: DataType.DATE,
-        allowNull: false,
+        allowNull: false
     })
-    dateNaissance!: Date;
+    dateNaissance!: Date
 
     @NotEmpty
     @Column({
         type: DataType.STRING,
-        allowNull: false,
+        allowNull: false
     })
-    lieuNaissance!: string;
+    lieuNaissance!: string
 
     @Column({
         type: DataType.STRING,
@@ -99,70 +99,70 @@ export default class Adherent extends Model {
         validate: {
             checkCountry(str: string) {
                 if (!validator.isISO31661Alpha3(str)) {
-                    throw new Error("Invalid country code");
+                    throw new Error('Invalid country code')
                 }
-            },
-        },
+            }
+        }
     })
-    nationalite!: string;
+    nationalite!: string
 
     @IsNumeric
     @Max(9999)
     @Min(1920)
     @Column({
         type: DataType.STRING(4),
-        allowNull: false,
+        allowNull: false
     })
-    promotion!: string;
+    promotion!: string
 
     @IsDate
     @Column({
         type: DataType.DATE,
-        allowNull: false,
+        allowNull: false
     })
-    dateCotisation!: Date;
+    dateCotisation!: Date
 
     @IsIn([PAYMENTS])
     @Column({
         type: DataType.ENUM,
-        values: PAYMENTS,
+        values: PAYMENTS
     })
-    moyenPaiement!: string;
+    moyenPaiement!: string
 
     @IsIn([COURSES])
     @Column({
         type: DataType.ENUM,
         allowNull: false,
-        values: COURSES,
+        values: COURSES
     })
-    filiere!: string;
+    filiere!: string
 
     @ForeignKey(() => Adresse)
     @Column({
         type: DataType.INTEGER,
-        allowNull: false,
+        allowNull: false
     })
-    adresseId!: number;
+    adresseId!: number
 
     @BelongsTo(() => Adresse)
-    adresse!: Adresse;
+    adresse!: Adresse
 
     @IsDate
     @CreatedAt
     @Column({
         type: DataType.DATE,
-        allowNull: false,
+        allowNull: false
     })
-    createdAt!: Date;
+    createdAt!: Date
 
     @HasOne(() => Utilisateur)
-    utilisateur!: Utilisateur;
+    utilisateur!: Utilisateur
 
     @IsDate
     @UpdatedAt
     @Column({
         type: DataType.DATE,
-        allowNull: false,
+        allowNull: false
     })
-    updatedAt!: Date;
+    updatedAt!: Date
 }

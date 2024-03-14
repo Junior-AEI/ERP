@@ -10,34 +10,34 @@
 // LATIME is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more details.
 
 // You should have received a copy of the GNU Affero General Public License along with LATIME. If not, see <https://www.gnu.org/licenses/>.
-import type { Migration } from "../../src/migrations/umzug";
-import { DataType } from "sequelize-typescript";
-import validator from "validator";
+import type { Migration } from '../../src/migrations/umzug'
+import { DataType } from 'sequelize-typescript'
+import validator from 'validator'
 export const up: Migration = async ({ context: sequelize }) => {
-    await sequelize.getQueryInterface().createTable("Clients", {
+    await sequelize.getQueryInterface().createTable('Clients', {
         id: {
             type: DataType.INTEGER,
             allowNull: false,
             primaryKey: true,
             autoIncrement: true,
-            field: "id",
+            field: 'id'
         },
         nom: {
             type: DataType.STRING,
             allowNull: false,
-            field: "nom",
+            field: 'nom'
         },
         prenom: {
             type: DataType.STRING,
             allowNull: false,
-            field: "prenom",
+            field: 'prenom'
         },
         sexe: {
             type: DataType.ENUM,
-            values: ["F", "M", "O"],
+            values: ['F', 'M', 'O'],
             allowNull: false,
-            validate: { isIn: [["F", "M", "O"]] },
-            field: "sexe",
+            validate: { isIn: [['F', 'M', 'O']] },
+            field: 'sexe'
         },
         telephoneMobile: {
             type: DataType.STRING,
@@ -45,22 +45,22 @@ export const up: Migration = async ({ context: sequelize }) => {
             validate: {
                 checkPhone(str: string) {
                     if (!validator.isMobilePhone(str)) {
-                        throw new Error("Invalid phone number");
+                        throw new Error('Invalid phone number')
                     }
-                },
+                }
             },
-            field: "telephoneMobile",
+            field: 'telephoneMobile'
         },
         email: {
             type: DataType.STRING,
             allowNull: false,
             validate: { isEmail: true },
-            field: "email",
+            field: 'email'
         },
         fonction: {
             type: DataType.STRING,
             allowNull: false,
-            field: "fonction",
+            field: 'fonction'
         },
         telephoneFixe: {
             type: DataType.STRING,
@@ -68,35 +68,35 @@ export const up: Migration = async ({ context: sequelize }) => {
             validate: {
                 checkPhone(str: string) {
                     if (!validator.isMobilePhone(str)) {
-                        throw new Error("Invalid phone number");
+                        throw new Error('Invalid phone number')
                     }
-                },
+                }
             },
-            field: "telephoneFixe",
+            field: 'telephoneFixe'
         },
         entrepriseId: {
             type: DataType.INTEGER,
             allowNull: false,
-            field: "entrepriseId",
-            references: { model: "Entreprises", key: "id" },
-            onDelete: "NO ACTION",
-            onUpdate: "CASCADE",
+            field: 'entrepriseId',
+            references: { model: 'Entreprises', key: 'id' },
+            onDelete: 'NO ACTION',
+            onUpdate: 'CASCADE'
         },
         createdAt: {
             type: DataType.DATE,
             allowNull: false,
             validate: { isDate: true },
-            field: "createdAt",
+            field: 'createdAt'
         },
         updatedAt: {
             type: DataType.DATE,
             allowNull: false,
             validate: { isDate: true },
-            field: "updatedAt",
-        },
-    });
-};
+            field: 'updatedAt'
+        }
+    })
+}
 
 export const down: Migration = async ({ context: sequelize }) => {
-    await sequelize.getQueryInterface().dropTable("Clients");
-};
+    await sequelize.getQueryInterface().dropTable('Clients')
+}

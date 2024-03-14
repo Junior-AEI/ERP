@@ -19,9 +19,9 @@ import {
     UpdatedAt,
     NotEmpty,
     PrimaryKey,
-    IsDate,
-} from "sequelize-typescript";
-import validator from "validator";
+    IsDate
+} from 'sequelize-typescript'
+import validator from 'validator'
 
 @Table
 export default class Adresse extends Model {
@@ -30,28 +30,28 @@ export default class Adresse extends Model {
         type: DataType.INTEGER,
         allowNull: false,
         primaryKey: true,
-        autoIncrement: true,
+        autoIncrement: true
     })
-    id!: number;
+    id!: number
 
     @NotEmpty
     @Column({
         type: DataType.STRING,
-        allowNull: false,
+        allowNull: false
     })
-    adresse!: string;
+    adresse!: string
 
     @Column({
-        type: DataType.STRING,
+        type: DataType.STRING
     })
-    complementAdresse!: string;
+    complementAdresse!: string
 
     @NotEmpty
     @Column({
         type: DataType.STRING,
-        allowNull: false,
+        allowNull: false
     })
-    ville!: string;
+    ville!: string
 
     @NotEmpty
     @Column({
@@ -59,13 +59,13 @@ export default class Adresse extends Model {
         allowNull: false,
         validate: {
             checkPostalCode(pc: string) {
-                if (!validator.isPostalCode(pc, "any")) {
-                    throw new Error("Invalid postal code !");
+                if (!validator.isPostalCode(pc, 'any')) {
+                    throw new Error('Invalid postal code !')
                 }
-            },
-        },
+            }
+        }
     })
-    codePostal!: string;
+    codePostal!: string
 
     @NotEmpty
     @Column({
@@ -74,24 +74,24 @@ export default class Adresse extends Model {
         validate: {
             checkCountry(c: string) {
                 if (!validator.isISO31661Alpha3(c)) {
-                    throw new Error("Invalid country code");
+                    throw new Error('Invalid country code')
                 }
-            },
-        },
+            }
+        }
     })
-    pays!: string;
+    pays!: string
 
     @IsDate
     @CreatedAt
     @Column({
-        type: DataType.DATE,
+        type: DataType.DATE
     })
-    createdAt!: Date;
+    createdAt!: Date
 
     @IsDate
     @UpdatedAt
     @Column({
-        type: DataType.DATE,
+        type: DataType.DATE
     })
-    updatedAt!: Date;
+    updatedAt!: Date
 }

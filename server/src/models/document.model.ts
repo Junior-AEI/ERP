@@ -20,9 +20,9 @@ import {
     HasMany,
     IsDate,
     CreatedAt,
-    UpdatedAt,
-} from "sequelize-typescript";
-import Fichier from "./fichier.model";
+    UpdatedAt
+} from 'sequelize-typescript'
+import Fichier from './fichier.model'
 @Table
 export default class Document extends Model {
     @PrimaryKey
@@ -30,33 +30,33 @@ export default class Document extends Model {
         type: DataType.INTEGER,
         allowNull: false,
         primaryKey: true,
-        autoIncrement: true,
+        autoIncrement: true
     })
-    id!: number;
+    id!: number
 
     @NotEmpty
     @Column({
         type: DataType.STRING,
-        allowNull: false,
+        allowNull: false
     })
-    nom!: string;
+    nom!: string
 
     @HasMany(() => Fichier)
-    versions!: Fichier[];
+    versions!: Fichier[]
 
     @IsDate
     @CreatedAt
     @Column({
         type: DataType.DATE,
-        allowNull: false,
+        allowNull: false
     })
-    createdAt!: Date;
+    createdAt!: Date
 
     @IsDate
     @UpdatedAt
     @Column({
         type: DataType.DATE,
-        allowNull: false,
+        allowNull: false
     })
-    updatedAt!: Date;
+    updatedAt!: Date
 }

@@ -10,36 +10,34 @@
 // LATIME is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more details.
 
 // You should have received a copy of the GNU Affero General Public License along with LATIME. If not, see <https://www.gnu.org/licenses/>.
-import type { Seeder } from "../../src/migrations/umzug";
+import type { Seeder } from '../../src/migrations/umzug'
 
 const adresses = [
     {
         id: 1,
-        adresse: "999 rue des cerberes",
-        complementAdresse: "appt. 2",
-        ville: "Enfer",
-        codePostal: "66 666",
-        pays: "FRA",
+        adresse: '999 rue des cerberes',
+        complementAdresse: 'appt. 2',
+        ville: 'Enfer',
+        codePostal: '66 666',
+        pays: 'FRA',
         createdAt: new Date(),
-        updatedAt: new Date(),
+        updatedAt: new Date()
     },
     {
         id: 2,
-        adresse: "222 rue des tulipes",
+        adresse: '222 rue des tulipes',
         complementAdresse: null,
-        ville: "Paradis",
-        codePostal: "11 111",
-        pays: "FRA",
+        ville: 'Paradis',
+        codePostal: '11 111',
+        pays: 'FRA',
         createdAt: new Date(),
-        updatedAt: new Date(),
-    },
-];
+        updatedAt: new Date()
+    }
+]
 
 export const up: Seeder = async ({ context: sequelize }) => {
-    await sequelize.getQueryInterface().bulkInsert("Adresses", adresses);
-};
+    await sequelize.getQueryInterface().bulkInsert('Adresses', adresses)
+}
 export const down: Seeder = async ({ context: sequelize }) => {
-    await sequelize
-        .getQueryInterface()
-        .bulkDelete("Adresses", { id: adresses.map((p) => p.id) });
-};
+    await sequelize.getQueryInterface().bulkDelete('Adresses', { id: adresses.map((p) => p.id) })
+}

@@ -10,15 +10,11 @@
 // LATIME is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more details.
 
 // You should have received a copy of the GNU Affero General Public License along with LATIME. If not, see <https://www.gnu.org/licenses/>.
-import { Request, Response } from "express";
-import Adresse from "../models/address.model";
-import { Op } from "sequelize";
-import {
-    checkExistingId,
-    checkIdIsNotNaN,
-    controllerErrorHandler,
-} from "./utils.controller";
-import createHttpError from "http-errors";
+import { Request, Response } from 'express'
+import Adresse from '../models/address.model'
+import { Op } from 'sequelize'
+import { checkExistingId, checkIdIsNotNaN, controllerErrorHandler } from './utils.controller'
+import createHttpError from 'http-errors'
 
 // TODO: Setup validator ("express-validator" package?) to verify whole body
 
@@ -41,7 +37,7 @@ import createHttpError from "http-errors";
 async function checkExistingAddress(req: Request, res: Response) {
     try {
         // If id isn't given (case of new address creation), set it to "null" (avoid database error)
-        if (req.body.id === undefined) req.body.id = null;
+        if (req.body.id === undefined) req.body.id = null
 
         // Check if the given address already exists in the database with another id
         const existingAddress = await Adresse.findOne({
@@ -54,22 +50,20 @@ async function checkExistingAddress(req: Request, res: Response) {
                             { complementAdresse: req.body.complementAdresse },
                             { ville: req.body.ville },
                             { codePostal: req.body.codePostal },
-                            { pays: req.body.pays },
-                        ],
-                    },
-                ],
-            },
-        });
+                            { pays: req.body.pays }
+                        ]
+                    }
+                ]
+            }
+        })
 
         // If the address already exists, throw an error
         if (existingAddress !== null) {
-            return res
-                .status(409)
-                .json({ status: "error", message: "Address already exists" });
+            return res.status(409).json({ status: 'error', message: 'Address already exists' })
         }
     } catch (err: any) {
         // Handle errors
-        return controllerErrorHandler(err, res);
+        return controllerErrorHandler(err, res)
     }
 }
 
@@ -81,11 +75,11 @@ async function checkExistingAddress(req: Request, res: Response) {
  */
 async function getAllAddresses(req: Request, res: Response) {
     try {
-        const addresses = await Adresse.findAll();
-        return res.status(200).json(addresses);
+        const addresses = await Adresse.findAll()
+        return res.status(200).json(addresses)
     } catch (err: any) {
         // Handle errors
-        return controllerErrorHandler(err, res);
+        return controllerErrorHandler(err, res)
     }
 }
 
@@ -100,17 +94,15 @@ async function getAllAddresses(req: Request, res: Response) {
 async function getAddressById(req: Request, res: Response) {
     try {
         // Check if req.params.id is not NaN
-        await checkIdIsNotNaN(req.params.id).catch((err) =>
-            controllerErrorHandler(err, res),
-        );
+        await checkIdIsNotNaN(req.params.id).catch((err) => controllerErrorHandler(err, res))
 
         // Find requested member by primary key (id)
-        const address = await Adresse.findByPk(req.params.id);
+        const address = await Adresse.findByPk(req.params.id)
 
         // Return the found member
-        return res.status(200).json(address);
+        return res.status(200).json(address)
     } catch (err: any) {
-        return controllerErrorHandler(err, res); // Handle any errors
+        return controllerErrorHandler(err, res) // Handle any errors
     }
 }
 /**
@@ -125,20 +117,20 @@ async function getAddressById(req: Request, res: Response) {
 async function createAddress(req: Request, res: Response) {
     try {
         // Check if existing member
-        await checkExistingAddress(req, res);
+        await checkExistingAddress(req, res)
 
         // Clean useless creation and update dates if given (setup while creating address)
-        req.body.createdAt = null;
-        req.body.updatedAt = null;
+        req.body.createdAt = null
+        req.body.updatedAt = null
 
         // Create new address
-        const member = await Adresse.create(req.body);
+        const member = await Adresse.create(req.body)
 
         // Return success
-        return res.status(201).json({ id: member.id });
+        return res.status(201).json({ id: member.id })
     } catch (err: any) {
         // Handle errors
-        return controllerErrorHandler(err, res);
+        return controllerErrorHandler(err, res)
     }
 }
 
@@ -154,22 +146,22 @@ async function createAddress(req: Request, res: Response) {
 async function updateAddress(req: Request, res: Response) {
     try {
         // Check if given address is not empty and if given address or address id doesn't already exist
-        await checkExistingId<Adresse>(req.body.id, Adresse);
-        await checkExistingAddress(req, res);
+        await checkExistingId<Adresse>(req.body.id, Adresse)
+        await checkExistingAddress(req, res)
 
         // Clean useless update dates if given (setup while creating address)
-        req.body.updatedAt = null;
+        req.body.updatedAt = null
 
         // Update requested member with given body
         const address = await Adresse.update(req.body, {
-            where: { id: req.body.id },
-        });
+            where: { id: req.body.id }
+        })
 
         // Return confirmation
-        return res.status(204).json(address);
+        return res.status(204).json(address)
     } catch (err: any) {
         // Handle errors
-        return controllerErrorHandler(err, res);
+        return controllerErrorHandler(err, res)
     }
 }
 
@@ -185,16 +177,16 @@ async function updateAddress(req: Request, res: Response) {
 async function deleteAddressById(req: Request, res: Response) {
     try {
         // Check if requested address id exist in database
-        await checkExistingId<Adresse>(req.params.id, Adresse);
+        await checkExistingId<Adresse>(req.params.id, Adresse)
 
         // Delete requested member by its id
-        await Adresse.destroy({ where: { id: req.params.id } });
+        await Adresse.destroy({ where: { id: req.params.id } })
 
         // Return confirmation
-        return res.status(204).json();
+        return res.status(204).json()
     } catch (err: any) {
         // Handle errors
-        return controllerErrorHandler(err, res);
+        return controllerErrorHandler(err, res)
     }
 }
 
@@ -203,7 +195,7 @@ const AddressController = {
     getAddressById,
     createAddress,
     updateAddress,
-    deleteAddressById,
-};
+    deleteAddressById
+}
 
-export default AddressController;
+export default AddressController

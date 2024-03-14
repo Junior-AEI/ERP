@@ -10,23 +10,19 @@
 // LATIME is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more details.
 
 // You should have received a copy of the GNU Affero General Public License along with LATIME. If not, see <https://www.gnu.org/licenses/>.
-import type { Migration } from "../../src/migrations/umzug";
-import { DataType } from "sequelize-typescript";
+import type { Migration } from '../../src/migrations/umzug'
+import { DataType } from 'sequelize-typescript'
 
 export const up: Migration = async ({ context: sequelize }) => {
-    await sequelize
-        .getQueryInterface()
-        .addColumn("Utilisateurs", "adherentId", {
-            type: DataType.INTEGER,
-            allowNull: true,
-            field: "adherentId",
-            references: { model: "Adherents", key: "id" },
-            onDelete: "CASCADE",
-            onUpdate: "CASCADE",
-        });
-};
+    await sequelize.getQueryInterface().addColumn('Utilisateurs', 'adherentId', {
+        type: DataType.INTEGER,
+        allowNull: true,
+        field: 'adherentId',
+        references: { model: 'Adherents', key: 'id' },
+        onDelete: 'CASCADE',
+        onUpdate: 'CASCADE'
+    })
+}
 export const down: Migration = async ({ context: sequelize }) => {
-    await sequelize
-        .getQueryInterface()
-        .removeColumn("Utilisateurs", "adherentId");
-};
+    await sequelize.getQueryInterface().removeColumn('Utilisateurs', 'adherentId')
+}

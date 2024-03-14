@@ -10,47 +10,47 @@
 // LATIME is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more details.
 
 // You should have received a copy of the GNU Affero General Public License along with LATIME. If not, see <https://www.gnu.org/licenses/>.
-import type { Migration } from "../../src/migrations/umzug";
-import { DataType } from "sequelize-typescript";
-import validator from "validator";
+import type { Migration } from '../../src/migrations/umzug'
+import { DataType } from 'sequelize-typescript'
+import validator from 'validator'
 
 export const up: Migration = async ({ context: sequelize }) => {
-    await sequelize.getQueryInterface().createTable("Adresses", {
+    await sequelize.getQueryInterface().createTable('Adresses', {
         id: {
             type: DataType.INTEGER,
             allowNull: false,
             primaryKey: true,
             autoIncrement: true,
-            field: "id",
+            field: 'id'
         },
         adresse: {
             type: DataType.STRING,
             allowNull: false,
             validate: { notEmpty: true },
-            field: "adresse",
+            field: 'adresse'
         },
         complementAdresse: {
             type: DataType.STRING,
-            field: "complementAdresse",
+            field: 'complementAdresse'
         },
         ville: {
             type: DataType.STRING,
             allowNull: false,
             validate: { notEmpty: true },
-            field: "ville",
+            field: 'ville'
         },
         codePostal: {
             type: DataType.STRING,
             allowNull: false,
             validate: {
                 checkPostalCode(pc: string) {
-                    if (!validator.isPostalCode(pc, "any")) {
-                        throw new Error("Invalid postal code !");
+                    if (!validator.isPostalCode(pc, 'any')) {
+                        throw new Error('Invalid postal code !')
                     }
                 },
-                notEmpty: true,
+                notEmpty: true
             },
-            field: "codePostal",
+            field: 'codePostal'
         },
         pays: {
             type: DataType.STRING,
@@ -58,26 +58,26 @@ export const up: Migration = async ({ context: sequelize }) => {
             validate: {
                 checkCountry(c: string) {
                     if (!validator.isISO31661Alpha3(c)) {
-                        throw new Error("Invalid country code");
+                        throw new Error('Invalid country code')
                     }
                 },
-                notEmpty: true,
+                notEmpty: true
             },
-            field: "pays",
+            field: 'pays'
         },
         createdAt: {
             type: DataType.DATE,
             validate: { isDate: true },
-            field: "createdAt",
+            field: 'createdAt'
         },
         updatedAt: {
             type: DataType.DATE,
             validate: { isDate: true },
-            field: "updatedAt",
-        },
-    });
-};
+            field: 'updatedAt'
+        }
+    })
+}
 
 export const down: Migration = async ({ context: sequelize }) => {
-    await sequelize.getQueryInterface().dropTable("Adresses");
-};
+    await sequelize.getQueryInterface().dropTable('Adresses')
+}

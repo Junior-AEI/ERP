@@ -20,9 +20,9 @@ import {
     NotEmpty,
     PrimaryKey,
     Table,
-    UpdatedAt,
-} from "sequelize-typescript";
-import Poste from "./poste.model";
+    UpdatedAt
+} from 'sequelize-typescript'
+import Poste from './poste.model'
 
 @Table
 export default class Pole extends Model<Pole> {
@@ -30,26 +30,26 @@ export default class Pole extends Model<Pole> {
     @NotEmpty
     @Column({
         type: DataType.STRING,
-        allowNull: false,
+        allowNull: false
     })
-    nom!: string;
+    nom!: string
 
     @HasMany(() => Poste)
-    postes!: Poste[];
+    postes!: Poste[]
 
     @IsDate
     @CreatedAt
     @Column({
         type: DataType.DATE,
-        allowNull: false,
+        allowNull: false
     })
-    createdAt!: Date;
+    createdAt!: Date
 
     @IsDate
     @UpdatedAt
     @Column({
         type: DataType.DATE,
-        allowNull: false,
+        allowNull: false
     })
-    updatedAt!: Date;
+    updatedAt!: Date
 }

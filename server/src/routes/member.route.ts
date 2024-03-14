@@ -10,20 +10,16 @@
 // LATIME is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more details.
 
 // You should have received a copy of the GNU Affero General Public License along with LATIME. If not, see <https://www.gnu.org/licenses/>.
-import express from "express";
-import memberController from "../controller/member.controller";
-import { verifyPermission } from "../middlewares/permission.middleware";
+import express from 'express'
+import memberController from '../controller/member.controller'
+import { verifyPermission } from '../middlewares/permission.middleware'
 
-const router = express.Router();
+const router = express.Router()
 
-router.get("/", memberController.getAllMembers);
-router.get("/:id", memberController.getMemberById);
-router.post(
-    "/",
-    verifyPermission("createMember"),
-    memberController.createMember,
-);
-router.put("/", memberController.updateMember);
-router.delete("/:id", memberController.deleteMemberById);
+router.get('/', memberController.getAllMembers)
+router.get('/:id', memberController.getMemberById)
+router.post('/', verifyPermission('createMember'), memberController.createMember)
+router.put('/', memberController.updateMember)
+router.delete('/:id', memberController.deleteMemberById)
 
-export default router;
+export default router

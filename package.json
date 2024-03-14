@@ -1,11 +1,13 @@
 {
     "devDependencies": {
+        "eslint-config-prettier": "^9.1.0",
+        "eslint-plugin-prettier": "^5.1.3",
         "husky": "^8.0.3"
     },
     "scripts": {
         "prepare": "husky install",
         "format:app": "cd app && npm run format ; cd ..",
-        "format": "npm run format:app",
+        "format": "prettier --write .",
         "lint:app": "cd app && npm run lint ; cd ..",
         "lint:server": "cd server && npm run lint ; cd ..",
         "lint": "npm run lint:app && npm run lint:server",

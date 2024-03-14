@@ -7,7 +7,8 @@
     "scripts": {
         "prepare": "husky install",
         "format:app": "cd app && npm run format ; cd ..",
-        "format": "prettier --write .",
+        "format:server": "cd server && npm run format ; cd ..",
+        "format": "npm run format:app && npm run format:server",
         "lint:app": "cd app && npm run lint ; cd ..",
         "lint:server": "cd server && npm run lint ; cd ..",
         "lint": "npm run lint:app && npm run lint:server",

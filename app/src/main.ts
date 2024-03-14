@@ -33,16 +33,16 @@ registerModule(demandeNFGModule)
 
 import { createPinia } from 'pinia'
 
-const pinia = createPinia();
+const pinia = createPinia()
 app.use(pinia)
 
 watch(
-    pinia.state,
-    (state) => {
-        localStorage.setItem("auth", JSON.stringify(state.auth));
-    },
-    { deep: true }
-);
+  pinia.state,
+  (state) => {
+    localStorage.setItem('auth', JSON.stringify(state.auth))
+  },
+  { deep: true }
+)
 
 /* Définition du router */
 
@@ -60,16 +60,15 @@ const authStore = useAuthStore()
 
 import axios from 'axios'
 import { useAuthStore } from './stores/authStore'
-axios.defaults.baseURL = import.meta.env.VITE_API_URL;
+axios.defaults.baseURL = import.meta.env.VITE_API_URL
 axios.interceptors.request.use(
-    (config) => {
-        config.headers["Authorization"] = `Bearer ${authStore.token}`;
-        return config;
-    },
-    (error) => {
-        return Promise.reject(error);
-    }
-);
-
+  (config) => {
+    config.headers['Authorization'] = `Bearer ${authStore.token}`
+    return config
+  },
+  (error) => {
+    return Promise.reject(error)
+  }
+)
 
 app.mount('#app')

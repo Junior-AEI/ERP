@@ -5,7 +5,6 @@ import DashboardView from '../views/DashboardView.vue'
 import type { Route } from '@/types'
 import { useAuthStore } from '@/stores/authStore'
 
-
 const modules: Array<Route> = []
 
 const router = createRouter({
@@ -42,7 +41,6 @@ const router = createRouter({
       meta: {
         icon: 'login',
         public: true
-
       }
     },
     {
@@ -50,13 +48,12 @@ const router = createRouter({
       name: 'NotFound',
       component: () => import('../views/NotFound.vue'),
       meta: {
-        icon: 'troubleshoot',
+        icon: 'troubleshoot'
       }
     },
     ...modules
   ]
 })
-
 
 const isPublicRoute = (route: Route | RouteLocationNormalized) => {
   return route.meta.public || false

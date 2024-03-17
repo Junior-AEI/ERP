@@ -14,7 +14,7 @@ import { Request, Response } from 'express'
 import Adresse from '../models/address.model'
 import { Op } from 'sequelize'
 import { checkExistingId, checkIdIsNotNaN, controllerErrorHandler } from './utils.controller'
-import createHttpError from 'http-errors'
+import { HttpError } from 'http-errors'
 
 // TODO: Setup validator ("express-validator" package?) to verify whole body
 
@@ -61,9 +61,12 @@ async function checkExistingAddress(req: Request, res: Response) {
         if (existingAddress !== null) {
             return res.status(409).json({ status: 'error', message: 'Address already exists' })
         }
-    } catch (err: any) {
+    } catch (err) {
         // Handle errors
-        return controllerErrorHandler(err, res)
+        if (err instanceof HttpError) {
+            return controllerErrorHandler(err, res)
+        }
+        throw err
     }
 }
 
@@ -77,9 +80,12 @@ async function getAllAddresses(req: Request, res: Response) {
     try {
         const addresses = await Adresse.findAll()
         return res.status(200).json(addresses)
-    } catch (err: any) {
+    } catch (err) {
         // Handle errors
-        return controllerErrorHandler(err, res)
+        if (err instanceof HttpError) {
+            return controllerErrorHandler(err, res)
+        }
+        throw err
     }
 }
 
@@ -101,8 +107,12 @@ async function getAddressById(req: Request, res: Response) {
 
         // Return the found member
         return res.status(200).json(address)
-    } catch (err: any) {
-        return controllerErrorHandler(err, res) // Handle any errors
+    } catch (err) {
+        // Handle errors
+        if (err instanceof HttpError) {
+            return controllerErrorHandler(err, res)
+        }
+        throw err
     }
 }
 /**
@@ -128,9 +138,12 @@ async function createAddress(req: Request, res: Response) {
 
         // Return success
         return res.status(201).json({ id: member.id })
-    } catch (err: any) {
+    } catch (err) {
         // Handle errors
-        return controllerErrorHandler(err, res)
+        if (err instanceof HttpError) {
+            return controllerErrorHandler(err, res)
+        }
+        throw err
     }
 }
 
@@ -159,9 +172,12 @@ async function updateAddress(req: Request, res: Response) {
 
         // Return confirmation
         return res.status(204).json(address)
-    } catch (err: any) {
+    } catch (err) {
         // Handle errors
-        return controllerErrorHandler(err, res)
+        if (err instanceof HttpError) {
+            return controllerErrorHandler(err, res)
+        }
+        throw err
     }
 }
 
@@ -184,9 +200,12 @@ async function deleteAddressById(req: Request, res: Response) {
 
         // Return confirmation
         return res.status(204).json()
-    } catch (err: any) {
+    } catch (err) {
         // Handle errors
-        return controllerErrorHandler(err, res)
+        if (err instanceof HttpError) {
+            return controllerErrorHandler(err, res)
+        }
+        throw err
     }
 }
 

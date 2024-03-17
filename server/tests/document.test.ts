@@ -9,8 +9,6 @@ import Fichier from '../src/models/fichier.model'
 import Document from '../src/models/document.model'
 import documentController from '../src/controller/document.controller'
 
-const baseURL = 'http://localhost:5000/api'
-
 describe('Test `Document` controller', () => {
     beforeAll(async () => {
         await sequelizeInit()
@@ -72,13 +70,15 @@ describe('Test `Document` API', () => {
             nomUtilisateur: 'lorene.marques',
             motDePasse: 'unmotdepassesuperfort'
         }
-        const response = await request(baseURL).post('/login').send(pres)
+        const response = await request(process.env.VITE_API_URL).post('/login').send(pres)
         token = 'Bearer ' + response.body.token
     })
 
     describe('GET / `document`', () => {
         test('GET / all `documents` ', async () => {
-            const res = await request(baseURL).get('/document').set('Authorization', token)
+            const res = await request(process.env.VITE_API_URL)
+                .get('/document')
+                .set('Authorization', token)
 
             expect(res.statusCode).toBe(200)
             res.body.forEach((ele: Document) => {

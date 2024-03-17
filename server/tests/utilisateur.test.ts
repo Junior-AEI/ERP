@@ -1,9 +1,8 @@
 import { describe, expect, test, beforeAll, assertType } from 'vitest'
 import request from 'supertest'
 
-const baseURL = 'http://localhost:5000/api'
 interface User {
-    [key: string]: any
+    [key: string]: unknown
 }
 
 describe('Test `utilisateur` model', () => {
@@ -29,13 +28,15 @@ describe('Test `utilisateur` model', () => {
             nomUtilisateur: 'lorene.marques',
             motDePasse: 'unmotdepassesuperfort'
         }
-        const response = await request(baseURL).post('/login').send(pres)
+        const response = await request(process.env.VITE_API_URL).post('/login').send(pres)
         token = 'Bearer ' + response.body.token
     })
 
     describe('GET / user', () => {
         test('GET / all `utilisateur` ', async () => {
-            const response = await request(baseURL).get('/utilisateur').set('Authorization', token)
+            const response = await request(process.env.VITE_API_URL)
+                .get('/utilisateur')
+                .set('Authorization', token)
 
             expect(response.statusCode).toBe(200)
 
@@ -49,7 +50,7 @@ describe('Test `utilisateur` model', () => {
         })
 
         test('GET / `utilisateur` by id ', async () => {
-            const response = await request(baseURL)
+            const response = await request(process.env.VITE_API_URL)
                 .get('/utilisateur/1')
                 .set('Authorization', token)
 
@@ -80,7 +81,7 @@ describe('Test `utilisateur` model', () => {
 
         describe('POST / Create user', () => {
             test('Create new `utilisateur`  ', async () => {
-                const response = await request(baseURL)
+                const response = await request(process.env.VITE_API_URL)
                     .post('/utilisateur')
                     .set('Authorization', token)
                     .send(newUser)
@@ -93,7 +94,7 @@ describe('Test `utilisateur` model', () => {
                 idNewUser = response.body.id
 
                 // check response
-                const checkResponse = await request(baseURL)
+                const checkResponse = await request(process.env.VITE_API_URL)
                     .get(`/utilisateur/${idNewUser}`)
                     .set('Authorization', token)
 
@@ -114,7 +115,7 @@ describe('Test `utilisateur` model', () => {
             })
 
             test('Add failed test, create already existing user (same user)', async () => {
-                const response = await request(baseURL)
+                const response = await request(process.env.VITE_API_URL)
                     .post('/utilisateur')
                     .set('Authorization', token)
                     .send(newUser)
@@ -131,7 +132,7 @@ describe('Test `utilisateur` model', () => {
                 const modifiedUser = { ...newUser }
                 modifiedUser.mailJE = 'anotheremail@different.is'
 
-                const response = await request(baseURL)
+                const response = await request(process.env.VITE_API_URL)
                     .post('/utilisateur')
                     .set('Authorization', token)
                     .send(modifiedUser)
@@ -147,7 +148,7 @@ describe('Test `utilisateur` model', () => {
                 const modifiedUser = { ...newUser }
                 modifiedUser.nomUtilisateur = 'another.username'
 
-                const response = await request(baseURL)
+                const response = await request(process.env.VITE_API_URL)
                     .post('/utilisateur')
                     .set('Authorization', token)
                     .send(newUser)
@@ -166,7 +167,7 @@ describe('Test `utilisateur` model', () => {
                 updatedUser.motDePasse = 'azertyUnPeuPlusComplique'
                 updatedUser.id = idNewUser
 
-                const response = await request(baseURL)
+                const response = await request(process.env.VITE_API_URL)
                     .put('/utilisateur')
                     .set('Authorization', token)
                     .send(updatedUser)
@@ -180,7 +181,7 @@ describe('Test `utilisateur` model', () => {
                 const updatedUser = { ...newUser }
                 updatedUser.id = idNewUser + 1
 
-                const response = await request(baseURL)
+                const response = await request(process.env.VITE_API_URL)
                     .put('/utilisateur')
                     .set('Authorization', token)
                     .send(updatedUser)
@@ -194,13 +195,13 @@ describe('Test `utilisateur` model', () => {
 
         describe('DELETE / Delete `utilisateur` ', () => {
             test('Delete existing `utilisateur` nadjime ', async () => {
-                const response = await request(baseURL)
+                const response = await request(process.env.VITE_API_URL)
                     .delete(`/utilisateur/${idNewUser}`)
                     .set('Authorization', token)
 
                 expect(response.statusCode).toBe(204)
 
-                const checkResponse = await request(baseURL)
+                const checkResponse = await request(process.env.VITE_API_URL)
                     .get(`/utilisateur/${idNewUser}`)
                     .set('Authorization', token)
 
@@ -208,7 +209,7 @@ describe('Test `utilisateur` model', () => {
             })
 
             test('Delete already deleted `utilisateur` nadjime ', async () => {
-                const response = await request(baseURL)
+                const response = await request(process.env.VITE_API_URL)
                     .delete(`/utilisateur/${idNewUser}`)
                     .set('Authorization', token)
 

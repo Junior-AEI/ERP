@@ -18,6 +18,7 @@ import Utilisateur from '../models/utilisateur.model'
 import Adherent from '../models/member.model'
 import { promisify } from 'util'
 import { controllerErrorHandler } from './utils.controller'
+import { HttpError } from 'http-errors'
 
 // Functions in this controller :
 // For the routes
@@ -88,9 +89,11 @@ const login = async (req: Request, res: Response) => {
             lastName: user.adherent.nom,
             token
         })
-    } catch (err: any) {
+    } catch (err) {
         // Handle errors
-        controllerErrorHandler(err, res)
+        if (err instanceof HttpError) {
+            return controllerErrorHandler(err, res)
+        }
     }
 }
 
@@ -128,7 +131,7 @@ const forgetPassword = async (req: Request, res: Response) => {
 
         // If user is found, generate a random token
         if (user) {
-            const token = generateToken()
+            const _token = generateToken()
 
             // TODO: Add token to database with validity time and link to the user
             // TODO: Send an email with a link
@@ -144,9 +147,12 @@ const forgetPassword = async (req: Request, res: Response) => {
                 message: 'User not found'
             })
         }
-    } catch (err: any) {
+    } catch (err) {
         // Handle errors
-        controllerErrorHandler(err, res)
+        if (err instanceof HttpError) {
+            return controllerErrorHandler(err, res)
+        }
+        throw err
     }
 }
 
@@ -162,8 +168,8 @@ const forgetPassword = async (req: Request, res: Response) => {
 const askNewPassword = async (req: Request, res: Response) => {
     try {
         // Get new password and token from request body
-        const newPassword = req.body.password || ''
-        const token = req.body.token || ''
+        const _newPassword = req.body.password || ''
+        const _token = req.body.token || ''
 
         // TODO: Here, check the validity of the token in the database and get the linked user
         // TODO: Declare a new password in the database for the linked user
@@ -172,17 +178,20 @@ const askNewPassword = async (req: Request, res: Response) => {
         return res.status(200).json({
             status: 'success'
         })
-    } catch (err: any) {
+    } catch (err) {
         // Handle errors
-        controllerErrorHandler(err, res)
+        if (err instanceof HttpError) {
+            return controllerErrorHandler(err, res)
+        }
+        throw err
     }
 }
 
 // A FINIR OU A SUPPRIMER //
-const logout = async (req: Request, res: Response) => {
+/* const logout = async (req: Request, res: Response) => {
     // Get POST parameters
     const token = req.body.token || ''
-}
+} */
 
 const authController = {
     login,

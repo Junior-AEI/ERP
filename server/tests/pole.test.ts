@@ -1,9 +1,8 @@
 import { describe, expect, test, beforeAll } from 'vitest'
 import request from 'supertest'
 
-const baseURL = 'http://localhost:5000/api'
 interface Post {
-    [key: string]: any
+    [key: string]: unknown
 }
 
 describe('Test `pole` model', () => {
@@ -18,7 +17,7 @@ describe('Test `pole` model', () => {
             nomUtilisateur: 'lorene.marques',
             motDePasse: 'unmotdepassesuperfort'
         }
-        const response = await request(baseURL).post('/login').send(pres)
+        const response = await request(process.env.VITE_API_URL).post('/login').send(pres)
         token = 'Bearer ' + response.body.token
         randomName = 'test' + Math.floor(Math.random() * 10000000)
         console.log(randomName)
@@ -26,23 +25,31 @@ describe('Test `pole` model', () => {
 
     describe('POST /', () => {
         test('create Pole', async () => {
-            const response = await request(baseURL).post('/pole').set('Authorization', token).send({
-                nom: randomName
-            })
+            const response = await request(process.env.VITE_API_URL)
+                .post('/pole')
+                .set('Authorization', token)
+                .send({
+                    nom: randomName
+                })
             expect(response.statusCode).toBe(201)
         })
 
         test('create existing Pole', async () => {
-            const response = await request(baseURL).post('/pole').set('Authorization', token).send({
-                nom: 'test'
-            })
+            const response = await request(process.env.VITE_API_URL)
+                .post('/pole')
+                .set('Authorization', token)
+                .send({
+                    nom: 'test'
+                })
             expect(response.statusCode).toBe(409)
         })
     })
 
     describe('GET /', () => {
         test('get all Poles', async () => {
-            const response = await request(baseURL).get('/pole').set('Authorization', token)
+            const response = await request(process.env.VITE_API_URL)
+                .get('/pole')
+                .set('Authorization', token)
 
             expect(response.statusCode).toBe(200)
 
@@ -58,7 +65,7 @@ describe('Test `pole` model', () => {
 
     describe('GET /:nom', () => {
         test('get a Pole by name', async () => {
-            const response = await request(baseURL)
+            const response = await request(process.env.VITE_API_URL)
                 .get(`/pole/${randomName}`)
                 .set('Authorization', token)
 
@@ -73,7 +80,7 @@ describe('Test `pole` model', () => {
 
     describe('DELETE /:nom', () => {
         test('delete a Pole by name', async () => {
-            const response = await request(baseURL)
+            const response = await request(process.env.VITE_API_URL)
                 .delete(`/pole/${randomName}`)
                 .set('Authorization', token)
             expect(response.statusCode).toBe(200)

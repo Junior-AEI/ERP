@@ -1,9 +1,8 @@
 import { describe, expect, test, beforeAll, assertType } from 'vitest'
 import request from 'supertest'
 
-const baseURL = 'http://localhost:5000/api'
 interface Address {
-    [key: string]: any
+    [key: string]: unknown
 }
 
 describe('Test `adresse` model', () => {
@@ -26,13 +25,15 @@ describe('Test `adresse` model', () => {
             nomUtilisateur: 'lorene.marques',
             motDePasse: 'unmotdepassesuperfort'
         }
-        const response = await request(baseURL).post('/login').send(pres)
+        const response = await request(process.env.VITE_API_URL).post('/login').send(pres)
         token = 'Bearer ' + response.body.token
     })
 
     describe('GET / address', () => {
         test('GET / all `adresse` ', async () => {
-            const response = await request(baseURL).get('/adresse').set('Authorization', token)
+            const response = await request(process.env.VITE_API_URL)
+                .get('/adresse')
+                .set('Authorization', token)
 
             expect(response.statusCode).toBe(200)
 
@@ -45,7 +46,9 @@ describe('Test `adresse` model', () => {
         })
 
         test('GET / `adresse` by id ', async () => {
-            const response = await request(baseURL).get('/adresse/1').set('Authorization', token)
+            const response = await request(process.env.VITE_API_URL)
+                .get('/adresse/1')
+                .set('Authorization', token)
 
             expect(response.statusCode).toBe(200)
 
@@ -69,7 +72,7 @@ describe('Test `adresse` model', () => {
 
         describe('POST / Create user', () => {
             test('Create new `adresse`  ', async () => {
-                const response = await request(baseURL)
+                const response = await request(process.env.VITE_API_URL)
                     .post('/adresse')
                     .set('Authorization', token)
                     .send(newAddress)
@@ -82,7 +85,7 @@ describe('Test `adresse` model', () => {
                 idNewAddress = response.body.id
 
                 // check response
-                const checkResponse = await request(baseURL)
+                const checkResponse = await request(process.env.VITE_API_URL)
                     .get(`/adresse/${idNewAddress}`)
                     .set('Authorization', token)
 
@@ -110,7 +113,7 @@ describe('Test `adresse` model', () => {
             })
 
             test('Create already existing address', async () => {
-                const response = await request(baseURL)
+                const response = await request(process.env.VITE_API_URL)
                     .post('/adresse')
                     .set('Authorization', token)
                     .send(newAddress)
@@ -130,7 +133,7 @@ describe('Test `adresse` model', () => {
                 updatedAddress.pays = 'CAN'
                 updatedAddress.id = idNewAddress
 
-                const response = await request(baseURL)
+                const response = await request(process.env.VITE_API_URL)
                     .put('/adresse')
                     .set('Authorization', token)
                     .send(updatedAddress)
@@ -144,7 +147,7 @@ describe('Test `adresse` model', () => {
                 const updatedUser = { ...newAddress }
                 updatedUser.id = idNewAddress + 1
 
-                const response = await request(baseURL)
+                const response = await request(process.env.VITE_API_URL)
                     .put('/adresse')
                     .set('Authorization', token)
                     .send(updatedUser)
@@ -158,13 +161,13 @@ describe('Test `adresse` model', () => {
 
         describe('DELETE / Delete `adresse` ', () => {
             test('Delete existing `adresse`', async () => {
-                const response = await request(baseURL)
+                const response = await request(process.env.VITE_API_URL)
                     .delete(`/adresse/${idNewAddress}`)
                     .set('Authorization', token)
 
                 expect(response.statusCode).toBe(204)
 
-                const checkResponse = await request(baseURL)
+                const checkResponse = await request(process.env.VITE_API_URL)
                     .get(`/adresse/${idNewAddress}`)
                     .set('Authorization', token)
 
@@ -172,7 +175,7 @@ describe('Test `adresse` model', () => {
             })
 
             test('Delete already deleted `adresse`', async () => {
-                const response = await request(baseURL)
+                const response = await request(process.env.VITE_API_URL)
                     .delete(`/adresse/${idNewAddress}`)
                     .set('Authorization', token)
 

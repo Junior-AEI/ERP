@@ -11,7 +11,7 @@
 
 // You should have received a copy of the GNU Affero General Public License along with LATIME. If not, see <https://www.gnu.org/licenses/>.
 import { createHash } from 'crypto'
-import { Request, Response } from 'express'
+import { Request } from 'express'
 import multer, { Multer } from 'multer'
 import { getExtension } from 'mime'
 

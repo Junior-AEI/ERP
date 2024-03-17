@@ -12,7 +12,7 @@
 // You should have received a copy of the GNU Affero General Public License along with LATIME. If not, see <https://www.gnu.org/licenses/>.
 import { Request, Response } from 'express'
 import { jwtVerify } from 'jose'
-import { JWT_AUDIENCE, JWT_ISSUER, JWT_SECRET_KEY } from '../config/auth.config'
+import { JWT_SECRET_KEY } from '../config/auth.config'
 import Utilisateur from '../models/utilisateur.model'
 
 /**

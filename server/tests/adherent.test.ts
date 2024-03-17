@@ -1,9 +1,8 @@
 import { describe, expect, test, beforeAll, assertType } from 'vitest'
 import request from 'supertest'
 
-const baseURL = 'http://localhost:5000/api'
 interface Member {
-    [key: string]: any
+    [key: string]: unknown
 }
 
 describe('Test `adherent` model', () => {
@@ -34,13 +33,15 @@ describe('Test `adherent` model', () => {
             nomUtilisateur: 'lorene.marques',
             motDePasse: 'unmotdepassesuperfort'
         }
-        const response = await request(baseURL).post('/login').send(pres)
+        const response = await request(process.env.VITE_API_URL).post('/login').send(pres)
         token = 'Bearer ' + response.body.token
     })
 
     describe('GET / `adherent`', () => {
         test('GET / all `adherent` ', async () => {
-            const response = await request(baseURL).get('/adherent').set('Authorization', token)
+            const response = await request(process.env.VITE_API_URL)
+                .get('/adherent')
+                .set('Authorization', token)
 
             expect(response.statusCode).toBe(200)
 
@@ -53,7 +54,9 @@ describe('Test `adherent` model', () => {
         })
 
         test('GET / `adherent` by id ', async () => {
-            const response = await request(baseURL).get('/adherent/1').set('Authorization', token)
+            const response = await request(process.env.VITE_API_URL)
+                .get('/adherent/1')
+                .set('Authorization', token)
 
             expect(response.statusCode).toBe(200)
 
@@ -85,7 +88,7 @@ describe('Test `adherent` model', () => {
 
         describe('POST / Create user', () => {
             test('Create new `adherent`  ', async () => {
-                const response = await request(baseURL)
+                const response = await request(process.env.VITE_API_URL)
                     .post('/adherent')
                     .set('Authorization', token)
                     .send(newMember)
@@ -98,7 +101,7 @@ describe('Test `adherent` model', () => {
                 idNewMember = response.body.id
 
                 // check response
-                const checkResponse = await request(baseURL)
+                const checkResponse = await request(process.env.VITE_API_URL)
                     .get(`/adherent/${idNewMember}`)
                     .set('Authorization', token)
 
@@ -121,7 +124,7 @@ describe('Test `adherent` model', () => {
             })
 
             test('Create already existing `adherent`', async () => {
-                const response = await request(baseURL)
+                const response = await request(process.env.VITE_API_URL)
                     .post('/adherent')
                     .set('Authorization', token)
                     .send(newMember)
@@ -142,7 +145,7 @@ describe('Test `adherent` model', () => {
                 updatedMember.prenom = 'ManqueCruellement'
                 updatedMember.id = idNewMember
 
-                const response = await request(baseURL)
+                const response = await request(process.env.VITE_API_URL)
                     .put('/adherent')
                     .set('Authorization', token)
                     .send(updatedMember)
@@ -156,7 +159,7 @@ describe('Test `adherent` model', () => {
                 const updatedUser = { ...newMember }
                 updatedUser.id = idNewMember + 1
 
-                const response = await request(baseURL)
+                const response = await request(process.env.VITE_API_URL)
                     .put('/adherent')
                     .set('Authorization', token)
                     .send(updatedUser)
@@ -170,13 +173,13 @@ describe('Test `adherent` model', () => {
 
         describe('DELETE / Delete `adherent` ', () => {
             test('Delete existing `adherent`', async () => {
-                const response = await request(baseURL)
+                const response = await request(process.env.VITE_API_URL)
                     .delete(`/adherent/${idNewMember}`)
                     .set('Authorization', token)
 
                 expect(response.statusCode).toBe(204)
 
-                const checkResponse = await request(baseURL)
+                const checkResponse = await request(process.env.VITE_API_URL)
                     .get(`/adherent/${idNewMember}`)
                     .set('Authorization', token)
 
@@ -184,7 +187,7 @@ describe('Test `adherent` model', () => {
             })
 
             test('Delete already deleted `adherent`', async () => {
-                const response = await request(baseURL)
+                const response = await request(process.env.VITE_API_URL)
                     .delete(`/adherent/${idNewMember}`)
                     .set('Authorization', token)
 

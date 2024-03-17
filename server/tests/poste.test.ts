@@ -1,9 +1,8 @@
 import { describe, expect, test, beforeAll, assertType } from 'vitest'
 import request from 'supertest'
 
-const baseURL = 'http://localhost:5000/api'
 interface Post {
-    [key: string]: any
+    [key: string]: unknown
 }
 
 describe('Test `poste` model', () => {
@@ -17,13 +16,15 @@ describe('Test `poste` model', () => {
             nomUtilisateur: 'lorene.marques',
             motDePasse: 'unmotdepassesuperfort'
         }
-        const response = await request(baseURL).post('/login').send(pres)
+        const response = await request(process.env.VITE_API_URL).post('/login').send(pres)
         token = 'Bearer ' + response.body.token
     })
 
     describe('GET / `poste`', () => {
         test('GET / all `poste` ', async () => {
-            const response = await request(baseURL).get('/poste').set('Authorization', token)
+            const response = await request(process.env.VITE_API_URL)
+                .get('/poste')
+                .set('Authorization', token)
 
             expect(response.statusCode).toBe(200)
 
@@ -36,7 +37,9 @@ describe('Test `poste` model', () => {
         })
 
         test('GET / `poste` by id ', async () => {
-            const response = await request(baseURL).get('/poste/1').set('Authorization', token)
+            const response = await request(process.env.VITE_API_URL)
+                .get('/poste/1')
+                .set('Authorization', token)
 
             expect(response.statusCode).toBe(200)
 
@@ -57,7 +60,7 @@ describe('Test `poste` model', () => {
 
         describe('POST / Create user', () => {
             test('Create new `poste`  ', async () => {
-                const response = await request(baseURL)
+                const response = await request(process.env.VITE_API_URL)
                     .post('/poste')
                     .set('Authorization', token)
                     .send(newPost)
@@ -70,7 +73,7 @@ describe('Test `poste` model', () => {
                 idNewPost = response.body.id
 
                 // check response
-                const checkResponse = await request(baseURL)
+                const checkResponse = await request(process.env.VITE_API_URL)
                     .get(`/poste/${idNewPost}`)
                     .set('Authorization', token)
 
@@ -88,7 +91,7 @@ describe('Test `poste` model', () => {
             })
 
             test('Create already existing `poste`', async () => {
-                const response = await request(baseURL)
+                const response = await request(process.env.VITE_API_URL)
                     .post('/poste')
                     .set('Authorization', token)
                     .send(newPost)
@@ -109,7 +112,7 @@ describe('Test `poste` model', () => {
                 updatedPost.nom = 'Tresorier'
                 updatedPost.id = idNewPost
 
-                const response = await request(baseURL)
+                const response = await request(process.env.VITE_API_URL)
                     .put('/poste')
                     .set('Authorization', token)
                     .send(updatedPost)
@@ -123,7 +126,7 @@ describe('Test `poste` model', () => {
                 const updatedUser = { ...newPost }
                 updatedUser.id = idNewPost + 1
 
-                const response = await request(baseURL)
+                const response = await request(process.env.VITE_API_URL)
                     .put('/poste')
                     .set('Authorization', token)
                     .send(updatedUser)
@@ -137,13 +140,13 @@ describe('Test `poste` model', () => {
 
         describe('DELETE / Delete `poste` ', () => {
             test('Delete existing `poste`', async () => {
-                const response = await request(baseURL)
+                const response = await request(process.env.VITE_API_URL)
                     .delete(`/poste/${idNewPost}`)
                     .set('Authorization', token)
 
                 expect(response.statusCode).toBe(204)
 
-                const checkResponse = await request(baseURL)
+                const checkResponse = await request(process.env.VITE_API_URL)
                     .get(`/poste/${idNewPost}`)
                     .set('Authorization', token)
 
@@ -151,7 +154,7 @@ describe('Test `poste` model', () => {
             })
 
             test('Delete already deleted `poste`', async () => {
-                const response = await request(baseURL)
+                const response = await request(process.env.VITE_API_URL)
                     .delete(`/poste/${idNewPost}`)
                     .set('Authorization', token)
 

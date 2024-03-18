@@ -16,7 +16,7 @@ import Document from '../models/document.model'
 import { controllerErrorHandler } from './utils.controller'
 
 //ajout pour le bot Telegram
-import axios from "axios";
+import axios from 'axios'
 
 const documentController = {
     createDocument,
@@ -54,21 +54,21 @@ async function uploadNewVersion(req: Request, res: Response) {
                 const version = await Fichier.create({
                     chemin: file.path,
                     documentId: doc.id,
-                    statut: req.params.statut,
-                });
+                    statut: req.params.statut
+                })
                 axios
-                    .post("http://localhost:5001/api/bot/uploadDoc", {
+                    .post('http://localhost:5001/api/bot/uploadDoc', {
                         doc: doc.nom,
-                        statut: req.params.statut,
+                        statut: req.params.statut
                     })
 
                     .catch((error: unknown) => {
                         console.error(
-                            "Erreur lors de la requête POST vers /api/bot/uploadDoc:",
-                            error,
-                        );
-                    });
-                return { doc, version };
+                            'Erreur lors de la requête POST vers /api/bot/uploadDoc:',
+                            error
+                        )
+                    })
+                return { doc, version }
             })
             .then((input: { doc: Document; version: Fichier }) => {
                 input.doc.$add('version', input.version)

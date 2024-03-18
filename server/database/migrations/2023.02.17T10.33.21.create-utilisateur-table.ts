@@ -10,115 +10,115 @@
 // LATIME is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more details.
 
 // You should have received a copy of the GNU Affero General Public License along with LATIME. If not, see <https://www.gnu.org/licenses/>.
-import type { Migration } from "../../src/migrations/umzug";
-import { DataType } from "sequelize-typescript";
+import type { Migration } from '../../src/migrations/umzug'
+import { DataType } from 'sequelize-typescript'
 
 export const up: Migration = async ({ context: sequelize }) => {
-    await sequelize.getQueryInterface().createTable("Postes", {
+    await sequelize.getQueryInterface().createTable('Postes', {
         id: {
             type: DataType.INTEGER,
             allowNull: false,
             primaryKey: true,
             autoIncrement: true,
-            field: "id",
+            field: 'id'
         },
         nom: {
             type: DataType.STRING,
             allowNull: false,
             validate: { notEmpty: true },
-            field: "nom",
+            field: 'nom'
         },
         description: {
             type: DataType.TEXT,
-            field: "description",
+            field: 'description'
         },
         createdAt: {
             type: DataType.DATE,
             allowNull: false,
             validate: { isDate: true },
-            field: "createdAt",
+            field: 'createdAt'
         },
         updatedAt: {
             type: DataType.DATE,
             allowNull: false,
             validate: { isDate: true },
-            field: "updatedAt",
-        },
-    });
-    await sequelize.getQueryInterface().createTable("Utilisateurs", {
+            field: 'updatedAt'
+        }
+    })
+    await sequelize.getQueryInterface().createTable('Utilisateurs', {
         id: {
             type: DataType.INTEGER,
             allowNull: false,
             primaryKey: true,
             autoIncrement: true,
-            field: "id",
+            field: 'id'
         },
         nomUtilisateur: {
             type: DataType.STRING,
             allowNull: false,
             unique: true,
             validate: { notEmpty: true },
-            field: "nomUtilisateur",
+            field: 'nomUtilisateur'
         },
         motDePasse: {
             type: DataType.STRING,
             allowNull: false,
             validate: { notEmpty: true },
-            field: "motDePasse",
+            field: 'motDePasse'
         },
         derniereConnexion: {
             type: DataType.DATE,
             validate: { isDate: true },
-            field: "derniereConnexion",
+            field: 'derniereConnexion'
         },
         estActif: {
             type: DataType.BOOLEAN,
             allowNull: false,
             validate: { isBoolean: true, notEmpty: true },
-            field: "estActif",
+            field: 'estActif'
         },
         debutMandat: {
             type: DataType.DATE,
             allowNull: false,
             validate: { isDate: true, notEmpty: true },
-            field: "debutMandat",
+            field: 'debutMandat'
         },
         finMandat: {
             type: DataType.DATE,
             allowNull: false,
             validate: { isDate: true, notEmpty: true },
-            field: "finMandat",
+            field: 'finMandat'
         },
         mailJE: {
             type: DataType.STRING,
             allowNull: false,
             validate: { isEmail: true },
-            field: "mailJE",
+            field: 'mailJE'
         },
         posteId: {
             type: DataType.INTEGER,
             allowNull: false,
-            field: "posteId",
-            references: { model: "Postes", key: "id" },
-            onDelete: "NO ACTION",
-            onUpdate: "CASCADE",
+            field: 'posteId',
+            references: { model: 'Postes', key: 'id' },
+            onDelete: 'NO ACTION',
+            onUpdate: 'CASCADE'
         },
         createdAt: {
             type: DataType.DATE,
             allowNull: false,
             validate: { isDate: true },
-            field: "createdAt",
+            field: 'createdAt'
         },
         updatedAt: {
             type: DataType.DATE,
             allowNull: false,
             validate: { isDate: true },
-            field: "updatedAt",
-        },
-    });
-};
+            field: 'updatedAt'
+        }
+    })
+}
 
 export const down: Migration = async ({ context: sequelize }) => {
-    await sequelize.getQueryInterface().dropTable("Utilisateurs");
-    await sequelize.getQueryInterface().dropTable("Postes");
-};
+    await sequelize.getQueryInterface().dropTable('Utilisateurs')
+    await sequelize.getQueryInterface().dropTable('Postes')
+}

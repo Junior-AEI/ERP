@@ -10,47 +10,47 @@
 // LATIME is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more details.
 
 // You should have received a copy of the GNU Affero General Public License along with LATIME. If not, see <https://www.gnu.org/licenses/>.
-import type { Migration } from "../../src/migrations/umzug";
-import { DataType } from "sequelize-typescript";
+import type { Migration } from '../../src/migrations/umzug'
+import { DataType } from 'sequelize-typescript'
 
 export const up: Migration = async ({ context: sequelize }) => {
-    await sequelize.getQueryInterface().createTable("Permissions", {
+    await sequelize.getQueryInterface().createTable('Permissions', {
         nomPermission: {
             type: DataType.STRING,
             allowNull: false,
             primaryKey: true,
-            field: "nomPermission",
+            field: 'nomPermission'
         },
         typePermission: {
             type: DataType.ENUM,
-            values: ["read", "write"],
+            values: ['read', 'write'],
             allowNull: false,
-            validate: { isIn: [["read", "write"]] },
-            field: "typePermission",
+            validate: { isIn: [['read', 'write']] },
+            field: 'typePermission'
         },
         idUtilisateur: {
             type: DataType.INTEGER,
             allowNull: false,
-            field: "idUtilisateur",
-            references: { model: "Utilisateurs", key: "id" },
-            onDelete: "CASCADE",
-            onUpdate: "CASCADE",
+            field: 'idUtilisateur',
+            references: { model: 'Utilisateurs', key: 'id' },
+            onDelete: 'CASCADE',
+            onUpdate: 'CASCADE'
         },
         createdAt: {
             type: DataType.DATE,
             allowNull: false,
             validate: { isDate: true },
-            field: "createdAt",
+            field: 'createdAt'
         },
         updatedAt: {
             type: DataType.DATE,
             allowNull: false,
             validate: { isDate: true },
-            field: "updatedAt",
-        },
-    });
-};
+            field: 'updatedAt'
+        }
+    })
+}
 
 export const down: Migration = async ({ context: sequelize }) => {
-    await sequelize.getQueryInterface().dropTable("Permissions");
-};
+    await sequelize.getQueryInterface().dropTable('Permissions')
+}

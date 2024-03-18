@@ -21,12 +21,12 @@ import {
     BelongsTo,
     IsIn,
     IsDate,
-    IsEmail,
-} from "sequelize-typescript";
-import validator from "validator";
-import Entreprise from "./entreprise.model";
+    IsEmail
+} from 'sequelize-typescript'
+import validator from 'validator'
+import Entreprise from './entreprise.model'
 
-const GENDER = ["F", "M", "O"];
+const GENDER = ['F', 'M', 'O']
 
 @Table
 export default class Client extends Model {
@@ -34,29 +34,29 @@ export default class Client extends Model {
         type: DataType.INTEGER,
         allowNull: false,
         primaryKey: true,
-        autoIncrement: true,
+        autoIncrement: true
     })
-    id!: number;
+    id!: number
 
     @Column({
         type: DataType.STRING,
-        allowNull: false,
+        allowNull: false
     })
-    nom!: string;
+    nom!: string
 
     @Column({
         type: DataType.STRING,
-        allowNull: false,
+        allowNull: false
     })
-    prenom!: string;
+    prenom!: string
 
     @IsIn([GENDER])
     @Column({
         type: DataType.ENUM,
         values: GENDER,
-        allowNull: false,
+        allowNull: false
     })
-    sexe!: string;
+    sexe!: string
 
     @Column({
         type: DataType.STRING,
@@ -64,25 +64,25 @@ export default class Client extends Model {
         validate: {
             checkPhone(str: string) {
                 if (!validator.isMobilePhone(str)) {
-                    throw new Error("Invalid phone number");
+                    throw new Error('Invalid phone number')
                 }
-            },
-        },
+            }
+        }
     })
-    telephoneMobile!: string;
+    telephoneMobile!: string
 
     @IsEmail
     @Column({
         type: DataType.STRING,
-        allowNull: false,
+        allowNull: false
     })
-    email!: string;
+    email!: string
 
     @Column({
         type: DataType.STRING,
-        allowNull: false,
+        allowNull: false
     })
-    fonction!: string;
+    fonction!: string
 
     @Column({
         type: DataType.STRING,
@@ -90,36 +90,36 @@ export default class Client extends Model {
         validate: {
             checkPhone(str: string) {
                 if (!validator.isMobilePhone(str)) {
-                    throw new Error("Invalid phone number");
+                    throw new Error('Invalid phone number')
                 }
-            },
-        },
+            }
+        }
     })
-    telephoneFixe!: string;
+    telephoneFixe!: string
 
     @ForeignKey(() => Entreprise)
     @Column({
         type: DataType.INTEGER,
-        allowNull: false,
+        allowNull: false
     })
-    entrepriseId!: number;
+    entrepriseId!: number
 
     @BelongsTo(() => Entreprise)
-    entreprise!: Entreprise;
+    entreprise!: Entreprise
 
     @IsDate
     @CreatedAt
     @Column({
         type: DataType.DATE,
-        allowNull: false,
+        allowNull: false
     })
-    createdAt!: Date;
+    createdAt!: Date
 
     @IsDate
     @UpdatedAt
     @Column({
         type: DataType.DATE,
-        allowNull: false,
+        allowNull: false
     })
-    updatedAt!: Date;
+    updatedAt!: Date
 }

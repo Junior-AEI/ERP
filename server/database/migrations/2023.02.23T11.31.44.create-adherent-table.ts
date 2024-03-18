@@ -10,34 +10,34 @@
 // LATIME is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more details.
 
 // You should have received a copy of the GNU Affero General Public License along with LATIME. If not, see <https://www.gnu.org/licenses/>.
-import type { Migration } from "../../src/migrations/umzug";
-import { DataType } from "sequelize-typescript";
-import validator from "validator";
+import type { Migration } from '../../src/migrations/umzug'
+import { DataType } from 'sequelize-typescript'
+import validator from 'validator'
 export const up: Migration = async ({ context: sequelize }) => {
-    await sequelize.getQueryInterface().createTable("Adherents", {
+    await sequelize.getQueryInterface().createTable('Adherents', {
         id: {
             type: DataType.INTEGER,
             allowNull: false,
             primaryKey: true,
             autoIncrement: true,
-            field: "id",
+            field: 'id'
         },
         nom: {
             type: DataType.STRING,
             allowNull: false,
-            field: "nom",
+            field: 'nom'
         },
         prenom: {
             type: DataType.STRING,
             allowNull: false,
-            field: "prenom",
+            field: 'prenom'
         },
         sexe: {
             type: DataType.ENUM,
-            values: ["F", "M", "O"],
+            values: ['F', 'M', 'O'],
             allowNull: false,
-            validate: { isIn: [["F", "M", "O"]] },
-            field: "sexe",
+            validate: { isIn: [['F', 'M', 'O']] },
+            field: 'sexe'
         },
         telephoneMobile: {
             type: DataType.STRING,
@@ -45,29 +45,29 @@ export const up: Migration = async ({ context: sequelize }) => {
             validate: {
                 checkPhone(str: string) {
                     if (!validator.isMobilePhone(str)) {
-                        throw new Error("Invalid phone number");
+                        throw new Error('Invalid phone number')
                     }
-                },
+                }
             },
-            field: "telephoneMobile",
+            field: 'telephoneMobile'
         },
         email: {
             type: DataType.STRING,
             allowNull: false,
             validate: { isEmail: true },
-            field: "email",
+            field: 'email'
         },
         dateNaissance: {
             type: DataType.DATE,
             allowNull: false,
             validate: { isDate: true, notEmpty: true },
-            field: "dateNaissance",
+            field: 'dateNaissance'
         },
         lieuNaissance: {
             type: DataType.STRING,
             allowNull: false,
             validate: { notEmpty: true },
-            field: "lieuNaissance",
+            field: 'lieuNaissance'
         },
         nationalite: {
             type: DataType.STRING,
@@ -75,62 +75,62 @@ export const up: Migration = async ({ context: sequelize }) => {
             validate: {
                 checkCountry(str: string) {
                     if (!validator.isISO31661Alpha3(str)) {
-                        throw new Error("Invalid country code");
+                        throw new Error('Invalid country code')
                     }
-                },
+                }
             },
-            field: "nationalite",
+            field: 'nationalite'
         },
         promotion: {
             type: DataType.STRING,
             allowNull: false,
             validate: { min: 1920, max: 9999, isNumeric: true },
-            field: "promotion",
+            field: 'promotion'
         },
         dateCotisation: {
             type: DataType.DATE,
             allowNull: false,
             validate: { isDate: true },
-            field: "dateCotisation",
+            field: 'dateCotisation'
         },
         moyenPaiement: {
             type: DataType.ENUM,
-            values: ["Esp", "CB", "Vir", "Lydia"],
-            validate: { isIn: [["Esp", "CB", "Vir", "Lydia"]] },
-            field: "moyenPaiement",
+            values: ['Esp', 'CB', 'Vir', 'Lydia'],
+            validate: { isIn: [['Esp', 'CB', 'Vir', 'Lydia']] },
+            field: 'moyenPaiement'
         },
         filiere: {
             type: DataType.ENUM,
             allowNull: false,
-            values: ["Info", "Elec", "Telecom", "Matmeca", "R&I", "SEE"],
+            values: ['Info', 'Elec', 'Telecom', 'Matmeca', 'R&I', 'SEE'],
             validate: {
-                isIn: [["Info", "Elec", "Telecom", "Matmeca", "R&I", "SEE"]],
+                isIn: [['Info', 'Elec', 'Telecom', 'Matmeca', 'R&I', 'SEE']]
             },
-            field: "filiere",
+            field: 'filiere'
         },
         adresseId: {
             type: DataType.INTEGER,
             allowNull: false,
-            field: "adresseId",
-            references: { model: "Adresses", key: "id" },
-            onDelete: "NO ACTION",
-            onUpdate: "CASCADE",
+            field: 'adresseId',
+            references: { model: 'Adresses', key: 'id' },
+            onDelete: 'NO ACTION',
+            onUpdate: 'CASCADE'
         },
         createdAt: {
             type: DataType.DATE,
             allowNull: false,
             validate: { isDate: true },
-            field: "createdAt",
+            field: 'createdAt'
         },
         updatedAt: {
             type: DataType.DATE,
             allowNull: false,
             validate: { isDate: true },
-            field: "updatedAt",
-        },
-    });
-};
+            field: 'updatedAt'
+        }
+    })
+}
 
 export const down: Migration = async ({ context: sequelize }) => {
-    await sequelize.getQueryInterface().dropTable("Adherents");
-};
+    await sequelize.getQueryInterface().dropTable('Adherents')
+}

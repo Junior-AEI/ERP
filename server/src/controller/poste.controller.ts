@@ -10,23 +10,19 @@
 // LATIME is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more details.
 
 // You should have received a copy of the GNU Affero General Public License along with LATIME. If not, see <https://www.gnu.org/licenses/>.
-import { Request, Response } from "express";
-import { Op } from "sequelize";
-import createHttpError from "http-errors";
-import Poste from "../models/poste.model";
-import {
-    checkExistingId,
-    checkIdIsNotNaN,
-    controllerErrorHandler,
-} from "./utils.controller";
+import { Request, Response } from 'express'
+import { Op } from 'sequelize'
+import createHttpError from 'http-errors'
+import Poste from '../models/poste.model'
+import { checkExistingId, checkIdIsNotNaN, controllerErrorHandler } from './utils.controller'
 
 const posteController = {
     getAllPostes,
     getPosteById,
     createPoste,
     updatePoste,
-    deletePosteById,
-};
+    deletePosteById
+}
 
 // TODO: Setup validator ("express-validator" package?) to verify whole body
 
@@ -35,8 +31,8 @@ const posteController = {
  * @param name Role name to check
  */
 async function checkEmptyName(name: string) {
-    if (name === "" || name === undefined || name === null) {
-        throw createHttpError(400, "Empty name provided");
+    if (name === '' || name === undefined || name === null) {
+        throw createHttpError(400, 'Empty name provided')
     }
 }
 
@@ -46,7 +42,7 @@ async function checkEmptyName(name: string) {
  */
 async function checkExistingPoste(req: Request): Promise<void> {
     // if id isn't given (case of new role creation), set it to "null" (avoid database error)
-    if (req.body.id === undefined) req.body.id = null;
+    if (req.body.id === undefined) req.body.id = null
 
     // Check is given role isn't already in database with another id
     const existingPoste = await Poste.findOne({
@@ -54,16 +50,13 @@ async function checkExistingPoste(req: Request): Promise<void> {
             [Op.and]: [
                 { [Op.not]: { id: req.body.id } },
                 {
-                    [Op.or]: [
-                        { nom: req.body.nom },
-                        { description: req.body.description },
-                    ],
-                },
-            ],
-        },
-    });
-    if (existingPoste !== null)
-        throw createHttpError(409, "Post already exist");
+                    [Op.or]: [{ nom: req.body.nom }, { description: req.body.description }]
+                }
+            ]
+        }
+    })
+    if (existingPoste !== null) console.log('Test')
+    throw createHttpError(409, 'Post already exist')
 }
 
 /**
@@ -75,7 +68,7 @@ async function checkExistingPoste(req: Request): Promise<void> {
 async function getAllPostes(req: Request, res: Response) {
     await Poste.findAll()
         .then((poste) => res.status(200).json(poste))
-        .catch((err) => controllerErrorHandler(err, res));
+        .catch((err) => controllerErrorHandler(err, res))
 }
 
 /**
@@ -91,10 +84,10 @@ async function getPosteById(req: Request, res: Response) {
     await checkIdIsNotNaN(req.params.id)
         .then(() =>
             // Find requested role by primary key (id)
-            Poste.findByPk(req.params.id),
+            Poste.findByPk(req.params.id)
         )
         .then((poste) => res.status(200).json(poste))
-        .catch((err) => controllerErrorHandler(err, res));
+        .catch((err) => controllerErrorHandler(err, res))
 }
 
 /**
@@ -110,12 +103,12 @@ async function createPoste(req: Request, res: Response) {
     await checkEmptyName(req.body.nom)
         .then(() => checkExistingPoste(req))
         .then(() => {
-            req.body.createdAt = null;
-            req.body.updatedAt = null;
-            return Poste.create(req.body);
+            req.body.createdAt = null
+            req.body.updatedAt = null
+            return Poste.create(req.body)
         })
         .then((poste) => res.status(201).json({ id: poste.id }))
-        .catch((err) => controllerErrorHandler(err, res));
+        .catch((err) => controllerErrorHandler(err, res))
 }
 
 /**
@@ -132,17 +125,17 @@ async function updatePoste(req: Request, res: Response) {
     await checkEmptyName(req.body.nom)
         .then(() =>
             // Check if given role or role id doesn't already exist
-            checkExistingId<Poste>(req.body.id, Poste),
+            checkExistingId<Poste>(req.body.id, Poste)
         )
         .then(() => checkExistingPoste(req))
         .then(() => {
             // Clean useless update dates if given (setup while creating role)
-            req.body.updatedAt = null;
+            req.body.updatedAt = null
             // Update requested role with given body
-            return Poste.update(req.body, { where: { id: req.body.id } });
+            return Poste.update(req.body, { where: { id: req.body.id } })
         })
         .then((poste) => res.status(204).json(poste))
-        .catch((err) => controllerErrorHandler(err, res));
+        .catch((err) => controllerErrorHandler(err, res))
 }
 
 /**
@@ -159,10 +152,10 @@ async function deletePosteById(req: Request, res: Response) {
     await checkExistingId<Poste>(req.params.id, Poste)
         .then(() =>
             // Delete requested role by its id
-            Poste.destroy({ where: { id: req.params.id } }),
+            Poste.destroy({ where: { id: req.params.id } })
         )
         .then((poste) => res.status(204).json(poste))
-        .catch((err) => controllerErrorHandler(err, res));
+        .catch((err) => controllerErrorHandler(err, res))
 }
 
-export default posteController;
+export default posteController

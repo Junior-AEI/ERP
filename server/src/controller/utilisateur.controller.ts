@@ -10,26 +10,22 @@
 // LATIME is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more details.
 
 // You should have received a copy of the GNU Affero General Public License along with LATIME. If not, see <https://www.gnu.org/licenses/>.
-import { Request, Response } from "express";
-import { hash } from "bcrypt";
-import { Op } from "sequelize";
-import createHttpError from "http-errors";
-import Utilisateur from "../models/utilisateur.model";
-import Adherent from "../models/adherent.model";
-import Poste from "../models/poste.model";
-import {
-    checkExistingId,
-    checkIdIsNotNaN,
-    controllerErrorHandler,
-} from "./utils.controller";
+import { Request, Response } from 'express'
+import { hash } from 'bcrypt'
+import { Op } from 'sequelize'
+import createHttpError from 'http-errors'
+import Utilisateur from '../models/utilisateur.model'
+import Adherent from '../models/member.model'
+import Poste from '../models/poste.model'
+import { checkExistingId, checkIdIsNotNaN, controllerErrorHandler } from './utils.controller'
 
 const utilisateurController = {
     getAllUtilisateurs,
     getUtilisateurById,
     createUtilisateur,
     deleteUtilisateurById,
-    updateUtilisateur,
-};
+    updateUtilisateur
+}
 
 /**
  * Throws error if a user already exist in database
@@ -37,7 +33,7 @@ const utilisateurController = {
  */
 async function checkExistingUtilisateur(req: Request): Promise<void> {
     // if id isn't given (case of new user creation), set it to "null" (avoid database error)
-    if (req.body.id === undefined) req.body.id = null;
+    if (req.body.id === undefined) req.body.id = null
 
     // Check is given user isn't already in database with another id
     const existingUtilisateur = await Utilisateur.findOne({
@@ -47,22 +43,21 @@ async function checkExistingUtilisateur(req: Request): Promise<void> {
                 {
                     [Op.or]: [
                         { nomUtilisateur: req.body.nomUtilisateur },
-                        { mailJE: req.body.mailJE },
-                    ],
-                },
-            ],
-        },
-    });
-    if (existingUtilisateur !== null)
-        throw createHttpError(409, "User already exist");
+                        { mailJE: req.body.mailJE }
+                    ]
+                }
+            ]
+        }
+    })
+    if (existingUtilisateur !== null) throw createHttpError(409, 'User already exist')
 }
 
 async function checkPasswordStrength(password: string) {
     if (password === null || password === undefined) {
-        throw createHttpError(400, "Empty password given");
+        throw createHttpError(400, 'Empty password given')
         // TODO : Discuss about password strength checking
     } else if (password.length <= 3) {
-        throw createHttpError(400, "Password strength is too low");
+        throw createHttpError(400, 'Password strength is too low')
     }
 }
 
@@ -73,9 +68,9 @@ async function checkPasswordStrength(password: string) {
  *  - 500 error
  */
 async function getAllUtilisateurs(req: Request, res: Response) {
-    await Utilisateur.findAll({ attributes: { exclude: ["motDePasse"] } })
+    await Utilisateur.findAll({ attributes: { exclude: ['motDePasse'] } })
         .then((users) => res.status(200).json(users))
-        .catch((err) => controllerErrorHandler(err, res));
+        .catch((err) => controllerErrorHandler(err, res))
 }
 
 /**
@@ -92,20 +87,20 @@ async function getUtilisateurById(req: Request, res: Response) {
         .then(() =>
             // Find requested user by primary key (id)
             Utilisateur.findByPk(req.params.id, {
-                attributes: { exclude: ["motDePasse"] },
+                attributes: { exclude: ['motDePasse'] },
                 include: [
                     {
                         model: Adherent,
-                        attributes: ["nom", "prenom"],
+                        attributes: ['nom', 'prenom']
                     },
                     {
-                        model: Poste,
-                    },
-                ],
-            }),
+                        model: Poste
+                    }
+                ]
+            })
         )
         .then((poste) => res.status(200).json(poste))
-        .catch((err) => controllerErrorHandler(err, res));
+        .catch((err) => controllerErrorHandler(err, res))
 }
 
 /**
@@ -125,16 +120,16 @@ async function createUtilisateur(req: Request, res: Response) {
         .then(() => hash(req.body.motDePasse, 10))
         .then((hash) => {
             // Update body with hashed password
-            req.body.motDePasse = hash;
+            req.body.motDePasse = hash
             // Clean useless creation and update dates if given (setup while creating user)
-            req.body.createdAt = null;
-            req.body.updatedAt = null;
-            return Utilisateur.create(req.body);
+            req.body.createdAt = null
+            req.body.updatedAt = null
+            return Utilisateur.create(req.body)
         })
         .then((user) => {
-            res.json({ id: user.id });
+            res.json({ id: user.id })
         })
-        .catch((err) => controllerErrorHandler(err, res));
+        .catch((err) => controllerErrorHandler(err, res))
 }
 
 /**
@@ -152,19 +147,19 @@ async function updateUtilisateur(req: Request, res: Response) {
     await checkExistingId<Utilisateur>(req.body.id, Utilisateur)
         .then(() => checkPasswordStrength(req.body.motDePasse))
         .then(() => {
-            return hash(req.body.motDePasse, 10);
+            return hash(req.body.motDePasse, 10)
         })
         .then((hash) => {
             // Update body with hashed password
-            req.body.motDePasse = hash;
+            req.body.motDePasse = hash
             // Clean useless update dates if given (setup while creating user)
-            req.body.updatedAt = null;
+            req.body.updatedAt = null
             return Utilisateur.update(req.body, {
-                where: { id: req.body.id },
-            });
+                where: { id: req.body.id }
+            })
         })
         .then((user) => res.status(204).json(user))
-        .catch((err) => controllerErrorHandler(err, res));
+        .catch((err) => controllerErrorHandler(err, res))
 }
 
 /**
@@ -181,10 +176,10 @@ async function deleteUtilisateurById(req: Request, res: Response) {
     await checkExistingId<Utilisateur>(req.params.id, Utilisateur)
         .then(() =>
             // Delete requested user by its id
-            Utilisateur.destroy({ where: { id: req.params.id } }),
+            Utilisateur.destroy({ where: { id: req.params.id } })
         )
         .then((user) => res.status(204).json(user))
-        .catch((err) => controllerErrorHandler(err, res));
+        .catch((err) => controllerErrorHandler(err, res))
 }
 
-export default utilisateurController;
+export default utilisateurController

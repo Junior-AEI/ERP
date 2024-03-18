@@ -3,12 +3,14 @@ import type { HTMLAttributes } from 'vue'
 import { Primitive, type PrimitiveProps } from 'radix-vue'
 import { type ButtonVariants, buttonVariants } from '.'
 import { cn } from '@/lib/utils'
+import type { IconNames } from '@/types'
 
 interface Props extends PrimitiveProps {
   variant?: ButtonVariants['variant']
   size?: ButtonVariants['size']
   as?: string
   class?: HTMLAttributes['class']
+  icon?: IconNames
 }
 
 const props = withDefaults(defineProps<Props>(), {
@@ -22,6 +24,7 @@ const props = withDefaults(defineProps<Props>(), {
     :as-child="asChild"
     :class="cn(buttonVariants({ variant, size }), props.class)"
   >
-    <slot />
+    <Icon v-if="props.icon" :name="props.icon" class="-m-1" />
+    <slot></slot>
   </Primitive>
 </template>

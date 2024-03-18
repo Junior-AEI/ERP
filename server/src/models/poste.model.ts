@@ -21,50 +21,50 @@ import {
     IsDate,
     NotEmpty,
     BelongsTo,
-    ForeignKey,
-} from "sequelize-typescript";
-import Utilisateur from "./utilisateur.model";
-import Pole from "./pole.model";
+    ForeignKey
+} from 'sequelize-typescript'
+import Utilisateur from './utilisateur.model'
+import Pole from './pole.model'
 
 @Table
 export default class Poste extends Model<Poste> {
     @NotEmpty
     @Column({
         type: DataType.STRING,
-        allowNull: false,
+        allowNull: false
     })
-    nom!: string;
+    nom!: string
 
     @Column({
-        type: DataType.TEXT,
+        type: DataType.TEXT
     })
-    description!: string;
+    description!: string
 
     @HasMany(() => Utilisateur)
-    utilisateurs!: Utilisateur[];
+    utilisateurs!: Utilisateur[]
 
     @ForeignKey(() => Pole)
     @Column({
-        type: DataType.STRING,
+        type: DataType.STRING
     })
-    nomPole!: string;
+    nomPole!: string
 
     @BelongsTo(() => Pole)
-    pole!: Pole;
+    pole!: Pole
 
     @IsDate
     @CreatedAt
     @Column({
         type: DataType.DATE,
-        allowNull: false,
+        allowNull: false
     })
-    createdAt!: Date;
+    createdAt!: Date
 
     @IsDate
     @UpdatedAt
     @Column({
         type: DataType.DATE,
-        allowNull: false,
+        allowNull: false
     })
-    updatedAt!: Date;
+    updatedAt!: Date
 }

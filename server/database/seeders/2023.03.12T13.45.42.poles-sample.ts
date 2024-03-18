@@ -10,78 +10,68 @@
 // LATIME is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more details.
 
 // You should have received a copy of the GNU Affero General Public License along with LATIME. If not, see <https://www.gnu.org/licenses/>.
-import type { Seeder } from "../../src/migrations/umzug";
+import type { Seeder } from '../../src/migrations/umzug'
 
 const polesSamples = [
     {
-        nom: "Bureau",
+        nom: 'Bureau',
         createdAt: new Date(),
-        updatedAt: new Date(),
+        updatedAt: new Date()
     },
     {
         nom: "Suivie d'Étude",
         createdAt: new Date(),
-        updatedAt: new Date(),
+        updatedAt: new Date()
     },
     {
-        nom: "Développement Commercial",
+        nom: 'Développement Commercial',
         createdAt: new Date(),
-        updatedAt: new Date(),
+        updatedAt: new Date()
     },
     {
-        nom: "Communication",
+        nom: 'Communication',
         createdAt: new Date(),
-        updatedAt: new Date(),
+        updatedAt: new Date()
     },
     {
-        nom: "Trésorerie",
+        nom: 'Trésorerie',
         createdAt: new Date(),
-        updatedAt: new Date(),
+        updatedAt: new Date()
     },
     {
-        nom: "Qualité",
+        nom: 'Qualité',
         createdAt: new Date(),
-        updatedAt: new Date(),
+        updatedAt: new Date()
     },
     {
         nom: "Systèmes d'Information",
         createdAt: new Date(),
-        updatedAt: new Date(),
-    },
-];
+        updatedAt: new Date()
+    }
+]
 export const up: Seeder = async ({ context: sequelize }) => {
-    await sequelize.getQueryInterface().bulkInsert("Poles", polesSamples);
+    await sequelize.getQueryInterface().bulkInsert('Poles', polesSamples)
     await sequelize.getQueryInterface().bulkUpdate(
-        "Postes",
+        'Postes',
         {
-            nomPole: "Bureau",
+            nomPole: 'Bureau'
         },
         {
-            nom: [
-                "Président⋅e",
-                "Vice Président⋅e",
-                "Trésorier⋅ère",
-                "Secrétaire Général",
-            ],
-        },
-    );
-};
+            nom: ['Président⋅e', 'Vice Président⋅e', 'Trésorier⋅ère', 'Secrétaire Général']
+        }
+    )
+}
 export const down: Seeder = async ({ context: sequelize }) => {
     await sequelize.getQueryInterface().bulkUpdate(
-        "Postes",
+        'Postes',
         {
-            nomPole: null,
+            nomPole: null
         },
         {
-            nom: [
-                "Président⋅e",
-                "Vice Président⋅e",
-                "Trésorier⋅ère",
-                "Secrétaire Général",
-            ],
-        },
-    );
-    await sequelize.getQueryInterface().bulkDelete("Poles", {
-        nom: polesSamples.map((pole) => pole.nom),
-    });
-};
+            nom: ['Président⋅e', 'Vice Président⋅e', 'Trésorier⋅ère', 'Secrétaire Général']
+        }
+    )
+    await sequelize.getQueryInterface().bulkDelete('Poles', {
+        nom: polesSamples.map((pole) => pole.nom)
+    })
+}

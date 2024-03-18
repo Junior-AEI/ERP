@@ -19,9 +19,9 @@ import {
     UpdatedAt,
     ForeignKey,
     BelongsTo,
-    IsDate,
-} from "sequelize-typescript";
-import Adresse from "./adresse.model";
+    IsDate
+} from 'sequelize-typescript'
+import Adresse from './address.model'
 
 @Table
 export default class Entreprise extends Model {
@@ -29,45 +29,45 @@ export default class Entreprise extends Model {
         type: DataType.INTEGER,
         allowNull: false,
         primaryKey: true,
-        autoIncrement: true,
+        autoIncrement: true
     })
-    id!: number;
+    id!: number
 
     @Column({
         type: DataType.STRING,
-        allowNull: false,
+        allowNull: false
     })
-    nom!: string;
+    nom!: string
 
     @Column({
         type: DataType.STRING,
-        allowNull: false,
+        allowNull: false
     })
-    entiteJuridique!: string;
+    entiteJuridique!: string
 
     @ForeignKey(() => Adresse)
     @Column({
         type: DataType.INTEGER,
-        allowNull: false,
+        allowNull: false
     })
-    adresseId!: number;
+    adresseId!: number
 
     @BelongsTo(() => Adresse)
-    adresse!: Adresse;
+    adresse!: Adresse
 
     @IsDate
     @CreatedAt
     @Column({
         type: DataType.DATE,
-        allowNull: false,
+        allowNull: false
     })
-    createdAt!: Date;
+    createdAt!: Date
 
     @IsDate
     @UpdatedAt
     @Column({
         type: DataType.DATE,
-        allowNull: false,
+        allowNull: false
     })
-    updatedAt!: Date;
+    updatedAt!: Date
 }

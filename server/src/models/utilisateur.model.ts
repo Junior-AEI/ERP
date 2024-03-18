@@ -24,11 +24,11 @@ import {
     NotEmpty,
     Unique,
     PrimaryKey,
-    HasMany,
-} from "sequelize-typescript";
-import Poste from "./poste.model";
-import Adherent from "./adherent.model";
-import Permission from "./permission.model";
+    HasMany
+} from 'sequelize-typescript'
+import Poste from './poste.model'
+import Adherent from './member.model'
+import Permission from './permission.model'
 
 @Table
 export default class Utilisateur extends Model {
@@ -37,100 +37,100 @@ export default class Utilisateur extends Model {
         type: DataType.INTEGER,
         allowNull: false,
         primaryKey: true,
-        autoIncrement: true,
+        autoIncrement: true
     })
-    id!: number;
+    id!: number
 
     @NotEmpty
     @Unique
     @Column({
         type: DataType.STRING,
-        allowNull: false,
+        allowNull: false
     })
-    nomUtilisateur!: string;
+    nomUtilisateur!: string
 
     @NotEmpty
     @Column({
         type: DataType.STRING,
-        allowNull: false,
+        allowNull: false
     })
-    motDePasse!: string;
+    motDePasse!: string
 
     @IsDate
     @Column({
-        type: DataType.DATE,
+        type: DataType.DATE
     })
-    derniereConnexion!: Date;
+    derniereConnexion!: Date
 
     @NotEmpty
     @Column({
         type: DataType.BOOLEAN,
         allowNull: false,
         validate: {
-            isBoolean: true,
-        },
+            isBoolean: true
+        }
     })
-    estActif!: boolean;
+    estActif!: boolean
 
     @NotEmpty
     @IsDate
     @Column({
         type: DataType.DATE,
-        allowNull: false,
+        allowNull: false
     })
-    debutMandat!: Date;
+    debutMandat!: Date
 
     @NotEmpty
     @IsDate
     @Column({
         type: DataType.DATE,
-        allowNull: false,
+        allowNull: false
     })
-    finMandat!: Date;
+    finMandat!: Date
 
     @IsEmail
     @Column({
         type: DataType.STRING,
-        allowNull: false,
+        allowNull: false
     })
-    mailJE!: string;
+    mailJE!: string
 
     @ForeignKey(() => Poste)
     @Column({
         type: DataType.INTEGER,
-        allowNull: false,
+        allowNull: false
     })
-    posteId!: number;
+    posteId!: number
 
     @BelongsTo(() => Poste)
-    poste!: Poste;
+    poste!: Poste
 
     @ForeignKey(() => Adherent)
     @Column({
         type: DataType.INTEGER,
-        allowNull: false,
+        allowNull: false
     })
-    adherentId!: number;
+    adherentId!: number
 
     @BelongsTo(() => Adherent)
-    adherent!: Adherent;
+    adherent!: Adherent
 
     @HasMany(() => Permission)
-    permissions!: Permission[];
+    permissions!: Permission[]
 
     @IsDate
     @CreatedAt
     @Column({
         type: DataType.DATE,
-        allowNull: false,
+        allowNull: false
     })
-    createdAt!: Date;
+    createdAt!: Date
 
     @IsDate
     @UpdatedAt
     @Column({
         type: DataType.DATE,
-        allowNull: false,
+        allowNull: false
     })
-    updatedAt!: Date;
+    updatedAt!: Date
 }

@@ -10,26 +10,26 @@
 // LATIME is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more details.
 
 // You should have received a copy of the GNU Affero General Public License along with LATIME. If not, see <https://www.gnu.org/licenses/>.
-import { Request, Response } from "express";
-import Permission from "../models/permission.model";
+import { Request, Response } from 'express'
+import Permission from '../models/permission.model'
 
 function verifyPermission(nomPermission: string) {
     return async (req: Request, res: Response, next: () => void) => {
         const perm = await Permission.findOne({
             where: {
                 nomPermission: nomPermission,
-                idUtilisateur: res.locals.user.id,
-            },
-        });
+                idUtilisateur: res.locals.user.id
+            }
+        })
         if (perm) {
-            next();
+            next()
         } else {
             return res.status(401).json({
-                status: "error",
-                message: "Unauthorized",
-            });
+                status: 'error',
+                message: 'Unauthorized'
+            })
         }
-    };
+    }
 }
 
-export { verifyPermission };
+export { verifyPermission }

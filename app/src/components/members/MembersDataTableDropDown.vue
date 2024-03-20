@@ -2,7 +2,7 @@
 <script setup lang="ts">
 defineProps<{
   item: {
-    id: string
+    memberId: string
   }
 }>()
 
@@ -20,7 +20,7 @@ function copy(id: string) {
       </Button>
     </DropdownMenuTrigger>
     <DropdownMenuContent align="end">
-      <DropdownMenuItem @click="copy(item.id)"> Copy payment ID </DropdownMenuItem>
+      <DropdownMenuItem @click="copy(item.memberId)"> Copy ID </DropdownMenuItem>
     </DropdownMenuContent>
   </DropdownMenu>
 </template>

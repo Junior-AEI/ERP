@@ -1,85 +1,113 @@
 import { h } from 'vue'
 import type { ColumnDef } from '@tanstack/vue-table'
 import type { Member } from '@/types/api'
-import { DataTableDropDown } from '@/components/ui/data-table'
+import MembersDataTableDropDown from './MembersDataTableDropDown.vue'
+import { Button } from '../ui/button'
+import Icon from '../Icon.vue'
+
+const defaultClasses = "text-right font-medium"
 
 export const columns: ColumnDef<Member>[] = [
-  {
-    accessorKey: 'id',
-    header: () => h('div', { class: 'text-right' }, 'Identifiant'),
-    cell: ({ row }) => {
-      const memberId = Number.parseInt(row.getValue('id'))
+    {
+        accessorKey: 'lastname',
+        meta: {
+            label: 'Nom',
+        },
+        header: () => h('div', { class: 'text-right' }, 'Nom'),
+        cell: ({ row }) => {
+            const lastname = row.getValue('lastname') as string
 
-      return h('div', { class: 'text-right font-medium' }, memberId)
-    }
-  },
-  {
-    accessorKey: 'lastname',
-    header: () => h('div', { class: 'text-right' }, 'Nom'),
-    cell: ({ row }) => {
-      const lastname = row.getValue('lastname') as string
+            return h('div', { class: defaultClasses }, lastname)
+        }
+    },
+    {
+        accessorKey: 'firstname',
+        meta: {
+            label: 'Prénom',
+        },
+        header: () => h('div', { class: 'text-right' }, 'Prénom'),
+        cell: ({ row }) => {
+            const firstname = row.getValue('firstname') as string
 
-      return h('div', { class: 'text-right font-medium' }, lastname)
-    }
-  },
-  {
-    accessorKey: 'firstname',
-    header: () => h('div', { class: 'text-right' }, 'Prénom'),
-    cell: ({ row }) => {
-      const firstname = row.getValue('firstname') as string
+            return h('div', { class: defaultClasses }, firstname)
+        }
+    },
+    {
+        accessorKey: 'mobilePhoneNumber',
+        meta: {
+            label: 'Téléphone',
+        },
+        header: () => h('div', { class: 'text-right' }, 'Téléphone'),
+        cell: ({ row }) => {
+            const mobilePhoneNumber = row.getValue('mobilePhoneNumber') as string
 
-      return h('div', { class: 'text-right font-medium' }, firstname)
-    }
-  },
-  {
-    accessorKey: 'mobilePhoneNumber',
-    header: () => h('div', { class: 'text-right' }, 'Téléphone'),
-    cell: ({ row }) => {
-      const mobilePhoneNumber = row.getValue('mobilePhoneNumber') as string
+            return h('div', { class: defaultClasses }, mobilePhoneNumber)
+        }
+    },
+    {
+        accessorKey: 'email',
+        meta: {
+            label: 'Email',
+        },
+        header: ({ column }) => {
+            return h(Button, {
+                variant: 'ghost',
+                onClick: () => column.toggleSorting(column.getIsSorted() === 'asc'),
+            }, () => ['Email', h(h(
+                Icon, {
+                name: 'unfold_more',
+            }
+            ), { class: '' })])
+        },
+        cell: ({ row }) => h('div', { class: `lowercase ${defaultClasses}` }, row.getValue('email')),
+    },
+    {
+        accessorKey: 'department',
+        meta: {
+            label: 'Filière',
+        },
+        header: ({ column }) => {
+            return h(Button, {
+                variant: 'ghost',
+                onClick: () => column.toggleSorting(column.getIsSorted() === 'asc'),
+            }, () => ['Filière', h(h(
+                Icon, {
+                name: 'unfold_more',
+            }
+            ), { class: '' })])
+        },
+        cell: ({ row }) => h('div', { class: defaultClasses }, row.getValue('department')),
+    },
+    {
+        accessorKey: 'promotion',
+        meta: {
+            label: 'Promo',
+        },
+        header: ({ column }) => {
+            return h(Button, {
+                variant: 'ghost',
+                onClick: () => column.toggleSorting(column.getIsSorted() === 'asc'),
+            }, () => ['Promo', h(h(
+                Icon, {
+                name: 'unfold_more',
+            }
+            ), { class: '' })])
+        },
+        cell: ({ row }) => h('div', { class: defaultClasses }, row.getValue('promotion')),
+    },
+    {
+        id: 'actions',
+        enableHiding: false,
+        cell: ({ row }) => {
+            const item = row.original
 
-      return h('div', { class: 'text-right font-medium' }, mobilePhoneNumber)
+            return h(
+                'div',
+                { class: 'relative' },
+                h(MembersDataTableDropDown, {
+                    item
+                })
+            )
+        }
     }
-  },
-  {
-    accessorKey: 'email',
-    header: () => h('div', { class: 'text-right' }, 'Adresse email'),
-    cell: ({ row }) => {
-      const email = row.getValue('email') as string
-
-      return h('div', { class: 'text-right font-medium' }, email)
-    }
-  },
-  {
-    accessorKey: 'department',
-    header: () => h('div', { class: 'text-right' }, 'Filière'),
-    cell: ({ row }) => {
-      const department = row.getValue('department') as string
-
-      return h('div', { class: 'text-right font-medium' }, department)
-    }
-  },
-  {
-    accessorKey: 'promotion',
-    header: () => h('div', { class: 'text-right' }, 'Promotion'),
-    cell: ({ row }) => {
-      const promotion = row.getValue('promotion') as string
-
-      return h('div', { class: 'text-right font-medium' }, promotion)
-    }
-  },
-  {
-    id: 'actions',
-    enableHiding: false,
-    cell: ({ row }) => {
-      const item = row.original
-
-      return h(
-        'div',
-        { class: 'relative' },
-        h(DataTableDropDown, {
-          item
-        })
-      )
-    }
-  }
 ]

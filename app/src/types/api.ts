@@ -1,5 +1,5 @@
 interface Person {
-  id: string
+  personId: string
   firstname: string
   lastname: string
   gender: string
@@ -9,6 +9,7 @@ interface Person {
 }
 
 interface Member extends Person {
+  memberId: string
   birthDate: string
   nationality: string
   promotion: string

@@ -9,7 +9,8 @@ async function getData(): Promise<Member[]> {
   // Fetch data from your API here.
   return [
     {
-      id: '1',
+      personId: '1',
+      memberId: '1',
       firstname: 'Jean',
       lastname: 'Dupont',
       gender: 'Homme',
@@ -27,7 +28,8 @@ async function getData(): Promise<Member[]> {
       updatedAt: '2024-03-20'
     },
     {
-      id: '2',
+      personId: '2',
+      memberId: '2',
       firstname: 'Marie',
       lastname: 'Dubois',
       gender: 'Femme',
@@ -40,6 +42,25 @@ async function getData(): Promise<Member[]> {
       contributionDate: '2023-01-15',
       paymentMethod: 'Virement bancaire',
       department: 'Info',
+      telegramId: '@mariedub',
+      createdAt: '2023-01-15',
+      updatedAt: '2024-03-20'
+    },
+    {
+      personId: '3',
+      memberId: '3',
+      firstname: 'Éric',
+      lastname: 'Kerhervé',
+      gender: 'Homme',
+      mobilePhoneNumber: '0612345678',
+      landlinePhoneNumber: '0187654321',
+      email: 'eric.kerherve.bordeaux-inp.fr',
+      birthDate: '1985-05-10',
+      nationality: 'Française',
+      promotion: '2018',
+      contributionDate: '2023-01-15',
+      paymentMethod: 'Virement bancaire',
+      department: 'Élec',
       telegramId: '@mariedub',
       createdAt: '2023-01-15',
       updatedAt: '2024-03-20'

@@ -49,7 +49,12 @@
         </CollapsibleMenu>
       </div>
 
-      <Link to="/administration" icon="build" :variant="matchRoute('/administration')">
+      <Link
+        to="/administration"
+        icon="build"
+        class="w-full justify-start"
+        :variant="matchRoute('/administration')"
+      >
         Administration
       </Link>
     </div>

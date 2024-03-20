@@ -17,6 +17,7 @@
   },
   "dependencies": {
     "@formkit/auto-animate": "^0.8.1",
+    "@tanstack/vue-table": "^8.14.0",
     "@types/validator": "^13.11.9",
     "@vueuse/core": "^10.9.0",
     "axios": "^1.6.7",

@@ -6,7 +6,7 @@ export const membresModule: Module = {
     {
       path: '/membres',
       name: 'Membres',
-      component: () => import('@/views/Construction.vue'),
+      component: () => import('./Membres.vue'),
       meta: {
         icon: 'group'
       }

@@ -4,7 +4,7 @@ import {
   ScrollAreaCorner,
   ScrollAreaRoot,
   type ScrollAreaRootProps,
-  ScrollAreaViewport,
+  ScrollAreaViewport
 } from 'radix-vue'
 import ScrollBar from './ScrollBar.vue'
 import { cn } from '@/lib/utils'

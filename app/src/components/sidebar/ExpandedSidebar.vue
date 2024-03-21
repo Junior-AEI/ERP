@@ -7,7 +7,22 @@
       <Button icon="chevron_left" size="icon" variant="link" @click="$emit('reduce')"></Button>
     </div>
 
-    <Input @click="$emit('search')" placeholder="Rechercher" />
+    <Button
+      icon="search"
+      size="icon"
+      variant="outline"
+      class="w-full justify-start text-sm font-normal text-muted-foreground"
+      @click="$emit('search')"
+    >
+      <span>Rechercher</span>
+      <span class="ml-auto text-sm text-muted-foreground">
+        <kbd
+          class="pointer-events-none inline-flex select-none items-center gap-1 rounded border bg-muted px-1.5 font-mono text-[10px] font-medium text-muted-foreground opacity-100"
+        >
+          <span class="text-xs">Ctrl</span>K
+        </kbd>
+      </span>
+    </Button>
 
     <div class="flex flex-1 flex-col items-start gap-1 overflow-x-auto pb-6">
       <Link to="/" icon="dashboard" class="w-full justify-start" :variant="matchRoute('/')">

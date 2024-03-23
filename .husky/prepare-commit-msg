@@ -1,4 +1,6 @@
-#!/usr/bin/env bash
+#!/usr/bin/env sh
+. "$(dirname -- "$0")/_/husky.sh"
+
 # gitmoji as a commit hook
 if npx -v >&/dev/null
 then

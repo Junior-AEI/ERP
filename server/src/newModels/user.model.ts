@@ -19,104 +19,67 @@ import {
     UpdatedAt,
     ForeignKey,
     BelongsTo,
-    IsIn,
+    IsEmail,
     IsDate,
     NotEmpty,
-    IsNumeric,
-    Max,
-    Min,
-    HasOne,
-    PrimaryKey,
+    PrimaryKey
 } from 'sequelize-typescript'
-import validator from 'validator'
-import Adress from './address.model'
-import Person from './person.model'
-import User from './user.model'
-
-const PAYMENTS = ['Esp', 'CB', 'Vir', 'Lydia']
-const DEPARTMENTS = ['Informatique', 'Electronique', 'Telecommunication', 'Matmeca', 'R&I', 'SEE']
+import Member from './member.model'
 
 @Table
-export default class Member extends Model {
+export default class User extends Model {
     @PrimaryKey
-    @ForeignKey(() => Person)
+    @ForeignKey(() => Member)
     @Column({
         type: DataType.INTEGER,
         allowNull: false
     })
     memberId!: number
 
-    @BelongsTo(() => Person)
-    person!: Person
-
-    @IsDate
-    @NotEmpty
-    @Column({
-        type: DataType.DATE,
-        allowNull: false
-    })
-    birthDate!: Date
+    @BelongsTo(() => Member)
+    member!: Member
 
     @NotEmpty
     @Column({
         type: DataType.STRING,
         allowNull: false
     })
-    birthPlace!: string
+    username!: string
 
+    @NotEmpty
     @Column({
         type: DataType.STRING,
-        allowNull: false,
-        validate: {
-            checkCountry(str: string) {
-                if (!validator.isISO31661Alpha3(str)) {
-                    throw new Error('Invalid country code')
-                }
-            }
-        }
-    })
-    nationality!: string
-
-    @IsNumeric
-    @Max(9999)
-    @Min(1920)
-    @Column({
-        type: DataType.STRING(4),
         allowNull: false
     })
-    promotion!: string
+    password!: string
 
     @IsDate
     @Column({
         type: DataType.DATE,
         allowNull: false
     })
-    contributionDate!: Date
+    lastLogin!: Date
 
-    @IsIn([PAYMENTS])
+    @IsDate
     @Column({
-        type: DataType.ENUM,
-        values: PAYMENTS
-    })
-    payementMethod!: string
-
-    @IsIn([DEPARTMENTS])
-    @Column({
-        type: DataType.ENUM,
-        allowNull: false,
-        values: DEPARTMENTS
-    })
-    department!: string
-
-    @ForeignKey(() => Adress)
-    @Column({
-        type: DataType.INTEGER,
+        type: DataType.DATE,
         allowNull: false
     })
-    adressId!: number
+    mandateStart!: Date
 
-    @BelongsTo(() => Adress)
-    adresse!: Adress
+    @IsDate
+    @Column({
+        type: DataType.DATE,
+        allowNull: false
+    })
+    mandateEnd!: Date
+
+    @IsEmail
+    @Column({
+        type: DataType.STRING,
+        allowNull: false
+    })
+    emailJE!: string
 
     @IsDate
     @CreatedAt
@@ -133,7 +96,4 @@ export default class Member extends Model {
         allowNull: false
     })
     updatedAt!: Date
-
-    @HasOne(() => User)
-    user!: User
 }

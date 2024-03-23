@@ -15,20 +15,18 @@ import {
     Column,
     Model,
     DataType,
-    CreatedAt,
-    UpdatedAt,
-    NotEmpty,
     PrimaryKey,
     IsDate,
     HasMany,
-    HasOne,
+    BelongsTo,
+    ForeignKey,
 } from 'sequelize-typescript'
-import validator from 'validator'
-import Member from './member.model'
 import Company from './company.model'
+import Contributor from './contributor.model'
+import ProjectManager from './projectManager.model'
 
 @Table
-export default class Adress extends Model {
+export default class Project extends Model {
     @PrimaryKey
     @Column({
         type: DataType.INTEGER,
@@ -36,72 +34,39 @@ export default class Adress extends Model {
         primaryKey: true,
         autoIncrement: true
     })
-    addressId!: number
-
-    @NotEmpty
-    @Column({
-        type: DataType.STRING,
-        allowNull: false
-    })
-    adress!: string
-
-    @Column({
-        type: DataType.STRING
-    })
-    additionnalAdress!: string //complément d'adresse
-
-    @NotEmpty
-    @Column({
-        type: DataType.STRING,
-        allowNull: false
-    })
-    city!: string
-
-    @NotEmpty
+    projectId!: number
+    
     @Column({
         type: DataType.STRING,
         allowNull: false,
-        validate: {
-            checkPostalCode(pc: string) {
-                if (!validator.isPostalCode(pc, 'any')) {
-                    throw new Error('Invalid postal code !')
-                }
-            }
-        }
     })
-    postCode!: string
-
-    @NotEmpty
+    acronym!: number
+    
+    @ForeignKey(() => Company)
     @Column({
-        type: DataType.STRING,
-        allowNull: false,
-        validate: {
-            checkCountry(c: string) {
-                if (!validator.isISO31661Alpha3(c)) {
-                    throw new Error('Invalid country code')
-                }
-            }
-        }
+        type: DataType.INTEGER,
+        allowNull: false
     })
-    country!: string
+    companyId!: number
 
-    @IsDate
-    @CreatedAt
-    @Column({
-        type: DataType.DATE
-    })
-    createdAt!: Date
-
-    @IsDate
-    @UpdatedAt
-    @Column({
-        type: DataType.DATE
-    })
-    updatedAt!: Date
- 
-    @HasMany(() => Member)
-    member!: Member
-
-    @HasOne(() => Company)
+    @BelongsTo(() => Company)
     company!: Company
+
+    @IsDate
+    @Column({
+        type: DataType.DATE
+    })
+    startDate!: Date
+
+    @IsDate
+    @Column({
+        type: DataType.DATE
+    })
+    endDate!: Date
+ 
+    @HasMany(() => Contributor)
+    contributor!: Contributor
+
+    @HasMany(() => ProjectManager)
+    projectManager!: ProjectManager
 }

@@ -15,70 +15,34 @@ import {
     Column,
     Model,
     DataType,
-    CreatedAt,
-    UpdatedAt,
     ForeignKey,
     BelongsTo,
-    HasMany,
-    IsDate,
     PrimaryKey
 } from 'sequelize-typescript'
-import Adress from './address.model'
-import Client from './client.model'
+import Member from './member.model'
 import Project from './project.model'
 
 @Table
-export default class Company extends Model {
+export default class Contributor extends Model {
     @PrimaryKey
-    @Column({
-        type: DataType.INTEGER,
-        allowNull: false,
-        primaryKey: true,
-        autoIncrement: true
-    })
-    companyId!: number
-
-    @Column({
-        type: DataType.STRING,
-        allowNull: false
-    })
-    name!: string
-
-    @Column({
-        type: DataType.STRING,
-        allowNull: false
-    })
-    legalEntity!: string
-
-    @ForeignKey(() => Adress)
+    @ForeignKey(() => Member)
     @Column({
         type: DataType.INTEGER,
         allowNull: false
     })
-    adressId!: number
+    memberId!: number
 
-    @BelongsTo(() => Adress)
-    adresse!: Adress
+    @BelongsTo(() => Member)
+    member!: Member
 
-    @IsDate
-    @CreatedAt
+    @PrimaryKey
+    @ForeignKey(() => Project)
     @Column({
-        type: DataType.DATE,
+        type: DataType.INTEGER,
         allowNull: false
     })
-    createdAt!: Date
+    projectId!: number
 
-    @IsDate
-    @UpdatedAt
-    @Column({
-        type: DataType.DATE,
-        allowNull: false
-    })
-    updatedAt!: Date
-
-    @HasMany(() => Client)
-    client!: Client
-
-    @HasMany(() => Project)
+    @BelongsTo(() => Project)
     project!: Project
 }

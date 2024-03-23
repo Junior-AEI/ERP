@@ -20,15 +20,19 @@ import {
     PrimaryKey,
     IsIn,
     IsDate,
-    CreatedAt,
+    CreatedAt
 } from 'sequelize-typescript'
-import User from './user.model'
-import Project from './project.model'
+import Users from './user.model'
+import Projects from './project.model'
 
-const ADVANCEMENT = [""]
+const ADVANCEMENT = [
+    'Prospection', 'Devis validé', 'CE signé', 'RM signé', 'FA émise', 'FA payée',
+    'FI émise', 'FI payée', 'FS émise', 'FS payée', 'PVRF signé', 'PVRI signé',
+    'ARM signé', 'ARCE signé', 'ARRM signé', 'ARCE signé', 'BV payé'
+]
 
 @Table
-export default class ProjectNote extends Model {
+export default class ProjectNotes extends Model {
     @PrimaryKey
     @Column({
         type: DataType.INTEGER,
@@ -38,25 +42,25 @@ export default class ProjectNote extends Model {
     })
     noteId!: number
 
-    @ForeignKey(() => User)
+    @ForeignKey(() => Users)
     @Column({
         type: DataType.INTEGER,
         allowNull: false
     })
     writerId!: number
 
-    @BelongsTo(() => User)
-    user!: User
+    @BelongsTo(() => Users)
+    user!: Users
 
-    @ForeignKey(() => Project)
+    @ForeignKey(() => Projects)
     @Column({
         type: DataType.INTEGER,
         allowNull: false
     })
     projectId!: number
 
-    @BelongsTo(() => Project)
-    project!: Project
+    @BelongsTo(() => Projects)
+    project!: Projects
 
     @Column({
         type: DataType.STRING,

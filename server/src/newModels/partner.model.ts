@@ -15,78 +15,34 @@ import {
     Column,
     Model,
     DataType,
-    CreatedAt,
     ForeignKey,
     BelongsTo,
-    IsDate,
-    NotEmpty,
     PrimaryKey
 } from 'sequelize-typescript'
-import Users from './user.model'
-import DocumentTypes from './documentType.model'
+import Companies from './company.model'
+import Events from './event.model'
 
 @Table
-export default class Documents extends Model {
+export default class Partners extends Model {
     @PrimaryKey
+    @ForeignKey(() => Companies)
     @Column({
         type: DataType.INTEGER,
         allowNull: false
     })
-    documentId!: number
+    memberId!: number
 
-    @NotEmpty
-    @Column({
-        type: DataType.STRING,
-        allowNull: false
-    })
-    path!: string
+    @BelongsTo(() => Companies)
+    member!: Companies
 
-    @NotEmpty
+    @PrimaryKey
+    @ForeignKey(() => Events)
     @Column({
         type: DataType.INTEGER,
         allowNull: false
     })
-    version!: number
+    projectId!: number
 
-    @ForeignKey(() => DocumentTypes)
-    @Column({
-        type: DataType.STRING,
-        allowNull: false
-    })
-    DocumentTypeName!: string
-
-    @BelongsTo(() => DocumentTypes)
-    documentType!: DocumentTypes
-
-    @NotEmpty
-    @Column({
-        type: DataType.STRING,
-        allowNull: false
-    })
-    information!: string
-
-    @NotEmpty
-    @Column({
-        type: DataType.STRING,
-        allowNull: false
-    })
-    status!: string
-
-    @ForeignKey(() => Users)
-    @Column({
-        type: DataType.INTEGER,
-        allowNull: false
-    })
-    authorId!: number
-
-    @BelongsTo(() => Users)
-    user!: Users
-
-    @IsDate
-    @CreatedAt
-    @Column({
-        type: DataType.DATE,
-        allowNull: false
-    })
-    createdAt!: Date
+    @BelongsTo(() => Events)
+    project!: Events
 }

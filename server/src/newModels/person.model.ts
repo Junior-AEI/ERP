@@ -24,13 +24,13 @@ import {
     HasOne
 } from 'sequelize-typescript'
 import validator from 'validator'
-import Member from './member.model'
-import Client from './client.model'
+import Members from './member.model'
+import Clients from './client.model'
 
 const GENDER = ['F', 'M', 'O']
 
 @Table
-export default class Person extends Model {
+export default class Persons extends Model {
     @PrimaryKey
     @Column({
         type: DataType.INTEGER,
@@ -109,9 +109,9 @@ export default class Person extends Model {
     })
     updatedAt!: Date
 
-    @HasOne(() => Member)
-    member!: Member
+    @HasOne(() => Members)
+    member!: Members
 
-    @HasOne(() => Client)
-    client!: Client
+    @HasOne(() => Clients)
+    client!: Clients
 }

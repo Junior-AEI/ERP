@@ -22,22 +22,27 @@ import {
     IsEmail,
     IsDate,
     NotEmpty,
-    PrimaryKey
+    PrimaryKey,
+    HasMany
 } from 'sequelize-typescript'
-import Member from './member.model'
+import Members from './member.model'
+import ProjectManagers from './projectManager.model'
+import ProjectNotes from './projectNote.model'
+import Documents from './document.model'
+
 
 @Table
-export default class User extends Model {
+export default class Users extends Model {
     @PrimaryKey
-    @ForeignKey(() => Member)
+    @ForeignKey(() => Members)
     @Column({
         type: DataType.INTEGER,
         allowNull: false
     })
     memberId!: number
 
-    @BelongsTo(() => Member)
-    member!: Member
+    @BelongsTo(() => Members)
+    member!: Members
 
     @NotEmpty
     @Column({
@@ -96,4 +101,13 @@ export default class User extends Model {
         allowNull: false
     })
     updatedAt!: Date
+
+    @HasMany(() => ProjectManagers)
+    projectManager!: ProjectManagers
+
+    @HasMany(() => ProjectNotes)
+    projectNotes!: ProjectNotes
+
+    @HasMany(() => Documents)
+    document!: Documents
 }

@@ -23,12 +23,12 @@ import {
     IsDate,
     PrimaryKey
 } from 'sequelize-typescript'
-import Adress from './address.model'
-import Client from './client.model'
-import Project from './project.model'
+import Adresses from './address.model'
+import Clients from './client.model'
+import Projects from './project.model'
 
 @Table
-export default class Company extends Model {
+export default class Companies extends Model {
     @PrimaryKey
     @Column({
         type: DataType.INTEGER,
@@ -50,15 +50,15 @@ export default class Company extends Model {
     })
     legalEntity!: string
 
-    @ForeignKey(() => Adress)
+    @ForeignKey(() => Adresses)
     @Column({
         type: DataType.INTEGER,
         allowNull: false
     })
     adressId!: number
 
-    @BelongsTo(() => Adress)
-    adresse!: Adress
+    @BelongsTo(() => Adresses)
+    adresse!: Adresses
 
     @IsDate
     @CreatedAt
@@ -76,9 +76,9 @@ export default class Company extends Model {
     })
     updatedAt!: Date
 
-    @HasMany(() => Client)
-    client!: Client
+    @HasMany(() => Clients)
+    client!: Clients
 
-    @HasMany(() => Project)
-    project!: Project
+    @HasMany(() => Projects)
+    project!: Projects
 }

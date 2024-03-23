@@ -19,30 +19,30 @@ import {
     BelongsTo,
     PrimaryKey
 } from 'sequelize-typescript'
-import User from './user.model'
-import Project from './project.model'
+import Users from './user.model'
+import Projects from './project.model'
 
 @Table
-export default class ProjectManager extends Model {
+export default class ProjectManagers extends Model {
     @PrimaryKey
-    @ForeignKey(() => User)
+    @ForeignKey(() => Users)
     @Column({
         type: DataType.INTEGER,
         allowNull: false
     })
     userId!: number
 
-    @BelongsTo(() => User)
-    user!: User
+    @BelongsTo(() => Users)
+    user!: Users
 
     @PrimaryKey
-    @ForeignKey(() => Project)
+    @ForeignKey(() => Projects)
     @Column({
         type: DataType.INTEGER,
         allowNull: false
     })
     projectId!: number
 
-    @BelongsTo(() => Project)
-    project!: Project
+    @BelongsTo(() => Projects)
+    project!: Projects
 }

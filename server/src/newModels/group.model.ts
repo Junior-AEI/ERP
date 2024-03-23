@@ -10,77 +10,30 @@
 // LATIME is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more details.
 
 // You should have received a copy of the GNU Affero General Public License along with LATIME. If not, see <https://www.gnu.org/licenses/>.
-import {
-    Table,
-    Column,
-    Model,
-    DataType,
-    CreatedAt,
-    ForeignKey,
-    BelongsTo,
+import { 
+    Table, 
+    Column, 
+    Model, 
+    DataType, 
+    HasMany, 
+    PrimaryKey,
     IsDate,
-    NotEmpty,
-    PrimaryKey
+    CreatedAt,
+    UpdatedAt,
 } from 'sequelize-typescript'
-import Users from './user.model'
-import DocumentTypes from './documentType.model'
+import EventGroupConcerned from './eventGroupConcerned.model'
+import Belongers from './belonger.model'
+import Concerned from './concerned.model'
 
 @Table
-export default class Documents extends Model {
+export default class Groups extends Model {
     @PrimaryKey
     @Column({
-        type: DataType.INTEGER,
-        allowNull: false
-    })
-    documentId!: number
-
-    @NotEmpty
-    @Column({
         type: DataType.STRING,
-        allowNull: false
+        allowNull: false,
+        primaryKey: true
     })
-    path!: string
-
-    @NotEmpty
-    @Column({
-        type: DataType.INTEGER,
-        allowNull: false
-    })
-    version!: number
-
-    @ForeignKey(() => DocumentTypes)
-    @Column({
-        type: DataType.STRING,
-        allowNull: false
-    })
-    DocumentTypeName!: string
-
-    @BelongsTo(() => DocumentTypes)
-    documentType!: DocumentTypes
-
-    @NotEmpty
-    @Column({
-        type: DataType.STRING,
-        allowNull: false
-    })
-    information!: string
-
-    @NotEmpty
-    @Column({
-        type: DataType.STRING,
-        allowNull: false
-    })
-    status!: string
-
-    @ForeignKey(() => Users)
-    @Column({
-        type: DataType.INTEGER,
-        allowNull: false
-    })
-    authorId!: number
-
-    @BelongsTo(() => Users)
-    user!: Users
+    groupName!: string
 
     @IsDate
     @CreatedAt
@@ -89,4 +42,21 @@ export default class Documents extends Model {
         allowNull: false
     })
     createdAt!: Date
+
+    @IsDate
+    @UpdatedAt
+    @Column({
+        type: DataType.DATE,
+        allowNull: false
+    })
+    updatedAt!: Date
+
+    @HasMany(() => EventGroupConcerned)
+    eventGroupConcerned!: EventGroupConcerned
+
+    @HasMany(() => Belongers)
+    belonger!: Belongers
+
+    @HasMany(() => Concerned)
+    concerned!: Concerned
 }

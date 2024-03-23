@@ -21,12 +21,12 @@ import {
     BelongsTo,
     ForeignKey
 } from 'sequelize-typescript'
-import Company from './company.model'
-import Contributor from './contributor.model'
-import ProjectManager from './projectManager.model'
+import Companies from './company.model'
+import Contributors from './contributor.model'
+import ProjectManagers from './projectManager.model'
 
 @Table
-export default class Project extends Model {
+export default class Projects extends Model {
     @PrimaryKey
     @Column({
         type: DataType.INTEGER,
@@ -42,15 +42,15 @@ export default class Project extends Model {
     })
     acronym!: number
 
-    @ForeignKey(() => Company)
+    @ForeignKey(() => Companies)
     @Column({
         type: DataType.INTEGER,
         allowNull: false
     })
     companyId!: number
 
-    @BelongsTo(() => Company)
-    company!: Company
+    @BelongsTo(() => Companies)
+    company!: Companies
 
     @IsDate
     @Column({
@@ -64,9 +64,9 @@ export default class Project extends Model {
     })
     endDate!: Date
 
-    @HasMany(() => Contributor)
-    contributor!: Contributor
+    @HasMany(() => Contributors)
+    contributor!: Contributors
 
-    @HasMany(() => ProjectManager)
-    projectManager!: ProjectManager
+    @HasMany(() => ProjectManagers)
+    projectManager!: ProjectManagers
 }

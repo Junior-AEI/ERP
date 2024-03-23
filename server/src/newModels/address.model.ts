@@ -24,11 +24,11 @@ import {
     HasOne
 } from 'sequelize-typescript'
 import validator from 'validator'
-import Member from './member.model'
-import Company from './company.model'
+import Members from './member.model'
+import Companies from './company.model'
 
 @Table
-export default class Adress extends Model {
+export default class Adresses extends Model {
     @PrimaryKey
     @Column({
         type: DataType.INTEGER,
@@ -99,9 +99,9 @@ export default class Adress extends Model {
     })
     updatedAt!: Date
 
-    @HasMany(() => Member)
-    member!: Member
+    @HasMany(() => Members)
+    member!: Members
 
-    @HasOne(() => Company)
-    company!: Company
+    @HasOne(() => Companies)
+    company!: Companies
 }

@@ -19,21 +19,21 @@ import {
     BelongsTo,
     PrimaryKey
 } from 'sequelize-typescript'
-import Company from './company.model'
-import Person from './person.model'
+import Companies from './company.model'
+import Persons from './person.model'
 
 @Table
 export default class Client extends Model {
     @PrimaryKey
-    @ForeignKey(() => Person)
+    @ForeignKey(() => Persons)
     @Column({
         type: DataType.INTEGER,
         allowNull: false
     })
     memberId!: number
 
-    @BelongsTo(() => Person)
-    person!: Person
+    @BelongsTo(() => Persons)
+    person!: Persons
 
     @Column({
         type: DataType.STRING,
@@ -41,13 +41,13 @@ export default class Client extends Model {
     })
     function!: string
 
-    @ForeignKey(() => Company)
+    @ForeignKey(() => Companies)
     @Column({
         type: DataType.INTEGER,
         allowNull: false
     })
     companyId!: number
 
-    @BelongsTo(() => Company)
-    adresse!: Company
+    @BelongsTo(() => Companies)
+    adresse!: Companies
 }

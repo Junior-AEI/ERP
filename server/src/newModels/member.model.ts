@@ -26,28 +26,30 @@ import {
     Max,
     Min,
     HasOne,
-    PrimaryKey
+    PrimaryKey,
+    HasMany
 } from 'sequelize-typescript'
 import validator from 'validator'
-import Adress from './address.model'
-import Person from './person.model'
-import User from './user.model'
+import Adresses from './address.model'
+import Persons from './person.model'
+import Users from './user.model'
+import Contributors from './contributor.model'
 
 const PAYMENTS = ['Esp', 'CB', 'Vir', 'Lydia']
 const DEPARTMENTS = ['Informatique', 'Electronique', 'Telecommunication', 'Matmeca', 'R&I', 'SEE']
 
 @Table
-export default class Member extends Model {
+export default class Members extends Model {
     @PrimaryKey
-    @ForeignKey(() => Person)
+    @ForeignKey(() => Persons)
     @Column({
         type: DataType.INTEGER,
         allowNull: false
     })
     memberId!: number
 
-    @BelongsTo(() => Person)
-    person!: Person
+    @BelongsTo(() => Persons)
+    person!: Persons
 
     @IsDate
     @NotEmpty
@@ -108,15 +110,15 @@ export default class Member extends Model {
     })
     department!: string
 
-    @ForeignKey(() => Adress)
+    @ForeignKey(() => Adresses)
     @Column({
         type: DataType.INTEGER,
         allowNull: false
     })
     adressId!: number
 
-    @BelongsTo(() => Adress)
-    adresse!: Adress
+    @BelongsTo(() => Adresses)
+    adresse!: Adresses
 
     @IsDate
     @CreatedAt
@@ -134,6 +136,9 @@ export default class Member extends Model {
     })
     updatedAt!: Date
 
-    @HasOne(() => User)
-    user!: User
+    @HasOne(() => Users)
+    user!: Users
+
+    @HasMany(() => Contributors)
+    contributor!: Contributors
 }

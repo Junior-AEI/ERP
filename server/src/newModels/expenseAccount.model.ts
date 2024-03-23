@@ -15,78 +15,69 @@ import {
     Column,
     Model,
     DataType,
-    CreatedAt,
+    PrimaryKey,
+    IsIn,
+    IsDate,
     ForeignKey,
     BelongsTo,
-    IsDate,
-    NotEmpty,
-    PrimaryKey
 } from 'sequelize-typescript'
 import Users from './user.model'
-import DocumentTypes from './documentType.model'
+
+const STATE = ['A faire', 'En cours', 'Terminée', 'annulé', 'archivé']
 
 @Table
-export default class Documents extends Model {
+export default class ItTickets extends Model {
     @PrimaryKey
     @Column({
         type: DataType.INTEGER,
-        allowNull: false
+        allowNull: false,
+        primaryKey: true,
+        autoIncrement: true
     })
-    documentId!: number
-
-    @NotEmpty
-    @Column({
-        type: DataType.STRING,
-        allowNull: false
-    })
-    path!: string
-
-    @NotEmpty
-    @Column({
-        type: DataType.INTEGER,
-        allowNull: false
-    })
-    version!: number
-
-    @ForeignKey(() => DocumentTypes)
-    @Column({
-        type: DataType.STRING,
-        allowNull: false
-    })
-    DocumentTypeName!: string
-
-    @BelongsTo(() => DocumentTypes)
-    documentType!: DocumentTypes
-
-    @NotEmpty
-    @Column({
-        type: DataType.STRING,
-        allowNull: false
-    })
-    information!: string
-
-    @NotEmpty
-    @Column({
-        type: DataType.STRING,
-        allowNull: false
-    })
-    status!: string
+    ticketId!: number
 
     @ForeignKey(() => Users)
     @Column({
         type: DataType.INTEGER,
         allowNull: false
     })
-    authorId!: number
+    userId!: number
 
     @BelongsTo(() => Users)
     user!: Users
 
+    @ForeignKey(() => Users)
+    @Column({
+        type: DataType.INTEGER,
+        allowNull: false
+    })
+    approbatorId!: number
+
+    @Column({
+        type: DataType.STRING,
+        allowNull: false
+    })
+    reason!: string
+
+    
     @IsDate
-    @CreatedAt
     @Column({
         type: DataType.DATE,
         allowNull: false
     })
-    createdAt!: Date
+    expenceDate!: Date
+    
+    @Column({
+        type: DataType.STRING,
+        allowNull: false
+    })
+    description!: string
+
+    @IsIn([STATE])
+    @Column({
+        type: DataType.ENUM,
+        values: STATE,
+        allowNull: false
+    })
+    state!: string
 }

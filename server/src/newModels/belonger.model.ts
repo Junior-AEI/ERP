@@ -15,78 +15,34 @@ import {
     Column,
     Model,
     DataType,
-    CreatedAt,
     ForeignKey,
     BelongsTo,
-    IsDate,
-    NotEmpty,
     PrimaryKey
 } from 'sequelize-typescript'
 import Users from './user.model'
-import DocumentTypes from './documentType.model'
+import Groups from './group.model'
 
 @Table
-export default class Documents extends Model {
+export default class Belongers extends Model {
     @PrimaryKey
-    @Column({
-        type: DataType.INTEGER,
-        allowNull: false
-    })
-    documentId!: number
-
-    @NotEmpty
-    @Column({
-        type: DataType.STRING,
-        allowNull: false
-    })
-    path!: string
-
-    @NotEmpty
-    @Column({
-        type: DataType.INTEGER,
-        allowNull: false
-    })
-    version!: number
-
-    @ForeignKey(() => DocumentTypes)
-    @Column({
-        type: DataType.STRING,
-        allowNull: false
-    })
-    DocumentTypeName!: string
-
-    @BelongsTo(() => DocumentTypes)
-    documentType!: DocumentTypes
-
-    @NotEmpty
-    @Column({
-        type: DataType.STRING,
-        allowNull: false
-    })
-    information!: string
-
-    @NotEmpty
-    @Column({
-        type: DataType.STRING,
-        allowNull: false
-    })
-    status!: string
-
     @ForeignKey(() => Users)
     @Column({
-        type: DataType.INTEGER,
+        type: DataType.STRING,
         allowNull: false
     })
-    authorId!: number
+    userId!: string
 
     @BelongsTo(() => Users)
     user!: Users
-
-    @IsDate
-    @CreatedAt
+    
+    @PrimaryKey
+    @ForeignKey(() => Groups)
     @Column({
-        type: DataType.DATE,
+        type: DataType.STRING,
         allowNull: false
     })
-    createdAt!: Date
+    groupName!: string
+    
+    @BelongsTo(() => Groups)
+    group!: Groups
 }

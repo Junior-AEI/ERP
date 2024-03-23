@@ -15,78 +15,34 @@ import {
     Column,
     Model,
     DataType,
-    CreatedAt,
     ForeignKey,
     BelongsTo,
-    IsDate,
-    NotEmpty,
     PrimaryKey
 } from 'sequelize-typescript'
-import Users from './user.model'
-import DocumentTypes from './documentType.model'
+import Permissions from './permission.model'
+import Groups from './group.model'
 
 @Table
-export default class Documents extends Model {
+export default class Concerned extends Model {
     @PrimaryKey
-    @Column({
-        type: DataType.INTEGER,
-        allowNull: false
-    })
-    documentId!: number
-
-    @NotEmpty
+    @ForeignKey(() => Permissions)
     @Column({
         type: DataType.STRING,
         allowNull: false
     })
-    path!: string
+    permissionName!: string
 
-    @NotEmpty
-    @Column({
-        type: DataType.INTEGER,
-        allowNull: false
-    })
-    version!: number
-
-    @ForeignKey(() => DocumentTypes)
+    @BelongsTo(() => Permissions)
+    permission!: Permissions
+    
+    @PrimaryKey
+    @ForeignKey(() => Groups)
     @Column({
         type: DataType.STRING,
         allowNull: false
     })
-    DocumentTypeName!: string
-
-    @BelongsTo(() => DocumentTypes)
-    documentType!: DocumentTypes
-
-    @NotEmpty
-    @Column({
-        type: DataType.STRING,
-        allowNull: false
-    })
-    information!: string
-
-    @NotEmpty
-    @Column({
-        type: DataType.STRING,
-        allowNull: false
-    })
-    status!: string
-
-    @ForeignKey(() => Users)
-    @Column({
-        type: DataType.INTEGER,
-        allowNull: false
-    })
-    authorId!: number
-
-    @BelongsTo(() => Users)
-    user!: Users
-
-    @IsDate
-    @CreatedAt
-    @Column({
-        type: DataType.DATE,
-        allowNull: false
-    })
-    createdAt!: Date
+    groupName!: string
+    
+    @BelongsTo(() => Groups)
+    group!: Groups
 }

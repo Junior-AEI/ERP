@@ -10,83 +10,38 @@
 // LATIME is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more details.
 
 // You should have received a copy of the GNU Affero General Public License along with LATIME. If not, see <https://www.gnu.org/licenses/>.
-import {
-    Table,
-    Column,
-    Model,
-    DataType,
-    CreatedAt,
-    ForeignKey,
-    BelongsTo,
-    IsDate,
-    NotEmpty,
-    PrimaryKey
+import { 
+    Table, 
+    Column, 
+    Model, 
+    DataType, 
+    HasMany, 
+    PrimaryKey 
 } from 'sequelize-typescript'
-import Users from './user.model'
-import DocumentTypes from './documentType.model'
+import Events from './event.model'
 
 @Table
-export default class Documents extends Model {
+export default class EventTypes extends Model {
     @PrimaryKey
     @Column({
-        type: DataType.INTEGER,
-        allowNull: false
-    })
-    documentId!: number
-
-    @NotEmpty
-    @Column({
         type: DataType.STRING,
-        allowNull: false
+        allowNull: false,
+        primaryKey: true
     })
-    path!: string
+    type!: string
 
-    @NotEmpty
     @Column({
         type: DataType.INTEGER,
         allowNull: false
     })
-    version!: number
+    fieldNumber!: number
 
-    @ForeignKey(() => DocumentTypes)
     @Column({
         type: DataType.STRING,
         allowNull: false
     })
-    DocumentTypeName!: string
+    fieldMeaning!: string
 
-    @BelongsTo(() => DocumentTypes)
-    documentType!: DocumentTypes
-
-    @NotEmpty
-    @Column({
-        type: DataType.STRING,
-        allowNull: false
-    })
-    information!: string
-
-    @NotEmpty
-    @Column({
-        type: DataType.STRING,
-        allowNull: false
-    })
-    status!: string
-
-    @ForeignKey(() => Users)
-    @Column({
-        type: DataType.INTEGER,
-        allowNull: false
-    })
-    authorId!: number
-
-    @BelongsTo(() => Users)
-    user!: Users
-
-    @IsDate
-    @CreatedAt
-    @Column({
-        type: DataType.DATE,
-        allowNull: false
-    })
-    createdAt!: Date
+    @HasMany(() => Events)
+    document!: Events
 }

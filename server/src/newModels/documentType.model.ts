@@ -10,28 +10,23 @@
 // LATIME is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more details.
 
 // You should have received a copy of the GNU Affero General Public License along with LATIME. If not, see <https://www.gnu.org/licenses/>.
-import {
-    Table,
-    Column,
-    Model,
-    DataType,
-    HasMany,
-    PrimaryKey,
-    IsIn,
+import { 
+    Table, 
+    Column, 
+    Model, 
+    DataType, 
+    HasMany, 
+    PrimaryKey 
 } from 'sequelize-typescript'
-import Document from './document.model'
-
-const TYPE = [""]
+import Documents from './document.model'
 
 @Table
-export default class DocumentType extends Model {
+export default class DocumentTypes extends Model {
     @PrimaryKey
-    @IsIn([TYPE])
     @Column({
-        type: DataType.ENUM,
-        values: TYPE,
+        type: DataType.STRING,
         allowNull: false,
-        primaryKey: true,
+        primaryKey: true
     })
     type!: string
 
@@ -47,6 +42,6 @@ export default class DocumentType extends Model {
     })
     fieldMeaning!: string
 
-    @HasMany(() => Document)
-    document!: Document
+    @HasMany(() => Documents)
+    document!: Documents
 }

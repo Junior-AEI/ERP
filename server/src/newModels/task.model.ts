@@ -15,78 +15,60 @@ import {
     Column,
     Model,
     DataType,
-    CreatedAt,
     ForeignKey,
     BelongsTo,
     IsDate,
-    NotEmpty,
-    PrimaryKey
+    PrimaryKey,
+    IsIn,
 } from 'sequelize-typescript'
 import Users from './user.model'
-import DocumentTypes from './documentType.model'
+
+const STATE = ['A faire', 'En cours', 'Terminée', 'annulé', 'archivé']
 
 @Table
-export default class Documents extends Model {
+export default class Tasks extends Model {
     @PrimaryKey
     @Column({
         type: DataType.INTEGER,
         allowNull: false
     })
-    documentId!: number
-
-    @NotEmpty
-    @Column({
-        type: DataType.STRING,
-        allowNull: false
-    })
-    path!: string
-
-    @NotEmpty
-    @Column({
-        type: DataType.INTEGER,
-        allowNull: false
-    })
-    version!: number
-
-    @ForeignKey(() => DocumentTypes)
-    @Column({
-        type: DataType.STRING,
-        allowNull: false
-    })
-    DocumentTypeName!: string
-
-    @BelongsTo(() => DocumentTypes)
-    documentType!: DocumentTypes
-
-    @NotEmpty
-    @Column({
-        type: DataType.STRING,
-        allowNull: false
-    })
-    information!: string
-
-    @NotEmpty
-    @Column({
-        type: DataType.STRING,
-        allowNull: false
-    })
-    status!: string
+    taskId!: number
 
     @ForeignKey(() => Users)
     @Column({
         type: DataType.INTEGER,
         allowNull: false
     })
-    authorId!: number
+    userId!: number
 
     @BelongsTo(() => Users)
     user!: Users
-
+    
     @IsDate
-    @CreatedAt
     @Column({
         type: DataType.DATE,
         allowNull: false
     })
-    createdAt!: Date
+    dueDate!: Date
+
+    @Column({
+        type: DataType.STRING,
+        allowNull: false
+    })
+    description!: Date
+
+    @IsIn([STATE])
+    @Column({
+        type: DataType.ENUM,
+        values: STATE,
+        allowNull: false
+    })
+    state!: string
+    
+    @ForeignKey(() => Users)
+    @Column({
+        type: DataType.INTEGER,
+        allowNull: true
+    })
+    issuerId!: number
 }

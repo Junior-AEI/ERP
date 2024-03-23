@@ -15,58 +15,78 @@ import {
     Column,
     Model,
     DataType,
-    PrimaryKey,
-    IsDate,
-    HasMany,
+    CreatedAt,
+    ForeignKey,
     BelongsTo,
-    ForeignKey
+    IsDate,
+    NotEmpty,
+    PrimaryKey
 } from 'sequelize-typescript'
-import Company from './company.model'
-import Contributor from './contributor.model'
-import ProjectManager from './projectManager.model'
+import User from './user.model'
+import DocumentType from './documentType.model'
 
 @Table
-export default class Project extends Model {
+export default class Document extends Model {
     @PrimaryKey
     @Column({
         type: DataType.INTEGER,
-        allowNull: false,
-        primaryKey: true,
-        autoIncrement: true
+        allowNull: false
     })
-    projectId!: number
+    documentId!: number
 
+    @NotEmpty
     @Column({
         type: DataType.STRING,
         allowNull: false
     })
-    acronym!: number
+    path!: string
 
-    @ForeignKey(() => Company)
+    @NotEmpty
     @Column({
         type: DataType.INTEGER,
         allowNull: false
     })
-    companyId!: number
+    version!: number
+    
+    @ForeignKey(() => DocumentType)
+    @Column({
+        type: DataType.STRING,
+        allowNull: false
+    })
+    DocumentType!: string
 
-    @BelongsTo(() => Company)
-    company!: Company
+    @BelongsTo(() => DocumentType)
+    documentType!: DocumentType
+
+    @NotEmpty
+    @Column({
+        type: DataType.STRING,
+        allowNull: false
+    })
+    information!: string
+
+    @NotEmpty
+    @Column({
+        type: DataType.STRING,
+        allowNull: false
+    })
+    status!: string
+
+    @ForeignKey(() => User)
+    @Column({
+        type: DataType.INTEGER,
+        allowNull: false
+    })
+    authorId!: number
+
+    @BelongsTo(() => User)
+    user!: User
 
     @IsDate
+    @CreatedAt
     @Column({
-        type: DataType.DATE
+        type: DataType.DATE,
+        allowNull: false
     })
-    startDate!: Date
-
-    @IsDate
-    @Column({
-        type: DataType.DATE
-    })
-    endDate!: Date
-
-    @HasMany(() => Contributor)
-    contributor!: Contributor
-
-    @HasMany(() => ProjectManager)
-    projectManager!: ProjectManager
+    createdAt!: Date
 }

@@ -26,7 +26,7 @@ import {
     Max,
     Min,
     HasOne,
-    PrimaryKey,
+    PrimaryKey
 } from 'sequelize-typescript'
 import validator from 'validator'
 import Adress from './address.model'

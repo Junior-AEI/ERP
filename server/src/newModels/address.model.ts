@@ -21,7 +21,7 @@ import {
     PrimaryKey,
     IsDate,
     HasMany,
-    HasOne,
+    HasOne
 } from 'sequelize-typescript'
 import validator from 'validator'
 import Member from './member.model'
@@ -98,7 +98,7 @@ export default class Adress extends Model {
         type: DataType.DATE
     })
     updatedAt!: Date
- 
+
     @HasMany(() => Member)
     member!: Member
 

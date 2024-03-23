@@ -15,58 +15,38 @@ import {
     Column,
     Model,
     DataType,
-    PrimaryKey,
-    IsDate,
     HasMany,
-    BelongsTo,
-    ForeignKey
+    PrimaryKey,
+    IsIn,
 } from 'sequelize-typescript'
-import Company from './company.model'
-import Contributor from './contributor.model'
-import ProjectManager from './projectManager.model'
+import Document from './document.model'
+
+const TYPE = [""]
 
 @Table
-export default class Project extends Model {
+export default class DocumentType extends Model {
     @PrimaryKey
+    @IsIn([TYPE])
     @Column({
-        type: DataType.INTEGER,
+        type: DataType.ENUM,
+        values: TYPE,
         allowNull: false,
         primaryKey: true,
-        autoIncrement: true
     })
-    projectId!: number
+    type!: string
+
+    @Column({
+        type: DataType.INTEGER,
+        allowNull: false
+    })
+    fieldNumber!: number
 
     @Column({
         type: DataType.STRING,
         allowNull: false
     })
-    acronym!: number
+    fieldMeaning!: string
 
-    @ForeignKey(() => Company)
-    @Column({
-        type: DataType.INTEGER,
-        allowNull: false
-    })
-    companyId!: number
-
-    @BelongsTo(() => Company)
-    company!: Company
-
-    @IsDate
-    @Column({
-        type: DataType.DATE
-    })
-    startDate!: Date
-
-    @IsDate
-    @Column({
-        type: DataType.DATE
-    })
-    endDate!: Date
-
-    @HasMany(() => Contributor)
-    contributor!: Contributor
-
-    @HasMany(() => ProjectManager)
-    projectManager!: ProjectManager
+    @HasMany(() => Document)
+    document!: Document
 }

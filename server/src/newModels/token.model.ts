@@ -18,7 +18,7 @@ import {
     ForeignKey,
     BelongsTo,
     PrimaryKey,
-    IsDate,
+    IsDate
 } from 'sequelize-typescript'
 import Users from './user.model'
 
@@ -30,8 +30,7 @@ export default class Tokens extends Model {
         allowNull: false
     })
     token!: string
-    
-    
+
     @ForeignKey(() => Users)
     @Column({
         type: DataType.STRING,
@@ -41,7 +40,7 @@ export default class Tokens extends Model {
 
     @BelongsTo(() => Users)
     user!: Users
-    
+
     @IsDate
     @Column({
         type: DataType.DATE,

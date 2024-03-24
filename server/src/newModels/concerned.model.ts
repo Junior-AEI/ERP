@@ -34,7 +34,7 @@ export default class Concerned extends Model {
 
     @BelongsTo(() => Permissions)
     permission!: Permissions
-    
+
     @PrimaryKey
     @ForeignKey(() => Groups)
     @Column({
@@ -42,7 +42,7 @@ export default class Concerned extends Model {
         allowNull: false
     })
     groupName!: string
-    
+
     @BelongsTo(() => Groups)
     group!: Groups
 }

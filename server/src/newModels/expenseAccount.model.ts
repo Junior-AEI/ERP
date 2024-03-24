@@ -19,14 +19,14 @@ import {
     IsIn,
     IsDate,
     ForeignKey,
-    BelongsTo,
+    BelongsTo
 } from 'sequelize-typescript'
 import Users from './user.model'
 
 const STATE = ['A faire', 'En cours', 'Terminée', 'annulé', 'archivé']
 
 @Table
-export default class ItTickets extends Model {
+export default class AccountExpenses extends Model {
     @PrimaryKey
     @Column({
         type: DataType.INTEGER,
@@ -34,7 +34,7 @@ export default class ItTickets extends Model {
         primaryKey: true,
         autoIncrement: true
     })
-    ticketId!: number
+    expenseId!: number
 
     @ForeignKey(() => Users)
     @Column({
@@ -43,15 +43,15 @@ export default class ItTickets extends Model {
     })
     userId!: number
 
-    @BelongsTo(() => Users)
-    user!: Users
-
     @ForeignKey(() => Users)
     @Column({
         type: DataType.INTEGER,
         allowNull: false
     })
     approbatorId!: number
+    
+    @BelongsTo(() => Users)
+    user!: Users
 
     @Column({
         type: DataType.STRING,
@@ -59,14 +59,13 @@ export default class ItTickets extends Model {
     })
     reason!: string
 
-    
     @IsDate
     @Column({
         type: DataType.DATE,
         allowNull: false
     })
-    expenceDate!: Date
-    
+    expenseDate!: Date
+
     @Column({
         type: DataType.STRING,
         allowNull: false

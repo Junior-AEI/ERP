@@ -19,7 +19,7 @@ import {
     BelongsTo,
     IsDate,
     PrimaryKey,
-    IsIn,
+    IsIn
 } from 'sequelize-typescript'
 import Users from './user.model'
 
@@ -43,7 +43,7 @@ export default class Tasks extends Model {
 
     @BelongsTo(() => Users)
     user!: Users
-    
+
     @IsDate
     @Column({
         type: DataType.DATE,
@@ -64,7 +64,7 @@ export default class Tasks extends Model {
         allowNull: false
     })
     state!: string
-    
+
     @ForeignKey(() => Users)
     @Column({
         type: DataType.INTEGER,

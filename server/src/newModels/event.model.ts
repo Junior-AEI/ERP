@@ -17,7 +17,6 @@ import {
     DataType,
     PrimaryKey,
     IsDate,
-    HasOne,
     HasMany,
     ForeignKey,
     BelongsTo
@@ -82,6 +81,6 @@ export default class Events extends Model {
     @HasMany(() => Partners)
     member!: Partners
 
-    @HasOne(() => EventGroupConcerned)
+    @HasMany(() => EventGroupConcerned)
     eventGroupConcerned!: EventGroupConcerned
 }

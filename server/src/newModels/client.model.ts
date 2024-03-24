@@ -17,13 +17,15 @@ import {
     DataType,
     ForeignKey,
     BelongsTo,
-    PrimaryKey
+    PrimaryKey,
+    HasMany
 } from 'sequelize-typescript'
 import Companies from './company.model'
 import Persons from './person.model'
+import Projects from './project.model'
 
 @Table
-export default class Client extends Model {
+export default class Clients extends Model {
     @PrimaryKey
     @ForeignKey(() => Persons)
     @Column({
@@ -50,4 +52,7 @@ export default class Client extends Model {
 
     @BelongsTo(() => Companies)
     adresse!: Companies
+
+    @HasMany(() => Projects)
+    project!: Projects
 }

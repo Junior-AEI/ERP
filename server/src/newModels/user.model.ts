@@ -23,13 +23,18 @@ import {
     IsDate,
     NotEmpty,
     PrimaryKey,
-    HasMany
+    HasMany,
+    HasOne
 } from 'sequelize-typescript'
 import Members from './member.model'
 import ProjectManagers from './projectManager.model'
 import ProjectNotes from './projectNote.model'
 import Documents from './document.model'
-
+import Tasks from './task.model'
+import Tokens from './token.model'
+import Belongers from './belonger.model'
+import ItTickets from './ItTicket.model'
+import AccountExpenses from './expenseAccount.model'
 
 @Table
 export default class Users extends Model {
@@ -110,4 +115,19 @@ export default class Users extends Model {
 
     @HasMany(() => Documents)
     document!: Documents
+
+    @HasMany(() => Tasks)
+    task!: Tasks
+
+    @HasOne(() => Tokens)
+    token!: Tokens
+
+    @HasMany(() => Belongers)
+    belonger!: Belongers
+
+    @HasMany(() => ItTickets)
+    itTicket!: ItTickets
+
+    @HasMany(() => AccountExpenses)
+    accountExepense!: AccountExpenses
 }

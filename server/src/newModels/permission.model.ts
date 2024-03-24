@@ -19,7 +19,7 @@ import {
     IsDate,
     CreatedAt,
     UpdatedAt,
-    HasMany,
+    HasMany
 } from 'sequelize-typescript'
 import Concerned from './concerned.model'
 
@@ -29,13 +29,13 @@ export default class Permissions extends Model {
     @Column({
         type: DataType.STRING,
         allowNull: false,
-        primaryKey: true,
+        primaryKey: true
     })
     permissionName!: string
 
     @Column({
         type: DataType.STRING,
-        allowNull: false,
+        allowNull: false
     })
     permissionType!: string
 

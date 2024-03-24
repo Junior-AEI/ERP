@@ -25,7 +25,7 @@ import {
 } from 'sequelize-typescript'
 import Adresses from './address.model'
 import Clients from './client.model'
-import Projects from './project.model'
+import Partners from './partner.model'
 
 @Table
 export default class Companies extends Model {
@@ -79,6 +79,6 @@ export default class Companies extends Model {
     @HasMany(() => Clients)
     client!: Clients
 
-    @HasMany(() => Projects)
-    project!: Projects
+    @HasMany(() => Partners)
+    partner!: Partners
 }

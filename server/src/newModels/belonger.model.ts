@@ -34,7 +34,7 @@ export default class Belongers extends Model {
 
     @BelongsTo(() => Users)
     user!: Users
-    
+
     @PrimaryKey
     @ForeignKey(() => Groups)
     @Column({
@@ -42,7 +42,7 @@ export default class Belongers extends Model {
         allowNull: false
     })
     groupName!: string
-    
+
     @BelongsTo(() => Groups)
     group!: Groups
 }

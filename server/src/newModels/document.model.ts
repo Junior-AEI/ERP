@@ -30,7 +30,9 @@ export default class Documents extends Model {
     @PrimaryKey
     @Column({
         type: DataType.INTEGER,
-        allowNull: false
+        allowNull: false,
+        primaryKey: true,
+        autoIncrement: true
     })
     documentId!: number
 

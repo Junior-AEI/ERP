@@ -21,7 +21,7 @@ import {
     IsIn,
     IsDate,
     ForeignKey,
-    BelongsTo,
+    BelongsTo
 } from 'sequelize-typescript'
 import Users from './user.model'
 

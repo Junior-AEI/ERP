@@ -49,7 +49,7 @@ export default class AccountExpenses extends Model {
         allowNull: false
     })
     approbatorId!: number
-    
+
     @BelongsTo(() => Users)
     user!: Users
 

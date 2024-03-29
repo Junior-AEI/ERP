@@ -134,14 +134,12 @@ const forgetPassword = async (req: Request, res: Response) => {
         // If user is found, generate a random token
 
         if (user) {
+            const _token = generateToken()
 
-            const _token = generateToken();
+            const currentDate = new Date()
+            const tenMinutesLater = new Date(currentDate.getTime() + 10 * 60000)
 
-            const currentDate = new Date();
-            const tenMinutesLater = new Date(currentDate.getTime() + 10 * 60000);
-
-
-            const tk = await Tokens.create({
+            await Tokens.create({
                 token: _token,
                 validity: tenMinutesLater,
                 userId: user.id
@@ -155,16 +153,13 @@ const forgetPassword = async (req: Request, res: Response) => {
                 data: {
                     token: _token
                 }
-            });
-
+            })
         } else {
-
             // Return error response if user not found
             return res.status(404).json({
                 status: 'error',
                 message: 'User not found'
-            });
-
+            })
         }
     } catch (err) {
         // Handle errors
@@ -184,9 +179,7 @@ const forgetPassword = async (req: Request, res: Response) => {
  * @returns
  */
 const askNewPassword = async (req: Request, res: Response) => {
-
     try {
-
         // Get new password and token from request body
         const _newPassword = req.body.password || ''
         const _token = req.body.token || ''
@@ -195,11 +188,11 @@ const askNewPassword = async (req: Request, res: Response) => {
             where: {
                 token: _token
             }
-        });
+        })
 
-        if(!foundToken) throw new Error("Unable to find the provided token");
-        
-        if(foundToken.validity >= (new Date())) throw new Error("Link is expired");
+        if (!foundToken) throw new Error('Unable to find the provided token')
+
+        if (foundToken.validity >= new Date()) throw new Error('Link is expired')
 
         // TODO : Check password before insertion ?
 
@@ -211,13 +204,12 @@ const askNewPassword = async (req: Request, res: Response) => {
             where: {
                 id: foundToken.userId
             }
-        });
-        
+        })
+
         // Return success response
         return res.status(200).json({
             status: 'success'
-        });
-
+        })
     } catch (err) {
         // Handle errors
         if (err instanceof HttpError) {
@@ -225,7 +217,6 @@ const askNewPassword = async (req: Request, res: Response) => {
         }
         throw err
     }
-
 }
 
 const authController = {

@@ -2,7 +2,7 @@
   <Sidebar v-if="logedMode" />
   <div class="flex h-screen flex-1 flex-col overflow-y-scroll">
     <Titlebar v-if="logedMode" />
-    <RouterView class="flex flex-col p-6" v-auto-animate />
+    <RouterView class="flex flex-col gap-3 p-6" v-auto-animate />
   </div>
 </template>
 

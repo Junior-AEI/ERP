@@ -1,9 +1,9 @@
 <template>
   <div class="flex h-screen border-r bg-primary-foreground text-lg" v-auto-animate>
-    <ExpandedSidebar @reduce="reduce()" @search="search()" @logout="logout()" v-if="expanded" />
-    <ReducedSidebar @expand="expand()" @search="search()" @logout="logout()" v-else />
+    <ExpandedSidebar @reduce="reduce()" @search="openSearch()" @logout="logout()" v-if="expanded" />
+    <ReducedSidebar @expand="expand()" @search="openSearch()" @logout="logout()" v-else />
+    <SearchBar @search-close="closeSearch()" @search-open="openSearch()" :open="searchOpen" />
   </div>
-  <SearchSidebar @close="close()" v-if="displaySearch" v-auto-animate />
 </template>
 
 <script setup lang="ts">
@@ -15,6 +15,7 @@ const authStore = useAuthStore()
 
 const expanded = ref(true)
 const displaySearch = ref(false)
+const searchOpen = ref(false)
 
 const expand = () => {
   expanded.value = true
@@ -25,13 +26,12 @@ const reduce = () => {
   expanded.value = false
 }
 
-const search = () => {
-  displaySearch.value = !displaySearch.value
-  reduce()
+const closeSearch = () => {
+  searchOpen.value = false
 }
 
-const close = () => {
-  displaySearch.value = false
+const openSearch = () => {
+  searchOpen.value = true
 }
 
 const logout = () => {

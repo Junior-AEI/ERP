@@ -143,7 +143,7 @@ const forgetPassword = async (req: Request, res: Response) => {
                 token: _token,
                 validity: tenMinutesLater,
                 userId: user.id
-            });
+            })
 
             // TODO: Send an email with a link
 

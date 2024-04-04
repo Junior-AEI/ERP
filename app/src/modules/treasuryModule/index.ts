@@ -1,10 +1,10 @@
 import type { Module } from '@/types'
 
-export const tresorerieModule: Module = {
+export const treasuryModule: Module = {
   name: 'Trésorerie',
   routes: [
     {
-      path: '/tresorerie',
+      path: '/treasury',
       name: 'Trésorerie',
       component: () => import('@/views/Construction.vue'),
       meta: {

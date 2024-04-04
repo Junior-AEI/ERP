@@ -16,18 +16,18 @@ import { registerModule } from '@/lib/registerModule'
 import { membersModule } from '@/modules/membersModule'
 import { projectsModule } from '@/modules/projectsModule'
 import { reviewsModule } from '@/modules/reviewsModule'
-import { evenementsModule } from '@/modules/evenementsModule'
-import { tresorerieModule } from '@/modules/tresorerieModule'
+import { eventsModule } from '@/modules/eventsModule'
+import { treasuryModule } from '@/modules/treasuryModule'
 import { supportModule } from '@/modules/supportModule'
-import { demandeNFGModule } from '@/modules/demandeNFGModule'
+import { requestNFGModule } from '@/modules/requestNFGModule'
 
+registerModule(eventsModule)
+registerModule(treasuryModule)
 registerModule(membersModule)
 registerModule(projectsModule)
 registerModule(reviewsModule)
-registerModule(evenementsModule)
-registerModule(tresorerieModule)
 registerModule(supportModule)
-registerModule(demandeNFGModule)
+registerModule(requestNFGModule)
 
 /* Définition des stores */
 

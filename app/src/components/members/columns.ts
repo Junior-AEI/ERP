@@ -5,7 +5,7 @@ import MembersDataTableDropDown from './MembersDataTableDropDown.vue'
 import { Button } from '../ui/button'
 import Icon from '../Icon.vue'
 
-const defaultClasses = 'text-right font-medium'
+const defaultClasses = 'text-left font-medium'
 
 export const columns: ColumnDef<Member>[] = [
   {
@@ -13,7 +13,7 @@ export const columns: ColumnDef<Member>[] = [
     meta: {
       label: 'Nom'
     },
-    header: () => h('div', { class: 'text-right' }, 'Nom'),
+    header: () => h('div', { class: defaultClasses }, 'Nom'),
     cell: ({ row }) => {
       const lastname = row.getValue('lastname') as string
 
@@ -25,7 +25,7 @@ export const columns: ColumnDef<Member>[] = [
     meta: {
       label: 'Prénom'
     },
-    header: () => h('div', { class: 'text-right' }, 'Prénom'),
+    header: () => h('div', { class: defaultClasses }, 'Prénom'),
     cell: ({ row }) => {
       const firstname = row.getValue('firstname') as string
 
@@ -37,7 +37,7 @@ export const columns: ColumnDef<Member>[] = [
     meta: {
       label: 'Téléphone'
     },
-    header: () => h('div', { class: 'text-right' }, 'Téléphone'),
+    header: () => h('div', { class: defaultClasses }, 'Téléphone'),
     cell: ({ row }) => {
       const mobilePhoneNumber = row.getValue('mobilePhoneNumber') as string
 
@@ -54,7 +54,8 @@ export const columns: ColumnDef<Member>[] = [
         Button,
         {
           variant: 'ghost',
-          onClick: () => column.toggleSorting(column.getIsSorted() === 'asc')
+          onClick: () => column.toggleSorting(column.getIsSorted() === 'asc'),
+          class: 'p-0'
         },
         () => [
           'Email',
@@ -62,7 +63,7 @@ export const columns: ColumnDef<Member>[] = [
             h(Icon, {
               name: 'unfold_more'
             }),
-            { class: '' }
+            { class: defaultClasses }
           )
         ]
       )
@@ -79,7 +80,8 @@ export const columns: ColumnDef<Member>[] = [
         Button,
         {
           variant: 'ghost',
-          onClick: () => column.toggleSorting(column.getIsSorted() === 'asc')
+          onClick: () => column.toggleSorting(column.getIsSorted() === 'asc'),
+          class: 'p-0'
         },
         () => [
           'Filière',
@@ -87,7 +89,7 @@ export const columns: ColumnDef<Member>[] = [
             h(Icon, {
               name: 'unfold_more'
             }),
-            { class: '' }
+            { class: defaultClasses }
           )
         ]
       )
@@ -104,7 +106,8 @@ export const columns: ColumnDef<Member>[] = [
         Button,
         {
           variant: 'ghost',
-          onClick: () => column.toggleSorting(column.getIsSorted() === 'asc')
+          onClick: () => column.toggleSorting(column.getIsSorted() === 'asc'),
+          class: 'p-0'
         },
         () => [
           'Promo',

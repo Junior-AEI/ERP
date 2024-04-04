@@ -19,6 +19,8 @@ import Adherent from '../models/member.model'
 import { promisify } from 'util'
 import { controllerErrorHandler } from './utils.controller'
 import { HttpError } from 'http-errors'
+import Tokens from '../newModels/token.model'
+import Users from '../newModels/user.model'
 
 // Functions in this controller :
 // For the routes
@@ -130,15 +132,27 @@ const forgetPassword = async (req: Request, res: Response) => {
         }
 
         // If user is found, generate a random token
+
         if (user) {
             const _token = generateToken()
 
-            // TODO: Add token to database with validity time and link to the user
+            const currentDate = new Date()
+            const tenMinutesLater = new Date(currentDate.getTime() + 10 * 60000)
+
+            await Tokens.create({
+                token: _token,
+                validity: tenMinutesLater,
+                userId: user.id
+            })
+
             // TODO: Send an email with a link
 
             // Return success response
             return res.status(200).json({
-                status: 'success'
+                status: 'success',
+                data: {
+                    token: _token
+                }
             })
         } else {
             // Return error response if user not found
@@ -164,15 +178,33 @@ const forgetPassword = async (req: Request, res: Response) => {
  * @param res
  * @returns
  */
-
 const askNewPassword = async (req: Request, res: Response) => {
     try {
         // Get new password and token from request body
         const _newPassword = req.body.password || ''
         const _token = req.body.token || ''
 
-        // TODO: Here, check the validity of the token in the database and get the linked user
-        // TODO: Declare a new password in the database for the linked user
+        const foundToken = await Tokens.findOne({
+            where: {
+                token: _token
+            }
+        })
+
+        if (!foundToken) throw new Error('Unable to find the provided token')
+
+        if (foundToken.validity >= new Date()) throw new Error('Link is expired')
+
+        // TODO : Check password before insertion ?
+
+        const updatedUserPassword = {
+            password: _newPassword
+        }
+
+        await Users.update(updatedUserPassword, {
+            where: {
+                id: foundToken.userId
+            }
+        })
 
         // Return success response
         return res.status(200).json({
@@ -186,15 +218,6 @@ const askNewPassword = async (req: Request, res: Response) => {
         throw err
     }
 }
-
-// A FINIR OU A SUPPRIMER //
-/* const logout = async (req: Request, res: Response) => {
-    // Get POST parameters
-    const token = req.body.token || ''
-} */
-
-//ajout pour le bot Telegram
-// import axios from "axios";
 
 const authController = {
     login,

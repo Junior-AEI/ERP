@@ -1,7 +1,12 @@
 <template>
   <div>
-    <h1>Prochains événements</h1>
-    <EventsTable />
+    <div>
+      <EventsAddForm />
+    </div>
+    <div>
+      <h1>Prochains événements</h1>
+      <EventsTable />
+    </div>
   </div>
 </template>
 

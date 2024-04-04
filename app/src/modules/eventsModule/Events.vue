@@ -1,6 +1,8 @@
 <template>
-  <h1>Liste des Membres</h1>
-  <EventsTable />
+  <div>
+    <h1>Prochains événements</h1>
+    <EventsTable />
+  </div>
 </template>
 
 <script lang="ts" setup></script>

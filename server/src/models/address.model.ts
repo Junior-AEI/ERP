@@ -19,12 +19,16 @@ import {
     UpdatedAt,
     NotEmpty,
     PrimaryKey,
-    IsDate
+    IsDate,
+    HasMany,
+    HasOne
 } from 'sequelize-typescript'
 import validator from 'validator'
+import Members from './member.model'
+import Companies from './company.model'
 
 @Table
-export default class Adresse extends Model {
+export default class Addresses extends Model {
     @PrimaryKey
     @Column({
         type: DataType.INTEGER,
@@ -32,26 +36,26 @@ export default class Adresse extends Model {
         primaryKey: true,
         autoIncrement: true
     })
-    id!: number
+    addressId!: number
 
     @NotEmpty
     @Column({
         type: DataType.STRING,
         allowNull: false
     })
-    adresse!: string
+    address!: string
 
     @Column({
         type: DataType.STRING
     })
-    complementAdresse!: string
+    additionnalAddress!: string //complément d'adresse
 
     @NotEmpty
     @Column({
         type: DataType.STRING,
         allowNull: false
     })
-    ville!: string
+    city!: string
 
     @NotEmpty
     @Column({
@@ -65,7 +69,7 @@ export default class Adresse extends Model {
             }
         }
     })
-    codePostal!: string
+    postCode!: string
 
     @NotEmpty
     @Column({
@@ -79,7 +83,7 @@ export default class Adresse extends Model {
             }
         }
     })
-    pays!: string
+    country!: string
 
     @IsDate
     @CreatedAt
@@ -94,4 +98,10 @@ export default class Adresse extends Model {
         type: DataType.DATE
     })
     updatedAt!: Date
+
+    @HasMany(() => Members)
+    member!: Members
+
+    @HasOne(() => Companies)
+    company!: Companies
 }

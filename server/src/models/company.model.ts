@@ -16,17 +16,19 @@ import {
     Model,
     DataType,
     CreatedAt,
+    UpdatedAt,
     ForeignKey,
     BelongsTo,
+    HasMany,
     IsDate,
-    NotEmpty,
     PrimaryKey
 } from 'sequelize-typescript'
-import Users from './user.model'
-import DocumentTypes from './documentType.model'
+import Addresses from './address.model'
+import Clients from './client.model'
+import Partners from './partner.model'
 
 @Table
-export default class Documents extends Model {
+export default class Companies extends Model {
     @PrimaryKey
     @Column({
         type: DataType.INTEGER,
@@ -34,55 +36,29 @@ export default class Documents extends Model {
         primaryKey: true,
         autoIncrement: true
     })
-    documentId!: number
+    companyId!: number
 
-    @NotEmpty
     @Column({
         type: DataType.STRING,
         allowNull: false
     })
-    path!: string
+    name!: string
 
-    @NotEmpty
+    @Column({
+        type: DataType.STRING,
+        allowNull: false
+    })
+    legalEntity!: string
+
+    @ForeignKey(() => Addresses)
     @Column({
         type: DataType.INTEGER,
         allowNull: false
     })
-    version!: number
+    addressId!: number
 
-    @ForeignKey(() => DocumentTypes)
-    @Column({
-        type: DataType.STRING,
-        allowNull: false
-    })
-    DocumentTypeName!: string
-
-    @BelongsTo(() => DocumentTypes)
-    documentType!: DocumentTypes
-
-    @NotEmpty
-    @Column({
-        type: DataType.STRING,
-        allowNull: false
-    })
-    information!: string
-
-    @NotEmpty
-    @Column({
-        type: DataType.STRING,
-        allowNull: false
-    })
-    status!: string
-
-    @ForeignKey(() => Users)
-    @Column({
-        type: DataType.INTEGER,
-        allowNull: false
-    })
-    authorId!: number
-
-    @BelongsTo(() => Users)
-    user!: Users
+    @BelongsTo(() => Addresses)
+    address!: Addresses
 
     @IsDate
     @CreatedAt
@@ -91,4 +67,18 @@ export default class Documents extends Model {
         allowNull: false
     })
     createdAt!: Date
+
+    @IsDate
+    @UpdatedAt
+    @Column({
+        type: DataType.DATE,
+        allowNull: false
+    })
+    updatedAt!: Date
+
+    @HasMany(() => Clients)
+    client!: Clients
+
+    @HasMany(() => Partners)
+    partner!: Partners
 }

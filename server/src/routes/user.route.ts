@@ -10,51 +10,20 @@
 // LATIME is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more details.
 
 // You should have received a copy of the GNU Affero General Public License along with LATIME. If not, see <https://www.gnu.org/licenses/>.
-import {
-    Table,
-    Column,
-    Model,
-    DataType,
-    PrimaryKey,
-    IsDate,
-    CreatedAt,
-    UpdatedAt,
-    HasMany
-} from 'sequelize-typescript'
-import Concerned from './concerned.model'
+import express from 'express'
+import userController from '../controller/user.controller'
 
-@Table
-export default class Permissions extends Model {
-    @PrimaryKey
-    @Column({
-        type: DataType.STRING,
-        allowNull: false,
-        primaryKey: true
-    })
-    permissionName!: string
+const router = express.Router()
 
-    @Column({
-        type: DataType.STRING,
-        allowNull: false
-    })
-    permissionType!: string
+router.get('/', userController.getAllUsers)
 
-    @IsDate
-    @CreatedAt
-    @Column({
-        type: DataType.DATE,
-        allowNull: false
-    })
-    createdAt!: Date
+/**
 
-    @IsDate
-    @UpdatedAt
-    @Column({
-        type: DataType.DATE,
-        allowNull: false
-    })
-    updatedAt!: Date
+router.get('/:id', utilisateurController.getUtilisateurById)
+router.post('/', utilisateurController.createUtilisateur)
+router.put('/', utilisateurController.updateUtilisateur)
+router.delete('/:id', utilisateurController.deleteUtilisateurById)
 
-    @HasMany(() => Concerned)
-    concerned!: Concerned
-}
+**/
+
+export default router

@@ -10,46 +10,14 @@
 // LATIME is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more details.
 
 // You should have received a copy of the GNU Affero General Public License along with LATIME. If not, see <https://www.gnu.org/licenses/>.
-import {
-    Column,
-    CreatedAt,
-    DataType,
-    HasMany,
-    IsDate,
-    Model,
-    NotEmpty,
-    PrimaryKey,
-    Table,
-    UpdatedAt
-} from 'sequelize-typescript'
-import Poste from './poste.model'
+import express from 'express'
+import poleController from '../controller/group.controller'
 
-@Table
-export default class Pole extends Model<Pole> {
-    @PrimaryKey
-    @NotEmpty
-    @Column({
-        type: DataType.STRING,
-        allowNull: false
-    })
-    nom!: string
+const router = express.Router()
 
-    @HasMany(() => Poste)
-    postes!: Poste[]
+router.get('/:nom', poleController.getPoleByName)
+router.get('/', poleController.getAllPoles)
+router.post('/', poleController.createPole)
+router.delete('/:nom', poleController.deletePoste)
 
-    @IsDate
-    @CreatedAt
-    @Column({
-        type: DataType.DATE,
-        allowNull: false
-    })
-    createdAt!: Date
-
-    @IsDate
-    @UpdatedAt
-    @Column({
-        type: DataType.DATE,
-        allowNull: false
-    })
-    updatedAt!: Date
-}
+export default router

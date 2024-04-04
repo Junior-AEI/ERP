@@ -13,21 +13,10 @@
 import express from 'express'
 import authController from '../controller/auth.controller'
 
-const router = express.Router()
+const router = express.Router();
 
-/**
- * Login route
- */
-router.post('/login', authController.login)
-
-/**
- * Send an email and generate token route in case of forget password
- */
-router.post('/forget', authController.forgetPassword)
-
-/**
- * Replace password of the user
- */
-router.post('/new-password', authController.askNewPassword)
+router.post('/login', authController.login);
+router.post('/forget', authController.forgetPassword);
+router.post('/new-password', authController.askNewPassword);
 
 export default router

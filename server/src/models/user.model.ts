@@ -19,106 +19,77 @@ import {
     UpdatedAt,
     ForeignKey,
     BelongsTo,
-    IsIn,
+    IsEmail,
     IsDate,
     NotEmpty,
-    IsNumeric,
-    Max,
-    Min,
-    HasOne,
     PrimaryKey,
-    HasMany
+    HasMany,
+    HasOne
 } from 'sequelize-typescript'
-import validator from 'validator'
-import Adresses from './address.model'
-import Persons from './person.model'
-import Users from './user.model'
-import Contributors from './contributor.model'
-
-const PAYMENTS = ['Esp', 'CB', 'Vir', 'Lydia']
-const DEPARTMENTS = ['Informatique', 'Electronique', 'Telecommunication', 'Matmeca', 'R&I', 'SEE']
+import Members from './member.model'
+import ProjectManagers from './projectManager.model'
+import ProjectNotes from './projectNote.model'
+import Documents from './document.model'
+import Tasks from './task.model'
+import Tokens from './token.model'
+import Belongers from './belonger.model'
+import ItTickets from './ItTicket.model'
+import AccountExpenses from './expenseAccount.model'
 
 @Table
-export default class Members extends Model {
+export default class Users extends Model {
     @PrimaryKey
-    @ForeignKey(() => Persons)
+    @ForeignKey(() => Members)
     @Column({
         type: DataType.INTEGER,
         allowNull: false
     })
-    memberId!: number
+    userId!: number
 
-    @BelongsTo(() => Persons)
-    person!: Persons
-
-    @IsDate
-    @NotEmpty
-    @Column({
-        type: DataType.DATE,
-        allowNull: false
-    })
-    birthDate!: Date
+    @BelongsTo(() => Members)
+    member!: Members
 
     @NotEmpty
     @Column({
         type: DataType.STRING,
         allowNull: false
     })
-    birthPlace!: string
+    username!: string
 
+    @NotEmpty
     @Column({
         type: DataType.STRING,
-        allowNull: false,
-        validate: {
-            checkCountry(str: string) {
-                if (!validator.isISO31661Alpha3(str)) {
-                    throw new Error('Invalid country code')
-                }
-            }
-        }
-    })
-    nationality!: string
-
-    @IsNumeric
-    @Max(9999)
-    @Min(1920)
-    @Column({
-        type: DataType.STRING(4),
         allowNull: false
     })
-    promotion!: string
+    password!: string
 
     @IsDate
     @Column({
         type: DataType.DATE,
         allowNull: false
     })
-    contributionDate!: Date
+    lastLogin!: Date
 
-    @IsIn([PAYMENTS])
+    @IsDate
     @Column({
-        type: DataType.ENUM,
-        values: PAYMENTS
-    })
-    payementMethod!: string
-
-    @IsIn([DEPARTMENTS])
-    @Column({
-        type: DataType.ENUM,
-        allowNull: false,
-        values: DEPARTMENTS
-    })
-    department!: string
-
-    @ForeignKey(() => Adresses)
-    @Column({
-        type: DataType.INTEGER,
+        type: DataType.DATE,
         allowNull: false
     })
-    adressId!: number
+    mandateStart!: Date
 
-    @BelongsTo(() => Adresses)
-    adresse!: Adresses
+    @IsDate
+    @Column({
+        type: DataType.DATE,
+        allowNull: false
+    })
+    mandateEnd!: Date
+
+    @IsEmail
+    @Column({
+        type: DataType.STRING,
+        allowNull: false
+    })
+    emailJE!: string
 
     @IsDate
     @CreatedAt
@@ -136,9 +107,27 @@ export default class Members extends Model {
     })
     updatedAt!: Date
 
-    @HasOne(() => Users)
-    user!: Users
+    @HasMany(() => ProjectManagers)
+    projectManager!: ProjectManagers
 
-    @HasMany(() => Contributors)
-    contributor!: Contributors
+    @HasMany(() => ProjectNotes)
+    projectNotes!: ProjectNotes
+
+    @HasMany(() => Documents)
+    document!: Documents
+
+    @HasMany(() => Tasks)
+    task!: Tasks
+
+    @HasOne(() => Tokens)
+    token!: Tokens
+
+    @HasMany(() => Belongers)
+    belonger!: Belongers
+
+    @HasMany(() => ItTickets)
+    itTicket!: ItTickets
+
+    @HasMany(() => AccountExpenses)
+    accountExepense!: AccountExpenses
 }

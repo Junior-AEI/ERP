@@ -10,61 +10,15 @@
 // LATIME is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more details.
 
 // You should have received a copy of the GNU Affero General Public License along with LATIME. If not, see <https://www.gnu.org/licenses/>.
-import {
-    Table,
-    Column,
-    Model,
-    DataType,
-    CreatedAt,
-    UpdatedAt,
-    HasMany,
-    IsDate,
-    NotEmpty,
-    BelongsTo,
-    ForeignKey
-} from 'sequelize-typescript'
-import Utilisateur from './utilisateur.model'
-import Pole from './pole.model'
+import express from 'express'
+import entrepriseController from '../controller/company.controller'
 
-@Table
-export default class Poste extends Model<Poste> {
-    @NotEmpty
-    @Column({
-        type: DataType.STRING,
-        allowNull: false
-    })
-    nom!: string
+const router = express.Router()
 
-    @Column({
-        type: DataType.TEXT
-    })
-    description!: string
+router.get('/', entrepriseController.getAllEntreprises)
+router.get('/:id', entrepriseController.getEntrepriseById)
+router.post('/', entrepriseController.createEntreprise)
+router.put('/', entrepriseController.updateEntreprise)
+router.delete('/:id', entrepriseController.deleteEntrepriseById)
 
-    @HasMany(() => Utilisateur)
-    utilisateurs!: Utilisateur[]
-
-    @ForeignKey(() => Pole)
-    @Column({
-        type: DataType.STRING
-    })
-    nomPole!: string
-
-    @BelongsTo(() => Pole)
-    pole!: Pole
-
-    @IsDate
-    @CreatedAt
-    @Column({
-        type: DataType.DATE,
-        allowNull: false
-    })
-    createdAt!: Date
-
-    @IsDate
-    @UpdatedAt
-    @Column({
-        type: DataType.DATE,
-        allowNull: false
-    })
-    updatedAt!: Date
-}
+export default router

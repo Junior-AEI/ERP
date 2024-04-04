@@ -10,32 +10,41 @@
 // LATIME is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more details.
 
 // You should have received a copy of the GNU Affero General Public License along with LATIME. If not, see <https://www.gnu.org/licenses/>.
-import type { Seeder } from '../../src/migrations/umzug'
+import {
+    Table,
+    Column,
+    Model,
+    DataType,
+    ForeignKey,
+    BelongsTo,
+    PrimaryKey,
+    IsDate
+} from 'sequelize-typescript'
+import Users from './user.model'
 
-const entrepriseSample = [
-    {
-        id: 1,
-        nom: 'Entreprise 1',
-        entiteJuridique: 'Sarl',
-        adresseId: 1,
-        createdAt: new Date(),
-        updatedAt: new Date()
-    },
-    {
-        id: 2,
-        nom: 'Entreprise 2',
-        entiteJuridique: 'SA',
-        adresseId: 2,
-        createdAt: new Date(),
-        updatedAt: new Date()
-    }
-]
+@Table
+export default class Tokens extends Model {
+    @PrimaryKey
+    @Column({
+        type: DataType.STRING,
+        allowNull: false
+    })
+    token!: string
 
-export const up: Seeder = async ({ context: sequelize }) => {
-    await sequelize.getQueryInterface().bulkInsert('Entreprises', entrepriseSample)
-}
-export const down: Seeder = async ({ context: sequelize }) => {
-    await sequelize
-        .getQueryInterface()
-        .bulkDelete('Entreprises', { id: entrepriseSample.map((u) => u.id) })
+    @ForeignKey(() => Users)
+    @Column({
+        type: DataType.INTEGER,
+        allowNull: false
+    })
+    userId!: number
+
+    @BelongsTo(() => Users)
+    user!: Users
+
+    @IsDate
+    @Column({
+        type: DataType.DATE,
+        allowNull: false
+    })
+    validity!: Date
 }

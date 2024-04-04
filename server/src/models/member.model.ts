@@ -21,62 +21,35 @@ import {
     BelongsTo,
     IsIn,
     IsDate,
-    IsEmail,
     NotEmpty,
     IsNumeric,
     Max,
     Min,
-    HasOne
+    HasOne,
+    PrimaryKey,
+    HasMany
 } from 'sequelize-typescript'
 import validator from 'validator'
-import Adresse from './address.model'
-import Utilisateur from './utilisateur.model'
+import Addresses from './address.model'
+import Persons from './person.model'
+import Users from './user.model'
+import Contributors from './contributor.model'
 
-const GENDER = ['F', 'M', 'O']
 const PAYMENTS = ['Esp', 'CB', 'Vir', 'Lydia']
-const COURSES = ['Info', 'Elec', 'Telecom', 'Matmeca', 'R&I', 'SEE']
+const DEPARTMENTS = ['Informatique', 'Electronique', 'Telecommunication', 'Matmeca', 'R&I', 'SEE']
 
 @Table
-export default class Adherent extends Model {
+export default class Members extends Model {
+    @PrimaryKey
+    @ForeignKey(() => Persons)
     @Column({
-        type: DataType.STRING,
+        type: DataType.INTEGER,
         allowNull: false
     })
-    nom!: string
+    memberId!: number
 
-    @Column({
-        type: DataType.STRING,
-        allowNull: false
-    })
-    prenom!: string
-
-    @IsIn([GENDER])
-    @Column({
-        type: DataType.ENUM,
-        values: GENDER,
-        allowNull: false
-    })
-    sexe!: string
-
-    @Column({
-        type: DataType.STRING,
-        allowNull: false,
-        validate: {
-            checkPhone(str: string) {
-                if (!validator.isMobilePhone(str)) {
-                    throw new Error('Invalid phone number')
-                }
-            }
-        }
-    })
-    telephoneMobile!: string
-
-    @IsEmail
-    @Column({
-        type: DataType.STRING,
-        allowNull: false
-    })
-    email!: string
+    @BelongsTo(() => Persons)
+    person!: Persons
 
     @IsDate
     @NotEmpty
@@ -84,14 +57,14 @@ export default class Adherent extends Model {
         type: DataType.DATE,
         allowNull: false
     })
-    dateNaissance!: Date
+    birthDate!: Date
 
     @NotEmpty
     @Column({
         type: DataType.STRING,
         allowNull: false
     })
-    lieuNaissance!: string
+    birthPlace!: string
 
     @Column({
         type: DataType.STRING,
@@ -104,7 +77,7 @@ export default class Adherent extends Model {
             }
         }
     })
-    nationalite!: string
+    nationality!: string
 
     @IsNumeric
     @Max(9999)
@@ -120,32 +93,32 @@ export default class Adherent extends Model {
         type: DataType.DATE,
         allowNull: false
     })
-    dateCotisation!: Date
+    contributionDate!: Date
 
     @IsIn([PAYMENTS])
     @Column({
         type: DataType.ENUM,
         values: PAYMENTS
     })
-    moyenPaiement!: string
+    paymentMethod!: string
 
-    @IsIn([COURSES])
+    @IsIn([DEPARTMENTS])
     @Column({
         type: DataType.ENUM,
         allowNull: false,
-        values: COURSES
+        values: DEPARTMENTS
     })
-    filiere!: string
+    department!: string
 
-    @ForeignKey(() => Adresse)
+    @ForeignKey(() => Addresses)
     @Column({
         type: DataType.INTEGER,
         allowNull: false
     })
-    adresseId!: number
+    addressId!: number
 
-    @BelongsTo(() => Adresse)
-    adresse!: Adresse
+    @BelongsTo(() => Addresses)
+    address!: Addresses
 
     @IsDate
     @CreatedAt
@@ -155,9 +128,6 @@ export default class Adherent extends Model {
     })
     createdAt!: Date
 
-    @HasOne(() => Utilisateur)
-    utilisateur!: Utilisateur
-
     @IsDate
     @UpdatedAt
     @Column({
@@ -165,4 +135,10 @@ export default class Adherent extends Model {
         allowNull: false
     })
     updatedAt!: Date
+
+    @HasOne(() => Users)
+    user!: Users
+
+    @HasMany(() => Contributors)
+    contributor!: Contributors
 }

@@ -14,12 +14,11 @@ import { Request, Response } from 'express'
 import { hash } from 'bcrypt'
 import { Op } from 'sequelize'
 import createHttpError from 'http-errors'
-import Utilisateur from '../models/utilisateur.model'
+import Utilisateur from '../models/user.model'
 import Adherent from '../models/member.model'
-import Poste from '../models/poste.model'
 import { checkExistingId, checkIdIsNotNaN, controllerErrorHandler } from './utils.controller'
 
-const utilisateurController = {
+const userController = {
     getAllUtilisateurs,
     getUtilisateurById,
     createUtilisateur,

@@ -13,17 +13,17 @@ const app = createApp(App)
 /* <!> Il faut les importer avant de définir le router <!> */
 
 import { registerModule } from '@/lib/registerModule'
-import { membresModule } from '@/modules/membresModule'
-import { etudesModule } from '@/modules/etudesModule'
-import { relecturesModule } from '@/modules/relecturesModule'
+import { membersModule } from '@/modules/membersModule'
+import { projectsModule } from '@/modules/projectsModule'
+import { reviewsModule } from '@/modules/reviewsModule'
 import { evenementsModule } from '@/modules/evenementsModule'
 import { tresorerieModule } from '@/modules/tresorerieModule'
 import { supportModule } from '@/modules/supportModule'
 import { demandeNFGModule } from '@/modules/demandeNFGModule'
 
-registerModule(membresModule)
-registerModule(etudesModule)
-registerModule(relecturesModule)
+registerModule(membersModule)
+registerModule(projectsModule)
+registerModule(reviewsModule)
 registerModule(evenementsModule)
 registerModule(tresorerieModule)
 registerModule(supportModule)

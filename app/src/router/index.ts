@@ -27,6 +27,14 @@ const router = createRouter({
       }
     },
     {
+      path: '/membres',
+      name: 'Membres',
+      component: () => import('../views/MembersView.vue'),
+      meta: {
+        icon: 'people'
+      }
+    },
+    {
       path: '/administration',
       name: 'Administration',
       component: () => import('../views/Construction.vue'),

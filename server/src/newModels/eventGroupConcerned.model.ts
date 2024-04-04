@@ -25,12 +25,12 @@ import Groups from './group.model'
 @Table
 export default class EventGroupConcerned extends Model {
     @PrimaryKey
-    @ForeignKey(() => Events)
+    @ForeignKey(() => Groups)
     @Column({
-        type: DataType.INTEGER,
+        type: DataType.STRING,
         allowNull: false
     })
-    groupName!: number
+    groupName!: string
 
     @BelongsTo(() => Groups)
     group!: Groups

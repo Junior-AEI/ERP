@@ -19,7 +19,7 @@ const router = createRouter({
       }
     },
     {
-      path: '/profil',
+      path: '/profile',
       name: 'Mon Profil',
       component: () => import('../views/ProfileView.vue'),
       meta: {

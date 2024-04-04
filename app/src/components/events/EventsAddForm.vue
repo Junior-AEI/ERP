@@ -8,14 +8,14 @@ import { useForm } from 'vee-validate'
 import { toTypedSchema } from '@vee-validate/zod'
 import * as z from 'zod'
 
-import {
-  FormControl,
-  FormDescription,
-  FormField,
-  FormItem,
-  FormLabel,
-  FormMessage
-} from '@/components/ui/form'
+import { format } from 'date-fns'
+import { Calendar as CalendarIcon } from 'lucide-vue-next'
+
+import { cn } from '@/lib/utils'
+import { Calendar } from '@/components/ui/calendar'
+import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover'
+
+import { FormControl, FormDescription, FormField, FormItem, FormLabel } from '@/components/ui/form'
 
 const formSchema = toTypedSchema(
   z.object({
@@ -30,8 +30,6 @@ const form = useForm({
 const onSubmit = form.handleSubmit((values) => {
   console.log('Form submitted!', values)
 })
-
-const isOpen = ref(false)
 </script>
 
 <template>
@@ -44,7 +42,7 @@ const isOpen = ref(false)
       <CardContent>
         <form @submit="onSubmit">
           <FormField v-slot="{ componentField }" name="username">
-            <FormItem>
+            <FormItem class="flex flex-col">
               <FormLabel>Nom de l'événement</FormLabel>
               <FormControl>
                 <Input
@@ -55,17 +53,71 @@ const isOpen = ref(false)
                 <FormDescription> </FormDescription>
               </FormControl>
             </FormItem>
+          </FormField>
+          <FormField v-slot="{ componentField, value }" name="startDate">
+            <FormItem class="flex flex-col">
+              <FormLabel>Date de début</FormLabel>
+              <Popover>
+                <PopoverTrigger as-child>
+                  <FormControl>
+                    <Button
+                      variant="outline"
+                      :class="
+                        cn(
+                          'w-[240px] ps-3 text-start font-normal',
+                          !value && 'text-muted-foreground'
+                        )
+                      "
+                    >
+                      <span>{{ value ? format(value, 'PPP') : '01/01/2024' }}</span>
+                      <CalendarIcon class="ms-auto h-4 w-4 opacity-50" />
+                    </Button>
+                  </FormControl>
+                </PopoverTrigger>
+                <PopoverContent class="p-0">
+                  <Calendar v-bind="componentField" />
+                </PopoverContent>
+              </Popover>
+            </FormItem>
+          </FormField>
+          <FormField v-slot="{ componentField, value }" name="endDate">
+            <FormItem class="flex flex-col">
+              <FormLabel>Date de fin</FormLabel>
+              <Popover>
+                <PopoverTrigger as-child>
+                  <FormControl>
+                    <Button
+                      variant="outline"
+                      :class="
+                        cn(
+                          'w-[240px] ps-3 text-start font-normal',
+                          !value && 'text-muted-foreground'
+                        )
+                      "
+                    >
+                      <span>{{ value ? format(value, 'PPP') : '01/01/2024' }}</span>
+                      <CalendarIcon class="ms-auto h-4 w-4 opacity-50" />
+                    </Button>
+                  </FormControl>
+                </PopoverTrigger>
+                <PopoverContent class="p-0">
+                  <Calendar v-bind="componentField" />
+                </PopoverContent>
+              </Popover>
+            </FormItem>
+          </FormField>
+          <FormField v-slot="{ componentField }" name="location">
             <FormItem>
               <FormLabel>Emplacement</FormLabel>
-              <FormControl>
-                <Input
-                  type="text"
-                  placeholder="Où est-ce que ça se passe ?"
-                  v-bind="componentField"
-                />
-              </FormControl>
+              <Input
+                type="text"
+                placeholder="Où est-ce que ça se passe ?"
+                v-bind="componentField"
+              />
               <FormDescription> </FormDescription>
             </FormItem>
+          </FormField>
+          <FormField name="description">
             <FormItem>
               <FormLabel>Description</FormLabel>
               <FormControl>

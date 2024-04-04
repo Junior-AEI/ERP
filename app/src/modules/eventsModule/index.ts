@@ -6,7 +6,7 @@ export const eventsModule: Module = {
     {
       path: '/events',
       name: 'Evénements',
-      component: () => import('@/views/Construction.vue'),
+      component: () => import('./Events.vue'),
       meta: {
         icon: 'event'
       }

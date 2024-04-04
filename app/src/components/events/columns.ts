@@ -1,54 +1,18 @@
 import { h } from 'vue'
 import type { ColumnDef } from '@tanstack/vue-table'
-import type { Member } from '@/types/api'
-import MembersDataTableDropDown from './EventsDataTableDropDown.vue'
+import type { Event } from '@/types/api'
+import EventsDataTableButton from './EventsDataTableButton.vue'
 import { Button } from '../ui/button'
 import Icon from '../Icon.vue'
 
-const defaultClasses = 'text-right font-medium'
+const defaultClasses = 'text-left font-medium'
 
-export const columns: ColumnDef<Member>[] = [
+export const columns: ColumnDef<Event>[] = [
   {
-    accessorKey: 'lastname',
+    accessorKey: 'name',
     meta: {
       label: 'Nom'
     },
-    header: () => h('div', { class: 'text-right' }, 'Nom'),
-    cell: ({ row }) => {
-      const lastname = row.getValue('lastname') as string
-
-      return h('div', { class: defaultClasses }, lastname)
-    }
-  },
-  {
-    accessorKey: 'firstname',
-    meta: {
-      label: 'Prénom'
-    },
-    header: () => h('div', { class: 'text-right' }, 'Prénom'),
-    cell: ({ row }) => {
-      const firstname = row.getValue('firstname') as string
-
-      return h('div', { class: defaultClasses }, firstname)
-    }
-  },
-  {
-    accessorKey: 'mobilePhoneNumber',
-    meta: {
-      label: 'Téléphone'
-    },
-    header: () => h('div', { class: 'text-right' }, 'Téléphone'),
-    cell: ({ row }) => {
-      const mobilePhoneNumber = row.getValue('mobilePhoneNumber') as string
-
-      return h('div', { class: defaultClasses }, mobilePhoneNumber)
-    }
-  },
-  {
-    accessorKey: 'email',
-    meta: {
-      label: 'Email'
-    },
     header: ({ column }) => {
       return h(
         Button,
@@ -57,7 +21,7 @@ export const columns: ColumnDef<Member>[] = [
           onClick: () => column.toggleSorting(column.getIsSorted() === 'asc')
         },
         () => [
-          'Email',
+          'Nom',
           h(
             h(Icon, {
               name: 'unfold_more'
@@ -67,12 +31,12 @@ export const columns: ColumnDef<Member>[] = [
         ]
       )
     },
-    cell: ({ row }) => h('div', { class: `lowercase ${defaultClasses}` }, row.getValue('email'))
+    cell: ({ row }) => h('div', { class: 'text-left' }, row.getValue('name'))
   },
   {
-    accessorKey: 'department',
+    accessorKey: 'startDate',
     meta: {
-      label: 'Filière'
+      label: 'Date de début'
     },
     header: ({ column }) => {
       return h(
@@ -82,22 +46,26 @@ export const columns: ColumnDef<Member>[] = [
           onClick: () => column.toggleSorting(column.getIsSorted() === 'asc')
         },
         () => [
-          'Filière',
+          'Date de début',
           h(
             h(Icon, {
               name: 'unfold_more'
             }),
-            { class: '' }
+            { class: defaultClasses }
           )
         ]
       )
     },
-    cell: ({ row }) => h('div', { class: defaultClasses }, row.getValue('department'))
+    cell: ({ row }) => {
+      const startDate = row.getValue('startDate') as string
+
+      return h('div', { class: defaultClasses }, startDate)
+    }
   },
   {
-    accessorKey: 'promotion',
+    accessorKey: 'endDate',
     meta: {
-      label: 'Promo'
+      label: 'endDate'
     },
     header: ({ column }) => {
       return h(
@@ -107,17 +75,33 @@ export const columns: ColumnDef<Member>[] = [
           onClick: () => column.toggleSorting(column.getIsSorted() === 'asc')
         },
         () => [
-          'Promo',
+          'Date de fin',
           h(
             h(Icon, {
               name: 'unfold_more'
             }),
-            { class: '' }
+            { class: defaultClasses }
           )
         ]
       )
     },
-    cell: ({ row }) => h('div', { class: defaultClasses }, row.getValue('promotion'))
+    cell: ({ row }) => {
+      const endDate = row.getValue('endDate') as string
+
+      return h('div', { class: defaultClasses }, endDate)
+    }
+  },
+  {
+    accessorKey: 'location',
+    meta: {
+      label: 'Lieu'
+    },
+    header: () => h('div', { class: defaultClasses }, 'Lieu'),
+    cell: ({ row }) => {
+      const location = row.getValue('location') as string
+
+      return h('div', { class: defaultClasses }, location)
+    }
   },
   {
     id: 'actions',
@@ -128,7 +112,7 @@ export const columns: ColumnDef<Member>[] = [
       return h(
         'div',
         { class: 'relative' },
-        h(MembersDataTableDropDown, {
+        h(EventsDataTableButton, {
           item
         })
       )

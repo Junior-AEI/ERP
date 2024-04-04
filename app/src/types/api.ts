@@ -21,4 +21,20 @@ interface Member extends Person {
   updatedAt: string
 }
 
-export type { Person, Member }
+interface Event {
+  eventId: string
+  name: string
+  startDate: string
+  endDate: string
+  location: string
+  description: string
+  eventTypeName: string
+}
+
+interface EventTypes {
+  name: string
+  fieldNumber: string
+  fieldMeaning: string
+}
+
+export type { Person, Member, Event, EventTypes }

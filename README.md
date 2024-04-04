@@ -7,19 +7,13 @@ node >= 14.0.0
 # Installation
 
 ```bash
-cd client
-npm install
-cd ../server
-npm install
-cp .env.example .env
-cd ..
 ./setup.sh
 ```
 
 # Running
 
 ```bash
-cd client
+cd app
 npm run dev
 ```
 

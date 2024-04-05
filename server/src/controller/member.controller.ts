@@ -11,63 +11,11 @@
 
 // You should have received a copy of the GNU Affero General Public License along with LATIME. If not, see <https://www.gnu.org/licenses/>.
 import { Request, Response } from 'express'
-import Adherent from '../models/member.model'
-import { checkExistingId, checkIdIsNotNaN, controllerErrorHandler } from './utils.controller'
-import { Op } from 'sequelize'
+import Members from '../models/member.model'
+import { isNumber, controllerErrorHandler } from './utils.controller'
 import { HttpError } from 'http-errors'
-
-// Functions in this controller :
-
-// For the routes
-//     getAllMembers, // Return the list of all members in database
-//     getMemberById, // Return the member with the ID in param
-//     createMember, // Create a new Member
-//     deleteMemberById, // Return the member with the ID in param
-//     updateMember, // Modify a member
-
-// Just use in this file
-//     checkExistingMember, // Verify if the member already exist
-
-/**
- * Throws error if a member already exist in database
- * @param req
- */
-
-const checkExistingMember = async (req: Request, res: Response) => {
-    try {
-        // If id isn't given (case of new member creation), set it to "null" (avoid database error)
-        if (req.body.id === undefined) req.body.id = null
-
-        // Check if given member isn't already in the database with another id
-        const existingMember = await Adherent.findOne({
-            where: {
-                [Op.and]: [
-                    { [Op.not]: { id: req.body.id } },
-                    { [Op.or]: [{ email: req.body.email }] }
-                ]
-            }
-        })
-
-        // Return error Member already in DB
-        if (existingMember !== null) {
-            return res.status(409).json({
-                status: 'error',
-                message: 'Member already exists'
-            })
-        } else {
-            // Return Ok
-            return res.status(200).json({
-                status: 'success'
-            })
-        }
-    } catch (err) {
-        // Handle errors
-        if (err instanceof HttpError) {
-            return controllerErrorHandler(err, res)
-        }
-        throw err
-    }
-}
+import createHttpError from 'http-errors'
+import { isValidMember } from '../validator/member.validator'
 
 /**
  * All members reader for GET route
@@ -76,20 +24,26 @@ const checkExistingMember = async (req: Request, res: Response) => {
  *  - 500 error
  */
 
-const getAllMembers = async (req: Request, res: Response) => {
+const getAll = async (req: Request, res: Response) => {
+
     try {
-        const allMembers = await Adherent.findAll({
-            attributes: { exclude: ['motDePasse'] }, // Exclude password from the results
-            include: { all: true, nested: true } // Include all related models
-        })
-        return res.status(200).json(allMembers) // Return all members
-    } catch (err) {
-        // Handle errors
-        if (err instanceof HttpError) {
-            return controllerErrorHandler(err, res)
-        }
-        throw err
+
+        const members = await Members.findAll({
+        });
+    
+        return res.status(200).json({
+            status: 'success',
+            data: {
+                members: members
+            }
+        });
+
     }
+    catch(err) {
+        if(err instanceof HttpError) controllerErrorHandler(err, res);
+        else throw err;
+    }
+
 }
 
 /**
@@ -100,25 +54,31 @@ const getAllMembers = async (req: Request, res: Response) => {
  *  - 400 error if "id" is NaN
  *  - 500 error for database error
  */
-async function getMemberById(req: Request, res: Response) {
+const getByPk = async (req: Request, res: Response) => {
+
     try {
-        // Check if req.params.id is not NaN
-        await checkIdIsNotNaN(req.params.id).catch((err) => controllerErrorHandler(err, res))
 
-        // Find requested member by primary key (id)
-        const member = await Adherent.findByPk(req.params.id, {
-            attributes: { exclude: ['motDePasse'] }
-        })
+        if(req.params.id && !isNumber(req.params.id)) throw createHttpError(400, "Please provide a valid identifier");
 
-        // Return the found member
-        return res.status(200).json(member)
-    } catch (err) {
-        // Handle errors
-        if (err instanceof HttpError) {
-            return controllerErrorHandler(err, res)
-        }
-        throw err
+        const identifier = parseInt(req.params.id);
+
+        const member = await Members.findByPk(identifier);
+
+        if(!member) throw createHttpError(404, "Member not found");
+
+        return res.status(200).json({
+            status: "success",
+            data: {
+                member: member
+            }
+        });
+
     }
+    catch(err) {
+        if(err instanceof HttpError) controllerErrorHandler(err, res);
+        else throw err;
+    }
+
 }
 
 /**
@@ -130,27 +90,8 @@ async function getMemberById(req: Request, res: Response) {
  *  - 409 error if role already exist
  *  - 500 error for database error
  */
-const createMember = async (req: Request, res: Response) => {
-    try {
-        // Check if existing member
-        await checkExistingMember(req, res)
-
-        // Clean useless creation and update dates if given (setup while creating member)
-        req.body.createdAt = null
-        req.body.updatedAt = null
-
-        // Create new member
-        const member = await Adherent.create(req.body)
-
-        // Return success
-        return res.status(201).json({ id: member.id })
-    } catch (err) {
-        // Handle errors
-        if (err instanceof HttpError) {
-            return controllerErrorHandler(err, res)
-        }
-        throw err
-    }
+const create = async (req: Request, res: Response) => {
+    // TODO : Ask for the user creator routine
 }
 
 /**
@@ -162,31 +103,42 @@ const createMember = async (req: Request, res: Response) => {
  *  - 404 error if member don't exist
  *  - 500 error for database error
  */
+const update = async (req: Request, res: Response) => {
 
-async function updateMember(req: Request, res: Response) {
     try {
-        // Check if given name is not empty and if given member or member id doesn't already exist
-        await checkExistingId<Adherent>(req.body.id, Adherent)
-        await checkExistingMember(req, res)
 
-        // Clean useless update dates if given (setup while creating member)
-        req.body.updatedAt = null
+        // Parse identifier
+        if(req.params.id && !isNumber(req.params.id)) throw createHttpError(400, "Please provide a valid identifier");
+        const identifier = parseInt(req.params.id);
+        
+        const member = await Members.findByPk(identifier);
+        if(!member) throw createHttpError(404, "User not found");
 
-        // Update requested member with given body
-        const member = await Adherent.update(req.body, {
-            where: { id: req.body.id }
-        })
+        const validator = isValidMember(req.body.group.birthDate, 
+                                        req.body.group.birthPlace, 
+                                        req.body.group.nationality, 
+                                        req.body.group.promotion,
+                                        req.body.group.contributionDate,
+                                        req.body.group.department);
 
-        // Return confirmation
-        return res.status(204).json(member)
-    } catch (err) {
-        // Handle errors
-        if (err instanceof HttpError) {
-            return controllerErrorHandler(err, res)
-        }
-        throw err
+        if(validator.valid == 0) throw createHttpError(400, validator.message as string);
+
+        await Members.update(req.body, {
+            where: {memberId: identifier} 
+        });
+
+        return res.status(200).json({
+            status: 'success'
+        });
+
     }
+    catch(err) {
+        if(err instanceof HttpError) controllerErrorHandler(err, res);
+        else throw err;
+    }
+
 }
+
 
 /**
  * Member remove for DELETE route
@@ -197,31 +149,35 @@ async function updateMember(req: Request, res: Response) {
  *  - 404 error if given id doesn't exist
  *  - 500 error for database error
  */
-async function deleteMemberById(req: Request, res: Response) {
+async function del(req: Request, res: Response) {
     try {
-        // Check if requested member id exists in the database
-        await checkExistingId<Adherent>(req.params.id, Adherent)
 
-        // Delete requested member by its id
-        await Adherent.destroy({ where: { id: req.params.id } })
+        // Parse identifier
+        if(req.params.id && !isNumber(req.params.id)) throw createHttpError(400, "Please provide a valid identifier");
+        const identifier = parseInt(req.params.id);
+        
+        const member = await Members.findByPk(identifier);
+        if(!member) throw createHttpError(404, "Group not found");
 
-        // Return confirmation
-        return res.status(204).json()
-    } catch (err) {
-        // Handle errors
-        if (err instanceof HttpError) {
-            return controllerErrorHandler(err, res)
-        }
-        throw err
+        await Members.destroy({
+            where: {
+                userId: req.body.user.userId
+            }
+        });
+
+    }
+    catch(err) {
+        if(err instanceof HttpError) controllerErrorHandler(err, res);
+        else throw err;
     }
 }
 
-const adherentController = {
-    getAllMembers,
-    getMemberById,
-    createMember,
-    deleteMemberById,
-    updateMember
+const memberController = {
+    getAll,
+    getByPk,
+    create,
+    del,
+    update,
 }
 
-export default adherentController
+export default memberController

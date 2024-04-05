@@ -11,13 +11,15 @@
 
 // You should have received a copy of the GNU Affero General Public License along with LATIME. If not, see <https://www.gnu.org/licenses/>.
 import express from 'express'
-import poleController from '../controller/group.controller'
+import groupController from '../controller/group.controller'
+import { group } from 'console'
 
 const router = express.Router()
 
-router.get('/:nom', poleController.getPoleByName)
-router.get('/', poleController.getAllPoles)
-router.post('/', poleController.createPole)
-router.delete('/:nom', poleController.deletePoste)
+router.get('/:nom', groupController.getByPk)
+router.get('/', groupController.getAll)
+router.post('/', groupController.create)
+router.post('/', groupController.update)
+router.delete('/:nom', groupController.del)
 
 export default router

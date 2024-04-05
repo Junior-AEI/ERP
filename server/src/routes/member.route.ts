@@ -16,10 +16,10 @@ import { verifyPermission } from '../middlewares/permission.middleware'
 
 const router = express.Router()
 
-router.get('/', memberController.getAllMembers)
-router.get('/:id', memberController.getMemberById)
-router.post('/', verifyPermission('createMember'), memberController.createMember)
-router.put('/', memberController.updateMember)
-router.delete('/:id', memberController.deleteMemberById)
+router.get('/', memberController.getAll)
+router.get('/:id', memberController.getByPk)
+router.post('/', verifyPermission('createMember'), memberController.create)
+router.put('/', memberController.update)
+router.delete('/:id', memberController.del)
 
 export default router

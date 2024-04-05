@@ -6,7 +6,7 @@ export const isValidUser = (username: any, password: any, mandateStart: any, ema
         return { valid: 0, message: 'The size of your username is not valid' }
     if (typeof password !== 'string')
         return { valid: 0, message: 'Your password is not correctly formatted.' }
-    if (password.length < 8 || username.length >= 20)
+    if (password.length < 8 || password.length >= 20)
         return { valid: 0, message: 'Your password size has to be bigger than 8.' }
     if (!(mandateStart instanceof Date))
         return { valid: 0, message: 'Your mandate start is not correctly formatted.' }

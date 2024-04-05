@@ -26,7 +26,7 @@ import { getUsername, verifyAuthentication } from '../middlewares/auth.middlewar
 const router = express.Router()
 
 router.use(authRoutes)
-router.use('/user', getUsername, verifyAuthentication, userRouter);
+router.use('/user', getUsername, verifyAuthentication, userRouter)
 router.use('/address', getUsername, verifyAuthentication, addressRouter)
 
 /**

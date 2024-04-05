@@ -20,6 +20,9 @@ module.exports = {
                 varsIgnorePattern: '^_',
                 caughtErrorsIgnorePattern: '^_'
             }
+        ],
+        '@typescript-eslint/no-explicit-any': [
+            'error'
         ]
     }
 }

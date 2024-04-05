@@ -15,7 +15,7 @@ import express from 'express'
 import userRouter from './user.route'
 import authRoutes from './auth.route'
 import poleRoute from './group.route'
-import adresseRoute from './address.route'
+import addressRouter from './address.route'
 import memberRoute from './member.route'
 import entrepriseRoute from './company.route'
 import clientRoute from './client.route'
@@ -26,12 +26,14 @@ import { getUsername, verifyAuthentication } from '../middlewares/auth.middlewar
 const router = express.Router()
 
 router.use(authRoutes)
+router.use('/user', getUsername, verifyAuthentication, userRouter);
+router.use('/address', getUsername, verifyAuthentication, addressRouter)
 
 /**
-router.use('/user', getUsername, verifyAuthentication, userRouter);
+
 router.use('/pole', getUsername, verifyAuthentication, poleRoute)
 router.use('/utilisateur', getUsername, verifyAuthentication, utilisateurRouter)
-router.use('/adresse', getUsername, verifyAuthentication, adresseRoute)
+
 router.use('/adherent', getUsername, verifyAuthentication, memberRoute)
 router.use('/entreprise', getUsername, verifyAuthentication, entrepriseRoute)
 router.use('/client', getUsername, verifyAuthentication, clientRoute)

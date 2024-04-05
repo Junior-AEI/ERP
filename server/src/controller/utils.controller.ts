@@ -16,6 +16,18 @@ import { ModelStatic } from 'sequelize'
 import { Model } from 'sequelize-typescript'
 
 /**
+ * Check if a string represents a number
+ * @param id 
+ * @returns 
+ * - 1 if the string is a number
+ * - 0 otherwise
+ */
+export function isNumber(str: string): boolean {
+    return /^\d+$/.test(str);
+}
+  
+
+/**
  * Throws BadRequest (400) error if given number is NaN
  * @param id Id to check
  */
@@ -63,4 +75,11 @@ export async function controllerErrorHandler(err: HttpError, res: Response) {
         status: err.status,
         message: err.message
     })
+}
+
+export function returnError(message: string, code: number, res: Response) {
+    return res.status(code).json({
+        status: 'error',
+        message: message
+    });
 }

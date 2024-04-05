@@ -36,12 +36,10 @@ import Persons from '../models/person.model'
  *  -401 Unauthorized because of invalid username or password.
  */
 const login = async (req: Request, res: Response) => {
-
     try {
-
         // Retrieve username and password from request body
-        const username = req.body.username || '';
-        const password = req.body.password || '';
+        const username = req.body.username || ''
+        const password = req.body.password || ''
 
         // Find user in the database
         const user = await Users.findOne({
@@ -57,7 +55,7 @@ const login = async (req: Request, res: Response) => {
                     ]
                 }
             ]
-        });
+        })
 
         // Return error if user not found
         if (!user) {
@@ -84,9 +82,9 @@ const login = async (req: Request, res: Response) => {
             .setAudience(JWT_AUDIENCE)
             .setIssuer(JWT_ISSUER)
             .setExpirationTime(JWT_EXPIRATION)
-            .sign(JWT_SECRET_KEY);
+            .sign(JWT_SECRET_KEY)
 
-        console.log(user);
+        console.log(user)
 
         // Return success with token and user details
         return res.status(200).json({
@@ -98,18 +96,14 @@ const login = async (req: Request, res: Response) => {
                 lastName: user.member.person.lastname,
                 token: token
             }
-        });
-        
+        })
     } catch (err) {
-
         // Handle errors
         if (err instanceof HttpError) {
             return controllerErrorHandler(err, res)
         }
         throw err
-        
     }
-
 }
 
 /**
@@ -120,9 +114,7 @@ const login = async (req: Request, res: Response) => {
  * @returns
  */
 const forgetPassword = async (req: Request, res: Response) => {
-
     try {
-
         // Get username from request body
         const username = req.body.username || ''
 
@@ -147,7 +139,6 @@ const forgetPassword = async (req: Request, res: Response) => {
         // If user is found, generate a random token
 
         if (user) {
-
             const _token = generateToken()
             const currentDate = new Date()
             const tenMinutesLater = new Date(currentDate.getTime() + 10 * 60000)
@@ -166,26 +157,20 @@ const forgetPassword = async (req: Request, res: Response) => {
                 data: {
                     token: _token
                 }
-            });
-
+            })
         } else {
-
             // Return error response if user not found
             return res.status(404).json({
                 status: 'error',
                 message: 'User not found'
-            });
-
+            })
         }
-
     } catch (err) {
-
         // Handle errors
         if (err instanceof HttpError) {
             return controllerErrorHandler(err, res)
         }
         throw err
-
     }
 }
 
@@ -198,9 +183,7 @@ const forgetPassword = async (req: Request, res: Response) => {
  * @returns
  */
 const askNewPassword = async (req: Request, res: Response) => {
-
     try {
-
         // Get new password and token from request body
         const _newPassword = req.body.password || ''
         const _token = req.body.token || ''
@@ -217,7 +200,7 @@ const askNewPassword = async (req: Request, res: Response) => {
 
         // TODO : Check password before insertion ?
 
-        const hashedPassword = await bcrypt.hash(_newPassword, 10);
+        const hashedPassword = await bcrypt.hash(_newPassword, 10)
 
         const updatedUserPassword = {
             password: hashedPassword
@@ -232,8 +215,7 @@ const askNewPassword = async (req: Request, res: Response) => {
         // Return success response
         return res.status(200).json({
             status: 'success'
-        });
-
+        })
     } catch (err) {
         // Handle errors
         if (err instanceof HttpError) {

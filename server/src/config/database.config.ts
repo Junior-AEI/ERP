@@ -19,10 +19,10 @@ export const sequelizeInit = async () => {
     const env = process.env.NODE_ENV || 'dev'
     const databaseConfig = config[env]
     // ORM initialization
-    sequelize = new Sequelize(databaseConfig);
-    await sequelize.sync({force: true});
-    await testConnection();
-    await createFakeData();
+    sequelize = new Sequelize(databaseConfig)
+    await sequelize.sync({ force: true })
+    await testConnection()
+    await createFakeData()
 }
 
 export { sequelize }

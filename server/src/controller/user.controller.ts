@@ -1,184 +1,163 @@
-// Copyright (C) 2023 Nesrine ABID, Nadjime BARTEAU, Mathieu DUPOUX, Léo-Paul MAZIÈRE, Maël PAUL, Antoine RAOULT, Lisa VEILLAT, Marine VOVARD
-
-// Authors: Nesrine ABID, Nadjime BARTEAU, Mathieu DUPOUX, Léo-Paul MAZIÈRE, Maël PAUL, Antoine RAOULT, Lisa VEILLAT, Marine VOVARD
-// Maintainer: contact@junior-aei.com
-
-// This file is part of LATIME.
-
-// LATIME is free software: you can redistribute it and/or modify it under the terms of the GNU Affero General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
-
-// LATIME is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more details.
-
-// You should have received a copy of the GNU Affero General Public License along with LATIME. If not, see <https://www.gnu.org/licenses/>.
 import { Request, Response } from 'express'
-import { hash } from 'bcrypt'
-import { Op } from 'sequelize'
+import bcrypt from 'bcrypt'
 import createHttpError from 'http-errors'
-import Utilisateur from '../models/user.model'
-import Adherent from '../models/member.model'
-import { checkExistingId, checkIdIsNotNaN, controllerErrorHandler } from './utils.controller'
+import Users from '../models/user.model'
+import { HttpError } from 'http-errors'
+import { isValidUser } from '../validator/user.validator'
+import { controllerErrorHandler, isNumber } from './utils.controller'
+
+/**
+ * TODO : Tests
+ * Get all users
+ * @param req 
+ * @param res 
+ */
+const getAll = async (req: Request, res: Response) => {
+
+    try {
+
+        const users = await Users.findAll({
+            attributes: {
+                exclude: ['password']
+            }
+        });
+    
+        return res.status(200).json({
+            status: 'success',
+            data: {
+                users: users
+            }
+        });
+
+    }
+    catch(err) {
+        if(err instanceof HttpError) controllerErrorHandler(err, res);
+        else throw err;
+    }
+
+}
+
+/**
+ * TODO : Tests
+ * Select a specific user
+ * @param req 
+ * @param res
+ */
+const getByPk = async (req: Request, res: Response) => {
+
+    try {
+
+        if(req.params.id && !isNumber(req.params.id)) throw createHttpError(400, "Please provide a valid identifier");
+
+        const identifier = parseInt(req.params.id);
+
+        const user = await Users.findByPk(identifier);
+
+        if(!user) throw createHttpError(404, "User not found");
+
+        return res.status(200).json({
+            status: "success",
+            data: {
+                user: user
+            }
+        });
+
+    }
+    catch(err) {
+        if(err instanceof HttpError) controllerErrorHandler(err, res);
+        else throw err;
+    }
+
+}
+
+/**
+ * TODO : Tests
+ * Create an user
+ * @param req 
+ * @param res 
+ */
+async function create(req: Request, res: Response) {
+    // TODO : Ask for the user creator routine
+}
+
+/**
+ * TODO : Tests
+ * Update an user
+ * @param req 
+ * @param res
+ */
+const update = async (req: Request, res: Response) => {
+
+    try {
+
+        // Parse identifier
+        if(req.params.id && !isNumber(req.params.id)) throw createHttpError(400, "Please provide a valid identifier");
+        const identifier = parseInt(req.params.id);
+        
+        const user = await Users.findByPk(identifier);
+        if(!user) throw createHttpError(404, "User not found");
+
+        const validator = isValidUser(req.body.user.username, req.body.user.password, req.body.user.mandateStart, req.body.user.emailJE);
+
+        if(validator.valid == 0) throw createHttpError(400, validator.message as string);
+
+        const encryptedPassword = bcrypt.hash(req.body.password, 10);
+        req.body.user.updatedAt = null;
+        req.body.user.password = encryptedPassword;
+
+        await Users.update(req.body, {
+            where: {userId: identifier} 
+        });
+
+        return res.status(200).json({
+            status: 'success'
+        });
+
+    }
+    catch(err) {
+        if(err instanceof HttpError) controllerErrorHandler(err, res);
+        else throw err;
+    }
+
+}
+
+/**
+ * TODO : Tests
+ * Delete an user
+ * @param req 
+ * @param res 
+ */
+const del = async (req: Request, res: Response) => {
+
+    try {
+
+        // Parse identifier
+        if(req.params.id && !isNumber(req.params.id)) throw createHttpError(400, "Please provide a valid identifier");
+        const identifier = parseInt(req.params.id);
+        
+        const user = await Users.findByPk(identifier);
+        if(!user) throw createHttpError(404, "User not found");
+
+        await Users.destroy({
+            where: {
+                userId: req.body.user.userId
+            }
+        });
+
+    }
+    catch(err) {
+        if(err instanceof HttpError) controllerErrorHandler(err, res);
+        else throw err;
+    }
+
+}
 
 const userController = {
-    getAllUtilisateurs,
-    getUtilisateurById,
-    createUtilisateur,
-    deleteUtilisateurById,
-    updateUtilisateur
+    getAll,
+    getByPk,
+    create,
+    del,
+    update
 }
 
-/**
- * Throws error if a user already exist in database
- * @param req Request to check (req.body used)
- */
-async function checkExistingUtilisateur(req: Request): Promise<void> {
-    // if id isn't given (case of new user creation), set it to "null" (avoid database error)
-    if (req.body.id === undefined) req.body.id = null
-
-    // Check is given user isn't already in database with another id
-    const existingUtilisateur = await Utilisateur.findOne({
-        where: {
-            [Op.and]: [
-                { [Op.not]: { id: req.body.id } },
-                {
-                    [Op.or]: [
-                        { nomUtilisateur: req.body.nomUtilisateur },
-                        { mailJE: req.body.mailJE }
-                    ]
-                }
-            ]
-        }
-    })
-    if (existingUtilisateur !== null) throw createHttpError(409, 'User already exist')
-}
-
-async function checkPasswordStrength(password: string) {
-    if (password === null || password === undefined) {
-        throw createHttpError(400, 'Empty password given')
-        // TODO : Discuss about password strength checking
-    } else if (password.length <= 3) {
-        throw createHttpError(400, 'Password strength is too low')
-    }
-}
-
-/**
- * All user reader for GET route
- * @param res :
- *  - Utilisateurs in database + 200 confirmation
- *  - 500 error
- */
-async function getAllUtilisateurs(req: Request, res: Response) {
-    await Utilisateur.findAll({ attributes: { exclude: ['motDePasse'] } })
-        .then((users) => res.status(200).json(users))
-        .catch((err) => controllerErrorHandler(err, res))
-}
-
-/**
- * Specific user (by id) reader for GET route
- * @param req Request ("id" parameter, needed to find right user)
- * @param res :
- *  - Requested user + 200 confirmation
- *  - 400 error if "id" is NaN
- *  - 500 error for database error
- */
-async function getUtilisateurById(req: Request, res: Response) {
-    // Check if req.params.id is a number
-    await checkIdIsNotNaN(req.params.id)
-        .then(() =>
-            // Find requested user by primary key (id)
-            Utilisateur.findByPk(req.params.id, {
-                attributes: { exclude: ['motDePasse'] },
-                include: [
-                    {
-                        model: Adherent,
-                        attributes: ['nom', 'prenom']
-                    },
-                    {
-                        model: Poste
-                    }
-                ]
-            })
-        )
-        .then((poste) => res.status(200).json(poste))
-        .catch((err) => controllerErrorHandler(err, res))
-}
-
-/**
- * User creation for POST route
- * @param req Request (body used to create new user)
- * @param res :
- *  - 200 confirmation (new ressource created)
- *  - 400 error if wrong datas are given or password strength is too low
- *  - 409 error if user already exist
- *  - 500 error for database error
- */
-async function createUtilisateur(req: Request, res: Response) {
-    //TODO: Setup true data checking
-    await checkExistingId<Poste>(req.body.posteId, Poste)
-        .then(() => checkExistingUtilisateur(req))
-        .then(() => checkPasswordStrength(req.body.motDePasse))
-        .then(() => hash(req.body.motDePasse, 10))
-        .then((hash) => {
-            // Update body with hashed password
-            req.body.motDePasse = hash
-            // Clean useless creation and update dates if given (setup while creating user)
-            req.body.createdAt = null
-            req.body.updatedAt = null
-            return Utilisateur.create(req.body)
-        })
-        .then((user) => {
-            res.json({ id: user.id })
-        })
-        .catch((err) => controllerErrorHandler(err, res))
-}
-
-/**
- * User update for PUT route
- * @param req Request (body used to update user)
- * @param res :
- *  - 204 confirmation (ressource updated)
- *  - 400 error if wrong datas are given or password strength is too low
- *  - 404 error if user don't exist
- *  - 500 error for database error
- */
-async function updateUtilisateur(req: Request, res: Response) {
-    // Check is given name is not empty and if given user or user id doesn't already exist
-    // TODO : Add more checks if necessary
-    await checkExistingId<Utilisateur>(req.body.id, Utilisateur)
-        .then(() => checkPasswordStrength(req.body.motDePasse))
-        .then(() => {
-            return hash(req.body.motDePasse, 10)
-        })
-        .then((hash) => {
-            // Update body with hashed password
-            req.body.motDePasse = hash
-            // Clean useless update dates if given (setup while creating user)
-            req.body.updatedAt = null
-            return Utilisateur.update(req.body, {
-                where: { id: req.body.id }
-            })
-        })
-        .then((user) => res.status(204).json(user))
-        .catch((err) => controllerErrorHandler(err, res))
-}
-
-/**
- * User remove for DELETE route
- * @param req Request (parameter "id" used to find user to delete)
- * @param res :
- *  - 204 confirmation (ressource deleted)
- *  - 400 error if given id is NaN
- *  - 404 error if given id doesn't exist
- *  - 500 error for database error
- */
-async function deleteUtilisateurById(req: Request, res: Response) {
-    // Check if requested user id exist in database
-    await checkExistingId<Utilisateur>(req.params.id, Utilisateur)
-        .then(() =>
-            // Delete requested user by its id
-            Utilisateur.destroy({ where: { id: req.params.id } })
-        )
-        .then((user) => res.status(204).json(user))
-        .catch((err) => controllerErrorHandler(err, res))
-}
-
-export default utilisateurController
+export default userController

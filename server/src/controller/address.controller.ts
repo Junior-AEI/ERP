@@ -7,26 +7,20 @@ import Addresses from '../models/address.model'
 
 /**
  * Get all addresses
- * @param req 
+ * @param req
  * @param res
  */
 const getAll = async (req: Request, res: Response) => {
-
     try {
-
         const addresses = await Adresses.findAll()
         return res.status(200).json(addresses)
-
     } catch (err) {
-        
         if (err instanceof HttpError) {
             return controllerErrorHandler(err, res)
         }
 
         throw err
-        
     }
-
 }
 
 /**
@@ -38,18 +32,16 @@ const getAll = async (req: Request, res: Response) => {
  *  - 500 error for database error
  */
 const getByPk = async (req: Request, res: Response) => {
-
     try {
-
         // Parse identifier
         if (req.params.id && !isNumber(req.params.id))
             throw createHttpError(400, 'Please provide a valid identifier.')
-        const identifier = parseInt(req.params.id);
+        const identifier = parseInt(req.params.id)
 
         // Find requested member by primary key (id)
-        const address = await Adresses.findByPk(identifier);
+        const address = await Adresses.findByPk(identifier)
 
-        if(!address) return createHttpError(404, "Address not found.");
+        if (!address) return createHttpError(404, 'Address not found.')
 
         // Return the found address
         return res.status(200).json({
@@ -57,15 +49,12 @@ const getByPk = async (req: Request, res: Response) => {
             data: {
                 address: address
             }
-        });
-
+        })
     } catch (err) {
-
         if (err instanceof HttpError) {
             return controllerErrorHandler(err, res)
         }
         throw err
-
     }
 }
 
@@ -74,57 +63,47 @@ const getByPk = async (req: Request, res: Response) => {
  * @param async
  */
 const create = async (req: Request, res: Response) => {
-
     try {
-
         const validator = isValidAddress(
             req.body.address.address,
             req.body.address.additionnalAddress,
             req.body.address.city,
             req.body.address.postCode,
             req.body.address.country
-        );
+        )
 
-        if(validator.valid !== 1) throw createHttpError(400, validator.message as string);
+        if (validator.valid !== 1) throw createHttpError(400, validator.message as string)
 
-        req.body.address.createdAt = null;
-        req.body.address.updatedAt = null;
-        
-        const address = await Addresses.create(req.body.address);
+        req.body.address.createdAt = null
+        req.body.address.updatedAt = null
+
+        const address = await Addresses.create(req.body.address)
 
         return res.status(200).json({
             status: 'success',
             data: {
                 id: address.addressId
             }
-        });
-
-    }
-
-    catch(err) {
-
+        })
+    } catch (err) {
         if (err instanceof HttpError) {
             return controllerErrorHandler(err, res)
         }
         throw err
-
     }
-
 }
 
 /**
  * Update address
- * @param req 
+ * @param req
  * @param res
  */
 async function update(req: Request, res: Response) {
-
     try {
-
         // Parse identifier
         if (req.body.id && !isNumber(req.body.id))
             throw createHttpError(400, 'Please provide a valid identifier.')
-        const identifier = parseInt(req.body.id);
+        const identifier = parseInt(req.body.id)
 
         const validator = isValidAddress(
             req.body.address.address,
@@ -132,31 +111,26 @@ async function update(req: Request, res: Response) {
             req.body.address.city,
             req.body.address.postCode,
             req.body.address.country
-        );
+        )
 
-        if(validator.valid !== 1) throw createHttpError(400, validator.message as string);
+        if (validator.valid !== 1) throw createHttpError(400, validator.message as string)
 
-        req.body.address.createdAt = null;
-        req.body.address.updatedAt = null;
-        
+        req.body.address.createdAt = null
+        req.body.address.updatedAt = null
+
         await Addresses.update(req.body.address, {
             where: { addressId: req.body.addressId }
-        });
+        })
 
         return res.status(200).json({
-            status: 'success',
-        });
-
-    }
-    catch(err) {
-
+            status: 'success'
+        })
+    } catch (err) {
         if (err instanceof HttpError) {
             return controllerErrorHandler(err, res)
         }
         throw err
-
     }
-
 }
 
 /**
@@ -179,7 +153,7 @@ const del = async (req: Request, res: Response) => {
             where: {
                 userId: req.body.user.userId
             }
-        });
+        })
     } catch (err) {
         if (err instanceof HttpError) controllerErrorHandler(err, res)
         else throw err

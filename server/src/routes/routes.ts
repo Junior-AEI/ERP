@@ -4,8 +4,8 @@ import authRoutes from './auth.route'
 import groupRouter from './group.route'
 import addressRouter from './address.route'
 import memberRouter from './member.route'
-import entrepriseRoute from './company.route'
-import clientRoute from './client.route'
+import companyRouter from './company.route'
+import clientRouter from './client.route'
 import documentRouter from './document.route'
 
 import { getUsername, verifyAuthentication } from '../middlewares/auth.middleware'
@@ -17,11 +17,10 @@ router.use('/user', getUsername, verifyAuthentication, userRouter)
 router.use('/address', getUsername, verifyAuthentication, addressRouter)
 router.use('/group', getUsername, verifyAuthentication, groupRouter)
 router.use('/member', getUsername, verifyAuthentication, memberRouter)
+router.use('/company', getUsername, verifyAuthentication, companyRouter)
 
 /**
-router.use('/adherent', getUsername, verifyAuthentication, memberRoute)
-router.use('/entreprise', getUsername, verifyAuthentication, entrepriseRoute)
-router.use('/client', getUsername, verifyAuthentication, clientRoute)
+router.use('/client', getUsername, verifyAuthentication, clientRouter)
 router.use('/document', getUsername, verifyAuthentication, documentRouter)
 **/
 

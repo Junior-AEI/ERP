@@ -11,14 +11,14 @@
 
 // You should have received a copy of the GNU Affero General Public License along with LATIME. If not, see <https://www.gnu.org/licenses/>.
 import express from 'express'
-import entrepriseController from '../controller/company.controller'
+import companyController from '../controller/company.controller'
 
 const router = express.Router()
 
-router.get('/', entrepriseController.getAllEntreprises)
-router.get('/:id', entrepriseController.getEntrepriseById)
-router.post('/', entrepriseController.createEntreprise)
-router.put('/', entrepriseController.updateEntreprise)
-router.delete('/:id', entrepriseController.deleteEntrepriseById)
+router.get('/', companyController.getAll)
+router.get('/:id', companyController.getByPk)
+router.post('/', companyController.create)
+router.put('/', companyController.update)
+router.delete('/:id', companyController.del)
 
 export default router

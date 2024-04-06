@@ -11,136 +11,143 @@
 
 // You should have received a copy of the GNU Affero General Public License along with LATIME. If not, see <https://www.gnu.org/licenses/>.
 import { Request, Response } from 'express'
-import Entreprise from '../models/entreprise.model'
-import { checkExistingId, checkIdIsNotNaN, controllerErrorHandler } from './utils.controller'
-import { Op } from 'sequelize'
+import Companies from '../models/company.model'
+import { controllerErrorHandler, isNumber } from './utils.controller'
 import createHttpError from 'http-errors'
+import { HttpError } from 'http-errors'
+import { isValidCompany } from '../validator/company.validator'
 
-const entrepriseController = {
-    getAllEntreprises,
-    getEntrepriseById,
-    createEntreprise,
-    deleteEntrepriseById,
-    updateEntreprise
-}
 
 /**
- * Throws error if a company already exist in database
- * @param req Request to check (req.body used)
+ * TODO : Tests
+ * Get all users
+ * @param req
+ * @param res
  */
-async function checkExistingEntreprise(req: Request): Promise<void> {
-    // if id isn't given (case of new company creation), set it to "null" (avoid database error)
-    if (req.body.id === undefined) req.body.id = null
+const getAll = async (req: Request, res: Response) => {
+    try {
+        const companies = await Companies.findAll({})
 
-    // Check is given company isn't already in database with another id
-    const existingEntreprise = await Entreprise.findOne({
-        where: {
-            [Op.and]: [
-                { [Op.not]: { id: req.body.id } },
-                {
-                    [Op.or]: [{ nom: req.body.nom }]
-                }
-            ]
-        }
-    })
-    if (existingEntreprise !== null) throw createHttpError(409, 'Company already exist')
-}
-
-/**
- * All companies reader for GET route
- * @param res :
- *  - Companies in database + 200 confirmation
- *  - 500 error
- */
-async function getAllEntreprises(req: Request, res: Response) {
-    await Entreprise.findAll()
-        .then((entreprise) => res.status(200).json(entreprise))
-        .catch((err) => controllerErrorHandler(err, res))
-}
-
-/**
- * Specific company (by id) reader for GET route
- * @param req Request ("id" parameter, needed to find right company)
- * @param res :
- *  - Requested company + 200 confirmation
- *  - 400 error if "id" is NaN
- *  - 500 error for database error
- */
-async function getEntrepriseById(req: Request, res: Response) {
-    // Check if req.params.id is a number
-    await checkIdIsNotNaN(req.params.id)
-        .then(() =>
-            // Find requested company by primary key (id)
-            Entreprise.findByPk(req.params.id)
-        )
-        .then((entreprise) => res.status(200).json(entreprise))
-        .catch((err) => controllerErrorHandler(err, res))
-}
-
-/**
- * Company creation for POST route
- * @param req Request (body used to create new company)
- * @param res :
- *  - 201 confirmation
- *  - 400 error if wrong datas are given
- *  - 409 error if role already exist
- *  - 500 error for database error
- */
-async function createEntreprise(req: Request, res: Response) {
-    await checkExistingEntreprise(req)
-        .then(() => {
-            // Clean useless creation and update dates if given (setup while creating company)
-            req.body.createdAt = null
-            req.body.updatedAt = null
-
-            return Entreprise.create(req.body)
+        return res.status(200).json({
+            status: 'success',
+            data: {
+                companies: companies
+            }
         })
-        .then((entreprise) => res.status(201).json({ id: entreprise.id }))
-        .catch((err) => controllerErrorHandler(err, res))
+    } catch (err) {
+        if (err instanceof HttpError) controllerErrorHandler(err, res)
+        else throw err
+    }
 }
 
 /**
- * Company update for PUT route
- * @param req Request (body used to update company)
- * @param res :
- *  - 200 confirmation
- *  - 400 error if wrong datas are given
- *  - 404 error if company don't exist
- *  - 500 error for database error
+ * TODO : Tests
+ * Select a specific user
+ * @param req
+ * @param res
  */
-async function updateEntreprise(req: Request, res: Response) {
-    // Check is given name is not empty and if given company or company id doesn't already exist
-    // TODO : Add more checks if necessary
-    await checkExistingId<Entreprise>(req.body.id, Entreprise)
-        .then(() => checkExistingEntreprise(req))
-        .then(() => {
-            // Clean useless update dates if given (setup while creating company)
-            req.body.updatedAt = null
-            // Update requested company with given body
-            return Entreprise.update(req.body, { where: { id: req.body.id } })
+const getByPk = async (req: Request, res: Response) => {
+    try {
+        if (req.params.id && !isNumber(req.params.id))
+            throw createHttpError(400, 'Please provide a valid identifier')
+
+        const identifier = parseInt(req.params.id)
+
+        const company = await Companies.findByPk(identifier)
+
+        if (!company) throw createHttpError(404, 'Company not found')
+
+        return res.status(200).json({
+            status: 'success',
+            data: {
+                company: company
+            }
         })
-        .then((entreprise) => res.status(204).json(entreprise))
-        .catch((err) => controllerErrorHandler(err, res))
+    } catch (err) {
+        if (err instanceof HttpError) controllerErrorHandler(err, res)
+        else throw err
+    }
 }
 
 /**
- * Company remove for DELETE route
- * @param req Request (parameter "id" used to find company to delete)
- * @param res :
- *  - 200 confirmation
- *  - 400 error if given id is NaN
- *  - 404 error if given id doesn't exist
- *  - 500 error for database error
+ * TODO : Tests
+ * Create an user
+ * @param req
+ * @param res
  */
-async function deleteEntrepriseById(req: Request, res: Response) {
-    // Check if requested company id exist in database
-    await checkExistingId<Entreprise>(req.params.id, Entreprise)
-        .then(() =>
-            // Delete requested company by its id
-            Entreprise.destroy({ where: { id: req.params.id } })
-        )
-        .then((entreprise) => res.status(204).json(entreprise))
-        .catch((err) => controllerErrorHandler(err, res))
+async function create(req: Request, res: Response) {
+    // TODO : Ask for the user creator routine
 }
 
-export default entrepriseController
+/**
+ * TODO : Tests
+ * Update an user
+ * @param req
+ * @param res
+ */
+const update = async (req: Request, res: Response) => {
+    try {
+        // Parse identifier
+        if (req.params.id && !isNumber(req.params.id))
+            throw createHttpError(400, 'Please provide a valid identifier')
+        const identifier = parseInt(req.params.id)
+
+        const company = await Companies.findByPk(identifier)
+        if (!company) throw createHttpError(404, 'User not found')
+
+        const validator = isValidCompany(
+            req.body.company.name,
+            req.body.company.legalEntity,
+        )
+
+        if (validator.valid == 0) throw createHttpError(400, validator.message as string)
+
+        await Companies.update(req.body, {
+            where: { companyId: identifier }
+        })
+
+        return res.status(200).json({
+            status: 'success'
+        })
+    } catch (err) {
+        if (err instanceof HttpError) controllerErrorHandler(err, res)
+        else throw err
+    }
+}
+
+/**
+ * TODO : Tests
+ * Delete an user
+ * @param req
+ * @param res
+ */
+const del = async (req: Request, res: Response) => {
+    try {
+        // Parse identifier
+        if (req.params.id && !isNumber(req.params.id))
+            throw createHttpError(400, 'Please provide a valid identifier')
+        const identifier = parseInt(req.params.id)
+
+        const company = await Companies.findByPk(identifier)
+        if (!company) throw createHttpError(404, 'User not found')
+
+        await Companies.destroy({
+            where: {
+                companyId: req.body.company.companyId
+            }
+        })
+    } catch (err) {
+        if (err instanceof HttpError) controllerErrorHandler(err, res)
+        else throw err
+    }
+}
+
+const companyController = {
+    getAll,
+    getByPk,
+    create,
+    del,
+    update,
+}
+
+export default companyController

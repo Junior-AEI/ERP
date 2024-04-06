@@ -12,7 +12,8 @@ export const isValidMember = (birthDate: any, birthPlace: any, nationality: any,
         if(nationality < "1920" || nationality > "9999") return {valid: 0, message: "Your promotion must be between 1920 and 9999"};
         if(!dateRegex.test(contributionDate)) return {valid: 0, message: "Your contribution date is not correcly formatted."};
         if(typeof department !== "string") return {valid: 0, message: "Your department is not correctly formatted."};
-        
+        if(department.length < 3 || department.length >= 20) return {valid: 0, message: "Your department size has to be bigger than 3 and smaller than 20"};
+
         return {valid: 1}
     
     }

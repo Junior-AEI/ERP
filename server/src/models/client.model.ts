@@ -32,7 +32,7 @@ export default class Clients extends Model {
         type: DataType.INTEGER,
         allowNull: false
     })
-    memberId!: number
+    clientId!: number
 
     @BelongsTo(() => Persons)
     person!: Persons

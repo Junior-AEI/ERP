@@ -9,4 +9,4 @@ router.post('/', userController.create)
 router.put('/', userController.update)
 router.delete('/:id', userController.del)
 
-export default router
+export default router;

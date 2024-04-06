@@ -19,9 +19,7 @@ router.use('/group', getUsername, verifyAuthentication, groupRouter)
 router.use('/member', getUsername, verifyAuthentication, memberRouter)
 router.use('/company', getUsername, verifyAuthentication, companyRouter)
 router.use('/client', getUsername, verifyAuthentication, clientRouter)
-
-/**
 router.use('/document', getUsername, verifyAuthentication, documentRouter)
-**/
+
 
 export default router

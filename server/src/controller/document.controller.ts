@@ -11,28 +11,156 @@
 
 // You should have received a copy of the GNU Affero General Public License along with LATIME. If not, see <https://www.gnu.org/licenses/>.
 import { Request, Response } from 'express'
-import Fichier from '../models/fichier.model'
-import Document from '../models/document.model'
-import { controllerErrorHandler } from './utils.controller'
+import Documents from '../models/document.model'
+import { controllerErrorHandler, isNumber } from './utils.controller'
+import { HttpError } from 'http-errors'
+import createHttpError from 'http-errors'
+import { isValidDocument } from '../validator/document.validator'
 
-//ajout pour le bot Telegram
-import axios from 'axios'
+// ajout pour le bot Telegram
+// import axios from 'axios'
+
+/**
+ * TODO : Tests
+ * Get all users
+ * @param req
+ * @param res
+ */
+const getAll = async (req: Request, res: Response) => {
+    try {
+        const documents = await Documents.findAll({ })
+
+        return res.status(200).json({
+            status: 'success',
+            data: {
+                documents: documents
+            }
+        })
+    } catch (err) {
+        if (err instanceof HttpError) controllerErrorHandler(err, res)
+        else throw err
+    }
+}
+
+/**
+ * TODO : Tests
+ * Select a specific user
+ * @param req
+ * @param res
+ */
+const getByPk = async (req: Request, res: Response) => {
+    try {
+        if (req.params.id && !isNumber(req.params.id))
+            throw createHttpError(400, 'Please provide a valid identifier')
+
+        const identifier = parseInt(req.params.id)
+
+        const document = await Documents.findByPk(identifier)
+
+        if (!document) throw createHttpError(404, 'User not found')
+
+        return res.status(200).json({
+            status: 'success',
+            data: {
+                document: document
+            }
+        })
+    } catch (err) {
+        if (err instanceof HttpError) controllerErrorHandler(err, res)
+        else throw err
+    }
+}
+
+/**
+ * TODO : Tests
+ * Create an user
+ * @param req
+ * @param res
+ */
+async function create(req: Request, res: Response) {
+    // TODO : Ask for the user creator routine
+}
+
+/**
+ * TODO : Tests
+ * Update an user
+ * @param req
+ * @param res
+ */
+const update = async (req: Request, res: Response) => {
+    try {
+        // Parse identifier
+        if (req.params.id && !isNumber(req.params.id))
+            throw createHttpError(400, 'Please provide a valid identifier')
+        const identifier = parseInt(req.params.id)
+
+        const document = await Documents.findByPk(identifier)
+        if (!document) throw createHttpError(404, 'User not found')
+
+        const validator = isValidDocument(
+            req.body.document.path,
+            req.body.document.version,
+            req.body.document.information,
+            req.body.document.status
+        )
+
+        if (validator.valid == 0) throw createHttpError(400, validator.message as string)
+
+
+        await Documents.update(req.body, {
+            where: { documentId: identifier }
+        })
+
+        return res.status(200).json({
+            status: 'success'
+        })
+    } catch (err) {
+        if (err instanceof HttpError) controllerErrorHandler(err, res)
+        else throw err
+    }
+}
+
+/**
+ * TODO : Tests
+ * Delete an user
+ * @param req
+ * @param res
+ */
+const del = async (req: Request, res: Response) => {
+    try {
+        // Parse identifier
+        if (req.params.id && !isNumber(req.params.id))
+            throw createHttpError(400, 'Please provide a valid identifier')
+        const identifier = parseInt(req.params.id)
+
+        const document = await Documents.findByPk(identifier)
+        if (!document) throw createHttpError(404, 'User not found')
+
+        await Documents.destroy({
+            where: {
+                documentId: req.body.document.documentId
+            }
+        })
+    } catch (err) {
+        if (err instanceof HttpError) controllerErrorHandler(err, res)
+        else throw err
+    }
+}
 
 const documentController = {
-    createDocument,
-    uploadNewVersion,
-    getAllDocuments,
-    downloadFileById,
-    getDocumentsToRead
+    create,
+    getAll,
+    getByPk,
+    update,
+    del,
 }
 
-async function createDocument(req: Request, res: Response) {
-    await Document.create({
-        nom: req.body.nom
-    })
-        .then((doc) => res.status(200).json({ id: doc.id }))
-        .catch((err) => controllerErrorHandler(err, res))
-}
+export default documentController
+
+/**
+
+
+------- Old version that could be useful later ---------
 
 async function uploadNewVersion(req: Request, res: Response) {
     if (!req.file || req.file === undefined) {
@@ -95,19 +223,6 @@ async function downloadFileById(req: Request, res: Response) {
         .catch((err) => controllerErrorHandler(err, res))
 }
 
-async function getAllDocuments(req: Request, res: Response) {
-    await Document.findAll({
-        include: {
-            model: Fichier,
-            separate: true,
-            order: [['createdAt', 'DESC']]
-        },
-        order: [['updatedAt', 'DESC']]
-    })
-        .then((docs) => res.status(200).json(docs))
-        .catch((err) => controllerErrorHandler(err, res))
-}
-
 async function getDocumentsToRead(req: Request, res: Response) {
     await Document.findAll({
         include: {
@@ -124,4 +239,4 @@ async function getDocumentsToRead(req: Request, res: Response) {
         .catch((err) => controllerErrorHandler(err, res))
 }
 
-export default documentController
+**/

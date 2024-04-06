@@ -15,9 +15,11 @@ import express from 'express'
 import { upload } from '../middlewares/document.middleware'
 
 const router = express.Router()
-router.get('/', documentController.getAllDocuments)
-router.post('/', documentController.createDocument)
-router.get('/file/:id', documentController.downloadFileById)
-router.post('/:id/:statut', upload.single('file'), documentController.uploadNewVersion)
+router.get('/', documentController.getAll)
+router.post('/', documentController.create)
+router.get('/:id', documentController.getByPk)
+router.post('/:id', documentController.update)
+router.post('/:id', documentController.del)
+
 
 export default router

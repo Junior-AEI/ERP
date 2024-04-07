@@ -29,7 +29,7 @@ const router = createRouter({
     {
       path: '/administration',
       name: 'Administration',
-      component: () => import('../views/Construction.vue'),
+      component: () => import('../views/SettingsView.vue'),
       meta: {
         icon: 'build'
       }

@@ -39,7 +39,7 @@ const onSubmit = form.handleSubmit((values) => {
         <span class="text-accent">Ajouter un événement</span>
       </CardHeader>
       <CardContent>
-        <form @submit="onSubmit">
+        <form @submit="onSubmit" class="flex flex-col gap-2">
           <FormField v-slot="{ componentField }" name="username">
             <FormItem class="flex flex-col">
               <FormLabel>Nom de l'événement</FormLabel>
@@ -49,7 +49,6 @@ const onSubmit = form.handleSubmit((values) => {
                   placeholder="Formation Alten : Être performant face à un intervenant"
                   v-bind="componentField"
                 />
-                <FormDescription> </FormDescription>
               </FormControl>
             </FormItem>
           </FormField>
@@ -113,7 +112,6 @@ const onSubmit = form.handleSubmit((values) => {
                 placeholder="Où est-ce que ça se passe ?"
                 v-bind="componentField"
               />
-              <FormDescription> </FormDescription>
             </FormItem>
           </FormField>
           <FormField name="description">
@@ -124,10 +122,9 @@ const onSubmit = form.handleSubmit((values) => {
                   placeholder="Une description très fournie. Elle peut être sur plusieurs lignes."
                 />
               </FormControl>
-              <FormDescription> </FormDescription>
             </FormItem>
           </FormField>
-          <Button variant="outline" type="submit"> Ajouter un événement </Button>
+          <Button type="submit"> Ajouter un événement </Button>
         </form>
       </CardContent>
     </Card>

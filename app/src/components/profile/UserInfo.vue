@@ -30,14 +30,17 @@
             <Input id="promotion" v-model="userInfo.promotion" />
           </div>
         </div>
-        <TagsInput v-model="possibleRoles">
-          <TagsInputItem v-for="item in possibleRoles" :key="item" :value="item">
-            <TagsInputItemText />
-            <TagsInputItemDelete />
-          </TagsInputItem>
+        <div class="flex flex-1 flex-col gap-2">
+          <Label for="roles">Rôles</Label>
+          <TagsInput v-model="possibleRoles">
+            <TagsInputItem v-for="item in possibleRoles" :key="item" :value="item">
+              <TagsInputItemText />
+              <TagsInputItemDelete />
+            </TagsInputItem>
 
-          <TagsInputInput placeholder="Rôles" class="py-1" />
-        </TagsInput>
+            <TagsInputInput placeholder="Rôles" class="py-1" />
+          </TagsInput>
+        </div>
         <div class="flex flex-1 flex-col gap-2">
           <Label for="email">Email personel</Label>
           <Input id="email" v-model="userInfo.email" />

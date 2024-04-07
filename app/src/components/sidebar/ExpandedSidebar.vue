@@ -24,7 +24,7 @@
       </span>
     </Button>
 
-    <div class="flex flex-1 flex-col items-start gap-1 overflow-x-auto pb-6">
+    <div class="flex flex-1 flex-col items-start gap-1 overflow-y-auto overflow-x-hidden pb-6">
       <Link to="/" icon="dashboard" class="w-full justify-start" :variant="matchRoute('/')">
         Tableau de bord
       </Link>
@@ -73,9 +73,6 @@
         Administration
       </Link>
     </div>
-    <div
-      class="relative top-0 -mt-8 h-5 w-full bg-gradient-to-b from-primary-foreground/0 to-primary-foreground"
-    ></div>
 
     <div class="flex flex-col items-start gap-1">
       <Link

@@ -14,7 +14,7 @@ import { cn } from '@/lib/utils'
 import { Calendar } from '@/components/ui/calendar'
 import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover'
 
-import { FormControl, FormDescription, FormField, FormItem, FormLabel } from '@/components/ui/form'
+import { FormControl, FormField, FormItem, FormLabel } from '@/components/ui/form'
 
 const formSchema = toTypedSchema(
   z.object({

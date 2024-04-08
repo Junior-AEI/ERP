@@ -1,12 +1,12 @@
 const request = require('supertest')
 import { sequelizeInit, sequelizeClose } from '../src/config/database.config'
 import bcrypt from 'bcrypt'
-import app from "../src/app";
-import { createUser } from './seeders/user.seeders';
-import { clearDatabase } from './utils';
-import Tokens from '../src/models/token.model';
-import Users from '../src/models/user.model';
-import { promisify } from 'util';
+import app from "../src/app"
+import { createUser } from './seeders/user.seeders'
+import { clearDatabase } from './utils'
+import Tokens from '../src/models/token.model'
+import Users from '../src/models/user.model'
+import { promisify } from 'util'
 
 beforeAll(async () => {
     await sequelizeInit()
@@ -16,13 +16,13 @@ afterAll(async () => {
     await sequelizeClose();
 });
 
-describe('ROUTE: /api/login', () => {
+describe('ROUTE: /api/login (Login)', () => {
 
     afterEach(clearDatabase);
 
     it('Wrong informations', async () => {
 
-        await createUser();
+        await createUser('johnDoe');
 
         const wrongInformationsList = [
             // Void
@@ -63,7 +63,7 @@ describe('ROUTE: /api/login', () => {
 
     it('Good usage', async () => {
 
-        await createUser();
+        await createUser('johnDoe');
 
         const res = await request(app)
             .post('/api/login')
@@ -80,7 +80,7 @@ describe('ROUTE: /api/login', () => {
 })
 
 
-describe('ROUTE: /api/forget', () => {
+describe('ROUTE: /api/forget (Forget password way)', () => {
 
     afterEach(clearDatabase);
 
@@ -107,7 +107,7 @@ describe('ROUTE: /api/forget', () => {
 
     it('Good usage', async () => {
 
-        await createUser();
+        await createUser('johnDoe');
 
         const res = await request(app)
             .post('/api/forget')
@@ -138,14 +138,14 @@ describe('ROUTE: /api/forget', () => {
 
 })
 
-describe('ROUTE: /api/new-password', () => {
+describe('ROUTE: /api/new-password (Change password)', () => {
 
     afterEach(clearDatabase);
 
     // ! 
     // it('Wrong informations', async () => {
 
-    //     await createUser();
+    //     await createUser('johnDoe');
 
     //     const wrongInformationsList = [
     //         // Void
@@ -179,15 +179,15 @@ describe('ROUTE: /api/new-password', () => {
 
     it('Good usage', async () => {
 
-        await createUser();
+        await createUser('johnDoe');
 
-        let user = await Users.findOne({
+        const oldUser = await Users.findOne({
             where: {
                 username: "john.doe"
             }
         })
 
-        const oldPasswordHash = user?.password ? user.password : ""
+        const oldPasswordHash = oldUser?.password ? oldUser.password : ""
 
         expect(await promisify(bcrypt.compare)('mdp', oldPasswordHash)).toBeTruthy();
         
@@ -198,7 +198,7 @@ describe('ROUTE: /api/new-password', () => {
         await Tokens.create({
             token: token,
             validity: tenMinutesLater,
-            userId: user?.userId
+            userId: oldUser?.userId
         })
         
         const res = await request(app)
@@ -211,13 +211,13 @@ describe('ROUTE: /api/new-password', () => {
         expect(res.status).toEqual(200);
         expect(res.body.status).toEqual("success");
         
-        user = await Users.findOne({
+        const newUser = await Users.findOne({
             where: {
                 username: "john.doe"
             }
         })
         
-        const newPasswordHash = user?.password ? user.password : ""
+        const newPasswordHash = newUser?.password ? newUser.password : ""
         
         expect(newPasswordHash).not.toEqual(oldPasswordHash)
         expect(await promisify(bcrypt.compare)('mdp', newPasswordHash)).toBeFalsy();

@@ -1,7 +1,5 @@
 import { Response } from 'express'
-import createHttpError, { HttpError } from 'http-errors'
-import { ModelStatic } from 'sequelize'
-import { Model } from 'sequelize-typescript'
+import { HttpError } from 'http-errors'
 
 /**
  * Check if a string represents a number
@@ -9,37 +7,6 @@ import { Model } from 'sequelize-typescript'
  */
 export function isNumber(str: string): boolean {
     return /^\d+$/.test(str)
-}
-
-/**
- * Throws BadRequest (400) error if given number is NaN
- * @param id Id to check
- */
-export async function checkIdIsNotNaN(id: number | string) {
-    if (typeof id === 'string') {
-        id = parseInt(id)
-    }
-    if (Number.isNaN(id)) {
-        throw createHttpError(400, 'Given id is Not A Number')
-    }
-}
-
-/**
- * Throws error if given item id does not exist or isn't valid
- * @param id Role id to check
- */
-export async function checkExistingId<M extends Model>(id: number | string, model: ModelStatic<M>) {
-    // Check is id is a number
-    return checkIdIsNotNaN(id)
-        .then(() =>
-            // Check if requested role id exist in database
-            model.findByPk(id)
-        )
-        .then(async (existingPoste) => {
-            if (existingPoste === null) {
-                throw createHttpError(404, "Wrong id or item doesn't exist")
-            }
-        })
 }
 
 /**

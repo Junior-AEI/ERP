@@ -1,29 +1,16 @@
-// Copyright (C) 2023 Nesrine ABID, Nadjime BARTEAU, Mathieu DUPOUX, Léo-Paul MAZIÈRE, Maël PAUL, Antoine RAOULT, Lisa VEILLAT, Marine VOVARD
-
-// Authors: Nesrine ABID, Nadjime BARTEAU, Mathieu DUPOUX, Léo-Paul MAZIÈRE, Maël PAUL, Antoine RAOULT, Lisa VEILLAT, Marine VOVARD
-// Maintainer: contact@junior-aei.com
-
-// This file is part of LATIME.
-
-// LATIME is free software: you can redistribute it and/or modify it under the terms of the GNU Affero General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
-
-// LATIME is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more details.
-
-// You should have received a copy of the GNU Affero General Public License along with LATIME. If not, see <https://www.gnu.org/licenses/>.
 import { Request, Response } from 'express'
 import Members from '../models/member.model'
 import { isNumber, controllerErrorHandler } from './utils.controller'
 import { HttpError } from 'http-errors'
 import createHttpError from 'http-errors'
 import { isValidMember } from '../validator/member.validator'
+import Persons from '../models/person.model'
 
 /**
- * All members reader for GET route
- * @param res :
- *  - Members in database + 200 confirmation
- *  - 500 error
+ * Get all members
+ * @param req
+ * @param res
  */
-
 const getAll = async (req: Request, res: Response) => {
     try {
         const members = await Members.findAll({})
@@ -41,19 +28,16 @@ const getAll = async (req: Request, res: Response) => {
 }
 
 /**
- * Specific member (by id) reader for GET route
- * @param req Request ("id" parameter, needed to find right member)
- * @param res :
- *  - Requested member + 200 confirmation
- *  - 400 error if "id" is NaN
- *  - 500 error for database error
+ * Get a specific member
+ * @param req
+ * @param res
+ * @returns
  */
 const getByPk = async (req: Request, res: Response) => {
     try {
-        if (req.params.id && !isNumber(req.params.id))
-            throw createHttpError(400, 'Please provide a valid identifier')
+        if (req.params.memberId && !isNumber(req.params.memberId)) throw createHttpError(400, 'Please provide a valid identifier')
 
-        const identifier = parseInt(req.params.id)
+        const identifier = parseInt(req.params.memberId)
 
         const member = await Members.findByPk(identifier)
 
@@ -72,45 +56,64 @@ const getByPk = async (req: Request, res: Response) => {
 }
 
 /**
- * Member creation for POST route
- * @param req Request (body used to create new member)
- * @param res :
- *  - 201 confirmation
- *  - 400 error if wrong datas are given
- *  - 409 error if role already exist
- *  - 500 error for database error
+ * Create a member
+ * @param req
+ * @param res
  */
 const create = async (req: Request, res: Response) => {
-    // TODO : Ask for the user creator routine
+    try {
+        // Parse identifier for person heredity
+        if (req.body.member.personId && !isNumber(req.body.member.memberId)) throw createHttpError(400, 'Please provide a valid identifier for the linked person.')
+        const identifier = parseInt(req.body.member.personId)
+
+        // Test params
+        const validator = isValidMember(req.body.member.birthDate, req.body.member.birthPlace, req.body.member.nationality, req.body.member.promotion, req.body.member.contributionDate, req.body.member.department)
+        if (!validator.valid) throw createHttpError(400, validator.message as string)
+
+        // Try to find linked person
+        const person = Persons.findByPk(identifier)
+        if (!person) throw createHttpError(404, 'Unable to find linked person.')
+
+        // Insert data
+        const member = await Members.create({
+            memberId: identifier,
+            birthDate: req.body.member.birthDate,
+            birthPlace: req.body.member.birthPlace,
+            nationality: req.body.member.nationality,
+            promotion: req.body.member.promotion,
+            contributionDate: req.body.member.contributionDate,
+            department: req.body.member.department
+        })
+
+        // Return success
+        return res.status(200).json({
+            status: 'success',
+            data: {
+                memberId: member.memberId
+            }
+        })
+    } catch (err) {
+        if (err instanceof HttpError) controllerErrorHandler(err, res)
+        else throw err
+    }
 }
 
 /**
- * Member update for PUT route
- * @param req Request (body used to update member)
- * @param res :
- *  - 204 confirmation
- *  - 400 error if wrong datas are given
- *  - 404 error if member don't exist
- *  - 500 error for database error
+ * Update a member
+ * @param req
+ * @param res
+ * @returns
  */
 const update = async (req: Request, res: Response) => {
     try {
         // Parse identifier
-        if (req.params.id && !isNumber(req.params.id))
-            throw createHttpError(400, 'Please provide a valid identifier')
-        const identifier = parseInt(req.params.id)
+        if (req.params.memberId && !isNumber(req.params.memberId)) throw createHttpError(400, 'Please provide a valid identifier')
+        const identifier = parseInt(req.params.memberId)
 
         const member = await Members.findByPk(identifier)
         if (!member) throw createHttpError(404, 'User not found')
 
-        const validator = isValidMember(
-            req.body.group.birthDate,
-            req.body.group.birthPlace,
-            req.body.group.nationality,
-            req.body.group.promotion,
-            req.body.group.contributionDate,
-            req.body.group.department
-        )
+        const validator = isValidMember(req.body.group.birthDate, req.body.group.birthPlace, req.body.group.nationality, req.body.group.promotion, req.body.group.contributionDate, req.body.group.department)
 
         if (validator.valid == 0) throw createHttpError(400, validator.message as string)
 
@@ -128,20 +131,15 @@ const update = async (req: Request, res: Response) => {
 }
 
 /**
- * Member remove for DELETE route
- * @param req Request (parameter "id" used to find member to delete)
- * @param res :
- *  - 204 confirmation (ressource deleted)
- *  - 400 error if given id is NaN
- *  - 404 error if given id doesn't exist
- *  - 500 error for database error
+ * Delete a member
+ * @param req
+ * @param res
  */
 async function del(req: Request, res: Response) {
     try {
         // Parse identifier
-        if (req.params.id && !isNumber(req.params.id))
-            throw createHttpError(400, 'Please provide a valid identifier')
-        const identifier = parseInt(req.params.id)
+        if (req.params.memberId && !isNumber(req.params.memberId)) throw createHttpError(400, 'Please provide a valid identifier')
+        const identifier = parseInt(req.params.memberId)
 
         const member = await Members.findByPk(identifier)
         if (!member) throw createHttpError(404, 'Group not found')

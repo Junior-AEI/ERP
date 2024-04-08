@@ -1,15 +1,3 @@
-// Copyright (C) 2023 Nesrine ABID, Nadjime BARTEAU, Mathieu DUPOUX, Léo-Paul MAZIÈRE, Maël PAUL, Antoine RAOULT, Lisa VEILLAT, Marine VOletD
-
-// Authors: Nesrine ABID, Nadjime BARTEAU, Mathieu DUPOUX, Léo-Paul MAZIÈRE, Maël PAUL, Antoine RAOULT, Lisa VEILLAT, Marine VOletD
-// Maintainer: contact@junior-aei.com
-
-// This file is part of LATIME.
-
-// LATIME is free software: you can redistribute it and/or modify it under the terms of the GNU Affero General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
-
-// LATIME is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more details.
-
-// You should have received a copy of the GNU Affero General Public License along with LATIME. If not, see <https://www.gnu.org/licenses/>.
 import { Request, Response } from 'express'
 import { SignJWT } from 'jose'
 import bcrypt from 'bcrypt'
@@ -22,18 +10,10 @@ import { controllerErrorHandler } from './utils.controller'
 import { HttpError } from 'http-errors'
 import Persons from '../models/person.model'
 
-// Functions in this controller :
-// For the routes
-//      login, // Verify the login informations of a member
-//      forgetPassword, // Send an email with informations to ask a new Password
-//      askNewPassword, // Modify the password if you have a valid token
-
 /**
  * Login route
  * @param req
- * @param res :
- *  -200 success with all the usefull data
- *  -401 Unauthorized because of invalid username or password.
+ * @param res
  */
 const login = async (req: Request, res: Response) => {
 
@@ -78,12 +58,7 @@ const login = async (req: Request, res: Response) => {
         }
 
         // Create JWT token
-        const token = await new SignJWT({ username })
-            .setProtectedHeader({ alg: 'HS256' })
-            .setAudience(JWT_AUDIENCE)
-            .setIssuer(JWT_ISSUER)
-            .setExpirationTime(JWT_EXPIRATION)
-            .sign(JWT_SECRET_KEY)
+        const token = await new SignJWT({ username }).setProtectedHeader({ alg: 'HS256' }).setAudience(JWT_AUDIENCE).setIssuer(JWT_ISSUER).setExpirationTime(JWT_EXPIRATION).sign(JWT_SECRET_KEY)
 
         console.log(user)
 
@@ -109,10 +84,8 @@ const login = async (req: Request, res: Response) => {
 
 /**
  * Forget password route
- * If the username is valid send a email with a token
  * @param req
  * @param res
- * @returns
  */
 const forgetPassword = async (req: Request, res: Response) => {
     try {
@@ -176,12 +149,8 @@ const forgetPassword = async (req: Request, res: Response) => {
 }
 
 /**
- * Ask New Password route
- * Verify if token is valid and modify password in DB
- * NEED TO FINISH
  * @param req
  * @param res
- * @returns
  */
 const askNewPassword = async (req: Request, res: Response) => {
     try {

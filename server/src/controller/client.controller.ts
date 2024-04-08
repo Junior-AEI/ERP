@@ -1,25 +1,13 @@
-// Copyright (C) 2023 Nesrine ABID, Nadjime BARTEAU, Mathieu DUPOUX, Léo-Paul MAZIÈRE, Maël PAUL, Antoine RAOULT, Lisa VEILLAT, Marine VOVARD
-
-// Authors: Nesrine ABID, Nadjime BARTEAU, Mathieu DUPOUX, Léo-Paul MAZIÈRE, Maël PAUL, Antoine RAOULT, Lisa VEILLAT, Marine VOVARD
-// Maintainer: contact@junior-aei.com
-
-// This file is part of LATIME.
-
-// LATIME is free software: you can redistribute it and/or modify it under the terms of the GNU Affero General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
-
-// LATIME is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more details.
-
-// You should have received a copy of the GNU Affero General Public License along with LATIME. If not, see <https://www.gnu.org/licenses/>.
 import { Request, Response } from 'express'
 import Clients from '../models/client.model'
 import { controllerErrorHandler, isNumber } from './utils.controller'
 import createHttpError from 'http-errors'
 import { HttpError } from 'http-errors'
 import { isValidClient } from '../validator/client.validator'
+import Companies from '../models/company.model'
 
 /**
- * TODO : Tests
- * Get all users
+ * Get all clients
  * @param req
  * @param res
  */
@@ -40,21 +28,19 @@ const getAll = async (req: Request, res: Response) => {
 }
 
 /**
- * TODO : Tests
- * Select a specific user
+ * Select a specific client
  * @param req
  * @param res
  */
 const getByPk = async (req: Request, res: Response) => {
     try {
-        if (req.params.id && !isNumber(req.params.id))
-            throw createHttpError(400, 'Please provide a valid identifier')
+        if (req.params.clientId || !isNumber(req.params.clientId)) throw createHttpError(400, 'Please provide a valid identifier.')
 
-        const identifier = parseInt(req.params.id)
+        const identifier = parseInt(req.params.clientId)
 
         const client = await Clients.findByPk(identifier)
 
-        if (!client) throw createHttpError(404, 'Client not found')
+        if (!client) throw createHttpError(404, 'Client not found.')
 
         return res.status(200).json({
             status: 'success',
@@ -68,32 +54,51 @@ const getByPk = async (req: Request, res: Response) => {
     }
 }
 /**
- * TODO : Tests
- * Create an user
+ * Create a client
  * @param req
  * @param res
  */
 async function create(req: Request, res: Response) {
-    // TODO : Ask for the user creator routine
+    // Test if parameters has been filled
+    const validator = isValidClient(req.body.client.function, req.body.client.companyId)
+
+    // Try to find the company
+    const company = await Companies.findByPk(parseInt(req.body.client.companyId))
+    if (!company) return createHttpError(400, 'Your company id is not valid.')
+
+    // Test values
+    if (!validator.valid) return createHttpError(400, validator.message as string)
+
+    // Insert value
+    const client = await Clients.create({
+        function: req.body.client.function,
+        companyId: req.body.client.companyId
+    })
+
+    // Return success
+    return res.status(200).json({
+        status: 'success',
+        data: {
+            clientId: client.clientId
+        }
+    })
 }
 
 /**
- * TODO : Tests
- * Update an user
+ * Update a client
  * @param req
  * @param res
  */
 const update = async (req: Request, res: Response) => {
     try {
         // Parse identifier
-        if (req.params.id && !isNumber(req.params.id))
-            throw createHttpError(400, 'Please provide a valid identifier')
-        const identifier = parseInt(req.params.id)
+        if (req.params.clientId && !isNumber(req.params.clientId)) throw createHttpError(400, 'Please provide a valid identifier')
+        const identifier = parseInt(req.params.clientId)
 
         const client = await Clients.findByPk(identifier)
         if (!client) throw createHttpError(404, 'User not found')
 
-        const validator = isValidClient(req.body.client.function)
+        const validator = isValidClient(req.body.client.function, req.body.client.companyId)
 
         if (validator.valid == 0) throw createHttpError(400, validator.message as string)
 
@@ -111,24 +116,22 @@ const update = async (req: Request, res: Response) => {
 }
 
 /**
- * TODO : Tests
- * Delete an user
+ * Delete a client
  * @param req
  * @param res
  */
 const del = async (req: Request, res: Response) => {
     try {
         // Parse identifier
-        if (req.params.id && !isNumber(req.params.id))
-            throw createHttpError(400, 'Please provide a valid identifier')
-        const identifier = parseInt(req.params.id)
+        if (req.params.clientId && !isNumber(req.params.clientId)) throw createHttpError(400, 'Please provide a valid identifier')
+        const identifier = parseInt(req.params.clientId)
 
         const client = await Clients.findByPk(identifier)
         if (!client) throw createHttpError(404, 'User not found')
 
         await Clients.destroy({
             where: {
-                clientId: req.body.client.clientId
+                clientId: identifier
             }
         })
     } catch (err) {

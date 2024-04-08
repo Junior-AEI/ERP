@@ -1,15 +1,3 @@
-// Copyright (C) 2023 Nesrine ABID, Nadjime BARTEAU, Mathieu DUPOUX, Léo-Paul MAZIÈRE, Maël PAUL, Antoine RAOULT, Lisa VEILLAT, Marine VOVARD
-
-// Authors: Nesrine ABID, Nadjime BARTEAU, Mathieu DUPOUX, Léo-Paul MAZIÈRE, Maël PAUL, Antoine RAOULT, Lisa VEILLAT, Marine VOVARD
-// Maintainer: contact@junior-aei.com
-
-// This file is part of LATIME.
-
-// LATIME is free software: you can redistribute it and/or modify it under the terms of the GNU Affero General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
-
-// LATIME is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more details.
-
-// You should have received a copy of the GNU Affero General Public License along with LATIME. If not, see <https://www.gnu.org/licenses/>.
 import { Request, Response } from 'express'
 import Groups from '../models/group.model'
 import { controllerErrorHandler } from './utils.controller'
@@ -18,8 +6,7 @@ import { isValidGroup } from '../validator/group.validator'
 import { HttpError } from 'http-errors'
 
 /**
- * TODO : Tests
- * Get all users
+ * Get all groups
  * @param req
  * @param res
  */
@@ -40,8 +27,7 @@ const getAll = async (req: Request, res: Response) => {
 }
 
 /**
- * TODO : Tests
- * Get all users
+ * Get a specific group
  * @param req
  * @param res
  */
@@ -49,7 +35,7 @@ const getByPk = async (req: Request, res: Response) => {
     try {
         if (req.params.groupName) throw createHttpError(400, 'Please provide a valid identifier')
 
-        const identifier = parseInt(req.params.name)
+        const identifier = parseInt(req.params.groupName)
 
         const group = await Groups.findByPk(identifier)
 
@@ -68,17 +54,35 @@ const getByPk = async (req: Request, res: Response) => {
 }
 
 /**
- * TODO : Tests
- * Create an user
+ * Create a group
  * @param req
  * @param res
  */
 async function create(req: Request, res: Response) {
-    // TODO : Ask for the user creator routine
+    try {
+        // Test params
+        const validator = isValidGroup(req.body.group.groupName)
+        if (!validator.valid) return createHttpError(400, validator.message as string)
+
+        // Insert data
+        const group = await Groups.create({
+            groupName: req.body.group.groupName
+        })
+
+        // Return success
+        return res.status(200).json({
+            status: 'success',
+            data: {
+                groupName: group.groupName
+            }
+        })
+    } catch (err) {
+        if (err instanceof HttpError) controllerErrorHandler(err, res)
+        else throw err
+    }
 }
 
 /**
- * TODO : Tests
  * Update a group
  * @param req
  * @param res
@@ -89,19 +93,24 @@ const update = async (req: Request, res: Response) => {
         if (req.params.groupName) throw createHttpError(400, 'Please provide a valid group name')
         const identifier = parseInt(req.params.groupName)
 
+        // Find
         const group = await Groups.findByPk(identifier)
         if (!group) throw createHttpError(404, 'Group not found')
 
+        // Test params
         const validator = isValidGroup(req.body.group.groupName)
-
         if (validator.valid == 0) throw createHttpError(400, validator.message as string)
 
-        req.body.user.updatedAt = null
+        await Groups.update(
+            {
+                groupName: req.body.group.groupName
+            },
+            {
+                where: { groupName: identifier }
+            }
+        )
 
-        await Groups.update(req.body, {
-            where: { groupName: identifier }
-        })
-
+        // Return success
         return res.status(200).json({
             status: 'success'
         })
@@ -112,8 +121,7 @@ const update = async (req: Request, res: Response) => {
 }
 
 /**
- * TODO : Tests
- * Delete an user
+ * Delete a group
  * @param req
  * @param res
  */
@@ -123,9 +131,11 @@ const del = async (req: Request, res: Response) => {
         if (req.params.groupName) throw createHttpError(400, 'Please provide a valid identifier')
         const identifier = req.params.groupName
 
+        // Find
         const group = await Groups.findByPk(identifier)
         if (!group) throw createHttpError(404, 'User not found')
 
+        // Destroy
         await Groups.destroy({
             where: {
                 groupName: req.body.group.groupName

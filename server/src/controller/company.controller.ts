@@ -1,15 +1,3 @@
-// Copyright (C) 2023 Nesrine ABID, Nadjime BARTEAU, Mathieu DUPOUX, Léo-Paul MAZIÈRE, Maël PAUL, Antoine RAOULT, Lisa VEILLAT, Marine VOVARD
-
-// Authors: Nesrine ABID, Nadjime BARTEAU, Mathieu DUPOUX, Léo-Paul MAZIÈRE, Maël PAUL, Antoine RAOULT, Lisa VEILLAT, Marine VOVARD
-// Maintainer: contact@junior-aei.com
-
-// This file is part of LATIME.
-
-// LATIME is free software: you can redistribute it and/or modify it under the terms of the GNU Affero General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
-
-// LATIME is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more details.
-
-// You should have received a copy of the GNU Affero General Public License along with LATIME. If not, see <https://www.gnu.org/licenses/>.
 import { Request, Response } from 'express'
 import Companies from '../models/company.model'
 import { controllerErrorHandler, isNumber } from './utils.controller'
@@ -18,8 +6,7 @@ import { HttpError } from 'http-errors'
 import { isValidCompany } from '../validator/company.validator'
 
 /**
- * TODO : Tests
- * Get all users
+ * Get all companies
  * @param req
  * @param res
  */
@@ -40,17 +27,15 @@ const getAll = async (req: Request, res: Response) => {
 }
 
 /**
- * TODO : Tests
- * Select a specific user
+ * Select a specific company
  * @param req
  * @param res
  */
 const getByPk = async (req: Request, res: Response) => {
     try {
-        if (req.params.id && !isNumber(req.params.id))
-            throw createHttpError(400, 'Please provide a valid identifier')
+        if (req.params.companyId && !isNumber(req.params.companyId)) throw createHttpError(400, 'Please provide a valid identifier')
 
-        const identifier = parseInt(req.params.id)
+        const identifier = parseInt(req.params.companyId)
 
         const company = await Companies.findByPk(identifier)
 
@@ -69,27 +54,40 @@ const getByPk = async (req: Request, res: Response) => {
 }
 
 /**
- * TODO : Tests
- * Create an user
+ * Create a company
  * @param req
  * @param res
  */
 async function create(req: Request, res: Response) {
-    // TODO : Ask for the user creator routine
+    // Test params
+    const validator = isValidCompany(req.body.company.name, req.body.company.legalEntity)
+    if (!validator.valid) return createHttpError(400, validator.message as string)
+
+    // Insert in database
+    const company = await Companies.create({
+        name: req.body.company.name,
+        legalEntity: req.body.company.legalEntity
+    })
+
+    // Return success
+    return res.status(200).json({
+        status: 'success',
+        data: {
+            companyId: company.companyId
+        }
+    })
 }
 
 /**
- * TODO : Tests
- * Update an user
+ * Update a company
  * @param req
  * @param res
  */
 const update = async (req: Request, res: Response) => {
     try {
         // Parse identifier
-        if (req.params.id && !isNumber(req.params.id))
-            throw createHttpError(400, 'Please provide a valid identifier')
-        const identifier = parseInt(req.params.id)
+        if (req.params.companyId && !isNumber(req.params.companyId)) throw createHttpError(400, 'Please provide a valid identifier')
+        const identifier = parseInt(req.params.companyId)
 
         const company = await Companies.findByPk(identifier)
         if (!company) throw createHttpError(404, 'User not found')
@@ -112,17 +110,15 @@ const update = async (req: Request, res: Response) => {
 }
 
 /**
- * TODO : Tests
- * Delete an user
+ * Delete a company
  * @param req
  * @param res
  */
 const del = async (req: Request, res: Response) => {
     try {
         // Parse identifier
-        if (req.params.id && !isNumber(req.params.id))
-            throw createHttpError(400, 'Please provide a valid identifier')
-        const identifier = parseInt(req.params.id)
+        if (req.params.companyId && !isNumber(req.params.companyId)) throw createHttpError(400, 'Please provide a valid identifier')
+        const identifier = parseInt(req.params.companyId)
 
         const company = await Companies.findByPk(identifier)
         if (!company) throw createHttpError(404, 'User not found')

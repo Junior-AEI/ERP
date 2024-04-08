@@ -24,23 +24,18 @@ const getAll = async (req: Request, res: Response) => {
 }
 
 /**
- * Specific address (by id) reader for GET route
- * @param req Request ("id" parameter, needed to find right address)
- * @param res :
- *  - Requested address + 200 confirmation
- *  - 400 error if "id" is NaN
- *  - 500 error for database error
+ * Get a specific address
+ * @param req
+ * @param res
  */
 const getByPk = async (req: Request, res: Response) => {
     try {
         // Parse identifier
-        if (req.params.id && !isNumber(req.params.id))
-            throw createHttpError(400, 'Please provide a valid identifier.')
-        const identifier = parseInt(req.params.id)
+        if (req.params.addressId && !isNumber(req.params.addressId)) throw createHttpError(400, 'Please provide a valid identifier.')
+        const identifier = parseInt(req.params.addressId)
 
-        // Find requested member by primary key (id)
+        // Find
         const address = await Adresses.findByPk(identifier)
-
         if (!address) return createHttpError(404, 'Address not found.')
 
         // Return the found address
@@ -64,25 +59,25 @@ const getByPk = async (req: Request, res: Response) => {
  */
 const create = async (req: Request, res: Response) => {
     try {
-        const validator = isValidAddress(
-            req.body.address.address,
-            req.body.address.additionnalAddress,
-            req.body.address.city,
-            req.body.address.postCode,
-            req.body.address.country
-        )
+        // Test params
+        const validator = isValidAddress(req.body.address.address, req.body.address.additionnalAddress, req.body.address.city, req.body.address.postCode, req.body.address.country)
 
-        if (validator.valid !== 1) throw createHttpError(400, validator.message as string)
+        if (!validator.valid) throw createHttpError(400, validator.message as string)
 
-        req.body.address.createdAt = null
-        req.body.address.updatedAt = null
+        // Insert data
+        const address = await Addresses.create({
+            address: req.body.address.address,
+            additionnalAddress: req.body.address.additionnalAddress,
+            city: req.body.address.city,
+            postCode: req.body.address.postCode,
+            country: req.body.address.country
+        })
 
-        const address = await Addresses.create(req.body.address)
-
+        // Return success
         return res.status(200).json({
             status: 'success',
             data: {
-                id: address.addressId
+                addressId: address.addressId
             }
         })
     } catch (err) {
@@ -101,27 +96,29 @@ const create = async (req: Request, res: Response) => {
 async function update(req: Request, res: Response) {
     try {
         // Parse identifier
-        if (req.body.id && !isNumber(req.body.id))
-            throw createHttpError(400, 'Please provide a valid identifier.')
-        const identifier = parseInt(req.body.id)
+        if (req.params.addressId && !isNumber(req.params.addressId)) throw createHttpError(400, 'Please provide a valid identifier.')
+        const identifier = parseInt(req.params.addressId)
 
-        const validator = isValidAddress(
-            req.body.address.address,
-            req.body.address.additionnalAddress,
-            req.body.address.city,
-            req.body.address.postCode,
-            req.body.address.country
+        // Test params
+        const validator = isValidAddress(req.body.address.address, req.body.address.additionnalAddress, req.body.address.city, req.body.address.postCode, req.body.address.country)
+
+        if (!validator.valid) throw createHttpError(400, validator.message as string)
+
+        // Insert data
+        await Addresses.update(
+            {
+                address: req.body.address.address,
+                additionnalAddress: req.body.address.additionnalAddress,
+                city: req.body.address.city,
+                postCode: req.body.address.postCode,
+                country: req.body.address.country
+            },
+            {
+                where: { addressId: identifier }
+            }
         )
 
-        if (validator.valid !== 1) throw createHttpError(400, validator.message as string)
-
-        req.body.address.createdAt = null
-        req.body.address.updatedAt = null
-
-        await Addresses.update(req.body.address, {
-            where: { addressId: req.body.addressId }
-        })
-
+        // Return success
         return res.status(200).json({
             status: 'success'
         })
@@ -134,7 +131,6 @@ async function update(req: Request, res: Response) {
 }
 
 /**
- * TODO : Tests
  * Delete an address
  * @param req
  * @param res
@@ -142,16 +138,15 @@ async function update(req: Request, res: Response) {
 const del = async (req: Request, res: Response) => {
     try {
         // Parse identifier
-        if (req.params.id && !isNumber(req.params.id))
-            throw createHttpError(400, 'Please provide a valid identifier')
-        const identifier = parseInt(req.params.id)
+        if (req.params.addressId && !isNumber(req.params.addressId)) throw createHttpError(400, 'Please provide a valid identifier.')
+        const identifier = parseInt(req.params.addressId)
 
         const address = await Addresses.findByPk(identifier)
-        if (!address) throw createHttpError(404, 'Address not found')
+        if (!address) throw createHttpError(404, 'Address not found.')
 
         await Addresses.destroy({
             where: {
-                userId: req.body.user.userId
+                addressId: identifier
             }
         })
     } catch (err) {

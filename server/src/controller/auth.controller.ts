@@ -60,8 +60,6 @@ const login = async (req: Request, res: Response) => {
         // Create JWT token
         const token = await new SignJWT({ username }).setProtectedHeader({ alg: 'HS256' }).setAudience(JWT_AUDIENCE).setIssuer(JWT_ISSUER).setExpirationTime(JWT_EXPIRATION).sign(JWT_SECRET_KEY)
 
-        console.log(user)
-
         // Return success with token and user details
         return res.status(200).json({
             status: 'success',

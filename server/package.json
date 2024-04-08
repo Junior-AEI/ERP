@@ -6,11 +6,7 @@
     "scripts": {
         "config": "tsc --strict --target es5 --module commonjs src/config/sequelize.config.ts",
         "dev": "nodemon",
-        "migrate": "node src/migrations/migrate.js",
-        "seed": "node src/migrations/seed.js",
         "test": "NODE_ENV=test jest",
-        "test_ui": "vitest --ui",
-        "coverage": "vitest --config ./vitest.config.ts run --coverage",
         "lint": "eslint --fix .",
         "format": "prettier --log-level warn --write ."
     },

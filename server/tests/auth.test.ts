@@ -5,6 +5,8 @@ import { sequelizeInit, sequelizeClose } from '../src/config/database.config'
 import app from "../src/app";
 import { createUser } from './seeders/user.seeders';
 import { clearDatabase } from './utils';
+import Tokens from '../src/models/token.model';
+import Users from '../src/models/user.model';
 
 beforeAll(async () => {
     await sequelizeInit()
@@ -18,11 +20,16 @@ describe('ROUTE: /api/login', () => {
 
     afterEach(clearDatabase);
 
-    it('Bad informations', async () => {
+    it('Wrong informations', async () => {
 
         await createUser();
 
-        const badInformationsList = [
+        const wrongInformationsList = [
+            // Void
+            {
+                username: null,
+                password: null,
+            },
             // Empty
             {
                 username: "",
@@ -33,20 +40,20 @@ describe('ROUTE: /api/login', () => {
                 username: "john",
                 password: "123",
             },
-            // Bad password
+            // wrong password
             {
                 username: "john.doe",
-                password: "bad_mdp",
+                password: "wrong_mdp",
             },
             // ...
         ]
 
-        badInformationsList.map(async (badInformations) => {
+        wrongInformationsList.map(async (wrongInformations) => {
             const res = await request(app)
                 .post('/api/login')
                 .send({
-                    username: badInformations.username,
-                    password: badInformations.password
+                    username: wrongInformations.username,
+                    password: wrongInformations.password
                 })
             expect(res.status).toEqual(401);
             expect(res.body.status).toEqual("error");
@@ -54,7 +61,7 @@ describe('ROUTE: /api/login', () => {
 
     })
 
-    it('Good informations', async () => {
+    it('Good usage', async () => {
 
         await createUser();
 
@@ -66,9 +73,71 @@ describe('ROUTE: /api/login', () => {
             })
         expect(res.status).toEqual(200);
         expect(res.body.status).toEqual("success");
+        expect(res.body.data.token).toBeDefined();
 
     })
 
 })
+
+
+describe('ROUTE: /api/forget', () => {
+
+    afterEach(clearDatabase);
+
+    it('Wrong username', async () => {
+
+        const wrongUsernameList = [
+            null, // Void
+            "", // Empty
+            "john.doe", // Filled
+            // ...
+        ]
+
+        wrongUsernameList.map(async (wrongUsername) => {
+            const res = await request(app)
+                .post('/api/forget')
+                .send({
+                    username: wrongUsername,
+                })
+            expect(res.status).toEqual(404);
+            expect(res.body.status).toEqual("error");
+        })
+
+    })
+
+    it('Good usage', async () => {
+
+        await createUser();
+
+        const res = await request(app)
+            .post('/api/forget')
+            .send({
+                username: "john.doe",
+            })
+
+        expect(res.status).toEqual(200);
+        expect(res.body.status).toEqual("success");
+        expect(res.body.data.token).toBeDefined();
+        
+        const user = await Users.findOne({
+            where: {
+                username: "john.doe"
+            }
+        })
+        
+        const tokenDb = await Tokens.findOne({
+            where: {
+                userId: user?.userId
+            }
+        })
+        
+        // Token has been recorded in the db
+        expect(res.body.data.token).toEqual(tokenDb?.token);
+
+    })
+
+})
+
+
 
 

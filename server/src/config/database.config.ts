@@ -1,6 +1,7 @@
 import { Sequelize } from 'sequelize-typescript'
 import dotenv from 'dotenv'
 import config from './sequelize.config'
+import createFakeData from './../seeders'
 
 // Database configuration depending of NODE_ENV variable (dev or production)
 let sequelize: Sequelize
@@ -19,7 +20,15 @@ export const sequelizeInit = async () => {
     const databaseConfig = config[env]
     // ORM initialization
     sequelize = new Sequelize(databaseConfig)
-    testConnection()
+    await sequelize.sync({ force: true, logging: env !== "test" })
+    if (env !== "test") {
+        await testConnection()
+        await createFakeData()
+    }
+}
+
+export const sequelizeClose = async () => {
+    await sequelize.close();
 }
 
 export { sequelize }

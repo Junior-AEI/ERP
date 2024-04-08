@@ -10,50 +10,24 @@
 // LATIME is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more details.
 
 // You should have received a copy of the GNU Affero General Public License along with LATIME. If not, see <https://www.gnu.org/licenses/>.
-import {
-    BelongsTo,
-    Column,
-    CreatedAt,
-    DataType,
-    ForeignKey,
-    IsDate,
-    IsIn,
-    Model,
-    PrimaryKey,
-    Table,
-    UpdatedAt
-} from 'sequelize-typescript'
-import Utilisateur from './utilisateur.model'
-
-const PERMISSIONS = ['read', 'write']
+import { Table, Column, Model, DataType, PrimaryKey, IsDate, CreatedAt, UpdatedAt, HasMany } from 'sequelize-typescript'
+import Concerned from './concerned.model'
 
 @Table
-export default class Permission extends Model {
+export default class Permissions extends Model {
     @PrimaryKey
     @Column({
         type: DataType.STRING,
         allowNull: false,
         primaryKey: true
     })
-    nomPermission!: string
+    permissionName!: string
 
-    @IsIn([PERMISSIONS])
     @Column({
-        type: DataType.ENUM,
-        values: PERMISSIONS,
+        type: DataType.STRING,
         allowNull: false
     })
-    typePermission!: string
-
-    @ForeignKey(() => Utilisateur)
-    @Column({
-        type: DataType.INTEGER,
-        allowNull: false
-    })
-    idUtilisateur!: number
-
-    @BelongsTo(() => Utilisateur)
-    utilisateur!: Utilisateur
+    permissionType!: string
 
     @IsDate
     @CreatedAt
@@ -70,4 +44,7 @@ export default class Permission extends Model {
         allowNull: false
     })
     updatedAt!: Date
+
+    @HasMany(() => Concerned)
+    concerned!: Concerned
 }

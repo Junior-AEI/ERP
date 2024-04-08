@@ -2,7 +2,8 @@ const request = require('supertest')
 
 import { sequelizeInit, sequelizeClose } from '../src/config/database.config'
 
-const app = require('../src/index')
+import app from "../src/app";
+import { createUser } from './seeders/user.seeders';
 
 beforeAll(async () => {
     await sequelizeInit()
@@ -12,28 +13,33 @@ afterAll(async () => {
     await sequelizeClose();
 });
 
-describe('ROUTE: /api/auth/login', () => {
+describe('ROUTE: /api/login', () => {
 
     it('Bad informations', async () => {
-        console.log(app)
         const res = await request(app)
-            .post('/api/auth/login')
+            .post('/api/login')
             .send({
-                username: "Mathieu",
+                username: "john",
                 password: 'mdp'
             })
-        console.log(res);
-        // expect(res1.statusCode).toEqual(201);
-        // expect(res1.body.status).toEqual(STATUS_SUCCESS);
+        expect(res.status).toEqual(401);
+        expect(res.body.status).toEqual("error");
     })
 
-    // it('/forget', async () => {
+    it('/Good informations', async () => {
 
-    // })
+        await createUser();
 
-    // it('/new-password', async () => {
+        const res = await request(app)
+            .post('/api/login')
+            .send({
+                username: "john.doe",
+                password: 'mdp'
+            })
+        expect(res.status).toEqual(200);
+        expect(res.body.status).toEqual("success");
+    })
 
-    // })
 })
 
 

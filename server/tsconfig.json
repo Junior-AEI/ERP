@@ -92,11 +92,12 @@
         /* Completeness */
         // "skipDefaultLibCheck": true,                      /* Skip type checking .d.ts files that are included with TypeScript. */
         "skipLibCheck": true /* Skip type checking all .d.ts files. */,
-
         "outDir": "./dist",
         "rootDir": "./src"
     },
-    "include": ["src/**/*.ts"],
+    "include": [
+        "src/**/*.ts"
+    ],
     "exclude": [
         // Exclude template because of "wrong" path inside them
         "src/migrations/templates/*"

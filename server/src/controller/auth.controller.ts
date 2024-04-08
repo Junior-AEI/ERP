@@ -36,6 +36,7 @@ import Persons from '../models/person.model'
  *  -401 Unauthorized because of invalid username or password.
  */
 const login = async (req: Request, res: Response) => {
+
     try {
         // Retrieve username and password from request body
         const username = req.body.username || ''

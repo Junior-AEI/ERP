@@ -17,7 +17,9 @@ const configuration: { [key: string]: SequelizeOptions } = {
     // Test database configuration (SQLite)
     test: {
         storage: 'tests/database/dbTest.sqlite',
-        dialect: 'sqlite'
+        dialect: 'sqlite',
+        models: [__dirname + '/../models'],
+        logging: false
     },
 
     // Prod database server configuration (from .env file)

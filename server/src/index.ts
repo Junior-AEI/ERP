@@ -14,8 +14,12 @@ app.use(bodyParser.json({ limit: '50mb' }))
 app.use('/api', routes)
 
 const port = process.env.PORT
-app.listen(port, () => {
-    console.log(`Express app listening on port ${port}`)
-})
 
-sequelizeInit()
+if (process.env.NODE_ENV !== 'test') {
+    app.listen(port, () => {
+        console.log(`Express app listening on port ${port}`)
+    })
+    sequelizeInit()
+}
+
+export default app

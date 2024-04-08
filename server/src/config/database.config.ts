@@ -22,7 +22,11 @@ export const sequelizeInit = async () => {
     sequelize = new Sequelize(databaseConfig)
     await sequelize.sync({ force: true })
     await testConnection()
-    await createFakeData()
+    if (env !== "test") await createFakeData()
+}
+
+export const sequelizeClose = async () => {
+    await sequelize.close();
 }
 
 export { sequelize }

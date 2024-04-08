@@ -17,73 +17,61 @@ import createHttpError from 'http-errors'
 import { isValidGroup } from '../validator/group.validator'
 import { HttpError } from 'http-errors'
 
-
 /**
  * TODO : Tests
  * Get all users
- * @param req 
- * @param res 
+ * @param req
+ * @param res
  */
 const getAll = async (req: Request, res: Response) => {
-
     try {
+        const groups = await Groups.findAll({})
 
-        const groups = await Groups.findAll({
-        });
-    
         return res.status(200).json({
             status: 'success',
             data: {
                 groups: groups
             }
-        });
-
+        })
+    } catch (err) {
+        if (err instanceof HttpError) controllerErrorHandler(err, res)
+        else throw err
     }
-    catch(err) {
-        if(err instanceof HttpError) controllerErrorHandler(err, res);
-        else throw err;
-    }
-
 }
 
 /**
  * TODO : Tests
  * Get all users
- * @param req 
- * @param res 
+ * @param req
+ * @param res
  */
 const getByPk = async (req: Request, res: Response) => {
-
     try {
+        if (req.params.groupName) throw createHttpError(400, 'Please provide a valid identifier')
 
-        if(req.params.groupName) throw createHttpError(400, "Please provide a valid identifier");
+        const identifier = parseInt(req.params.name)
 
-        const identifier = parseInt(req.params.name);
+        const group = await Groups.findByPk(identifier)
 
-        const group = await Groups.findByPk(identifier);
-
-        if(!group) throw createHttpError(404, "User not found");
+        if (!group) throw createHttpError(404, 'User not found')
 
         return res.status(200).json({
-            status: "success",
+            status: 'success',
             data: {
                 group: group
             }
-        });
-
+        })
+    } catch (err) {
+        if (err instanceof HttpError) controllerErrorHandler(err, res)
+        else throw err
     }
-    catch(err) {
-        if(err instanceof HttpError) controllerErrorHandler(err, res);
-        else throw err;
-    }
-
 }
 
 /**
  * TODO : Tests
  * Create an user
- * @param req 
- * @param res 
+ * @param req
+ * @param res
  */
 async function create(req: Request, res: Response) {
     // TODO : Ask for the user creator routine
@@ -92,71 +80,61 @@ async function create(req: Request, res: Response) {
 /**
  * TODO : Tests
  * Update a group
- * @param req 
+ * @param req
  * @param res
  */
 const update = async (req: Request, res: Response) => {
-
     try {
-
         // Parse identifier
-        if(req.params.groupName) throw createHttpError(400, "Please provide a valid group name");
-        const identifier = parseInt(req.params.groupName);
-        
-        const group = await Groups.findByPk(identifier);
-        if(!group) throw createHttpError(404, "Group not found");
+        if (req.params.groupName) throw createHttpError(400, 'Please provide a valid group name')
+        const identifier = parseInt(req.params.groupName)
 
-        const validator = isValidGroup(req.body.group.groupName);
+        const group = await Groups.findByPk(identifier)
+        if (!group) throw createHttpError(404, 'Group not found')
 
-        if(validator.valid == 0) throw createHttpError(400, validator.message as string);
+        const validator = isValidGroup(req.body.group.groupName)
 
-        req.body.user.updatedAt = null;
+        if (validator.valid == 0) throw createHttpError(400, validator.message as string)
+
+        req.body.user.updatedAt = null
 
         await Groups.update(req.body, {
-            where: {groupName: identifier} 
-        });
+            where: { groupName: identifier }
+        })
 
         return res.status(200).json({
             status: 'success'
-        });
-
+        })
+    } catch (err) {
+        if (err instanceof HttpError) controllerErrorHandler(err, res)
+        else throw err
     }
-    catch(err) {
-        if(err instanceof HttpError) controllerErrorHandler(err, res);
-        else throw err;
-    }
-
 }
 
 /**
  * TODO : Tests
  * Delete an user
- * @param req 
- * @param res 
+ * @param req
+ * @param res
  */
 const del = async (req: Request, res: Response) => {
-
     try {
-
         // Parse identifier
-        if(req.params.groupName) throw createHttpError(400, "Please provide a valid identifier");
-        const identifier = req.params.groupName;
-        
-        const group = await Groups.findByPk(identifier);
-        if(!group) throw createHttpError(404, "User not found");
+        if (req.params.groupName) throw createHttpError(400, 'Please provide a valid identifier')
+        const identifier = req.params.groupName
+
+        const group = await Groups.findByPk(identifier)
+        if (!group) throw createHttpError(404, 'User not found')
 
         await Groups.destroy({
             where: {
                 groupName: req.body.group.groupName
             }
-        });
-
+        })
+    } catch (err) {
+        if (err instanceof HttpError) controllerErrorHandler(err, res)
+        else throw err
     }
-    catch(err) {
-        if(err instanceof HttpError) controllerErrorHandler(err, res);
-        else throw err;
-    }
-
 }
 
 const groupController = {
@@ -164,7 +142,7 @@ const groupController = {
     getByPk,
     create,
     del,
-    update,
+    update
 }
 
 export default groupController

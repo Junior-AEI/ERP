@@ -17,7 +17,6 @@ import createHttpError from 'http-errors'
 import { HttpError } from 'http-errors'
 import { isValidClient } from '../validator/client.validator'
 
-
 /**
  * TODO : Tests
  * Get all users
@@ -26,7 +25,7 @@ import { isValidClient } from '../validator/client.validator'
  */
 const getAll = async (req: Request, res: Response) => {
     try {
-        const clients = await Clients.findAll({ })
+        const clients = await Clients.findAll({})
 
         return res.status(200).json({
             status: 'success',
@@ -68,7 +67,7 @@ const getByPk = async (req: Request, res: Response) => {
         else throw err
     }
 }
-    /**
+/**
  * TODO : Tests
  * Create an user
  * @param req

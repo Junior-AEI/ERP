@@ -9,5 +9,4 @@ router.get('/:id', documentController.getByPk)
 router.post('/:id', documentController.update)
 router.post('/:id', documentController.del)
 
-
 export default router

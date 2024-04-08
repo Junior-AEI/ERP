@@ -28,7 +28,7 @@ import { isValidDocument } from '../validator/document.validator'
  */
 const getAll = async (req: Request, res: Response) => {
     try {
-        const documents = await Documents.findAll({ })
+        const documents = await Documents.findAll({})
 
         return res.status(200).json({
             status: 'success',
@@ -106,7 +106,6 @@ const update = async (req: Request, res: Response) => {
 
         if (validator.valid == 0) throw createHttpError(400, validator.message as string)
 
-
         await Documents.update(req.body, {
             where: { documentId: identifier }
         })
@@ -152,7 +151,7 @@ const documentController = {
     getAll,
     getByPk,
     update,
-    del,
+    del
 }
 
 export default documentController

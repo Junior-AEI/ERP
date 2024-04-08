@@ -17,7 +17,6 @@ import createHttpError from 'http-errors'
 import { HttpError } from 'http-errors'
 import { isValidCompany } from '../validator/company.validator'
 
-
 /**
  * TODO : Tests
  * Get all users
@@ -95,10 +94,7 @@ const update = async (req: Request, res: Response) => {
         const company = await Companies.findByPk(identifier)
         if (!company) throw createHttpError(404, 'User not found')
 
-        const validator = isValidCompany(
-            req.body.company.name,
-            req.body.company.legalEntity,
-        )
+        const validator = isValidCompany(req.body.company.name, req.body.company.legalEntity)
 
         if (validator.valid == 0) throw createHttpError(400, validator.message as string)
 
@@ -147,7 +143,7 @@ const companyController = {
     getByPk,
     create,
     del,
-    update,
+    update
 }
 
 export default companyController

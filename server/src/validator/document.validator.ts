@@ -9,7 +9,10 @@ export const isValidDocument = (path: any, version: any, information: any, statu
     if (typeof information !== 'string')
         return { valid: 0, message: 'Your information is not correctly formatted.' }
     if (information.length < 5 || information.length >= 80)
-        return { valid: 0, message: 'Your information size has to be bigger than 5 and smaller than 80' }
+        return {
+            valid: 0,
+            message: 'Your information size has to be bigger than 5 and smaller than 80'
+        }
     if (typeof status !== 'string')
         return { valid: 0, message: 'Your status is not correctly formatted.' }
     if (status.length < 2 || status.length >= 20)

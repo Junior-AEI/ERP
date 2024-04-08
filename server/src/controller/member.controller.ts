@@ -25,25 +25,19 @@ import { isValidMember } from '../validator/member.validator'
  */
 
 const getAll = async (req: Request, res: Response) => {
-
     try {
+        const members = await Members.findAll({})
 
-        const members = await Members.findAll({
-        });
-    
         return res.status(200).json({
             status: 'success',
             data: {
                 members: members
             }
-        });
-
+        })
+    } catch (err) {
+        if (err instanceof HttpError) controllerErrorHandler(err, res)
+        else throw err
     }
-    catch(err) {
-        if(err instanceof HttpError) controllerErrorHandler(err, res);
-        else throw err;
-    }
-
 }
 
 /**
@@ -55,30 +49,26 @@ const getAll = async (req: Request, res: Response) => {
  *  - 500 error for database error
  */
 const getByPk = async (req: Request, res: Response) => {
-
     try {
+        if (req.params.id && !isNumber(req.params.id))
+            throw createHttpError(400, 'Please provide a valid identifier')
 
-        if(req.params.id && !isNumber(req.params.id)) throw createHttpError(400, "Please provide a valid identifier");
+        const identifier = parseInt(req.params.id)
 
-        const identifier = parseInt(req.params.id);
+        const member = await Members.findByPk(identifier)
 
-        const member = await Members.findByPk(identifier);
-
-        if(!member) throw createHttpError(404, "Member not found");
+        if (!member) throw createHttpError(404, 'Member not found')
 
         return res.status(200).json({
-            status: "success",
+            status: 'success',
             data: {
                 member: member
             }
-        });
-
+        })
+    } catch (err) {
+        if (err instanceof HttpError) controllerErrorHandler(err, res)
+        else throw err
     }
-    catch(err) {
-        if(err instanceof HttpError) controllerErrorHandler(err, res);
-        else throw err;
-    }
-
 }
 
 /**
@@ -104,41 +94,38 @@ const create = async (req: Request, res: Response) => {
  *  - 500 error for database error
  */
 const update = async (req: Request, res: Response) => {
-
     try {
-
         // Parse identifier
-        if(req.params.id && !isNumber(req.params.id)) throw createHttpError(400, "Please provide a valid identifier");
-        const identifier = parseInt(req.params.id);
-        
-        const member = await Members.findByPk(identifier);
-        if(!member) throw createHttpError(404, "User not found");
+        if (req.params.id && !isNumber(req.params.id))
+            throw createHttpError(400, 'Please provide a valid identifier')
+        const identifier = parseInt(req.params.id)
 
-        const validator = isValidMember(req.body.group.birthDate, 
-                                        req.body.group.birthPlace, 
-                                        req.body.group.nationality, 
-                                        req.body.group.promotion,
-                                        req.body.group.contributionDate,
-                                        req.body.group.department);
+        const member = await Members.findByPk(identifier)
+        if (!member) throw createHttpError(404, 'User not found')
 
-        if(validator.valid == 0) throw createHttpError(400, validator.message as string);
+        const validator = isValidMember(
+            req.body.group.birthDate,
+            req.body.group.birthPlace,
+            req.body.group.nationality,
+            req.body.group.promotion,
+            req.body.group.contributionDate,
+            req.body.group.department
+        )
+
+        if (validator.valid == 0) throw createHttpError(400, validator.message as string)
 
         await Members.update(req.body, {
-            where: {memberId: identifier} 
-        });
+            where: { memberId: identifier }
+        })
 
         return res.status(200).json({
             status: 'success'
-        });
-
+        })
+    } catch (err) {
+        if (err instanceof HttpError) controllerErrorHandler(err, res)
+        else throw err
     }
-    catch(err) {
-        if(err instanceof HttpError) controllerErrorHandler(err, res);
-        else throw err;
-    }
-
 }
-
 
 /**
  * Member remove for DELETE route
@@ -151,24 +138,22 @@ const update = async (req: Request, res: Response) => {
  */
 async function del(req: Request, res: Response) {
     try {
-
         // Parse identifier
-        if(req.params.id && !isNumber(req.params.id)) throw createHttpError(400, "Please provide a valid identifier");
-        const identifier = parseInt(req.params.id);
-        
-        const member = await Members.findByPk(identifier);
-        if(!member) throw createHttpError(404, "Group not found");
+        if (req.params.id && !isNumber(req.params.id))
+            throw createHttpError(400, 'Please provide a valid identifier')
+        const identifier = parseInt(req.params.id)
+
+        const member = await Members.findByPk(identifier)
+        if (!member) throw createHttpError(404, 'Group not found')
 
         await Members.destroy({
             where: {
                 userId: req.body.user.userId
             }
-        });
-
-    }
-    catch(err) {
-        if(err instanceof HttpError) controllerErrorHandler(err, res);
-        else throw err;
+        })
+    } catch (err) {
+        if (err instanceof HttpError) controllerErrorHandler(err, res)
+        else throw err
     }
 }
 
@@ -177,7 +162,7 @@ const memberController = {
     getByPk,
     create,
     del,
-    update,
+    update
 }
 
 export default memberController

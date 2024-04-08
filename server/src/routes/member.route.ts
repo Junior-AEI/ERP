@@ -10,4 +10,4 @@ router.post('/', verifyPermission('createMember'), memberController.create)
 router.put('/', memberController.update)
 router.delete('/:id', memberController.del)
 
-export default router;
+export default router

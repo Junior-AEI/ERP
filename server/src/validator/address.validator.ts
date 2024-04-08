@@ -1,5 +1,6 @@
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
-export const isValidAddress = (address: any, additionnalAddress: any, city: any, postCode: any, country: any) => {
+export const isValidAddress = (address: any, additionnalAddress: any, city: any, postCode: any, country: any
+) => {
     if (typeof address != 'string')
         return { valid: 0, message: 'Your adress is not correctly formatted.' }
     if (address.length === 0 || address.length > 50)

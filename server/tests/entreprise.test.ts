@@ -8,14 +8,7 @@ interface Company {
 describe('Test `entreprise` model', () => {
     let token = ''
 
-    const entrepriseAttributes: string[] = [
-        'id',
-        'nom',
-        'entiteJuridique',
-        'adresseId',
-        'createdAt',
-        'updatedAt'
-    ]
+    const entrepriseAttributes: string[] = ['id', 'nom', 'entiteJuridique', 'adresseId', 'createdAt', 'updatedAt']
 
     //get token for request
     beforeAll(async () => {
@@ -29,14 +22,12 @@ describe('Test `entreprise` model', () => {
 
     describe('GET / `entreprise`', () => {
         test('GET / all `entreprise` ', async () => {
-            const response = await request(process.env.VITE_API_URL)
-                .get('/entreprise')
-                .set('Authorization', token)
+            const response = await request(process.env.VITE_API_URL).get('/entreprise').set('Authorization', token)
 
             expect(response.statusCode).toBe(200)
 
             response.body.forEach((ele: Company) => {
-                entrepriseAttributes.forEach((attribute) => {
+                entrepriseAttributes.forEach(attribute => {
                     expect(ele).toHaveProperty(attribute)
                     expect(ele[attribute]).toBeDefined()
                 })
@@ -44,13 +35,11 @@ describe('Test `entreprise` model', () => {
         })
 
         test('GET / `entreprise` by id ', async () => {
-            const response = await request(process.env.VITE_API_URL)
-                .get('/entreprise/1')
-                .set('Authorization', token)
+            const response = await request(process.env.VITE_API_URL).get('/entreprise/1').set('Authorization', token)
 
             expect(response.statusCode).toBe(200)
 
-            entrepriseAttributes.forEach((attribute) => {
+            entrepriseAttributes.forEach(attribute => {
                 expect(response.body).toHaveProperty(attribute)
                 expect(response.body[attribute]).toBeDefined()
             })
@@ -68,10 +57,7 @@ describe('Test `entreprise` model', () => {
 
         describe('POST / Create company', () => {
             test('Create new `entreprise`  ', async () => {
-                const response = await request(process.env.VITE_API_URL)
-                    .post('/entreprise')
-                    .set('Authorization', token)
-                    .send(newCompany)
+                const response = await request(process.env.VITE_API_URL).post('/entreprise').set('Authorization', token).send(newCompany)
 
                 //save id from response
                 expect(response.body.id).toBeDefined()
@@ -81,11 +67,9 @@ describe('Test `entreprise` model', () => {
                 idNewCompany = response.body.id
 
                 // check response
-                const checkResponse = await request(process.env.VITE_API_URL)
-                    .get(`/entreprise/${idNewCompany}`)
-                    .set('Authorization', token)
+                const checkResponse = await request(process.env.VITE_API_URL).get(`/entreprise/${idNewCompany}`).set('Authorization', token)
 
-                entrepriseAttributes.forEach((attribute) => {
+                entrepriseAttributes.forEach(attribute => {
                     expect(checkResponse.body).toHaveProperty(attribute)
                     if (attribute != 'id' && attribute != 'createdAt' && attribute != 'updatedAt') {
                         expect(checkResponse.body[attribute]).toBe(newCompany[attribute])
@@ -99,10 +83,7 @@ describe('Test `entreprise` model', () => {
             })
 
             test('Create already existing `entreprise`', async () => {
-                const response = await request(process.env.VITE_API_URL)
-                    .post('/entreprise')
-                    .set('Authorization', token)
-                    .send(newCompany)
+                const response = await request(process.env.VITE_API_URL).post('/entreprise').set('Authorization', token).send(newCompany)
 
                 expect(response.statusCode).toBe(409)
 
@@ -120,10 +101,7 @@ describe('Test `entreprise` model', () => {
                 updatedCompany.nom = 'ManqueCruellement'
                 updatedCompany.id = idNewCompany
 
-                const response = await request(process.env.VITE_API_URL)
-                    .put('/entreprise')
-                    .set('Authorization', token)
-                    .send(updatedCompany)
+                const response = await request(process.env.VITE_API_URL).put('/entreprise').set('Authorization', token).send(updatedCompany)
 
                 expect(response.statusCode).toBe(204)
                 // check that the modification is done with get by id
@@ -134,10 +112,7 @@ describe('Test `entreprise` model', () => {
                 const updatedCompany = { ...newCompany }
                 updatedCompany.id = idNewCompany + 1
 
-                const response = await request(process.env.VITE_API_URL)
-                    .put('/entreprise')
-                    .set('Authorization', token)
-                    .send(updatedCompany)
+                const response = await request(process.env.VITE_API_URL).put('/entreprise').set('Authorization', token).send(updatedCompany)
 
                 expect(response.statusCode).toBe(404)
 
@@ -150,23 +125,17 @@ describe('Test `entreprise` model', () => {
 
         describe('DELETE / Delete `entreprise` ', () => {
             test('Delete existing `entreprise`', async () => {
-                const response = await request(process.env.VITE_API_URL)
-                    .delete(`/entreprise/${idNewCompany}`)
-                    .set('Authorization', token)
+                const response = await request(process.env.VITE_API_URL).delete(`/entreprise/${idNewCompany}`).set('Authorization', token)
 
                 expect(response.statusCode).toBe(204)
 
-                const checkResponse = await request(process.env.VITE_API_URL)
-                    .get(`/entreprise/${idNewCompany}`)
-                    .set('Authorization', token)
+                const checkResponse = await request(process.env.VITE_API_URL).get(`/entreprise/${idNewCompany}`).set('Authorization', token)
 
                 expect(checkResponse.body).toBeNull()
             })
 
             test('Delete already deleted `entreprise`', async () => {
-                const response = await request(process.env.VITE_API_URL)
-                    .delete(`/entreprise/${idNewCompany}`)
-                    .set('Authorization', token)
+                const response = await request(process.env.VITE_API_URL).delete(`/entreprise/${idNewCompany}`).set('Authorization', token)
 
                 expect(response.body).toStrictEqual({
                     status: 404,

@@ -59,17 +59,15 @@ const getByPk = async (req: Request, res: Response) => {
  * @param res
  */
 async function create(req: Request, res: Response) {
-    
     try {
-
         // Test params
-        const validator = isValidGroup(req.body.group.groupName);
-        if(!validator.valid) return createHttpError(400, validator.message as string);
+        const validator = isValidGroup(req.body.group.groupName)
+        if (!validator.valid) return createHttpError(400, validator.message as string)
 
         // Insert data
         const group = await Groups.create({
             groupName: req.body.group.groupName
-        });
+        })
 
         // Return success
         return res.status(200).json({
@@ -77,14 +75,11 @@ async function create(req: Request, res: Response) {
             data: {
                 groupName: group.groupName
             }
-        });
-
-    }
-    catch(err) {
+        })
+    } catch (err) {
         if (err instanceof HttpError) controllerErrorHandler(err, res)
         else throw err
     }
-
 }
 
 /**
@@ -106,17 +101,19 @@ const update = async (req: Request, res: Response) => {
         const validator = isValidGroup(req.body.group.groupName)
         if (validator.valid == 0) throw createHttpError(400, validator.message as string)
 
-        await Groups.update({
-            groupName: req.body.group.groupName
-        }, {
-            where: { groupName: identifier }
-        });
+        await Groups.update(
+            {
+                groupName: req.body.group.groupName
+            },
+            {
+                where: { groupName: identifier }
+            }
+        )
 
         // Return success
         return res.status(200).json({
             status: 'success'
-        });
-
+        })
     } catch (err) {
         if (err instanceof HttpError) controllerErrorHandler(err, res)
         else throw err
@@ -130,7 +127,6 @@ const update = async (req: Request, res: Response) => {
  */
 const del = async (req: Request, res: Response) => {
     try {
-
         // Parse identifier
         if (req.params.groupName) throw createHttpError(400, 'Please provide a valid identifier')
         const identifier = req.params.groupName
@@ -144,8 +140,7 @@ const del = async (req: Request, res: Response) => {
             where: {
                 groupName: req.body.group.groupName
             }
-        });
-
+        })
     } catch (err) {
         if (err instanceof HttpError) controllerErrorHandler(err, res)
         else throw err

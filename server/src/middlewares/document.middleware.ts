@@ -18,18 +18,10 @@ import { getExtension } from 'mime'
 const basedir = 'database/documents'
 
 const storage = multer.diskStorage({
-    destination: function (
-        req: Request,
-        file: Express.Multer.File,
-        cb: (error: Error | null, filename: string) => void
-    ) {
+    destination: function (req: Request, file: Express.Multer.File, cb: (error: Error | null, filename: string) => void) {
         cb(null, basedir)
     },
-    filename: function (
-        req: Request,
-        file: Express.Multer.File,
-        cb: (error: Error | null, filename: string) => void
-    ) {
+    filename: function (req: Request, file: Express.Multer.File, cb: (error: Error | null, filename: string) => void) {
         cb(
             null,
             `${createHash('sha256')

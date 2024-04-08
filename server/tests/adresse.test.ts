@@ -8,16 +8,7 @@ interface Address {
 describe('Test `adresse` model', () => {
     let token = ''
 
-    const adresseAttributes: string[] = [
-        'id',
-        'adresse',
-        'complementAdresse',
-        'ville',
-        'codePostal',
-        'pays',
-        'createdAt',
-        'updatedAt'
-    ]
+    const adresseAttributes: string[] = ['id', 'adresse', 'complementAdresse', 'ville', 'codePostal', 'pays', 'createdAt', 'updatedAt']
 
     //get token for request
     beforeAll(async () => {
@@ -31,14 +22,12 @@ describe('Test `adresse` model', () => {
 
     describe('GET / address', () => {
         test('GET / all `adresse` ', async () => {
-            const response = await request(process.env.VITE_API_URL)
-                .get('/adresse')
-                .set('Authorization', token)
+            const response = await request(process.env.VITE_API_URL).get('/adresse').set('Authorization', token)
 
             expect(response.statusCode).toBe(200)
 
             response.body.forEach((ele: Address) => {
-                adresseAttributes.forEach((attribute) => {
+                adresseAttributes.forEach(attribute => {
                     expect(ele).toHaveProperty(attribute)
                     expect(ele[attribute]).toBeDefined()
                 })
@@ -46,13 +35,11 @@ describe('Test `adresse` model', () => {
         })
 
         test('GET / `adresse` by id ', async () => {
-            const response = await request(process.env.VITE_API_URL)
-                .get('/adresse/1')
-                .set('Authorization', token)
+            const response = await request(process.env.VITE_API_URL).get('/adresse/1').set('Authorization', token)
 
             expect(response.statusCode).toBe(200)
 
-            adresseAttributes.forEach((attribute) => {
+            adresseAttributes.forEach(attribute => {
                 expect(response.body).toHaveProperty(attribute)
                 expect(response.body[attribute]).toBeDefined()
             })
@@ -72,10 +59,7 @@ describe('Test `adresse` model', () => {
 
         describe('POST / Create user', () => {
             test('Create new `adresse`  ', async () => {
-                const response = await request(process.env.VITE_API_URL)
-                    .post('/adresse')
-                    .set('Authorization', token)
-                    .send(newAddress)
+                const response = await request(process.env.VITE_API_URL).post('/adresse').set('Authorization', token).send(newAddress)
 
                 //save id from response
                 expect(response.body.id).toBeDefined()
@@ -85,18 +69,11 @@ describe('Test `adresse` model', () => {
                 idNewAddress = response.body.id
 
                 // check response
-                const checkResponse = await request(process.env.VITE_API_URL)
-                    .get(`/adresse/${idNewAddress}`)
-                    .set('Authorization', token)
+                const checkResponse = await request(process.env.VITE_API_URL).get(`/adresse/${idNewAddress}`).set('Authorization', token)
 
-                adresseAttributes.forEach((attribute) => {
+                adresseAttributes.forEach(attribute => {
                     expect(checkResponse.body).toHaveProperty(attribute)
-                    if (
-                        attribute != 'id' &&
-                        attribute != 'createdAt' &&
-                        attribute != 'updatedAt' &&
-                        attribute != 'codePostal'
-                    ) {
+                    if (attribute != 'id' && attribute != 'createdAt' && attribute != 'updatedAt' && attribute != 'codePostal') {
                         expect(checkResponse.body[attribute]).toBe(newAddress[attribute])
                     }
                     if (attribute == 'codePostal') {
@@ -113,10 +90,7 @@ describe('Test `adresse` model', () => {
             })
 
             test('Create already existing address', async () => {
-                const response = await request(process.env.VITE_API_URL)
-                    .post('/adresse')
-                    .set('Authorization', token)
-                    .send(newAddress)
+                const response = await request(process.env.VITE_API_URL).post('/adresse').set('Authorization', token).send(newAddress)
 
                 expect(response.statusCode).toBe(409)
 
@@ -133,10 +107,7 @@ describe('Test `adresse` model', () => {
                 updatedAddress.pays = 'CAN'
                 updatedAddress.id = idNewAddress
 
-                const response = await request(process.env.VITE_API_URL)
-                    .put('/adresse')
-                    .set('Authorization', token)
-                    .send(updatedAddress)
+                const response = await request(process.env.VITE_API_URL).put('/adresse').set('Authorization', token).send(updatedAddress)
 
                 expect(response.statusCode).toBe(204)
 
@@ -147,10 +118,7 @@ describe('Test `adresse` model', () => {
                 const updatedUser = { ...newAddress }
                 updatedUser.id = idNewAddress + 1
 
-                const response = await request(process.env.VITE_API_URL)
-                    .put('/adresse')
-                    .set('Authorization', token)
-                    .send(updatedUser)
+                const response = await request(process.env.VITE_API_URL).put('/adresse').set('Authorization', token).send(updatedUser)
 
                 expect(response.body).toStrictEqual({
                     status: 404,
@@ -161,23 +129,17 @@ describe('Test `adresse` model', () => {
 
         describe('DELETE / Delete `adresse` ', () => {
             test('Delete existing `adresse`', async () => {
-                const response = await request(process.env.VITE_API_URL)
-                    .delete(`/adresse/${idNewAddress}`)
-                    .set('Authorization', token)
+                const response = await request(process.env.VITE_API_URL).delete(`/adresse/${idNewAddress}`).set('Authorization', token)
 
                 expect(response.statusCode).toBe(204)
 
-                const checkResponse = await request(process.env.VITE_API_URL)
-                    .get(`/adresse/${idNewAddress}`)
-                    .set('Authorization', token)
+                const checkResponse = await request(process.env.VITE_API_URL).get(`/adresse/${idNewAddress}`).set('Authorization', token)
 
                 expect(checkResponse.body).toBeNull()
             })
 
             test('Delete already deleted `adresse`', async () => {
-                const response = await request(process.env.VITE_API_URL)
-                    .delete(`/adresse/${idNewAddress}`)
-                    .set('Authorization', token)
+                const response = await request(process.env.VITE_API_URL).delete(`/adresse/${idNewAddress}`).set('Authorization', token)
 
                 expect(response.body).toStrictEqual({
                     status: 404,

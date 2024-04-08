@@ -25,36 +25,28 @@ describe('Test `pole` model', () => {
 
     describe('POST /', () => {
         test('create Pole', async () => {
-            const response = await request(process.env.VITE_API_URL)
-                .post('/pole')
-                .set('Authorization', token)
-                .send({
-                    nom: randomName
-                })
+            const response = await request(process.env.VITE_API_URL).post('/pole').set('Authorization', token).send({
+                nom: randomName
+            })
             expect(response.statusCode).toBe(201)
         })
 
         test('create existing Pole', async () => {
-            const response = await request(process.env.VITE_API_URL)
-                .post('/pole')
-                .set('Authorization', token)
-                .send({
-                    nom: 'test'
-                })
+            const response = await request(process.env.VITE_API_URL).post('/pole').set('Authorization', token).send({
+                nom: 'test'
+            })
             expect(response.statusCode).toBe(409)
         })
     })
 
     describe('GET /', () => {
         test('get all Poles', async () => {
-            const response = await request(process.env.VITE_API_URL)
-                .get('/pole')
-                .set('Authorization', token)
+            const response = await request(process.env.VITE_API_URL).get('/pole').set('Authorization', token)
 
             expect(response.statusCode).toBe(200)
 
             response.body.forEach((ele: Post) => {
-                poleAttributes.forEach((attribute) => {
+                poleAttributes.forEach(attribute => {
                     expect(ele).toHaveProperty(attribute)
                     expect(ele[attribute]).toBeDefined()
                 })
@@ -65,13 +57,11 @@ describe('Test `pole` model', () => {
 
     describe('GET /:nom', () => {
         test('get a Pole by name', async () => {
-            const response = await request(process.env.VITE_API_URL)
-                .get(`/pole/${randomName}`)
-                .set('Authorization', token)
+            const response = await request(process.env.VITE_API_URL).get(`/pole/${randomName}`).set('Authorization', token)
 
             expect(response.statusCode).toBe(200)
 
-            poleAttributes.forEach((attribute) => {
+            poleAttributes.forEach(attribute => {
                 expect(response.body).toHaveProperty(attribute)
                 expect(response.body[attribute]).toBeDefined()
             })
@@ -80,9 +70,7 @@ describe('Test `pole` model', () => {
 
     describe('DELETE /:nom', () => {
         test('delete a Pole by name', async () => {
-            const response = await request(process.env.VITE_API_URL)
-                .delete(`/pole/${randomName}`)
-                .set('Authorization', token)
+            const response = await request(process.env.VITE_API_URL).delete(`/pole/${randomName}`).set('Authorization', token)
             expect(response.statusCode).toBe(200)
             expect(response.body).toHaveProperty('message')
             expect(response.body.message).toBe(`Pole ${randomName} deleted`)

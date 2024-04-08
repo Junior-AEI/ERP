@@ -33,8 +33,7 @@ const getAll = async (req: Request, res: Response) => {
  */
 const getByPk = async (req: Request, res: Response) => {
     try {
-        if (req.params.documentId && !isNumber(req.params.documentId))
-            throw createHttpError(400, 'Please provide a valid identifier')
+        if (req.params.documentId && !isNumber(req.params.documentId)) throw createHttpError(400, 'Please provide a valid identifier')
 
         const identifier = parseInt(req.params.documentId)
 
@@ -71,19 +70,13 @@ async function create(req: Request, res: Response) {
 const update = async (req: Request, res: Response) => {
     try {
         // Parse identifier
-        if (req.params.documentId && !isNumber(req.params.documentId))
-            throw createHttpError(400, 'Please provide a valid identifier')
+        if (req.params.documentId && !isNumber(req.params.documentId)) throw createHttpError(400, 'Please provide a valid identifier')
         const identifier = parseInt(req.params.documentId)
 
         const document = await Documents.findByPk(identifier)
         if (!document) throw createHttpError(404, 'User not found')
 
-        const validator = isValidDocument(
-            req.body.document.path,
-            req.body.document.version,
-            req.body.document.information,
-            req.body.document.status
-        )
+        const validator = isValidDocument(req.body.document.path, req.body.document.version, req.body.document.information, req.body.document.status)
 
         if (validator.valid == 0) throw createHttpError(400, validator.message as string)
 
@@ -108,8 +101,7 @@ const update = async (req: Request, res: Response) => {
 const del = async (req: Request, res: Response) => {
     try {
         // Parse identifier
-        if (req.params.documentId && !isNumber(req.params.documentId))
-            throw createHttpError(400, 'Please provide a valid identifier')
+        if (req.params.documentId && !isNumber(req.params.documentId)) throw createHttpError(400, 'Please provide a valid identifier')
         const identifier = parseInt(req.params.documentId)
 
         const document = await Documents.findByPk(identifier)

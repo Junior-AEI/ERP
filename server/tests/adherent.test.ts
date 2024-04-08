@@ -8,24 +8,7 @@ interface Member {
 describe('Test `adherent` model', () => {
     let token = ''
 
-    const adherentAttributes: string[] = [
-        'id',
-        'nom',
-        'prenom',
-        'sexe',
-        'telephoneMobile',
-        'email',
-        'dateNaissance',
-        'lieuNaissance',
-        'nationalite',
-        'promotion',
-        'dateCotisation',
-        'moyenPaiement',
-        'filiere',
-        'adresseId',
-        'createdAt',
-        'updatedAt'
-    ]
+    const adherentAttributes: string[] = ['id', 'nom', 'prenom', 'sexe', 'telephoneMobile', 'email', 'dateNaissance', 'lieuNaissance', 'nationalite', 'promotion', 'dateCotisation', 'moyenPaiement', 'filiere', 'adresseId', 'createdAt', 'updatedAt']
 
     //get token for request
     beforeAll(async () => {
@@ -39,14 +22,12 @@ describe('Test `adherent` model', () => {
 
     describe('GET / `adherent`', () => {
         test('GET / all `adherent` ', async () => {
-            const response = await request(process.env.VITE_API_URL)
-                .get('/adherent')
-                .set('Authorization', token)
+            const response = await request(process.env.VITE_API_URL).get('/adherent').set('Authorization', token)
 
             expect(response.statusCode).toBe(200)
 
             response.body.forEach((ele: Member) => {
-                adherentAttributes.forEach((attribute) => {
+                adherentAttributes.forEach(attribute => {
                     expect(ele).toHaveProperty(attribute)
                     expect(ele[attribute]).toBeDefined()
                 })
@@ -54,13 +35,11 @@ describe('Test `adherent` model', () => {
         })
 
         test('GET / `adherent` by id ', async () => {
-            const response = await request(process.env.VITE_API_URL)
-                .get('/adherent/1')
-                .set('Authorization', token)
+            const response = await request(process.env.VITE_API_URL).get('/adherent/1').set('Authorization', token)
 
             expect(response.statusCode).toBe(200)
 
-            adherentAttributes.forEach((attribute) => {
+            adherentAttributes.forEach(attribute => {
                 expect(response.body).toHaveProperty(attribute)
                 expect(response.body[attribute]).toBeDefined()
             })
@@ -88,10 +67,7 @@ describe('Test `adherent` model', () => {
 
         describe('POST / Create user', () => {
             test('Create new `adherent`  ', async () => {
-                const response = await request(process.env.VITE_API_URL)
-                    .post('/adherent')
-                    .set('Authorization', token)
-                    .send(newMember)
+                const response = await request(process.env.VITE_API_URL).post('/adherent').set('Authorization', token).send(newMember)
 
                 //save id from response
                 expect(response.body.id).toBeDefined()
@@ -101,18 +77,11 @@ describe('Test `adherent` model', () => {
                 idNewMember = response.body.id
 
                 // check response
-                const checkResponse = await request(process.env.VITE_API_URL)
-                    .get(`/adherent/${idNewMember}`)
-                    .set('Authorization', token)
+                const checkResponse = await request(process.env.VITE_API_URL).get(`/adherent/${idNewMember}`).set('Authorization', token)
 
-                adherentAttributes.forEach((attribute) => {
+                adherentAttributes.forEach(attribute => {
                     expect(checkResponse.body).toHaveProperty(attribute)
-                    if (
-                        attribute != 'id' &&
-                        attribute != 'createdAt' &&
-                        attribute != 'updatedAt' &&
-                        attribute != 'dateNaissance'
-                    ) {
+                    if (attribute != 'id' && attribute != 'createdAt' && attribute != 'updatedAt' && attribute != 'dateNaissance') {
                         expect(checkResponse.body[attribute]).toBe(newMember[attribute])
                     } else {
                         expect(checkResponse.body[attribute]).toBeDefined()
@@ -124,10 +93,7 @@ describe('Test `adherent` model', () => {
             })
 
             test('Create already existing `adherent`', async () => {
-                const response = await request(process.env.VITE_API_URL)
-                    .post('/adherent')
-                    .set('Authorization', token)
-                    .send(newMember)
+                const response = await request(process.env.VITE_API_URL).post('/adherent').set('Authorization', token).send(newMember)
 
                 expect(response.statusCode).toBe(409)
 
@@ -145,10 +111,7 @@ describe('Test `adherent` model', () => {
                 updatedMember.prenom = 'ManqueCruellement'
                 updatedMember.id = idNewMember
 
-                const response = await request(process.env.VITE_API_URL)
-                    .put('/adherent')
-                    .set('Authorization', token)
-                    .send(updatedMember)
+                const response = await request(process.env.VITE_API_URL).put('/adherent').set('Authorization', token).send(updatedMember)
 
                 expect(response.statusCode).toBe(204)
                 // check that the modification is done with get by id
@@ -159,10 +122,7 @@ describe('Test `adherent` model', () => {
                 const updatedUser = { ...newMember }
                 updatedUser.id = idNewMember + 1
 
-                const response = await request(process.env.VITE_API_URL)
-                    .put('/adherent')
-                    .set('Authorization', token)
-                    .send(updatedUser)
+                const response = await request(process.env.VITE_API_URL).put('/adherent').set('Authorization', token).send(updatedUser)
 
                 expect(response.body).toStrictEqual({
                     status: 404,
@@ -173,23 +133,17 @@ describe('Test `adherent` model', () => {
 
         describe('DELETE / Delete `adherent` ', () => {
             test('Delete existing `adherent`', async () => {
-                const response = await request(process.env.VITE_API_URL)
-                    .delete(`/adherent/${idNewMember}`)
-                    .set('Authorization', token)
+                const response = await request(process.env.VITE_API_URL).delete(`/adherent/${idNewMember}`).set('Authorization', token)
 
                 expect(response.statusCode).toBe(204)
 
-                const checkResponse = await request(process.env.VITE_API_URL)
-                    .get(`/adherent/${idNewMember}`)
-                    .set('Authorization', token)
+                const checkResponse = await request(process.env.VITE_API_URL).get(`/adherent/${idNewMember}`).set('Authorization', token)
 
                 expect(checkResponse.body).toBeNull()
             })
 
             test('Delete already deleted `adherent`', async () => {
-                const response = await request(process.env.VITE_API_URL)
-                    .delete(`/adherent/${idNewMember}`)
-                    .set('Authorization', token)
+                const response = await request(process.env.VITE_API_URL).delete(`/adherent/${idNewMember}`).set('Authorization', token)
 
                 expect(response.body).toStrictEqual({
                     status: 404,

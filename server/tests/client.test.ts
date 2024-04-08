@@ -8,19 +8,7 @@ interface Customer {
 describe('Test `client` model', () => {
     let token = ''
 
-    const clientAttributes: string[] = [
-        'id',
-        'nom',
-        'prenom',
-        'sexe',
-        'telephoneMobile',
-        'email',
-        'fonction',
-        'telephoneFixe',
-        'entrepriseId',
-        'createdAt',
-        'updatedAt'
-    ]
+    const clientAttributes: string[] = ['id', 'nom', 'prenom', 'sexe', 'telephoneMobile', 'email', 'fonction', 'telephoneFixe', 'entrepriseId', 'createdAt', 'updatedAt']
 
     //get token for request
     beforeAll(async () => {
@@ -34,14 +22,12 @@ describe('Test `client` model', () => {
 
     describe('GET / `client`', () => {
         test('GET / all `client` ', async () => {
-            const response = await request(process.env.VITE_API_URL)
-                .get('/client')
-                .set('Authorization', token)
+            const response = await request(process.env.VITE_API_URL).get('/client').set('Authorization', token)
 
             expect(response.statusCode).toBe(200)
 
             response.body.forEach((ele: Customer) => {
-                clientAttributes.forEach((attribute) => {
+                clientAttributes.forEach(attribute => {
                     expect(ele).toHaveProperty(attribute)
                     expect(ele[attribute]).toBeDefined()
                 })
@@ -49,13 +35,11 @@ describe('Test `client` model', () => {
         })
 
         test('GET / `client` by id ', async () => {
-            const response = await request(process.env.VITE_API_URL)
-                .get('/client/1')
-                .set('Authorization', token)
+            const response = await request(process.env.VITE_API_URL).get('/client/1').set('Authorization', token)
 
             expect(response.statusCode).toBe(200)
 
-            clientAttributes.forEach((attribute) => {
+            clientAttributes.forEach(attribute => {
                 expect(response.body).toHaveProperty(attribute)
                 expect(response.body[attribute]).toBeDefined()
             })
@@ -78,10 +62,7 @@ describe('Test `client` model', () => {
 
         describe('POST / Create customer', () => {
             test('Create new `client`  ', async () => {
-                const response = await request(process.env.VITE_API_URL)
-                    .post('/client')
-                    .set('Authorization', token)
-                    .send(newCustomer)
+                const response = await request(process.env.VITE_API_URL).post('/client').set('Authorization', token).send(newCustomer)
 
                 //save id from response
                 expect(response.body.id).toBeDefined()
@@ -91,11 +72,9 @@ describe('Test `client` model', () => {
                 idNewCustomer = response.body.id
 
                 // check response
-                const checkResponse = await request(process.env.VITE_API_URL)
-                    .get(`/client/${idNewCustomer}`)
-                    .set('Authorization', token)
+                const checkResponse = await request(process.env.VITE_API_URL).get(`/client/${idNewCustomer}`).set('Authorization', token)
 
-                clientAttributes.forEach((attribute) => {
+                clientAttributes.forEach(attribute => {
                     expect(checkResponse.body).toHaveProperty(attribute)
                     if (attribute != 'id' && attribute != 'createdAt' && attribute != 'updatedAt') {
                         expect(checkResponse.body[attribute]).toBe(newCustomer[attribute])
@@ -109,10 +88,7 @@ describe('Test `client` model', () => {
             })
 
             test('Create already existing `client`', async () => {
-                const response = await request(process.env.VITE_API_URL)
-                    .post('/client')
-                    .set('Authorization', token)
-                    .send(newCustomer)
+                const response = await request(process.env.VITE_API_URL).post('/client').set('Authorization', token).send(newCustomer)
 
                 expect(response.statusCode).toBe(409)
 
@@ -130,10 +106,7 @@ describe('Test `client` model', () => {
                 updatedCustomer.prenom = 'ManqueCruellement'
                 updatedCustomer.id = idNewCustomer
 
-                const response = await request(process.env.VITE_API_URL)
-                    .put('/client')
-                    .set('Authorization', token)
-                    .send(updatedCustomer)
+                const response = await request(process.env.VITE_API_URL).put('/client').set('Authorization', token).send(updatedCustomer)
 
                 expect(response.statusCode).toBe(204)
                 // check that the modification is done with get by id
@@ -144,10 +117,7 @@ describe('Test `client` model', () => {
                 const updatedCustomer = { ...newCustomer }
                 updatedCustomer.id = idNewCustomer + 1
 
-                const response = await request(process.env.VITE_API_URL)
-                    .put('/client')
-                    .set('Authorization', token)
-                    .send(updatedCustomer)
+                const response = await request(process.env.VITE_API_URL).put('/client').set('Authorization', token).send(updatedCustomer)
 
                 expect(response.statusCode).toBe(404)
 
@@ -160,23 +130,17 @@ describe('Test `client` model', () => {
 
         describe('DELETE / Delete `client` ', () => {
             test('Delete existing `client`', async () => {
-                const response = await request(process.env.VITE_API_URL)
-                    .delete(`/client/${idNewCustomer}`)
-                    .set('Authorization', token)
+                const response = await request(process.env.VITE_API_URL).delete(`/client/${idNewCustomer}`).set('Authorization', token)
 
                 expect(response.statusCode).toBe(204)
 
-                const checkResponse = await request(process.env.VITE_API_URL)
-                    .get(`/client/${idNewCustomer}`)
-                    .set('Authorization', token)
+                const checkResponse = await request(process.env.VITE_API_URL).get(`/client/${idNewCustomer}`).set('Authorization', token)
 
                 expect(checkResponse.body).toBeNull()
             })
 
             test('Delete already deleted `client`', async () => {
-                const response = await request(process.env.VITE_API_URL)
-                    .delete(`/client/${idNewCustomer}`)
-                    .set('Authorization', token)
+                const response = await request(process.env.VITE_API_URL).delete(`/client/${idNewCustomer}`).set('Authorization', token)
 
                 expect(response.body).toStrictEqual({
                     status: 404,

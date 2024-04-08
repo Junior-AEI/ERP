@@ -33,8 +33,7 @@ const getAll = async (req: Request, res: Response) => {
  */
 const getByPk = async (req: Request, res: Response) => {
     try {
-        if (req.params.companyId && !isNumber(req.params.companyId))
-            throw createHttpError(400, 'Please provide a valid identifier')
+        if (req.params.companyId && !isNumber(req.params.companyId)) throw createHttpError(400, 'Please provide a valid identifier')
 
         const identifier = parseInt(req.params.companyId)
 
@@ -60,16 +59,15 @@ const getByPk = async (req: Request, res: Response) => {
  * @param res
  */
 async function create(req: Request, res: Response) {
-    
     // Test params
-    const validator = isValidCompany(req.body.company.name, req.body.company.legalEntity);
-    if(!validator.valid) return createHttpError(400, validator.message as string);
+    const validator = isValidCompany(req.body.company.name, req.body.company.legalEntity)
+    if (!validator.valid) return createHttpError(400, validator.message as string)
 
     // Insert in database
     const company = await Companies.create({
         name: req.body.company.name,
         legalEntity: req.body.company.legalEntity
-    });
+    })
 
     // Return success
     return res.status(200).json({
@@ -77,8 +75,7 @@ async function create(req: Request, res: Response) {
         data: {
             companyId: company.companyId
         }
-    });
-
+    })
 }
 
 /**
@@ -89,8 +86,7 @@ async function create(req: Request, res: Response) {
 const update = async (req: Request, res: Response) => {
     try {
         // Parse identifier
-        if (req.params.companyId && !isNumber(req.params.companyId))
-            throw createHttpError(400, 'Please provide a valid identifier')
+        if (req.params.companyId && !isNumber(req.params.companyId)) throw createHttpError(400, 'Please provide a valid identifier')
         const identifier = parseInt(req.params.companyId)
 
         const company = await Companies.findByPk(identifier)
@@ -121,8 +117,7 @@ const update = async (req: Request, res: Response) => {
 const del = async (req: Request, res: Response) => {
     try {
         // Parse identifier
-        if (req.params.companyId && !isNumber(req.params.companyId))
-            throw createHttpError(400, 'Please provide a valid identifier')
+        if (req.params.companyId && !isNumber(req.params.companyId)) throw createHttpError(400, 'Please provide a valid identifier')
         const identifier = parseInt(req.params.companyId)
 
         const company = await Companies.findByPk(identifier)

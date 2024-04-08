@@ -39,7 +39,7 @@ describe('Test `Document` controller', () => {
             })
             expect(doc[0].nom).toBe(name)
             const trash = Document.findAll({ where: { nom: name } })
-            ;(await trash).forEach((d) => d.destroy())
+            ;(await trash).forEach(d => d.destroy())
         })
     })
     describe('getAllDocuments controller', async () => {
@@ -76,9 +76,7 @@ describe('Test `Document` API', () => {
 
     describe('GET / `document`', () => {
         test('GET / all `documents` ', async () => {
-            const res = await request(process.env.VITE_API_URL)
-                .get('/document')
-                .set('Authorization', token)
+            const res = await request(process.env.VITE_API_URL).get('/document').set('Authorization', token)
 
             expect(res.statusCode).toBe(200)
             res.body.forEach((ele: Document) => {

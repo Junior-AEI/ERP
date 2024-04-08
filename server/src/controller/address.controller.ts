@@ -24,12 +24,9 @@ const getAll = async (req: Request, res: Response) => {
 }
 
 /**
- * Specific address (by id) reader for GET route
- * @param req Request ("id" parameter, needed to find right address)
- * @param res :
- *  - Requested address + 200 confirmation
- *  - 400 error if "id" is NaN
- *  - 500 error for database error
+ * Get a specific address
+ * @param req 
+ * @param res
  */
 const getByPk = async (req: Request, res: Response) => {
     try {
@@ -82,7 +79,7 @@ const create = async (req: Request, res: Response) => {
         return res.status(200).json({
             status: 'success',
             data: {
-                id: address.addressId
+                addressId: address.addressId
             }
         })
     } catch (err) {
@@ -101,9 +98,9 @@ const create = async (req: Request, res: Response) => {
 async function update(req: Request, res: Response) {
     try {
         // Parse identifier
-        if (req.body.id && !isNumber(req.body.id))
+        if (req.params.id && !isNumber(req.params.id))
             throw createHttpError(400, 'Please provide a valid identifier.')
-        const identifier = parseInt(req.body.id)
+        const identifier = parseInt(req.params.id)
 
         const validator = isValidAddress(
             req.body.address.address,
@@ -119,7 +116,7 @@ async function update(req: Request, res: Response) {
         req.body.address.updatedAt = null
 
         await Addresses.update(req.body.address, {
-            where: { addressId: req.body.addressId }
+            where: { addressId: identifier }
         })
 
         return res.status(200).json({
@@ -134,7 +131,6 @@ async function update(req: Request, res: Response) {
 }
 
 /**
- * TODO : Tests
  * Delete an address
  * @param req
  * @param res
@@ -143,15 +139,15 @@ const del = async (req: Request, res: Response) => {
     try {
         // Parse identifier
         if (req.params.id && !isNumber(req.params.id))
-            throw createHttpError(400, 'Please provide a valid identifier')
+            throw createHttpError(400, 'Please provide a valid identifier.')
         const identifier = parseInt(req.params.id)
 
         const address = await Addresses.findByPk(identifier)
-        if (!address) throw createHttpError(404, 'Address not found')
+        if (!address) throw createHttpError(404, 'Address not found.')
 
         await Addresses.destroy({
             where: {
-                userId: req.body.user.userId
+                userId: identifier
             }
         })
     } catch (err) {

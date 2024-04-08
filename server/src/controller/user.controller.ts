@@ -7,7 +7,6 @@ import { isValidUser } from '../validator/user.validator'
 import { controllerErrorHandler, isNumber } from './utils.controller'
 
 /**
- * TODO : Tests
  * Get all users
  * @param req
  * @param res
@@ -33,7 +32,6 @@ const getAll = async (req: Request, res: Response) => {
 }
 
 /**
- * TODO : Tests
  * Select a specific user
  * @param req
  * @param res
@@ -45,7 +43,11 @@ const getByPk = async (req: Request, res: Response) => {
 
         const identifier = parseInt(req.params.id)
 
-        const user = await Users.findByPk(identifier)
+        const user = await Users.findByPk(identifier, {
+            attributes: {
+                exclude: ['password']
+            }
+        })
 
         if (!user) throw createHttpError(404, 'User not found')
 
@@ -62,7 +64,6 @@ const getByPk = async (req: Request, res: Response) => {
 }
 
 /**
- * TODO : Tests
  * Create an user
  * @param req
  * @param res
@@ -72,7 +73,6 @@ async function create(req: Request, res: Response) {
 }
 
 /**
- * TODO : Tests
  * Update an user
  * @param req
  * @param res
@@ -114,7 +114,6 @@ const update = async (req: Request, res: Response) => {
 }
 
 /**
- * TODO : Tests
  * Delete an user
  * @param req
  * @param res

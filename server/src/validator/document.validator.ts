@@ -1,4 +1,4 @@
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
+/* eslint-disable @typescript-eslint/no-explicit-any */
 export const isValidDocument = (path: any, version: any, information: any, status: any) => {
     if (typeof path !== 'string')
         return { valid: 0, message: 'Your path is not correctly formatted.' }

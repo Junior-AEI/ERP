@@ -1,4 +1,4 @@
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
+/* eslint-disable @typescript-eslint/no-explicit-any */
 export const isValidClient = (fun: any) => {
     if (typeof fun !== 'string')
         return { valid: 0, message: 'Your function is not correctly formatted.' }

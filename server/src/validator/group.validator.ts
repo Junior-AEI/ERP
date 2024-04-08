@@ -1,4 +1,4 @@
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
+/* eslint-disable @typescript-eslint/no-explicit-any */
 export const isValidGroup = (groupName: any) => {
     if (typeof groupName !== 'string')
         return { valid: 0, message: 'Your group name is not correctly formatted.' }

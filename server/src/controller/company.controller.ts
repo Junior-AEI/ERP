@@ -1,15 +1,3 @@
-// Copyright (C) 2023 Nesrine ABID, Nadjime BARTEAU, Mathieu DUPOUX, Léo-Paul MAZIÈRE, Maël PAUL, Antoine RAOULT, Lisa VEILLAT, Marine VOVARD
-
-// Authors: Nesrine ABID, Nadjime BARTEAU, Mathieu DUPOUX, Léo-Paul MAZIÈRE, Maël PAUL, Antoine RAOULT, Lisa VEILLAT, Marine VOVARD
-// Maintainer: contact@junior-aei.com
-
-// This file is part of LATIME.
-
-// LATIME is free software: you can redistribute it and/or modify it under the terms of the GNU Affero General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
-
-// LATIME is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more details.
-
-// You should have received a copy of the GNU Affero General Public License along with LATIME. If not, see <https://www.gnu.org/licenses/>.
 import { Request, Response } from 'express'
 import Companies from '../models/company.model'
 import { controllerErrorHandler, isNumber } from './utils.controller'
@@ -18,8 +6,7 @@ import { HttpError } from 'http-errors'
 import { isValidCompany } from '../validator/company.validator'
 
 /**
- * TODO : Tests
- * Get all users
+ * Get all companies
  * @param req
  * @param res
  */
@@ -40,8 +27,7 @@ const getAll = async (req: Request, res: Response) => {
 }
 
 /**
- * TODO : Tests
- * Select a specific user
+ * Select a specific company
  * @param req
  * @param res
  */
@@ -69,8 +55,7 @@ const getByPk = async (req: Request, res: Response) => {
 }
 
 /**
- * TODO : Tests
- * Create an user
+ * Create a company
  * @param req
  * @param res
  */
@@ -79,8 +64,7 @@ async function create(req: Request, res: Response) {
 }
 
 /**
- * TODO : Tests
- * Update an user
+ * Update a company
  * @param req
  * @param res
  */
@@ -112,8 +96,7 @@ const update = async (req: Request, res: Response) => {
 }
 
 /**
- * TODO : Tests
- * Delete an user
+ * Delete a company
  * @param req
  * @param res
  */

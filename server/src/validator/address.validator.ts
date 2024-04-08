@@ -1,4 +1,4 @@
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
+/* eslint-disable @typescript-eslint/no-explicit-any */
 export const isValidAddress = (address: any, additionnalAddress: any, city: any, postCode: any, country: any
 ) => {
     if (typeof address != 'string')

@@ -1,5 +1,11 @@
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-export const isValidMember = (birthDate: any, birthPlace: any, nationality: any, promotion: any, contributionDate: any, department: any
+/* eslint-disable @typescript-eslint/no-explicit-any */
+export const isValidMember = (
+    birthDate: any,
+    birthPlace: any,
+    nationality: any,
+    promotion: any,
+    contributionDate: any,
+    department: any
 ) => {
     if (!(birthDate instanceof Date))
         return { valid: 0, message: 'Your birth date is not correcly formatted.' }

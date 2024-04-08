@@ -1,4 +1,4 @@
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
+/* eslint-disable @typescript-eslint/no-explicit-any */
 export const isValidCompany = (name: any, legalEntity: any) => {
     if (typeof name !== 'string')
         return { valid: 0, message: 'Your name is not correctly formatted.' }

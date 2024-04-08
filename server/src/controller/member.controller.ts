@@ -7,7 +7,7 @@ import { isValidMember } from '../validator/member.validator'
 
 /**
  * Get all members
- * @param req 
+ * @param req
  * @param res
  */
 const getAll = async (req: Request, res: Response) => {
@@ -28,16 +28,16 @@ const getAll = async (req: Request, res: Response) => {
 
 /**
  * Get a specific member
- * @param req 
- * @param res 
- * @returns 
+ * @param req
+ * @param res
+ * @returns
  */
 const getByPk = async (req: Request, res: Response) => {
     try {
-        if (req.params.id && !isNumber(req.params.id))
+        if (req.params.memberId && !isNumber(req.params.memberId))
             throw createHttpError(400, 'Please provide a valid identifier')
 
-        const identifier = parseInt(req.params.id)
+        const identifier = parseInt(req.params.memberId)
 
         const member = await Members.findByPk(identifier)
 
@@ -57,8 +57,8 @@ const getByPk = async (req: Request, res: Response) => {
 
 /**
  * Create a member
- * @param req 
- * @param res 
+ * @param req
+ * @param res
  */
 const create = async (req: Request, res: Response) => {
     // TODO : Ask for the user creator routine
@@ -66,16 +66,16 @@ const create = async (req: Request, res: Response) => {
 
 /**
  * Update a member
- * @param req 
- * @param res 
- * @returns 
+ * @param req
+ * @param res
+ * @returns
  */
 const update = async (req: Request, res: Response) => {
     try {
         // Parse identifier
-        if (req.params.id && !isNumber(req.params.id))
+        if (req.params.memberId && !isNumber(req.params.memberId))
             throw createHttpError(400, 'Please provide a valid identifier')
-        const identifier = parseInt(req.params.id)
+        const identifier = parseInt(req.params.memberId)
 
         const member = await Members.findByPk(identifier)
         if (!member) throw createHttpError(404, 'User not found')
@@ -106,15 +106,15 @@ const update = async (req: Request, res: Response) => {
 
 /**
  * Delete a member
- * @param req 
- * @param res 
+ * @param req
+ * @param res
  */
 async function del(req: Request, res: Response) {
     try {
         // Parse identifier
-        if (req.params.id && !isNumber(req.params.id))
+        if (req.params.memberId && !isNumber(req.params.memberId))
             throw createHttpError(400, 'Please provide a valid identifier')
-        const identifier = parseInt(req.params.id)
+        const identifier = parseInt(req.params.memberId)
 
         const member = await Members.findByPk(identifier)
         if (!member) throw createHttpError(404, 'Group not found')

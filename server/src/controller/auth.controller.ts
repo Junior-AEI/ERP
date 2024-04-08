@@ -174,7 +174,7 @@ const askNewPassword = async (req: Request, res: Response) => {
 
         // TODO : Check password before insertion ?
 
-        const hashedPassword = await bcrypt.hash(_newPassword, 10);
+        const hashedPassword = await bcrypt.hash(_newPassword, 10)
 
         const updatedUserPassword = {
             password: hashedPassword

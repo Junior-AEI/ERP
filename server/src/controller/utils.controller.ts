@@ -1,5 +1,5 @@
 import { Response } from 'express'
-import { HttpError } from 'http-errors';
+import { HttpError } from 'http-errors'
 
 /**
  * Check if a string represents a number
@@ -15,7 +15,7 @@ export function isNumber(str: string): boolean {
  * @param res : Error status and message, 500 by default
  */
 export async function controllerErrorHandler(err: HttpError, res: Response) {
-    console.error(err);
+    console.error(err)
     if (err.status === undefined) {
         err.status = 500
     }

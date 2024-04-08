@@ -38,10 +38,10 @@ const getAll = async (req: Request, res: Response) => {
  */
 const getByPk = async (req: Request, res: Response) => {
     try {
-        if (req.params.id && !isNumber(req.params.id))
+        if (req.params.userId && !isNumber(req.params.userId))
             throw createHttpError(400, 'Please provide a valid identifier')
 
-        const identifier = parseInt(req.params.id)
+        const identifier = parseInt(req.params.userId)
 
         const user = await Users.findByPk(identifier, {
             attributes: {
@@ -80,9 +80,9 @@ async function create(req: Request, res: Response) {
 const update = async (req: Request, res: Response) => {
     try {
         // Parse identifier
-        if (req.params.id && !isNumber(req.params.id))
+        if (req.params.userId && !isNumber(req.params.userId))
             throw createHttpError(400, 'Please provide a valid identifier')
-        const identifier = parseInt(req.params.id)
+        const identifier = parseInt(req.params.userId)
 
         const user = await Users.findByPk(identifier)
         if (!user) throw createHttpError(404, 'User not found')
@@ -121,16 +121,16 @@ const update = async (req: Request, res: Response) => {
 const del = async (req: Request, res: Response) => {
     try {
         // Parse identifier
-        if (req.params.id && !isNumber(req.params.id))
+        if (req.params.userId && !isNumber(req.params.userId))
             throw createHttpError(400, 'Please provide a valid identifier')
-        const identifier = parseInt(req.params.id)
+        const identifier = parseInt(req.params.userId)
 
         const user = await Users.findByPk(identifier)
         if (!user) throw createHttpError(404, 'User not found')
 
         await Users.destroy({
             where: {
-                userId: req.body.user.userId
+                userId: identifier
             }
         })
     } catch (err) {

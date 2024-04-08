@@ -4,6 +4,7 @@ import { controllerErrorHandler, isNumber } from './utils.controller'
 import createHttpError from 'http-errors'
 import { HttpError } from 'http-errors'
 import { isValidClient } from '../validator/client.validator'
+import Companies from '../models/company.model'
 
 /**
  * Get all clients
@@ -27,16 +28,16 @@ const getAll = async (req: Request, res: Response) => {
 }
 
 /**
- * Select a specific user
+ * Select a specific client
  * @param req
  * @param res
  */
 const getByPk = async (req: Request, res: Response) => {
     try {
-        if (req.params.id && !isNumber(req.params.id))
+        if (req.params.clientId || !isNumber(req.params.clientId))
             throw createHttpError(400, 'Please provide a valid identifier.')
 
-        const identifier = parseInt(req.params.id)
+        const identifier = parseInt(req.params.clientId)
 
         const client = await Clients.findByPk(identifier)
 
@@ -54,12 +55,36 @@ const getByPk = async (req: Request, res: Response) => {
     }
 }
 /**
- * Create an user
+ * Create a client
  * @param req
  * @param res
  */
 async function create(req: Request, res: Response) {
-    // TODO : Ask for the user creator routine
+    
+    // Test if parameters has been filled
+    const validator = isValidClient(req.body.client.function, req.body.client.companyId);
+
+    // Try to find the company
+    const company = await Companies.findByPk(parseInt(req.body.client.companyId));
+    if(!company) return createHttpError(400, "Your company id is not valid.");
+
+    // Test values
+    if(!validator.valid) return createHttpError(400, validator.message as string);
+
+    // Insert value
+    const client = await Clients.create({
+        function: req.body.client.function,
+        companyId: req.body.client.companyId
+    });
+
+    // Return success
+    return res.status(200).json({
+        status: 'success',
+        data: {
+            clientId: client.clientId
+        }
+    });
+
 }
 
 /**
@@ -70,20 +95,20 @@ async function create(req: Request, res: Response) {
 const update = async (req: Request, res: Response) => {
     try {
         // Parse identifier
-        if (req.params.id && !isNumber(req.params.id))
+        if (req.params.clientId && !isNumber(req.params.clientId))
             throw createHttpError(400, 'Please provide a valid identifier')
-        const identifier = parseInt(req.params.id)
+        const identifier = parseInt(req.params.clientId)
 
         const client = await Clients.findByPk(identifier)
         if (!client) throw createHttpError(404, 'User not found')
 
-        const validator = isValidClient(req.body.client.function)
+        const validator = isValidClient(req.body.client.function, req.body.client.companyId);
 
         if (validator.valid == 0) throw createHttpError(400, validator.message as string)
 
         await Clients.update(req.body, {
             where: { clientId: identifier }
-        })
+        });
 
         return res.status(200).json({
             status: 'success'
@@ -102,9 +127,9 @@ const update = async (req: Request, res: Response) => {
 const del = async (req: Request, res: Response) => {
     try {
         // Parse identifier
-        if (req.params.id && !isNumber(req.params.id))
+        if (req.params.clientId && !isNumber(req.params.clientId))
             throw createHttpError(400, 'Please provide a valid identifier')
-        const identifier = parseInt(req.params.id)
+        const identifier = parseInt(req.params.clientId)
 
         const client = await Clients.findByPk(identifier)
         if (!client) throw createHttpError(404, 'User not found')

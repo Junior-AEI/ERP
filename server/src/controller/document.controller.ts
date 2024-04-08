@@ -33,10 +33,10 @@ const getAll = async (req: Request, res: Response) => {
  */
 const getByPk = async (req: Request, res: Response) => {
     try {
-        if (req.params.id && !isNumber(req.params.id))
+        if (req.params.documentId && !isNumber(req.params.documentId))
             throw createHttpError(400, 'Please provide a valid identifier')
 
-        const identifier = parseInt(req.params.id)
+        const identifier = parseInt(req.params.documentId)
 
         const document = await Documents.findByPk(identifier)
 
@@ -60,7 +60,7 @@ const getByPk = async (req: Request, res: Response) => {
  * @param res
  */
 async function create(req: Request, res: Response) {
-    // TODO : Ask for the user creator routine
+    // TODO : Ask for the document creator routine
 }
 
 /**
@@ -71,9 +71,9 @@ async function create(req: Request, res: Response) {
 const update = async (req: Request, res: Response) => {
     try {
         // Parse identifier
-        if (req.params.id && !isNumber(req.params.id))
+        if (req.params.documentId && !isNumber(req.params.documentId))
             throw createHttpError(400, 'Please provide a valid identifier')
-        const identifier = parseInt(req.params.id)
+        const identifier = parseInt(req.params.documentId)
 
         const document = await Documents.findByPk(identifier)
         if (!document) throw createHttpError(404, 'User not found')
@@ -108,9 +108,9 @@ const update = async (req: Request, res: Response) => {
 const del = async (req: Request, res: Response) => {
     try {
         // Parse identifier
-        if (req.params.id && !isNumber(req.params.id))
+        if (req.params.documentId && !isNumber(req.params.documentId))
             throw createHttpError(400, 'Please provide a valid identifier')
-        const identifier = parseInt(req.params.id)
+        const identifier = parseInt(req.params.documentId)
 
         const document = await Documents.findByPk(identifier)
         if (!document) throw createHttpError(404, 'User not found')

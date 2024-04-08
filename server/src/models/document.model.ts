@@ -10,53 +10,74 @@
 // LATIME is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more details.
 
 // You should have received a copy of the GNU Affero General Public License along with LATIME. If not, see <https://www.gnu.org/licenses/>.
-import {
-    Table,
-    Column,
-    Model,
-    DataType,
-    PrimaryKey,
-    NotEmpty,
-    HasMany,
-    IsDate,
-    CreatedAt,
-    UpdatedAt,
-} from "sequelize-typescript";
-import Fichier from "./fichier.model";
+import { Table, Column, Model, DataType, CreatedAt, ForeignKey, BelongsTo, IsDate, NotEmpty, PrimaryKey } from 'sequelize-typescript'
+import Users from './user.model'
+import DocumentTypes from './documentType.model'
+
 @Table
-export default class Document extends Model {
+export default class Documents extends Model {
     @PrimaryKey
     @Column({
         type: DataType.INTEGER,
         allowNull: false,
         primaryKey: true,
-        autoIncrement: true,
+        autoIncrement: true
     })
-    id!: number;
+    documentId!: number
 
     @NotEmpty
     @Column({
         type: DataType.STRING,
-        allowNull: false,
+        allowNull: false
     })
-    nom!: string;
+    path!: string
 
-    @HasMany(() => Fichier)
-    versions!: Fichier[];
+    @NotEmpty
+    @Column({
+        type: DataType.INTEGER,
+        allowNull: false
+    })
+    version!: number
+
+    @ForeignKey(() => DocumentTypes)
+    @Column({
+        type: DataType.STRING,
+        allowNull: false
+    })
+    DocumentTypeName!: string
+
+    @BelongsTo(() => DocumentTypes)
+    documentType!: DocumentTypes
+
+    @NotEmpty
+    @Column({
+        type: DataType.STRING,
+        allowNull: false
+    })
+    information!: string
+
+    @NotEmpty
+    @Column({
+        type: DataType.STRING,
+        allowNull: false
+    })
+    status!: string
+
+    @ForeignKey(() => Users)
+    @Column({
+        type: DataType.INTEGER,
+        allowNull: false
+    })
+    authorId!: number
+
+    @BelongsTo(() => Users)
+    user!: Users
 
     @IsDate
     @CreatedAt
     @Column({
         type: DataType.DATE,
-        allowNull: false,
+        allowNull: false
     })
-    createdAt!: Date;
-
-    @IsDate
-    @UpdatedAt
-    @Column({
-        type: DataType.DATE,
-        allowNull: false,
-    })
-    updatedAt!: Date;
+    createdAt!: Date
 }

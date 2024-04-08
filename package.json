@@ -1,19 +1,22 @@
 {
     "devDependencies": {
-        "@rushstack/eslint-patch": "^1.1.4",
-        "@vue/eslint-config-prettier": "^7.0.0",
-        "@vue/eslint-config-typescript": "^11.0.0",
-        "eslint": "^8.22.0",
-        "eslint-plugin-cypress": "^2.12.1",
-        "eslint-plugin-vue": "^9.3.0",
-        "husky": "^8.0.3",
-        "lint-staged": "^13.1.1"
+        "eslint-config-prettier": "^9.1.0",
+        "eslint-plugin-prettier": "^5.1.3"
     },
     "scripts": {
         "prepare": "husky install",
-        "lint": "eslint . --ext .vue,.js,.jsx,.cjs,.mjs,.ts,.tsx,.cts,.mts --fix --ignore-path .gitignore"
+        "format:app": "(cd app && npm run format)",
+        "format:server": "(cd server && npm run format)",
+        "format": "npm run format:app && npm run format:server",
+        "lint:app": "(cd app && npm run lint)",
+        "lint:server": "(cd server && npm run lint)",
+        "lint": "npm run lint:app && npm run lint:server",
+        "dev:app": "cd app && npm run dev",
+        "dev:server": "cd server && npm run dev",
+        "dev": "npm run dev:app & npm run dev:server"
     },
     "dependencies": {
-        "gitmoji-cli": "^9.1.0"
+        "gitmoji-cli": "^9.1.0",
+        "prettier": "^3.2.5"
     }
 }

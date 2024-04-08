@@ -10,10 +10,8 @@ export default defineConfig({
   plugins: [
     vue(),
     Components({
-      dts: true,
-
+      dts: true
     })
-
   ],
   resolve: {
     alias: {

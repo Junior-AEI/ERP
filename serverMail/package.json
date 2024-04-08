@@ -1,0 +1,31 @@
+{
+    "name": "servermail",
+    "version": "1.0.0",
+    "description": "",
+    "main": "index.ts",
+    "scripts": {
+        "config": "tsc --strict --target es5 --module commonjs src/config/sequelize.config.ts",
+        "dev": "nodemon",
+        "migrate": "node src/migrations/migrate.js",
+        "seed": "node src/migrations/seed.js",
+        "test": "vitest",
+        "test_ui": "vitest --ui",
+        "coverage": "vitest --config ./vitest.config.ts run --coverage"
+    },
+    "dependencies": {
+        "body-parser": "^1.20.2",
+        "cors": "^2.8.5",
+        "dotenv": "^16.4.5",
+        "express": "^4.18.2",
+        "nodemailer": "^6.9.10",
+        "nodemon": "^3.1.0",
+        "ovh": "^2.0.3",
+        "ts-node": "^10.9.2"
+    },
+    "devDependencies": {
+        "@types/body-parser": "^1.19.5",
+        "@types/cors": "^2.8.17",
+        "@types/express": "^4.17.21",
+        "@types/nodemailer": "^6.4.14"
+    }
+}

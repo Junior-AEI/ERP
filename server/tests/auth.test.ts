@@ -4,6 +4,7 @@ import { sequelizeInit, sequelizeClose } from '../src/config/database.config'
 
 import app from "../src/app";
 import { createUser } from './seeders/user.seeders';
+import { clearDatabase } from './utils';
 
 beforeAll(async () => {
     await sequelizeInit()
@@ -15,18 +16,45 @@ afterAll(async () => {
 
 describe('ROUTE: /api/login', () => {
 
+    afterEach(clearDatabase);
+
     it('Bad informations', async () => {
-        const res = await request(app)
-            .post('/api/login')
-            .send({
+
+        await createUser();
+
+        const badInformationsList = [
+            // Empty
+            {
+                username: "",
+                password: "",
+            },
+            // Wrong
+            {
                 username: "john",
-                password: 'mdp'
-            })
-        expect(res.status).toEqual(401);
-        expect(res.body.status).toEqual("error");
+                password: "123",
+            },
+            // Bad password
+            {
+                username: "john.doe",
+                password: "bad_mdp",
+            },
+            // ...
+        ]
+
+        badInformationsList.map(async (badInformations) => {
+            const res = await request(app)
+                .post('/api/login')
+                .send({
+                    username: badInformations.username,
+                    password: badInformations.password
+                })
+            expect(res.status).toEqual(401);
+            expect(res.body.status).toEqual("error");
+        })
+
     })
 
-    it('/Good informations', async () => {
+    it('Good informations', async () => {
 
         await createUser();
 
@@ -38,6 +66,7 @@ describe('ROUTE: /api/login', () => {
             })
         expect(res.status).toEqual(200);
         expect(res.body.status).toEqual("success");
+
     })
 
 })

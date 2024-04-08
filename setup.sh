@@ -3,8 +3,6 @@
 # Back setup
 cd server 
 npm i 
-npm run migrate -- up 
-npm run seed -- up 
 cp .env.example .env
 
 cd ../serverBot

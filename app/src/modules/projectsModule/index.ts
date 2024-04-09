@@ -1,10 +1,10 @@
 import type { Module } from '@/types'
 
-export const etudesModule: Module = {
-  name: 'Études',
+export const projectsModule: Module = {
+  name: 'Projects',
   routes: [
     {
-      path: '/etudes',
+      path: '/projects',
       name: 'Etudes',
       component: () => import('@/views/Construction.vue'),
       children: [

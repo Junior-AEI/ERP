@@ -20,8 +20,12 @@
             <Icon name="star" />
             <span class="text-accent"> Liens favoris </span>
           </CardHeader>
-          <CardContent>
-            <Button variant="outline"> Coucou </Button>
+          <CardContent class="flex-row flex-wrap">
+            <Tile icon="mail" name="Webmail" />
+            <Tile icon="local_library" name="Wiki" />
+            <Tile icon="lock" name="Passbolt" />
+            <Tile icon="person" name="Mon profil" />
+            <Tile icon="cloud_upload" name="Uploader un document" />
           </CardContent>
         </Card>
       </Wrapper>

@@ -46,7 +46,7 @@
         </TabsTrigger>
       </TabsList>
       <TabsContent value="userInfo" v-auto-animate class="gap-2">
-        <UserInfo />
+        <ProfileInfo />
       </TabsContent>
       <TabsContent value="documents" v-auto-animate>
         <UserDocuments />

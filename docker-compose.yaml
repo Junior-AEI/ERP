@@ -44,7 +44,7 @@ services:
       context: ./app 
       dockerfile: Dockerfile.app 
     ports:
-      - ${VITE_APP_PORT}:8000
+      - ${VITE_APP_PORT}:80
     depends_on:
       - server
     networks:

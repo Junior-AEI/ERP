@@ -75,7 +75,7 @@ async function create(req: Request, res: Response) {
         const identifier = parseInt(req.body.user.memberId)
 
         // Test params
-        const validator = isValidUser(req.body.user.username, req.body.user.password, req.body.user.mandateStart, req.body.user.emailJE)
+        const validator = isValidUser(req.body.user.username, req.body.user.password, req.body.user.mandateStart, req.body.user.mandateEnd, req.body.user.emailJE)
         if (!validator.valid) return createHttpError(400, validator.message as string)
 
         // Try to find the linked member
@@ -88,8 +88,9 @@ async function create(req: Request, res: Response) {
             username: req.body.user.username,
             password: req.body.user.password,
             mandateStart: req.body.user.mandateStart,
+            mandateEnd: req.body.user.mandateEnd,
             emailJE: req.body.user.emailJE
-        })
+        });
 
         // Return success
         return res.status(200).json({
@@ -118,7 +119,7 @@ const update = async (req: Request, res: Response) => {
         const user = await Users.findByPk(identifier)
         if (!user) throw createHttpError(404, 'User not found')
 
-        const validator = isValidUser(req.body.user.username, req.body.user.password, req.body.user.mandateStart, req.body.user.emailJE)
+        const validator = isValidUser(req.body.user.username, req.body.user.password, req.body.user.mandateStart, req.body.user.mandateEnd, req.body.user.emailJE)
 
         if (validator.valid == 0) throw createHttpError(400, validator.message as string)
 
@@ -126,7 +127,7 @@ const update = async (req: Request, res: Response) => {
         req.body.user.updatedAt = null
         req.body.user.password = encryptedPassword
 
-        await Users.update(req.body, {
+        await Users.update(req.body.user, {
             where: { userId: identifier }
         })
 

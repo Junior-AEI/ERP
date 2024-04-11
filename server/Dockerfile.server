@@ -4,6 +4,9 @@ FROM node:latest
 # PM2 Demonizer installation
 RUN npm install -g pm2
 
+# Install typescript
+RUN cd /var/www && npm install -g typescript
+
 # Workdir definition
 WORKDIR /var/www
 
@@ -18,15 +21,14 @@ COPY package.json /var/www/package.json
 COPY package-lock.json /var/www/package-lock.json
 RUN npm install
 
-# Run database folder in case of tests
+# Create database folder in case of tests
 RUN cd /var/www && mkdir database
 
 # Copy sources
 COPY src /var/www/src
 
-# Install typescript
-RUN cd /var/www && npm install -g typescript
-RUN cd /var/www && tsc
+# Compilation des fichiers TypeScript
+RUN npm run build
 
 # Review permissions
 RUN chown -R node:node /var/www

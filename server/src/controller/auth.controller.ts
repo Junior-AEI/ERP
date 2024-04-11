@@ -121,7 +121,8 @@ const forgetPassword = async (req: Request, res: Response) => {
                 userId: user.userId
             })
 
-            // TODO: Send an email with a link
+            // TODO: Send an email with a link 
+            // ! (not in test env)
 
             // Return success response
             return res.status(200).json({

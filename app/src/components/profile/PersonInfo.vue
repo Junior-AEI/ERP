@@ -17,6 +17,9 @@
 
 <script setup lang="ts">
 
+import axios from 'axios';
+import { useAuthStore } from '@/stores/authStore';
+
 const props = defineProps<{
     personId: number;
 }>();
@@ -24,5 +27,17 @@ const props = defineProps<{
 const personInfo = {
     personId: props.personId,
 }
+
+axios.get(`/user/${props.personId}`, {
+    headers: {
+        'Authorization': `Bearer ${useAuthStore().token}`
+    }
+}).then((response) => {
+    const user = response.data.data.user;
+    console.log(user);
+}).catch((error) => {
+    console.error(error);
+});
+
 
 </script>

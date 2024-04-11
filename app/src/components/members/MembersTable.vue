@@ -1,11 +1,13 @@
 <script setup lang="ts">
 import { ref, onMounted } from 'vue'
 import { columns } from './columns'
-import type { Member } from '@/types/api'
+import type { Member, Person } from '@/types/api'
+
+type fullMember = Member & Person
 
 const data = ref<Member[]>([])
 
-async function getData(): Promise<Member[]> {
+async function getData(): Promise<fullMember[]> {
   // Fetch data from your API here.
   return [
     {

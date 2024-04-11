@@ -1,12 +1,12 @@
 import type { Module } from '@/types'
 
-export const evenementsModule: Module = {
+export const eventsModule: Module = {
   name: 'Evénements',
   routes: [
     {
-      path: '/evenements',
+      path: '/events',
       name: 'Evénements',
-      component: () => import('@/views/Construction.vue'),
+      component: () => import('./Events.vue'),
       meta: {
         icon: 'event'
       }

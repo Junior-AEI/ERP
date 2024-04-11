@@ -19,7 +19,7 @@ const router = createRouter({
       }
     },
     {
-      path: '/profil',
+      path: '/profile',
       name: 'Mon Profil',
       component: () => import('../views/ProfileView.vue'),
       meta: {
@@ -29,7 +29,7 @@ const router = createRouter({
     {
       path: '/administration',
       name: 'Administration',
-      component: () => import('../views/Construction.vue'),
+      component: () => import('../views/SettingsView.vue'),
       meta: {
         icon: 'build'
       }

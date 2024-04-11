@@ -1,12 +1,12 @@
 import type { Module } from '@/types'
 
-export const membresModule: Module = {
-  name: 'Membres',
+export const membersModule: Module = {
+  name: 'Members',
   routes: [
     {
-      path: '/membres',
+      path: '/members',
       name: 'Membres',
-      component: () => import('./Membres.vue'),
+      component: () => import('./Members.vue'),
       meta: {
         icon: 'group'
       }

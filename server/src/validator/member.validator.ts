@@ -1,5 +1,8 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 export const isValidMember = (birthDate: any, birthPlace: any, nationality: any, promotion: any, contributionDate: any, department: any) => {
+    
+    if(birthDate === undefined || birthPlace === undefined || nationality === undefined || promotion === undefined || contributionDate === undefined || department === undefined) return {valid:0, message:"Please fill all the fields."}
+    
     if (!(birthDate instanceof Date)) return { valid: 0, message: 'Your birth date is not correcly formatted.' }
     if (typeof birthPlace !== 'string') return { valid: 0, message: 'Your birth place is not correctly formatted.' }
     if (birthPlace.length < 2 || birthPlace.length >= 30)

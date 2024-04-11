@@ -1,16 +1,17 @@
 # Start from NodeJS image
-FROM node:14 as builder
+FROM node:20 as builder
 
 # Workdir definition in container
 WORKDIR /app
 
 # Environment declaration variables
-ARG VITE_API_URL = 'http://localhost:5000/api'
-ARG VITE_APP_NAME = 'ERP - Junior AEI'
+ARG VITE_API_URL='http://localhost:5000/api'
+ARG VITE_APP_NAME='ERP - Junior AEI'
 
 # Dependancies
 COPY package.json /app/package.json
 COPY package-lock.json /app/package-lock.json
+#RUN npm install -g npm@latest
 RUN npm install
 
 # App files

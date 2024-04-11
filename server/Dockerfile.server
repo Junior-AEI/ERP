@@ -5,13 +5,13 @@ FROM node:latest
 WORKDIR /var/www
 
 # Environment declaration variables
-ARG NODE_ENV = "dev"
-ARG NODE_JWT_ISSUER = "AEI"
-ARG NODE_JWT_SECRET = "6wEpZ$4qx*E8eK8@vsm2Qt6k93nYMNTi*WU#c*&#B4a2QvxB*L8LuNvVF@rzR%@4J#E2Tv#2cYxmd$6&ExDPX2jRR*5P^4vb*p4ysi&wqpqCpGn2K*9mdCDnA6AH7bt5"
-ARG DB_HOST = "database"
-ARG DB_NAME = "erp_prod"
-ARG DB_USER = "aei_db"
-ARG DB_PASSWORD = "password"
+ARG NODE_ENV="dev"
+ARG NODE_JWT_ISSUER="AEI"
+ARG NODE_JWT_SECRET="6wEpZ$4qx*E8eK8@vsm2Qt6k93nYMNTi*WU#c*&#B4a2QvxB*L8LuNvVF@rzR%@4J#E2Tv#2cYxmd$6&ExDPX2jRR*5P^4vb*p4ysi&wqpqCpGn2K*9mdCDnA6AH7bt5"
+ARG DB_HOST="database"
+ARG DB_NAME="erp_prod"
+ARG DB_USER="aei_db"
+ARG DB_PASSWORD="password"
 
 # PM2 Demonizer installation
 RUN npm install -g pm2

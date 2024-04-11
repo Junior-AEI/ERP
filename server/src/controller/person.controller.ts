@@ -1,9 +1,9 @@
 import { Request, Response } from 'express'
 import bcrypt from 'bcrypt'
 import createHttpError from 'http-errors'
-import Users from '../models/user.model'
+import Persons from '../models/person.model'
 import { HttpError } from 'http-errors'
-import { isValidUser } from '../validator/user.validator'
+import { isValidPerson } from '../validator/person.validator'
 import { controllerErrorHandler, isNumber } from './utils.controller'
 import Members from '../models/member.model'
 
@@ -14,16 +14,12 @@ import Members from '../models/member.model'
  */
 const getAll = async (req: Request, res: Response) => {
     try {
-        const users = await Users.findAll({
-            attributes: {
-                exclude: ['password']
-            }
-        })
+        const persons = await Persons.findAll({})
 
         return res.status(200).json({
             status: 'success',
             data: {
-                users: users
+                persons: persons
             }
         })
     } catch (err) {
@@ -39,22 +35,18 @@ const getAll = async (req: Request, res: Response) => {
  */
 const getByPk = async (req: Request, res: Response) => {
     try {
-        if (req.params.userId && !isNumber(req.params.userId)) throw createHttpError(400, 'Please provide a valid identifier')
+        if (req.params.personId && !isNumber(req.params.personId)) throw createHttpError(400, 'Please provide a valid identifier')
 
-        const identifier = parseInt(req.params.userId)
+        const identifier = parseInt(req.params.personId)
 
-        const user = await Users.findByPk(identifier, {
-            attributes: {
-                exclude: ['password']
-            }
-        })
+        const person = await Persons.findByPk(identifier, { })
 
-        if (!user) throw createHttpError(404, 'User not found')
+        if (!person) throw createHttpError(404, 'User not found')
 
         return res.status(200).json({
             status: 'success',
             data: {
-                user: user
+                person: person
             }
         })
     } catch (err) {
@@ -71,31 +63,34 @@ const getByPk = async (req: Request, res: Response) => {
 async function create(req: Request, res: Response) {
     try {
         // Parse identifier for member heredity
-        if (req.body.user.userId && !isNumber(req.body.user.userId)) throw createHttpError(400, 'Please provide a valid identifier for the linked member.')
-        const identifier = parseInt(req.body.user.memberId)
+        if (req.body.user.personId && !isNumber(req.body.user.personId)) throw createHttpError(400, 'Please provide a valid identifier for the linked member.')
+        const identifier = parseInt(req.body.user.personId)
 
         // Test params
-        const validator = isValidUser(req.body.user.username, req.body.user.password, req.body.user.mandateStart, req.body.user.emailJE)
+        const validator = isValidPerson(req.body.person.lastname,
+                                        req.body.person.firstname,
+                                        req.body.person.gender,
+                                        req.body.person.mobilePhone,
+                                        req.body.person.email
+            )
         if (!validator.valid) return createHttpError(400, validator.message as string)
 
-        // Try to find the linked member
-        const member = await Members.findByPk(identifier)
-        if (!member) return createHttpError(404, 'Unable to find the linked member.')
-
         // Insert data
-        const user = await Users.create({
-            userId: identifier,
-            username: req.body.user.username,
-            password: req.body.user.password,
-            mandateStart: req.body.user.mandateStart,
-            emailJE: req.body.user.emailJE
+        const person = await Persons.create({
+            personId: identifier,
+            lastname: req.body.person.lastname,
+            firstname: req.body.person.firstname,
+            gender: req.body.person.gender,
+            mobilePhone: req.body.person.mobilePhone,
+            landlinePhone: req.body.person.landlinePhone,
+            email: req.body.person.email
         })
 
         // Return success
         return res.status(200).json({
             status: 'success',
             data: {
-                userId: user.userId
+                personId: person.personId
             }
         })
     } catch (err) {
@@ -112,22 +107,23 @@ async function create(req: Request, res: Response) {
 const update = async (req: Request, res: Response) => {
     try {
         // Parse identifier
-        if (req.params.userId && !isNumber(req.params.userId)) throw createHttpError(400, 'Please provide a valid identifier')
-        const identifier = parseInt(req.params.userId)
+        if (req.params.personId && !isNumber(req.params.personId)) throw createHttpError(400, 'Please provide a valid identifier')
+        const identifier = parseInt(req.params.personId)
 
-        const user = await Users.findByPk(identifier)
-        if (!user) throw createHttpError(404, 'User not found')
+        const person = await Persons.findByPk(identifier)
+        if (!person) throw createHttpError(404, 'User not found')
 
-        const validator = isValidUser(req.body.user.username, req.body.user.password, req.body.user.mandateStart, req.body.user.emailJE)
-
+        const validator = isValidPerson(req.body.person.lastname,
+            req.body.person.firstname,
+            req.body.person.gender,
+            req.body.person.mobilePhone,
+            req.body.person.email
+        )
         if (validator.valid == 0) throw createHttpError(400, validator.message as string)
 
-        const encryptedPassword = bcrypt.hash(req.body.password, 10)
-        req.body.user.updatedAt = null
-        req.body.user.password = encryptedPassword
 
-        await Users.update(req.body, {
-            where: { userId: identifier }
+        await Persons.update(req.body, {
+            where: { personId: identifier }
         })
 
         return res.status(200).json({
@@ -150,10 +146,10 @@ const del = async (req: Request, res: Response) => {
         if (req.params.userId && !isNumber(req.params.userId)) throw createHttpError(400, 'Please provide a valid identifier')
         const identifier = parseInt(req.params.userId)
 
-        const user = await Users.findByPk(identifier)
-        if (!user) throw createHttpError(404, 'User not found')
+        const person = await Persons.findByPk(identifier)
+        if (!person) throw createHttpError(404, 'User not found')
 
-        await Users.destroy({
+        await Persons.destroy({
             where: {
                 userId: identifier
             }

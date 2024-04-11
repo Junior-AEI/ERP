@@ -26,7 +26,7 @@
         </div>
       </div>
     </Wrapper>
-    <Tabs default-value="userInfo" class="overflow-y-none w-full overflow-x-auto" v-auto-animate>
+    <Tabs default-value="userInfo" v-auto-animate>
       <TabsList>
         <TabsTrigger value="userInfo" v-auto-animate class="gap-2">
           <Icon name="lock" class="text-6xl" />
@@ -45,7 +45,7 @@
           Rôles et permissions
         </TabsTrigger>
       </TabsList>
-      <TabsContent value="userInfo" v-auto-animate class="gap-2">
+      <TabsContent value="userInfo" v-auto-animate class="gap-2 flex">
         <ProfileInfo />
       </TabsContent>
       <TabsContent value="documents" v-auto-animate>

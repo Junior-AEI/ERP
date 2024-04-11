@@ -8,7 +8,7 @@ interface Person {
   email: string
 }
 
-interface Member extends Person {
+interface Member {
   memberId: string
   birthDate: string
   nationality: string
@@ -19,6 +19,14 @@ interface Member extends Person {
   telegramId: string
   createdAt: string
   updatedAt: string
+}
+
+interface User {
+  userId: number,
+  username: string,
+  mandateStart: Date,
+  mandateEnd: Date,
+  emailJE: string
 }
 
 interface Event {
@@ -37,4 +45,4 @@ interface EventTypes {
   fieldMeaning: string
 }
 
-export type { Person, Member, Event, EventTypes }
+export type { Person, Member, User, Event, EventTypes }

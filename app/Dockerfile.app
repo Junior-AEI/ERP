@@ -4,6 +4,10 @@ FROM node:14 as builder
 # Workdir definition in container
 WORKDIR /app
 
+# Environment declaration variables
+ARG VITE_API_URL = 'http://localhost:5000/api'
+ARG VITE_APP_NAME = 'ERP - Junior AEI'
+
 # Dependancies
 COPY package.json /app/package.json
 COPY package-lock.json /app/package-lock.json
@@ -12,7 +16,10 @@ RUN npm install
 # App files
 COPY public /app/public
 COPY src /app/src
-COPY .env /app/.env
+
+# Setting up environment
+RUN echo "VITE_API_URL=${VITE_API_URL}" > .env \
+    && echo "VITE_APP_NAME=${VITE_APP_NAME}" >> .env
 
 # Config files
 COPY components.json /app/components.json

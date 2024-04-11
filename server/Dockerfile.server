@@ -1,20 +1,37 @@
 # Start from NodeJS image
 FROM node:latest
 
+# Workdir definition
+WORKDIR /var/www
+
+# Environment declaration variables
+ARG NODE_ENV = "dev"
+ARG NODE_JWT_ISSUER = "AEI"
+ARG NODE_JWT_SECRET = "6wEpZ$4qx*E8eK8@vsm2Qt6k93nYMNTi*WU#c*&#B4a2QvxB*L8LuNvVF@rzR%@4J#E2Tv#2cYxmd$6&ExDPX2jRR*5P^4vb*p4ysi&wqpqCpGn2K*9mdCDnA6AH7bt5"
+ARG DB_HOST = "database"
+ARG DB_NAME = "erp_prod"
+ARG DB_USER = "aei_db"
+ARG DB_PASSWORD = "password"
+
 # PM2 Demonizer installation
 RUN npm install -g pm2
 
 # Install typescript
 RUN cd /var/www && npm install -g typescript
 
-# Workdir definition
-WORKDIR /var/www
-
 # Various files (TODO : Determine if these files has to be build)
 COPY .sequelizerc /var/www/.sequelizerc
 COPY nodemon.json /var/www/nodemon.json
 COPY tsconfig.json /var/www/tsconfig.json
-COPY .env /var/www/.env
+
+# Setting up environment
+RUN echo "NODE_ENV=${NODE_ENV}" > .env \
+    && echo "NODE_JWT_ISSUER=${NODE_JWT_ISSUER}" >> .env \
+    && echo "NODE_JWT_SECRET=${NODE_JWT_SECRET}" >> .env \
+    && echo "DB_HOST=${DB_HOST}" >> .env \
+    && echo "DB_NAME=${DB_NAME}" >> .env \
+    && echo "DB_USER=${DB_USER}" >> .env \
+    && echo "DB_PASSWORD=${DB_PASSWORD}" >> .env
 
 # Dependencies
 COPY package.json /var/www/package.json

@@ -13,30 +13,26 @@ COPY nodemon.json /var/www/nodemon.json
 COPY tsconfig.json /var/www/tsconfig.json
 COPY .env /var/www/.env
 
-# Dependancies
+# Dependencies
 COPY package.json /var/www/package.json
 COPY package-lock.json /var/www/package-lock.json
 RUN npm install
 
-# Copy the rest of files
-COPY database /var/www/database
+# Run database folder in case of tests
+RUN cd /var/www && mkdir database
+
+# Copy sources
 COPY src /var/www/src
 
-# Build app
+# Install typescript
+RUN cd /var/www && npm install -g typescript
+RUN cd /var/www && tsc
 
-# CURRENTLY NOT WORKING 
-
-RUN npm run migrate -- up 
-RUN npm run seed -- up 
-
-RUN npm install -g typescript
-RUN tsc
-
-# Permission
+# Review permissions
 RUN chown -R node:node /var/www
 RUN chmod -R u=rwx,g=,o= /var/www
 
-# Open port
+# Expose port
 EXPOSE 3000
 
 # Start app

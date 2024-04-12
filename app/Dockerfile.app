@@ -1,41 +1,42 @@
 # Start from NodeJS image
-FROM node:20 as builder
+FROM node:18 as builder
 
 # Workdir definition in container
-WORKDIR /app
+WORKDIR /usr/app
 
 # Environment declaration variables
 ARG VITE_API_URL='http://localhost:5000/api'
 ARG VITE_APP_NAME='ERP - Junior AEI'
 
-# Dependancies
-COPY package.json /app/package.json
-COPY package-lock.json /app/package-lock.json
-#RUN npm install -g npm@latest
-RUN npm install
-
 # App files
-COPY public /app/public
-COPY src /app/src
+COPY public ./public
+COPY src ./src
+
+# Config files
+COPY components.json ./
+COPY env.d.ts ./
+COPY index.html ./
+COPY postcss.config.js ./
+COPY tailwind.config.js ./
+COPY tsconfig.app.json ./
+COPY tsconfig.json ./
+COPY tsconfig.node.json ./
+COPY tsconfig.vitest.json ./
+COPY vite.config.ts ./
 
 # Setting up environment
 RUN echo "VITE_API_URL=${VITE_API_URL}" > .env \
     && echo "VITE_APP_NAME=${VITE_APP_NAME}" >> .env
 
-# Config files
-COPY components.json /app/components.json
-COPY env.d.ts /app/env.d.ts
-COPY index.html /app/index.html
-COPY postcss.config.js /app/postcss.config.js
-COPY tailwind.config.js /app/tailwind.config.js
-COPY tsconfig.app.json /app/tsconfig.app.json
-COPY tsconfig.json /app/tsconfig.json
-COPY tsconfig.node.json /app/tsconfig.node.json
-COPY tsconfig.vitest.json /app/tsconfig.vitest.json
-COPY vite.config.ts /app/vitest.config.ts
+RUN ls -lia
+RUN ls -lia src
+
+# Dependancies
+COPY package*.json ./
+RUN npm i
 
 # Creation of build
-RUN cd /app && npm run build
+RUN npm run build
 
 # Continue with apache installation optimized for PHP (sites-enabled and sites-available config)
 FROM php:apache

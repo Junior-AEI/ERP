@@ -11,12 +11,12 @@ interface Person {
 interface Member {
   memberId: string
   birthDate: string
+  birthPlace: string
   nationality: string
   promotion: string
   contributionDate: string
   paymentMethod: string
   department: string
-  telegramId: string
   createdAt: string
   updatedAt: string
 }

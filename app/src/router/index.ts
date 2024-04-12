@@ -27,6 +27,14 @@ const router = createRouter({
       }
     },
     {
+      path: '/profile/:id',
+      name: 'Profil',
+      component: () => import('../views/ProfileView.vue'),
+      meta: {
+        icon: 'person'
+      }
+    },
+    {
       path: '/administration',
       name: 'Administration',
       component: () => import('../views/SettingsView.vue'),

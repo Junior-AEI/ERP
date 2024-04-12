@@ -1,3 +1,23 @@
+<script setup lang="ts">
+import { useAuthStore } from '@/stores/authStore'
+import { useRoute } from 'vue-router'
+
+let personId: number | undefined = undefined
+const authStore = useAuthStore()
+
+const route = useRoute()
+
+if (route.params.id) {
+  console.log('ID:', route.params.id)
+
+  if (typeof route.params.id === 'string') {
+    personId = parseInt(route.params.id)
+  }
+} else {
+  personId = authStore.userId
+}
+</script>
+
 <template>
   <div>
     <Wrapper class="gap-6">
@@ -45,8 +65,8 @@
           Rôles et permissions
         </TabsTrigger>
       </TabsList>
-      <TabsContent value="userInfo" v-auto-animate class="gap-2 flex">
-        <ProfileInfo />
+      <TabsContent value="userInfo" v-auto-animate class="flex gap-2">
+        <ProfileInfo v-if="personId" :personId="personId" />
       </TabsContent>
       <TabsContent value="documents" v-auto-animate>
         <UserDocuments />
@@ -60,9 +80,3 @@
     </Tabs>
   </div>
 </template>
-
-<script setup lang="ts">
-import { useAuthStore } from '@/stores/authStore'
-
-const authStore = useAuthStore()
-</script>

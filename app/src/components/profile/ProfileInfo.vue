@@ -1,7 +1,14 @@
+<script setup lang="ts">
+import { defineProps } from 'vue'
+
+defineProps<{
+  personId: number
+}>()
+</script>
 <template>
   <Wrapper class="w-full max-w-xl flex-col">
-    <PersonInfo :personId="1" />
-    <UserInfo :userId="1" />
-    <MemberInfo :memberId="1" />
+    <PersonInfo :personId="personId" />
+    <UserInfo :userId="personId" />
+    <MemberInfo :memberId="personId" />
   </Wrapper>
 </template>

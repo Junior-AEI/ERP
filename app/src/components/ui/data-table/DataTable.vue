@@ -58,6 +58,10 @@ table.setPageSize(10)
 const setFilterModelValue = (event: string | number) => {
   table.setGlobalFilter(event)
 }
+
+const goToProfile = (id: string) => {
+  console.log('Go to profile', id)
+}
 </script>
 
 <template>

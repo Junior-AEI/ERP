@@ -40,6 +40,7 @@ const createUser = async () => {
         paymentMethod: 'CB',
         department: 'Informatique',
         telegramId: '@pabechou',
+        membershipNumber: '1234',
         addressId: address.addressId
     })
 

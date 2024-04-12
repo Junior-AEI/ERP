@@ -2,7 +2,7 @@
 FROM node:18 as builder
 
 # Workdir definition in container
-WORKDIR /usr/app
+WORKDIR /var/www/
 
 # Environment declaration variables
 ARG VITE_API_URL='http://localhost:5000/api'
@@ -48,7 +48,7 @@ RUN a2ensite apache
 RUN rm -rf /etc/apache2/sites-enabled/000-default.conf
 
 # Copy build in apache directory
-COPY --from=builder /app/build/ /var/www/html/
+COPY --from=builder /build/ /var/www/html/
 
 # Expose port
 EXPOSE 80

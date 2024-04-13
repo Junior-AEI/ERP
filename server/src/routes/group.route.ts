@@ -1,6 +1,5 @@
 import express from 'express'
 import groupController from '../controller/group.controller'
-import { group } from 'console'
 
 const router = express.Router()
 

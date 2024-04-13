@@ -2,7 +2,7 @@
 FROM node:18 as builder
 
 # Workdir definition in container
-WORKDIR /var/www/
+WORKDIR /app
 
 # Environment declaration variables
 ARG VITE_API_URL='http://localhost:5000/api'
@@ -25,7 +25,8 @@ COPY tsconfig.vitest.json ./
 COPY vite.config.ts ./
 
 # Setting up environment
-RUN echo "VITE_API_URL=${VITE_API_URL}" > .env \
+RUN echo "NODE_ENV=${NODE_ENV}" > .env \
+    && echo "VITE_API_URL=${VITE_API_URL}" > .env \
     && echo "VITE_APP_NAME=${VITE_APP_NAME}" >> .env
 
 RUN ls -lia
@@ -38,20 +39,11 @@ RUN npm i
 # Creation of build
 RUN npm run build
 
-# Continue with apache installation optimized for PHP (sites-enabled and sites-available config)
-FROM php:apache
+# Serve static website build on previous stage with Nginx
+FROM nginx:alpine
 
-# Apache config
-RUN a2enmod rewrite
-COPY apache.conf /etc/apache2/sites-available/
-RUN a2ensite apache
-RUN rm -rf /etc/apache2/sites-enabled/000-default.conf
+# Copying build from previous stage
+COPY --from=builder /app/dist /erp
+COPY nginx.conf /etc/nginx/conf.d/default.conf
 
-# Copy build in apache directory
-COPY --from=builder /build/ /var/www/html/
-
-# Expose port
 EXPOSE 80
-
-# Launch container
-CMD ["apache2-foreground"]

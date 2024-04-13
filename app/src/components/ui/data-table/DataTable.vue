@@ -58,10 +58,6 @@ table.setPageSize(10)
 const setFilterModelValue = (event: string | number) => {
   table.setGlobalFilter(event)
 }
-
-const goToProfile = (id: string) => {
-  console.log('Go to profile', id)
-}
 </script>
 
 <template>
@@ -85,7 +81,7 @@ const goToProfile = (id: string) => {
           class="capitalize"
           :checked="column.getIsVisible()"
           @update:checked="
-            (value) => {
+            (value: boolean) => {
               column.toggleVisibility(!!value)
             }
           "

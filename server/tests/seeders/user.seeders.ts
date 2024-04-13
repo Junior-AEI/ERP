@@ -49,5 +49,7 @@ export const createUser = async () => {
         mandateEnd: ct,
         emailJE: person.email
     })
+
+    console.log('User created', user)
 }
 

@@ -1,64 +1,67 @@
 version: '3.7'
 
 networks:
-  aei_erp_network:
-    driver: bridge
+    aei_erp_network:
+        driver: bridge
 
 volumes:
-  database:
+    database:
 
 services:
+    database:
+        hostname: database
+        container_name: junioraei-erp-database
+        restart: unless-stopped
+        image: mysql
+        ports:
+            - '3306:3306'
+        environment:
+            MYSQL_ROOT_PASSWORD: ${DB_PASSWORD}
+            MYSQL_DATABASE: ${DB_NAME}
+            MYSQL_USER: ${DB_USER}
+            MYSQL_PASSWORD: ${DB_PASSWORD}
+        volumes:
+            - database:/var/lib/mysql
+        networks:
+            - aei_erp_network
 
-  database:
-    hostname: database
-    restart: unless-stopped
-    image: mysql
-    ports:
-      - "3306:3306"
-    environment:
-      MYSQL_ROOT_PASSWORD: ${DB_PASSWORD}
-      MYSQL_DATABASE: ${DB_NAME}
-      MYSQL_USER: ${DB_USER}
-      MYSQL_PASSWORD: ${DB_PASSWORD}
-    volumes:
-      - database:/var/lib/mysql
-    networks:
-      - aei_erp_network
+    server:
+        hostname: server
+        container_name: junioraei-erp-server
+        restart: unless-stopped
+        build:
+            context: ./server
+            dockerfile: Dockerfile.server
+            args:
+                - NODE_ENV=production
+                - NODE_JWT_ISSUER=${NODE_JWT_ISSUER}
+                - NODE_JWT_SECRET=${NODE_JWT_SECRET}
+                - DB_HOST=${DB_HOST}
+                - DB_NAME=${DB_NAME}
+                - DB_USER=${DB_USER}
+                - DB_PASSWORD=${DB_PASSWORD}
+        ports:
+            - '${NODE_PORT}:5000'
+        depends_on:
+            - database
+        networks:
+            - aei_erp_network
 
-  server:
-    hostname: server
-    restart: unless-stopped
-    build:
-      context: ./server 
-      dockerfile: Dockerfile.server 
-      args:
-        - NODE_ENV=${NODE_ENV}
-        - NODE_JWT_ISSUER=${NODE_JWT_ISSUER}
-        - NODE_JWT_SECRET=${NODE_JWT_SECRET}
-        - DB_HOST=${DB_HOST}
-        - DB_NAME=${DB_NAME}
-        - DB_USER=${DB_USER}
-        - DB_PASSWORD=${DB_PASSWORD}
-    ports:
-      - "${NODE_PORT}:5000"
-    depends_on:
-      - database
-    networks:
-      - aei_erp_network
-
-  app:
-    hostname: app
-    restart: unless-stopped
-    build:
-      context: ./app 
-      dockerfile: Dockerfile.app 
-      args:
-        - VITE_API_URL=:${VITE_API_URL}
-        - VITE_APP_NAME=${VITE_APP_NAME}
-        - VITE_APP_PORT=${VITE_APP_PORT}
-    ports:
-      - "${VITE_APP_PORT}:8000"
-    depends_on:
-      - server
-    networks:
-      - aei_erp_network
+    app:
+        hostname: app
+        container_name: junioraei-erp-app
+        restart: unless-stopped
+        build:
+            context: ./app
+            dockerfile: Dockerfile.app
+            args:
+                - VITE_API_URL=:${VITE_API_URL}
+                - VITE_APP_NAME=${VITE_APP_NAME}
+                - VITE_APP_PORT=${VITE_APP_PORT}
+                - NODE_ENV=production
+        ports:
+            - '${VITE_APP_PORT}:80'
+        depends_on:
+            - server
+        networks:
+            - aei_erp_network

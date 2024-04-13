@@ -2,7 +2,6 @@ import { Request, Response } from 'express'
 import Permissions from '../models/permission.model'
 import { controllerErrorHandler } from './utils.controller'
 import createHttpError from 'http-errors'
-import { isValidGroup } from '../validator/group.validator'
 import { HttpError } from 'http-errors'
 import { isValidPermission } from '../validator/permission.validator'
 
@@ -145,7 +144,7 @@ const del = async (req: Request, res: Response) => {
     }
 }
 
-const groupController = {
+const permissionController = {
     getAll,
     getByPk,
     create,
@@ -153,4 +152,4 @@ const groupController = {
     update
 }
 
-export default groupController
+export default permissionController

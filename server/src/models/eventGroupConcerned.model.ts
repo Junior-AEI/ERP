@@ -33,8 +33,8 @@ export default class EventGroupConcerned extends Model {
         type: DataType.INTEGER,
         allowNull: false
     })
-    projectId!: number
+    eventId!: number
 
     @BelongsTo(() => Events)
-    project!: Events
+    event!: Events
 }

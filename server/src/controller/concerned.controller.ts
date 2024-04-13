@@ -1,7 +1,7 @@
 import { Request, Response } from 'express'
 import createHttpError from 'http-errors'
 import { HttpError } from 'http-errors'
-import { controllerErrorHandler, isNumber } from './utils.controller'
+import { controllerErrorHandler } from './utils.controller'
 import Concerned from '../models/concerned.model'
 import Permissions from '../models/permission.model'
 import Groups from '../models/group.model'
@@ -153,7 +153,7 @@ const del = async (req: Request, res: Response) => {
     }
 }
 
-const userController = {
+const concernedController = {
     getAll,
     getByPk,
     create,
@@ -161,4 +161,4 @@ const userController = {
     update
 }
 
-export default userController
+export default concernedController

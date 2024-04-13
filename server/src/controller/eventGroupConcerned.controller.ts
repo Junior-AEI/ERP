@@ -2,8 +2,8 @@ import { Request, Response } from 'express'
 import createHttpError from 'http-errors'
 import { HttpError } from 'http-errors'
 import { controllerErrorHandler, isNumber } from './utils.controller'
-import Belongers from '../models/belonger.model'
-import Users from '../models/user.model'
+import EventGroupConcerned from '../models/eventGroupConcerned.model'
+import Events from '../models/event.model'
 import Groups from '../models/group.model'
 
 /**
@@ -13,12 +13,12 @@ import Groups from '../models/group.model'
  */
 const getAll = async (req: Request, res: Response) => {
     try {
-        const belongers = await Belongers.findAll({ })
+        const eventGroupConcerned = await EventGroupConcerned.findAll({ })
 
         return res.status(200).json({
             status: 'success',
             data: {
-                belongers: belongers
+                eventGroupConcerned: eventGroupConcerned
             }
         })
     } catch (err) {
@@ -34,19 +34,18 @@ const getAll = async (req: Request, res: Response) => {
  */
 const getByPk = async (req: Request, res: Response) => {
     try {
-        if (req.params.userId && !isNumber(req.params.userId)) throw createHttpError(400, 'Please provide a valid identifier')
+        if (req.params.eventId && !isNumber(req.params.eventId)) throw createHttpError(400, 'Please provide a valid identifier')
         if (req.params.groupName) throw createHttpError(400, 'Please provide a valid identifier')
 
-        const identifier = [parseInt(req.params.userId), req.params.groupName];
+        const identifier = [parseInt(req.params.eventId), req.params.groupName];
+        const eventGroupConcerned = await EventGroupConcerned.findByPk((identifier[0], identifier[1]), {})
 
-        const belonger = await Belongers.findByPk((identifier[0], identifier[1]), {})
-
-        if (!belonger) throw createHttpError(404, 'Belonger not found')
+        if (!eventGroupConcerned) throw createHttpError(404, 'event group concerned not found')
 
         return res.status(200).json({
             status: 'success',
             data: {
-                belonger: belonger
+                eventGroupConcerned: eventGroupConcerned
             }
         })
     } catch (err) {
@@ -62,14 +61,14 @@ const getByPk = async (req: Request, res: Response) => {
  */
 async function create(req: Request, res: Response) {
     try {
-        if (req.params.userId && !isNumber(req.params.userId)) throw createHttpError(400, 'Please provide a valid identifier')
+        if (req.params.eventId && !isNumber(req.params.eventId)) throw createHttpError(400, 'Please provide a valid identifier')
         if (req.params.groupName) throw createHttpError(400, 'Please provide a valid identifier')
 
-        const identifier = [parseInt(req.params.userId), req.params.groupName];
-
-        // Try to find the linked user
-        const user = await Users.findByPk(identifier[0])
-        if (!user) return createHttpError(404, 'Unable to find the linked user.')
+        const identifier = [parseInt(req.params.eventId), req.params.groupName];
+        
+        // Try to find the linked event
+        const event = await Events.findByPk(identifier[0])
+        if (!event) return createHttpError(404, 'Unable to find the linked event.')
 
         // Try to find the linked group
         const group = await Groups.findByPk(identifier[1])
@@ -77,8 +76,8 @@ async function create(req: Request, res: Response) {
 
         
         // Insert data
-        const belonger = await Belongers.create({
-            userId: identifier[0],
+        const eventGroupConcerned = await EventGroupConcerned.create({
+            eventId: identifier[0],
             groupName: identifier[1]
         })
 
@@ -86,8 +85,8 @@ async function create(req: Request, res: Response) {
         return res.status(200).json({
             status: 'success',
             data: {
-                userId: belonger.userId,
-                groupName: belonger.groupName
+                eventId: eventGroupConcerned.eventId,
+                groupName: eventGroupConcerned.groupName
             }
         })
     } catch (err) {
@@ -103,16 +102,16 @@ async function create(req: Request, res: Response) {
  */
 const update = async (req: Request, res: Response) => {
     try {
-        if (req.params.userId && !isNumber(req.params.userId)) throw createHttpError(400, 'Please provide a valid identifier')
+        if (req.params.eventId && !isNumber(req.params.eventId)) throw createHttpError(400, 'Please provide a valid identifier')
         if (req.params.groupName) throw createHttpError(400, 'Please provide a valid identifier')
 
-        const identifier = [parseInt(req.params.userId), req.params.groupName];
+        const identifier = [parseInt(req.params.eventId), req.params.groupName];
+        
+        const eventGroupConcerned = await EventGroupConcerned.findByPk((identifier[0], identifier[1]), {})
+        if (!eventGroupConcerned) throw createHttpError(404, 'event group concerned not found')
 
-        const belonger = await Belongers.findByPk((identifier[0], identifier[1]))
-        if (!belonger) throw createHttpError(404, 'Belonger not found')
-
-        await Belongers.update(req.body, {
-            where: { userId: identifier[0],
+        await eventGroupConcerned.update(req.body, {
+            where: { eventId: identifier[0],
                      groupName: identifier[1]
             }
         })
@@ -133,17 +132,17 @@ const update = async (req: Request, res: Response) => {
  */
 const del = async (req: Request, res: Response) => {
     try {
-        if (req.params.userId && !isNumber(req.params.userId)) throw createHttpError(400, 'Please provide a valid identifier')
+        if (req.params.eventId && !isNumber(req.params.eventId)) throw createHttpError(400, 'Please provide a valid identifier')
         if (req.params.groupName) throw createHttpError(400, 'Please provide a valid identifier')
 
-        const identifier = [parseInt(req.params.userId), req.params.groupName];
+        const identifier = [parseInt(req.params.eventId), req.params.groupName];
+        
+        const eventGroupConcerned = await EventGroupConcerned.findByPk((identifier[0], identifier[1]), {})
+        if (!eventGroupConcerned) throw createHttpError(404, 'event group concerned not found')
 
-        const belonger = await Belongers.findByPk((identifier[0], identifier[1]))
-        if (!belonger) throw createHttpError(404, 'Belonger not found')
-
-        await Belongers.destroy({
+        await EventGroupConcerned.destroy({
             where: {
-                userId: identifier[0],
+                eventId: identifier[0],
                 groupName: identifier[1]
             }
         })
@@ -153,7 +152,7 @@ const del = async (req: Request, res: Response) => {
     }
 }
 
-const belongerController = {
+const eventGroupConcernedController = {
     getAll,
     getByPk,
     create,
@@ -161,4 +160,4 @@ const belongerController = {
     update
 }
 
-export default belongerController
+export default eventGroupConcernedController

@@ -1,9 +1,9 @@
 import { Request, Response } from 'express'
 import createHttpError from 'http-errors'
-import ProjectNotes from '../models/projectNote.model'
+import EventTypes from '../models/eventType.model'
 import { HttpError } from 'http-errors'
-import { isValidProjectNote } from '../validator/projectNote.validator'
-import { controllerErrorHandler, isNumber } from './utils.controller'
+import { isValidEventType } from '../validator/eventType.validator'
+import { controllerErrorHandler } from './utils.controller'
 
 /**
  * Get all users
@@ -12,12 +12,12 @@ import { controllerErrorHandler, isNumber } from './utils.controller'
  */
 const getAll = async (req: Request, res: Response) => {
     try {
-        const projectNotes = await ProjectNotes.findAll({})
+        const eventTypes = await EventTypes.findAll({})
 
         return res.status(200).json({
             status: 'success',
             data: {
-                projectNotes: projectNotes
+                eventTypes: eventTypes
             }
         })
     } catch (err) {
@@ -33,16 +33,16 @@ const getAll = async (req: Request, res: Response) => {
  */
 const getByPk = async (req: Request, res: Response) => {
     try {
-        if (req.params.noteId && !isNumber(req.params.noteId)) throw createHttpError(400, 'Please provide a valid identifier')
-        const identifier = parseInt(req.params.noteId)
+        if (req.params.type) throw createHttpError(400, 'Please provide a valid identifier')
+        const identifier = req.params.type
 
-        const projectNote = await ProjectNotes.findByPk(identifier, {})
-        if (!projectNote) throw createHttpError(404, 'Project note not found')
+        const eventType = await EventTypes.findByPk(identifier, {})
+        if (!eventType) throw createHttpError(404, 'event type not found')
 
         return res.status(200).json({
             status: 'success',
             data: {
-                projectNote: projectNote
+                eventType: eventType
             }
         })
     } catch (err) {
@@ -58,25 +58,25 @@ const getByPk = async (req: Request, res: Response) => {
  */
 async function create(req: Request, res: Response) {
     try {
-        if (req.params.noteId && !isNumber(req.params.noteId)) throw createHttpError(400, 'Please provide a valid identifier')
-        const identifier = parseInt(req.params.noteId)
+        if (req.params.type) throw createHttpError(400, 'Please provide a valid identifier')
+        const identifier = req.params.type
 
         // Test params
-        const validator = isValidProjectNote(req.body.user.comment, req.body.user.advancement)
+        const validator = isValidEventType(req.body.eventType.fieldNumber, req.body.eventType.fieldMeaning)
         if (!validator.valid) return createHttpError(400, validator.message as string)
 
         // Insert data
-        const projectNote = await ProjectNotes.create({
-            noteId: identifier,
-            comment: req.body.user.comment,
-            advancement: req.body.user.advancement
+        const eventType = await EventTypes.create({
+            type: identifier,
+            fieldNumber: req.body.eventType.fieldNumber,
+            fieldMeaning: req.body.eventType.fieldMeaning,
         })
 
         // Return success
         return res.status(200).json({
             status: 'success',
             data: {
-                noteId: projectNote.noteId
+                type: eventType.type
             }
         })
     } catch (err) {
@@ -92,18 +92,18 @@ async function create(req: Request, res: Response) {
  */
 const update = async (req: Request, res: Response) => {
     try {
-        if (req.params.noteId && !isNumber(req.params.noteId)) throw createHttpError(400, 'Please provide a valid identifier')
-        const identifier = parseInt(req.params.noteId)
+        if (req.params.type) throw createHttpError(400, 'Please provide a valid identifier')
+        const identifier = req.params.type
 
-        const projectNote = await ProjectNotes.findByPk(identifier, {})
-        if (!projectNote) throw createHttpError(404, 'Project note not found')
+        const eventType = await EventTypes.findByPk(identifier, {})
+        if (!eventType) throw createHttpError(404, 'event type not found')
 
         // Test params
-        const validator = isValidProjectNote(req.body.user.comment, req.body.user.advancement)
+        const validator = isValidEventType(req.body.eventType.fieldNumber, req.body.eventType.fieldMeaning)
         if (!validator.valid) return createHttpError(400, validator.message as string)
-
-        await ProjectNotes.update(req.body, {
-            where: { noteId: identifier }
+ 
+        await EventTypes.update(req.body, {
+            where: { type: identifier }
         })
 
         return res.status(200).json({
@@ -122,15 +122,15 @@ const update = async (req: Request, res: Response) => {
  */
 const del = async (req: Request, res: Response) => {
     try {
-        if (req.params.noteId && !isNumber(req.params.noteId)) throw createHttpError(400, 'Please provide a valid identifier')
-        const identifier = parseInt(req.params.noteId)
+        if (req.params.type) throw createHttpError(400, 'Please provide a valid identifier')
+        const identifier = req.params.type
 
-        const projectNote = await ProjectNotes.findByPk(identifier, {})
-        if (!projectNote) throw createHttpError(404, 'Project note not found')
+        const eventType = await EventTypes.findByPk(identifier, {})
+        if (!eventType) throw createHttpError(404, 'event type not found')
 
-        await ProjectNotes.destroy({
+        await EventTypes.destroy({
             where: {
-                noteId: identifier
+                type: identifier
             }
         })
     } catch (err) {
@@ -139,7 +139,7 @@ const del = async (req: Request, res: Response) => {
     }
 }
 
-const projectNotesController = {
+const eventTypeController = {
     getAll,
     getByPk,
     create,
@@ -147,4 +147,5 @@ const projectNotesController = {
     update
 }
 
-export default projectNotesController
+export default eventTypeController
+

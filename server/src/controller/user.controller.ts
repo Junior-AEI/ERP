@@ -71,7 +71,7 @@ const getByPk = async (req: Request, res: Response) => {
 async function create(req: Request, res: Response) {
     try {
         // Parse identifier for member heredity
-        if (req.body.user.userId && !isNumber(req.body.user.userId)) throw createHttpError(400, 'Please provide a valid identifier for the linked member.')
+        if (req.body.user.memberId && !isNumber(req.body.user.memberId)) throw createHttpError(400, 'Please provide a valid identifier for the linked member.')
         const identifier = parseInt(req.body.user.memberId)
 
         // Test params

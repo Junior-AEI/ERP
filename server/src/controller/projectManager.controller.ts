@@ -144,7 +144,7 @@ const del = async (req: Request, res: Response) => {
         await ProjectManagers.destroy({
             where: {
                 userId: identifier[0],
-                groupName: identifier[1]
+                projectId: identifier[1]
             }
         })
     } catch (err) {
@@ -153,7 +153,7 @@ const del = async (req: Request, res: Response) => {
     }
 }
 
-const userController = {
+const projectManagerController = {
     getAll,
     getByPk,
     create,
@@ -161,4 +161,4 @@ const userController = {
     update
 }
 
-export default userController
+export default projectManagerController

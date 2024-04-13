@@ -1,11 +1,9 @@
 import { Request, Response } from 'express'
-import bcrypt from 'bcrypt'
 import createHttpError from 'http-errors'
 import Persons from '../models/person.model'
 import { HttpError } from 'http-errors'
 import { isValidPerson } from '../validator/person.validator'
 import { controllerErrorHandler, isNumber } from './utils.controller'
-import Members from '../models/member.model'
 
 /**
  * Get all users
@@ -160,7 +158,7 @@ const del = async (req: Request, res: Response) => {
     }
 }
 
-const userController = {
+const personController = {
     getAll,
     getByPk,
     create,
@@ -168,4 +166,4 @@ const userController = {
     update
 }
 
-export default userController
+export default personController

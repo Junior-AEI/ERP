@@ -141,7 +141,7 @@ const del = async (req: Request, res: Response) => {
     }
 }
 
-const userController = {
+const documentTypeController = {
     getAll,
     getByPk,
     create,
@@ -149,4 +149,4 @@ const userController = {
     update
 }
 
-export default userController
+export default documentTypeController

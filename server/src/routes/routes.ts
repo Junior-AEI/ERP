@@ -10,7 +10,12 @@ import belongerRouter from './belonger.route'
 import groupRouter from './group.route'
 import concernedRouter from './concerned.route'
 import permissionRouter from './permission.route'
+import projectRouter from './project.route'
+import projectNotesRouter from './projectNotes.route'
+import contributorRouter from './contributor.route'
+import projectManagerRouter from './projectManager.route'
 import documentRouter from './document.route'
+import documentTypeRouter from './documentType.route'
 
 import { getUsername, verifyAuthentication } from '../middlewares/auth.middleware'
 
@@ -27,6 +32,11 @@ router.use('/belonger', getUsername, verifyAuthentication, belongerRouter)
 router.use('/group', getUsername, verifyAuthentication, groupRouter)
 router.use('/concerned', getUsername, verifyAuthentication, concernedRouter)
 router.use('/permission', getUsername, verifyAuthentication, permissionRouter)
+router.use('/project', getUsername, verifyAuthentication, projectRouter)
+router.use('/projectManager', getUsername, verifyAuthentication, projectManagerRouter)
+router.use('/contributor', getUsername, verifyAuthentication, contributorRouter)
+router.use('/projectNotes', getUsername, verifyAuthentication, projectNotesRouter)
 router.use('/document', getUsername, verifyAuthentication, documentRouter)
+router.use('/documentType', getUsername, verifyAuthentication, documentTypeRouter)
 
 export default router

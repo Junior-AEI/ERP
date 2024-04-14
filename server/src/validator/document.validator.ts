@@ -1,5 +1,8 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 export const isValidDocument = (path: any, version: any, information: any, status: any) => {
+   
+    if(path === undefined || version === undefined || information === undefined || status === undefined) return {valid:0, message:"Please fill all the fields."}
+    
     if (typeof path !== 'string') return { valid: 0, message: 'Your path is not correctly formatted.' }
     if (path.length < 1 || path.length >= 30) return { valid: 0, message: 'The size of your path has to be smaller than 30' }
     if (typeof version !== 'number') return { valid: 0, message: 'Your version is not correctly formatted.' }

@@ -81,7 +81,7 @@ const setFilterModelValue = (event: string | number) => {
           class="capitalize"
           :checked="column.getIsVisible()"
           @update:checked="
-            (value) => {
+            (value: boolean) => {
               column.toggleVisibility(!!value)
             }
           "

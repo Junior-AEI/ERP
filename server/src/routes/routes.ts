@@ -20,6 +20,9 @@ import eventRouter from './event.route'
 import eventTypeRouter from './eventType.route'
 import partnerRouter from './partner.route'
 import eventGroupConcernedRouter from './eventGroupConcerned.route'
+import taskRouter from './task.route'
+import itTicketRouter from './itTicket.route'
+import expenseAccountRouter from './expenseAccount.route'
 
 import { getUsername, verifyAuthentication } from '../middlewares/auth.middleware'
 
@@ -46,6 +49,8 @@ router.use('./event', getUsername, verifyAuthentication, eventRouter)
 router.use('./eventType', getUsername, verifyAuthentication, eventTypeRouter)
 router.use('./partner', getUsername, verifyAuthentication, partnerRouter)
 router.use('./eventGroupConcerned', getUsername, verifyAuthentication, eventGroupConcernedRouter)
-
+router.use('./task', getUsername, verifyAuthentication, taskRouter)
+router.use('./itTicket', getUsername, verifyAuthentication, itTicketRouter)
+router.use('./expenseAccount', getUsername, verifyAuthentication, expenseAccountRouter)
 
 export default router

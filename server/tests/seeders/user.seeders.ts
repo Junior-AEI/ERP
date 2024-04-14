@@ -7,7 +7,7 @@ import bcrypt from 'bcrypt'
 const users: any = {
 
     // John Doe user
-    johnDoe: {
+    'john.doe': {
         person: {
             firstname: 'John',
             lastname: 'Doe',
@@ -36,7 +36,7 @@ const users: any = {
     },
 
     // Jane Doe user
-    janeDoe: {
+    "jane.doe": {
         person: {
             firstname: 'Jane',
             lastname: 'Doe',

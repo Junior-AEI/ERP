@@ -38,6 +38,7 @@ const getAll = async (req: Request, res: Response) => {
  * @param res
  */
 const getByPk = async (req: Request, res: Response) => {
+
     try {
         if (req.params.userId && !isNumber(req.params.userId)) throw createHttpError(400, 'Please provide a valid identifier')
 

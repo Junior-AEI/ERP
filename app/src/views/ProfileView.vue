@@ -8,7 +8,7 @@
       </Card>
       <div>
         <div class="mt-4">
-          <h3 class="text-3xl text-accent">Hugo Bastien</h3>
+          <h3 class="text-3xl text-accent">{{ authStore.firstName }} {{ authStore.lastName }}</h3>
           <div class="flex flex-wrap gap-x-3">
             <Elevated class="mt-2 p-2 text-sm">
               <div class="flex items-center justify-between">
@@ -26,5 +26,43 @@
         </div>
       </div>
     </Wrapper>
+    <Tabs default-value="userInfo" class="overflow-y-none w-full overflow-x-auto" v-auto-animate>
+      <TabsList>
+        <TabsTrigger value="userInfo" v-auto-animate class="gap-2">
+          <Icon name="lock" class="text-6xl" />
+          Mettre à jour les informations
+        </TabsTrigger>
+        <TabsTrigger value="documents" v-auto-animate class="gap-2">
+          <Icon name="description" class="text-6xl" />
+          Documents liés
+        </TabsTrigger>
+        <TabsTrigger value="manageAccount" v-auto-animate class="gap-2">
+          <Icon name="settings" class="text-6xl" />
+          Gérer le compte
+        </TabsTrigger>
+        <TabsTrigger value="role" v-auto-animate class="gap-2">
+          <Icon name="shield" class="text-6xl" />
+          Rôles et permissions
+        </TabsTrigger>
+      </TabsList>
+      <TabsContent value="userInfo" v-auto-animate class="gap-2">
+        <UserInfo />
+      </TabsContent>
+      <TabsContent value="documents" v-auto-animate>
+        <UserDocuments />
+      </TabsContent>
+      <TabsContent value="manageAccount" v-auto-animate>
+        <UserManagement />
+      </TabsContent>
+      <TabsContent value="role" v-auto-animate>
+        <UserRoles />
+      </TabsContent>
+    </Tabs>
   </div>
 </template>
+
+<script setup lang="ts">
+import { useAuthStore } from '@/stores/authStore'
+
+const authStore = useAuthStore()
+</script>

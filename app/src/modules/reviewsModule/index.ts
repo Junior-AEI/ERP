@@ -1,12 +1,12 @@
 import type { Module } from '@/types'
 
-export const relecturesModule: Module = {
+export const reviewsModule: Module = {
   name: 'Relectures',
   routes: [
     {
-      path: '/relectures',
+      path: '/reviews',
       name: 'Relectures',
-      component: () => import('./views/Relectures.vue'),
+      component: () => import('./views/Reviews.vue'),
       meta: {
         icon: 'ink_highlighter_move'
       }

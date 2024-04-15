@@ -1,10 +1,10 @@
 import type { Module } from '@/types'
 
-export const demandeNFGModule: Module = {
+export const requestNFGModule: Module = {
   name: 'Demander une note de frais',
   routes: [
     {
-      path: '/demander-une-note-de-frais',
+      path: '/request-nfg',
       name: 'Demander une note de frais',
       component: () => import('@/views/Construction.vue'),
       meta: {

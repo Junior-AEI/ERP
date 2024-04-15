@@ -13,21 +13,21 @@ const app = createApp(App)
 /* <!> Il faut les importer avant de définir le router <!> */
 
 import { registerModule } from '@/lib/registerModule'
-import { membresModule } from '@/modules/membresModule'
-import { etudesModule } from '@/modules/etudesModule'
-import { relecturesModule } from '@/modules/relecturesModule'
-import { evenementsModule } from '@/modules/evenementsModule'
-import { tresorerieModule } from '@/modules/tresorerieModule'
+import { membersModule } from '@/modules/membersModule'
+import { projectsModule } from '@/modules/projectsModule'
+import { reviewsModule } from '@/modules/reviewsModule'
+import { eventsModule } from '@/modules/eventsModule'
+import { treasuryModule } from '@/modules/treasuryModule'
 import { supportModule } from '@/modules/supportModule'
-import { demandeNFGModule } from '@/modules/demandeNFGModule'
+import { requestNFGModule } from '@/modules/requestNFGModule'
 
-registerModule(membresModule)
-registerModule(etudesModule)
-registerModule(relecturesModule)
-registerModule(evenementsModule)
-registerModule(tresorerieModule)
+registerModule(eventsModule)
+registerModule(treasuryModule)
+registerModule(membersModule)
+registerModule(projectsModule)
+registerModule(reviewsModule)
 registerModule(supportModule)
-registerModule(demandeNFGModule)
+registerModule(requestNFGModule)
 
 /* Définition des stores */
 

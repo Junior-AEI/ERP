@@ -92,6 +92,13 @@ export default class Members extends Model {
     })
     department!: string
 
+    @NotEmpty
+    @Column({
+        type: DataType.INTEGER,
+        allowNull: false
+    })
+    membershipNumber!: number
+
     @ForeignKey(() => Addresses)
     @Column({
         type: DataType.INTEGER,

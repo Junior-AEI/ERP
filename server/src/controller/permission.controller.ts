@@ -1,9 +1,9 @@
 import { Request, Response } from 'express'
-import Groups from '../models/group.model'
+import Permissions from '../models/permission.model'
 import { controllerErrorHandler } from './utils.controller'
 import createHttpError from 'http-errors'
-import { isValidGroup } from '../validator/group.validator'
 import { HttpError } from 'http-errors'
+import { isValidPermission } from '../validator/permission.validator'
 
 /**
  * Get all groups
@@ -12,12 +12,12 @@ import { HttpError } from 'http-errors'
  */
 const getAll = async (req: Request, res: Response) => {
     try {
-        const groups = await Groups.findAll({})
+        const permissions = await Permissions.findAll({})
 
         return res.status(200).json({
             status: 'success',
             data: {
-                groups: groups
+                permissions: permissions
             }
         })
     } catch (err) {
@@ -33,18 +33,18 @@ const getAll = async (req: Request, res: Response) => {
  */
 const getByPk = async (req: Request, res: Response) => {
     try {
-        if (req.params.groupName) throw createHttpError(400, 'Please provide a valid identifier')
-
-        const identifier = parseInt(req.params.groupName)
-
-        const group = await Groups.findByPk(identifier)
-
-        if (!group) throw createHttpError(404, 'Group not found')
+        // Parse identifier
+        if (req.params.permissionName) throw createHttpError(400, 'Please provide a valid identifier')
+        const identifier = parseInt(req.params.permissionName)
+        
+        // Find    
+        const permission = await Permissions.findByPk(identifier)
+        if (!permission) throw createHttpError(404, 'Permission not found')
 
         return res.status(200).json({
             status: 'success',
             data: {
-                group: group
+                permission: permission
             }
         })
     } catch (err) {
@@ -61,11 +61,11 @@ const getByPk = async (req: Request, res: Response) => {
 async function create(req: Request, res: Response) {
     try {
         // Test params
-        const validator = isValidGroup(req.body.group.groupName)
+        const validator = isValidPermission(req.body.permission.permissionName, req.body.permission.permissionType)
         if (!validator.valid) return createHttpError(400, validator.message as string)
 
         // Insert data
-        const group = await Groups.create({
+        const permission = await Permissions.create({
             groupName: req.body.group.groupName
         })
 
@@ -73,7 +73,7 @@ async function create(req: Request, res: Response) {
         return res.status(200).json({
             status: 'success',
             data: {
-                groupName: group.groupName
+                permissionName: permission.permissionName
             }
         })
     } catch (err) {
@@ -90,23 +90,20 @@ async function create(req: Request, res: Response) {
 const update = async (req: Request, res: Response) => {
     try {
         // Parse identifier
-        if (req.params.groupName) throw createHttpError(400, 'Please provide a valid group name')
-        const identifier = parseInt(req.params.groupName)
+        if (req.params.permissionName) throw createHttpError(400, 'Please provide a valid identifier')
+        const identifier = parseInt(req.params.permissionName)
+        
+        // Find    
+        const permission = await Permissions.findByPk(identifier)
+        if (!permission) throw createHttpError(404, 'Permission not found')
 
-        // Find
-        const group = await Groups.findByPk(identifier)
-        if (!group) throw createHttpError(404, 'Group not found')
 
         // Test params
-        const validator = isValidGroup(req.body.group.groupName)
+        const validator = isValidPermission(req.body.permission.permissionName, req.body.permission.permissionType)
         if (validator.valid == 0) throw createHttpError(400, validator.message as string)
 
-        await Groups.update(
-            {
-                groupName: req.body.group.groupName
-            },
-            {
-                where: { groupName: identifier }
+        await Permissions.update(req.body, {
+                where: { permissionName: identifier }
             }
         )
 
@@ -128,17 +125,17 @@ const update = async (req: Request, res: Response) => {
 const del = async (req: Request, res: Response) => {
     try {
         // Parse identifier
-        if (req.params.groupName) throw createHttpError(400, 'Please provide a valid identifier')
-        const identifier = req.params.groupName
-
-        // Find
-        const group = await Groups.findByPk(identifier)
-        if (!group) throw createHttpError(404, 'User not found')
+        if (req.params.permissionName) throw createHttpError(400, 'Please provide a valid identifier')
+        const identifier = parseInt(req.params.permissionName)
+        
+        // Find    
+        const permission = await Permissions.findByPk(identifier)
+        if (!permission) throw createHttpError(404, 'Permission not found')
 
         // Destroy
-        await Groups.destroy({
+        await Permissions.destroy({
             where: {
-                groupName: req.body.group.groupName
+                permissionName: req.body.permission.permissionName
             }
         })
     } catch (err) {
@@ -147,7 +144,7 @@ const del = async (req: Request, res: Response) => {
     }
 }
 
-const groupController = {
+const permissionController = {
     getAll,
     getByPk,
     create,
@@ -155,4 +152,4 @@ const groupController = {
     update
 }
 
-export default groupController
+export default permissionController

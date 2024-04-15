@@ -2,46 +2,38 @@
 
 ```
 node >= 14.0.0
+docker
+docker-compose
 ```
 
-# Installation
+# Launch infrastructure
 
-```bash
-./setup.sh
+## Automaticaly
+
+A docker environment allows us to launch the whole infrastructure automatically. To do this, make sure ```docker``` and ```docker-compose``` are installed on your machine.
+
+- Then, create your ```.env``` at the root of the project, from the ```.env.example``` file. Make sure the variables ```NODE_PORT```, ```DB_PORT``` and ```VITE_APP_PORT``` are available ports on your machine, because if it is not the installation will fail. Pay attention of ```VITE_API_URL```, it has to be coherent with the specified port for API.
+
+- The docker daemon will copy your .env at the root to create child .env in ```server/``` and ```app/```. No need to touch these files !
+
+- The ```NODE_ENV``` variable is important : It's determine your environment, test or production. In test mode, the database will be stored in a single file. In production mode, a container with MySQL Server and Client will be mounted and the data will be stored in a independant volume.
+
+- Finally, go to the root of the project and simply launch the following command :
+
+```
+sudo docker-compose up -d --build
 ```
 
-# Dev run
+This command will create the infrastructure and force your machine to re-build dependancies in case of changes. IF THE COMMAND DOES NOT WORK, TRY TO LAUNCH IT WITHOUT ROOT USER PRIVILEGES.
 
-## For the server
-```bash
-cd server
-npm run dev
+For now, even if the infra is launched in production mode, a single user is created :
+```
+Username: John.Doe
+Password : mdp
 ```
 
-## For the client
-```bash
-cd client
-npm run dev
-```
+You can now go to the application (localhost with specified port).
 
-# Launch server tests
+## Manually
 
-To launch server tests, you just have to go to launch the following command :
-
-```bash
-cd server
-npm run test
-```
-# Deploy
-
-Check your environment variables in these two files :
-```
-server/.env
-app/.env
-```
-> Note : You must put your ENV variable to PROD if you want to deploy the app
-
-If everything is correct, just launch the following command on the host machine :
-```
-sudo docker-compose up -d
-```
+TO BE WRITTEN

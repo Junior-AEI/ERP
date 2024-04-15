@@ -27,7 +27,7 @@ services:
             context: ./server
             dockerfile: Dockerfile.server
             args:
-                - NODE_ENV=production
+                - NODE_ENV=${NODE_ENV}
                 - NODE_JWT_ISSUER=${NODE_JWT_ISSUER}
                 - NODE_JWT_SECRET=${NODE_JWT_SECRET}
                 - DB_HOST=${DB_HOST}

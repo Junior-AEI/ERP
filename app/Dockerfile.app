@@ -34,8 +34,7 @@ RUN ls -lia src
 
 # Dependancies
 COPY package*.json ./
-RUN npm install -g npm@10.5.2
-RUN npm i
+RUN npm install
 
 # Creation of build
 RUN npm run build

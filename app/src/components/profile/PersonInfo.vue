@@ -1,0 +1,43 @@
+<template>
+    <Card class="flex-1">
+        <CardHeader>
+            <Icon name="person" class="text-6xl" />
+            <span class="text-accent"> Informations sur la personne </span>
+        </CardHeader>
+        <CardContent>
+            <div class="flex gap-4">
+                <div class="flex flex-1 flex-col gap-2">
+                    <Label for="lastname">Identifiant Utilisateur</Label>
+                    <Input id="lastname" v-model="personInfo.personId" />
+                </div>
+            </div>
+        </CardContent>
+    </Card>
+</template>
+
+<script setup lang="ts">
+
+import axios from 'axios';
+import { useAuthStore } from '@/stores/authStore';
+
+const props = defineProps<{
+    personId: number;
+}>();
+
+const personInfo = {
+    personId: props.personId,
+}
+
+axios.get(`/user/${props.personId}`, {
+    headers: {
+        'Authorization': `Bearer ${useAuthStore().token}`
+    }
+}).then((response) => {
+    const user = response.data.data.user;
+    console.log(user);
+}).catch((error) => {
+    console.error(error);
+});
+
+
+</script>

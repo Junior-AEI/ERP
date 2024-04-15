@@ -93,5 +93,7 @@ export const createUser = async (username: string) => {
         mandateEnd: ct,
         emailJE: person.email
     })
+
+    console.log('User created', user)
 }
 

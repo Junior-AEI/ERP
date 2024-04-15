@@ -4,6 +4,7 @@ import { beforeAllTests, afterAllTests, clearDatabase, showErrorMessage } from '
 import { createUser } from './seeders/user.seeders'
 import { createToken } from './seeders/token.seeders'
 import { initUser } from './seeders/general'
+import Users from "../src/models/user.model"
 
 beforeAll(beforeAllTests)
 afterAll(afterAllTests)
@@ -43,7 +44,7 @@ afterAll(afterAllTests)
 
 // })
 
-// ! WAITING FOR DEBUGGING
+// ! DONE
 // describe('ROUTE (GET): /api/user/:userId (Get a specific user)', () => {
 
 //     afterEach(clearDatabase);
@@ -55,6 +56,7 @@ afterAll(afterAllTests)
 //         const wrongFormatUserIdList = [
 //             null,
 //             undefined,
+//             "wrongUserId"
 //         ]
 
 //         for (const wrongFormatUserId of wrongFormatUserIdList) {
@@ -67,20 +69,38 @@ afterAll(afterAllTests)
 
 //     })
 
-//     // ! Dans user.controller.ts: isNumber(req.params.userId) est toujours faux 
-//     // ! car param dans url donc string
-//     // ! --> Solution : Enlever cette condition 
-//     // it('Wrong userId with a good format', async () => {
+//     it('Wrong userId with a good format', async () => {
 
-//     //     const token = await initUser('john.doe')
+//         const token = await initUser('john.doe')
 
-//     //     const res = await request(app)
-//     //         .get(`/api/user/${-10}`)
-//     //         .set('Authorization', `Bearer ${token}`);
+//         const res = await request(app)
+//             .get(`/api/user/${-10}`)
+//             .set('Authorization', `Bearer ${token}`);
 
-//     //     expect(res.status).toEqual(404)
+//         expect(res.status).toEqual(404)
+//     })
 
-//     // })
+//     it('Normal usage', async () => {
+
+//         const token = await initUser('john.doe')
+
+//         const user = await Users.findOne({
+//             where: {
+//                 username: "john.doe"
+//             }
+//         })
+
+//         const res = await request(app)
+//             .get(`/api/user/${user?.userId}`)
+//             .set('Authorization', `Bearer ${token}`);
+
+//         expect(res.status).toEqual(200)
+//         expect(res.body.status).toEqual("success")
+//         expect(res.body.data.user).toBeDefined();
+//         expect(res.body.data.user.userId).toEqual(user?.userId);
+//         expect(res.body.data.user.username).toEqual(user?.username);
+//         expect(res.body.data.user.emailJE).toEqual(user?.emailJE);
+//     })
 
 // })
 
@@ -90,15 +110,12 @@ describe('ROUTE (POST): /api/user (Create new user)', () => {
 
     it('Wrong format memberId', async () => {
 
-        // const token = await initUser('john.doe')
-
-        await createUser('john.doe')
-        const token = await createToken("john.doe");
+        const token = await initUser('john.doe')
 
         const wrongFormatMemberIdList = [
             null,
-            // undefined,
-            // "memberId",
+            undefined,
+            "memberId",
         ]
 
         for (const wrongFormatMemberId of wrongFormatMemberIdList) {
@@ -110,9 +127,57 @@ describe('ROUTE (POST): /api/user (Create new user)', () => {
                     }
                 })
                 .set('Authorization', `Bearer ${token}`);
-            // showErrorMessage(res)
             expect(res.status).toEqual(400)
         }
     })
+
+    it('Wrong memberId', async () => {
+
+        const token = await initUser('john.doe')
+
+        const res = await request(app)
+            .post("/api/user")
+            .send({
+                user: {
+                    memberId: -10
+                }
+            })
+            .set('Authorization', `Bearer ${token}`);
+        expect(res.status).toEqual(404)
+    })
+
+    // it('Wrong params (memberId good)', async () => {
+
+    //     const token = await initUser('john.doe')
+
+        
+
+    //     const wrongParamsList = [
+    //         {
+    //             username: null,
+    //             password: 'correctPassword',
+    //             mandateStart: new Date(),
+    //             mandateEnd: new Date(),
+    //             emailJE: "john@doe.fr"
+    //         },
+    //     ]
+
+    //     for (const wrongParams of wrongParamsList) {
+    //         const res = await request(app)
+    //             .post("/api/user")
+    //             .send({
+    //                 user: {
+    //                     memberId: ,
+    //                     username: wrongParams.username,
+    //                     password: wrongParams.password,
+    //                     mandateStart: wrongParams.mandateStart,
+    //                     mandateEnd: wrongParams.mandateStart,
+    //                     emailJE: wrongParams.emailJE
+    //                 }
+    //             })
+    //             .set('Authorization', `Bearer ${token}`);
+    //         expect(res.status).toEqual(400)
+    //     }
+    // })
 
 })

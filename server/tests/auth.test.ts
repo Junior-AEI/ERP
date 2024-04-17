@@ -10,6 +10,7 @@ import { promisify } from 'util'
 beforeAll(beforeAllTests)
 afterAll(afterAllTests)
 
+// ! DONE
 describe('ROUTE (POST): /api/login (Login)', () => {
 
     afterEach(clearDatabase);
@@ -71,7 +72,7 @@ describe('ROUTE (POST): /api/login (Login)', () => {
 
 })
 
-
+// ! DONE
 describe('ROUTE (POST): /api/forget (Forget password way)', () => {
 
     afterEach(clearDatabase);
@@ -128,6 +129,7 @@ describe('ROUTE (POST): /api/forget (Forget password way)', () => {
 
 })
 
+// ! DONE
 describe('ROUTE (POST): /api/new-password (Change password)', () => {
 
     afterEach(clearDatabase);

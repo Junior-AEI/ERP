@@ -1,18 +1,16 @@
 # Start from NodeJS image
-FROM node:latest as builder
+FROM node:20 as builder
 
 # Workdir definition in container
 WORKDIR /app
 
 # Environment declaration variables
-ARG NODE_ENV="dev"
 ARG VITE_API_URL="http://localhost:5000/api"
 ARG VITE_APP_NAME="AEI"
 
 
 # Setting up environment
-RUN echo "NODE_ENV=${NODE_ENV}" > .env \
-    && echo "VITE_API_URL=${VITE_API_URL}" >> .env \
+RUN echo "VITE_API_URL=${VITE_API_URL}" > .env \
     && echo "VITE_APP_NAME=${VITE_APP_NAME}" >> .env
 
 RUN cat .env
@@ -39,6 +37,7 @@ RUN ls -lia src
 
 # Dependancies
 COPY package*.json ./
+
 RUN npm install
 
 # Creation of build

@@ -1,5 +1,5 @@
 # Start from NodeJS image
-FROM node:latest
+FROM node:20
 
 # Workdir definition
 WORKDIR /var/www

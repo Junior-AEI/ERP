@@ -15,7 +15,8 @@ export const treasuryModule: Module = {
           meta: {
             icon: 'credit_card'
           }
-        }],
+        }
+      ],
       meta: {
         icon: 'savings'
       }

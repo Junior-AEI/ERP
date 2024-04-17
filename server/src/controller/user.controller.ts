@@ -150,8 +150,8 @@ const update = async (req: Request, res: Response) => {
 const del = async (req: Request, res: Response) => {
     try {
         // Parse identifier
-        if (req.params.userId && !isNumber(req.params.userId)) throw createHttpError(400, 'Please provide a valid identifier')
         const identifier = parseInt(req.params.userId)
+        if (isNaN(identifier)) throw createHttpError(400, 'Please provide a valid identifier')
 
         const user = await Users.findByPk(identifier)
         if (!user) throw createHttpError(404, 'User not found')
@@ -160,6 +160,10 @@ const del = async (req: Request, res: Response) => {
             where: {
                 userId: identifier
             }
+        })
+
+        return res.status(200).json({
+            status: 'success'
         })
     } catch (err) {
         if (err instanceof HttpError) controllerErrorHandler(err, res)

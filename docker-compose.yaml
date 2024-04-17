@@ -48,7 +48,7 @@ services:
             context: ./app
             dockerfile: Dockerfile.app
             args:
-                - VITE_API_URL=:${VITE_API_URL}
+                - VITE_API_URL=${VITE_API_URL}
                 - VITE_APP_NAME=${VITE_APP_NAME}
                 - VITE_APP_PORT=${VITE_APP_PORT}
                 - NODE_ENV=${NODE_ENV}

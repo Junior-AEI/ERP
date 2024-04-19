@@ -5,52 +5,65 @@ import DashboardView from '../views/DashboardView.vue'
 import type { Route } from '@/types'
 import { useAuthStore } from '@/stores/authStore'
 
+const baseRoutes = [
+  {
+    path: '/',
+    name: 'Tableau de bord',
+    component: DashboardView,
+    meta: {
+      icon: 'dashboard'
+    }
+  },
+  {
+    path: '/profile',
+    name: 'Mon Profil',
+    component: () => import('../views/ProfileView.vue'),
+    meta: {
+      icon: 'person'
+    }
+  },
+  {
+    path: '/profile/:id',
+    name: 'Profil',
+    component: () => import('../views/ProfileView.vue'),
+    meta: {
+      icon: 'person'
+    }
+  },
+  {
+    path: '/administration',
+    name: 'Administration',
+    component: () => import('../views/SettingsView.vue'),
+    meta: {
+      icon: 'build'
+    }
+  },
+  {
+    path: '/login',
+    name: 'Se connecter',
+    component: () => import('../views/LoginView.vue'),
+    meta: {
+      icon: 'login',
+      public: true
+    }
+  },
+  {
+    path: '/:pathMatch(.*)*',
+    name: 'NotFound',
+    component: () => import('../views/NotFound.vue'),
+    meta: {
+      icon: 'troubleshoot'
+    }
+  },
+]
+
 const modules: Array<Route> = []
+
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
   routes: [
-    {
-      path: '/',
-      name: 'Tableau de bord',
-      component: DashboardView,
-      meta: {
-        icon: 'dashboard'
-      }
-    },
-    {
-      path: '/profil',
-      name: 'Mon Profil',
-      component: () => import('../views/ProfileView.vue'),
-      meta: {
-        icon: 'person'
-      }
-    },
-    {
-      path: '/administration',
-      name: 'Administration',
-      component: () => import('../views/Construction.vue'),
-      meta: {
-        icon: 'build'
-      }
-    },
-    {
-      path: '/login',
-      name: 'Se connecter',
-      component: () => import('../views/LoginView.vue'),
-      meta: {
-        icon: 'login',
-        public: true
-      }
-    },
-    {
-      path: '/:pathMatch(.*)*',
-      name: 'NotFound',
-      component: () => import('../views/NotFound.vue'),
-      meta: {
-        icon: 'troubleshoot'
-      }
-    },
+    ...baseRoutes,
     ...modules
   ]
 })
@@ -71,4 +84,4 @@ router.beforeEach((to, _from, next) => {
 })
 
 export default router
-export { modules }
+export { baseRoutes, modules }

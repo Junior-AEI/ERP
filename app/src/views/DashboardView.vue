@@ -1,3 +1,64 @@
+<script setup lang="ts">
+import { useAuthStore } from '@/stores/authStore'
+import type { MaterialSymbol } from 'material-symbols'
+
+const user = useAuthStore()
+
+type Link = {
+  icon: MaterialSymbol
+  name: string
+  to: string
+}
+
+const links: Link[] = [
+  {
+    icon: 'mail',
+    name: 'Webmail',
+    to: 'https://www.ovhcloud.com/fr/mail/'
+  },
+  {
+    icon: 'local_library',
+    name: 'Wiki',
+    to: 'https://wikix.junior-aei.com/'
+  },
+  {
+    icon: 'lock',
+    name: 'Passbolt',
+    to: 'https://passwords.junior-aei.com/'
+  },
+  {
+    icon: 'person',
+    name: 'Kiwi',
+    to: 'https://kiwix.junior-entreprises.com/'
+  },
+  /*   {
+    icon: 'cloud_upload',
+    name: 'Uploader un document',
+    to: '/upload'
+  }, */
+  {
+    icon: 'person',
+    name: 'Mon profil',
+    to: '/profile'
+  },
+  {
+    icon: 'cloud_upload',
+    name: 'Uploader un document',
+    to: '/'
+  }
+]
+
+import router from '@/router'
+
+const goTo = (to: string) => {
+  if (to.startsWith('http') || to.startsWith('www') || to.startsWith('https')) {
+    window.location.href = to
+  } else {
+    router.push(to)
+  }
+}
+</script>
+
 <template>
   <main class="flex flex-1 flex-col gap-6">
     <Wrapper class="w-full">
@@ -14,14 +75,22 @@
 
     <div class="flex flex-col gap-3 md:flex-row">
       <Wrapper class="flex-2 flex-col">
-        <h1 class="m-3 text-accent">Bonjour {{ user.firstName }},</h1>
+        <h1 class="m-3 text-3xl text-accent">
+          <RouterLink to="/profile">Bonjour {{ user.firstName }},</RouterLink>
+        </h1>
         <Card>
           <CardHeader>
             <Icon name="star" />
             <span class="text-accent"> Liens favoris </span>
           </CardHeader>
-          <CardContent>
-            <Button variant="outline"> Coucou </Button>
+          <CardContent class="flex-row flex-wrap">
+            <Tile
+              v-for="link in links"
+              :key="link.name"
+              :icon="link.icon"
+              :name="link.name"
+              @click="goTo(link.to)"
+            />
           </CardContent>
         </Card>
       </Wrapper>
@@ -53,9 +122,3 @@
     </div>
   </main>
 </template>
-
-<script setup lang="ts">
-import { useAuthStore } from '@/stores/authStore'
-
-const user = useAuthStore()
-</script>

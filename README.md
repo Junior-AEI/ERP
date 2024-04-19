@@ -2,141 +2,38 @@
 
 ```
 node >= 14.0.0
+docker
+docker-compose
 ```
 
-# Installation
+# Launch infrastructure
 
-```bash
-cd client
-npm install
-cd ../server
-npm install
-cp .env.example .env
-cd ..
-./setup.sh
-```
+## Automaticaly
 
-# Running
+A docker environment allows us to launch the whole infrastructure automatically. To do this, make sure ```docker``` and ```docker-compose``` are installed on your machine.
 
-```bash
-cd client
-npm run dev
-```
+- Then, create your ```.env``` at the root of the project, from the ```.env.example``` file. Make sure the variables ```NODE_PORT```, ```DB_PORT``` and ```VITE_APP_PORT``` are available ports on your machine, because if it is not the installation will fail. Pay attention of ```VITE_API_URL```, it has to be coherent with the specified port for API.
 
-```bash
-cd server
-npm run dev
-```
+- The docker daemon will copy your .env at the root to create child .env in ```server/``` and ```app/```. No need to touch these files !
 
-# Test
+- The ```NODE_ENV``` variable is important : It's determine your environment, test or production. In test mode, the database will be stored in a single file. In production mode, a container with MySQL Server and Client will be mounted and the data will be stored in a independant volume.
 
-```bash
-# Before running test, please run migrations on test database
-NODE_ENV=test npm run migrate -- up
-NODE_ENV=test npm run seed -- up
-
-# Run tests
-npm run test
-```
-
-Don't forget to run the back-end with `npm run dev` before launching the tests.
-
-```bash
-npm run coverage
-```
-
-# Migrations
-
-## Generality
-
-Migrations are managed by [umzug](https://github.com/sequelize/umzug) package. In this project, they can be launched by `npm run migrate` (for migrations) and `npm run seed`. Main commands are `up` to apply all migrations/seeders and `down` to revert **one** migration/seeder.
-
-To add option, it needs to add `--` after the commande. For example, rollback all migrations can be done with `npm run migrate -- down --to 0`.
-
-## Main options
-
-```sh
-npm run migrate -- up                   #Up all migrations
-npm run migrate -- up --to <n>          #Up to the n-th migration
-npm run migrate -- down                 #Down last migration
-npm run migrate -- down --to <n>        #Down all migration to n-th migration
-npm run migrate -- create --name=<Name> #Generate new empty migration from template
-
-npm run seed -- up                      #Up all seeders
-npm run seed -- up --to <n>             #Up to the n-th seeder
-npm run seed -- down                    #Down last seeder
-npm run seed -- down --to <n>           #Down all seeders to n-th seeder
-npm run seed -- create --name=<Name>    #Generate new empty seeder from template
-```
-
-All options can be get with `--help` options.s
-
-## Steps to create a new model
-
-### Step 1 : create a model file in the models folder
-
-The model need to be in typescript.
-It use decorators, more information on them [here](https://www.npmjs.com/package/sequelize-typescript)
-The `createdAt` and `insertedAt` need to look like the other models and the same for id.
-
-### Step 2 : create a migration file
-
-Create a migration file using the command `npm run migrate -- create --name=<name_migration>.ts`.
-In the model file, add the following code at the end "console.log(<yourmodel>.getAttributes())".
-Copy the result in the migration file and remove the unecessary parts (look in other migration file for inspiration).
-Remember to edit the down function to cancel your modifications.
-Try your migration with `npm run migrate -- up` and look in the database.
-Don't forget to check if the down function work too with the command `npm run migrate -- down`.
-
-### Step 3 : Add data in your new database
-
-Use the following command to create a seeder file `npm run seed -- create --name=<Name>`.
-Add your data following the structure of your model.
-Try it with the command `npm run seed -- up`.
-Don't forget to check if the down function work too with the command `npm run seed -- down`.
-
-### Step 4 : create a controller
-
-Create your CRUD functions in this new file (in the controller folder).
-Remember to check the coding convention for the route.
-[Here more information on some useful functions in Sequelize](https://sequelize.org/docs/v6/core-concepts/model-querying-basics/)
-Don't forget to export your new functions !
-
-### Step 5 : create routes
-
-Create a new file in the routes folder.
-Add the route for the new functions you created in the previous step.
-Don't forget to update the `routes.ts` file with your new route.
-
-### Step 6 : Try what you did
-
-Try your function using Postman (example of url `http://localhost:5000/api/utilisateur`).
-How to test your route with token comming soon.
-
-# Deploy for use in production
-
-To deploy for use in production, you need to build the images for both client and server side. After that, you need to deploy your built image by using the ```docker-compose.yaml``` files located in its respective folders.
-
-## Config app before build
-
-Before doing this, make sure : 
-- your ```.env``` file in the server side folder is correct. If you don't already have a ```.env```, just copy the ```.env.example``` and rename the copy. Then, set ```NODE_ENV``` to ```prod``` and eventually update environment variables.
-- Execution ports in the ```docker-compose.yaml``` files are correct, set by default to 80 for client and 3000 for server.
-- API Url variable in ```client/src/index.ts``` is correct. Should be accorded with the execution port for API.
-
-## Client
+- Finally, go to the root of the project and simply launch the following command :
 
 ```
-cd client
-sudo docker build -t erp-aei-client:latest .
-sudo docker-compose up
+sudo docker-compose up -d --build
 ```
 
+This command will create the infrastructure and force your machine to re-build dependancies in case of changes. IF THE COMMAND DOES NOT WORK, TRY TO LAUNCH IT WITHOUT ROOT USER PRIVILEGES.
 
-## Server
+For now, even if the infra is launched in production mode, a single user is created :
+```
+Username: John.Doe
+Password : mdp
+```
 
-```
-cd server
-sudo docker build -t erp-aei-server:latest .
-sudo docker-compose up
-```
+You can now go to the application (localhost with specified port).
+
+## Manually
+
+TO BE WRITTEN

@@ -1,148 +1,151 @@
-// Copyright (C) 2023 Nesrine ABID, Nadjime BARTEAU, Mathieu DUPOUX, Léo-Paul MAZIÈRE, Maël PAUL, Antoine RAOULT, Lisa VEILLAT, Marine VOVARD
-
-// Authors: Nesrine ABID, Nadjime BARTEAU, Mathieu DUPOUX, Léo-Paul MAZIÈRE, Maël PAUL, Antoine RAOULT, Lisa VEILLAT, Marine VOVARD
-// Maintainer: contact@junior-aei.com
-
-// This file is part of LATIME.
-
-// LATIME is free software: you can redistribute it and/or modify it under the terms of the GNU Affero General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
-
-// LATIME is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more details.
-
-// You should have received a copy of the GNU Affero General Public License along with LATIME. If not, see <https://www.gnu.org/licenses/>.
 import { Request, Response } from 'express'
-import Client from '../models/client.model'
-import { checkExistingId, checkIdIsNotNaN, controllerErrorHandler } from './utils.controller'
-import { Op } from 'sequelize'
+import Clients from '../models/client.model'
+import { controllerErrorHandler, isNumber } from './utils.controller'
 import createHttpError from 'http-errors'
+import { HttpError } from 'http-errors'
+import { isValidClient } from '../validator/client.validator'
+import Companies from '../models/company.model'
 
-const clientController = {
-    getAllClients,
-    getClientById,
-    createClient,
-    deleteClientById,
-    updateClient
+/**
+ * Get all clients
+ * @param req
+ * @param res
+ */
+const getAll = async (req: Request, res: Response) => {
+    try {
+        const clients = await Clients.findAll({})
+
+        return res.status(200).json({
+            status: 'success',
+            data: {
+                clients: clients
+            }
+        })
+    } catch (err) {
+        if (err instanceof HttpError) controllerErrorHandler(err, res)
+        else throw err
+    }
 }
 
 /**
- * Throws error if a customer already exist in database
- * @param req Request to check (req.body used)
+ * Select a specific client
+ * @param req
+ * @param res
  */
-async function checkExistingClient(req: Request): Promise<void> {
-    // if id isn't given (case of new customer creation), set it to "null" (avoid database error)
-    if (req.body.id === undefined) req.body.id = null
+const getByPk = async (req: Request, res: Response) => {
+    try {
+        if (req.params.clientId || !isNumber(req.params.clientId)) throw createHttpError(400, 'Please provide a valid identifier.')
 
-    // Check is given customer isn't already in database with another id
-    const existingClient = await Client.findOne({
-        where: {
-            [Op.and]: [
-                { [Op.not]: { id: req.body.id } },
-                {
-                    [Op.or]: [
-                        { email: req.body.email },
-                        { telephoneMobile: req.body.telephoneMobile }
-                    ]
-                }
-            ]
+        const identifier = parseInt(req.params.clientId)
+
+        const client = await Clients.findByPk(identifier)
+
+        if (!client) throw createHttpError(404, 'Client not found.')
+
+        return res.status(200).json({
+            status: 'success',
+            data: {
+                client: client
+            }
+        })
+    } catch (err) {
+        if (err instanceof HttpError) controllerErrorHandler(err, res)
+        else throw err
+    }
+}
+/**
+ * Create a client
+ * @param req
+ * @param res
+ */
+async function create(req: Request, res: Response) {
+    // Test if parameters has been filled
+    const validator = isValidClient(req.body.client.function, req.body.client.companyId)
+
+    // Try to find the company
+    const company = await Companies.findByPk(parseInt(req.body.client.companyId))
+    if (!company) return createHttpError(400, 'Your company id is not valid.')
+
+    // Test values
+    if (!validator.valid) return createHttpError(400, validator.message as string)
+
+    // Insert value
+    const client = await Clients.create({
+        function: req.body.client.function,
+        companyId: req.body.client.companyId
+    })
+
+    // Return success
+    return res.status(200).json({
+        status: 'success',
+        data: {
+            clientId: client.clientId
         }
     })
-    if (existingClient !== null) throw createHttpError(409, 'Customer already exist')
 }
 
 /**
- * All customers reader for GET route
- * @param res :
- *  - Customers in database + 200 confirmation
- *  - 500 error
+ * Update a client
+ * @param req
+ * @param res
  */
-async function getAllClients(req: Request, res: Response) {
-    await Client.findAll()
-        .then((client) => res.status(200).json(client))
-        .catch((err) => controllerErrorHandler(err, res))
-}
+const update = async (req: Request, res: Response) => {
+    try {
+        // Parse identifier
+        if (req.params.clientId && !isNumber(req.params.clientId)) throw createHttpError(400, 'Please provide a valid identifier')
+        const identifier = parseInt(req.params.clientId)
 
-/**
- * Specific customer (by id) reader for GET route
- * @param req Request ("id" parameter, needed to find right customer)
- * @param res :
- *  - Requested customer + 200 confirmation
- *  - 400 error if "id" is NaN
- *  - 500 error for database error
- */
-async function getClientById(req: Request, res: Response) {
-    // Check if req.params.id is a number
-    await checkIdIsNotNaN(req.params.id)
-        .then(() =>
-            // Find requested customer by primary key (id)
-            Client.findByPk(req.params.id)
-        )
-        .then((client) => res.status(200).json(client))
-        .catch((err) => controllerErrorHandler(err, res))
-}
+        const client = await Clients.findByPk(identifier)
+        if (!client) throw createHttpError(404, 'User not found')
 
-/**
- * Customer creation for POST route
- * @param req Request (body used to create new customer)
- * @param res :
- *  - 201 confirmation
- *  - 400 error if wrong datas are given
- *  - 409 error if role already exist
- *  - 500 error for database error
- */
-async function createClient(req: Request, res: Response) {
-    await checkExistingClient(req)
-        .then(() => {
-            // Clean useless creation and update dates if given (setup while creating customer)
-            req.body.createdAt = null
-            req.body.updatedAt = null
+        const validator = isValidClient(req.body.client.function, req.body.client.companyId)
 
-            return Client.create(req.body)
+        if (validator.valid == 0) throw createHttpError(400, validator.message as string)
+
+        await Clients.update(req.body, {
+            where: { clientId: identifier }
         })
-        .then((client) => res.status(201).json({ id: client.id }))
-        .catch((err) => controllerErrorHandler(err, res))
-}
 
-/**
- * Customer update for PUT route
- * @param req Request (body used to update customer)
- * @param res :
- *  - 200 confirmation
- *  - 400 error if wrong datas are given
- *  - 404 error if customer don't exist
- *  - 500 error for database error
- */
-async function updateClient(req: Request, res: Response) {
-    // Check is given name is not empty and if given customer or customer id doesn't already exist
-    await checkExistingId<Client>(req.body.id, Client)
-        .then(() => checkExistingClient(req))
-        .then(() => {
-            // Clean useless update dates if given (setup while creating customer)
-            req.body.updatedAt = null
-            // Update requested customer with given body
-            return Client.update(req.body, { where: { id: req.body.id } })
+        return res.status(200).json({
+            status: 'success'
         })
-        .then((client) => res.status(204).json(client))
-        .catch((err) => controllerErrorHandler(err, res))
+    } catch (err) {
+        if (err instanceof HttpError) controllerErrorHandler(err, res)
+        else throw err
+    }
 }
 
 /**
- * Customer remove for DELETE route
- * @param req Request (parameter "id" used to find customer to delete)
- * @param res :
- *  - 200 confirmation
- *  - 400 error if given id is NaN
- *  - 404 error if given id doesn't exist
- *  - 500 error for database error
+ * Delete a client
+ * @param req
+ * @param res
  */
-async function deleteClientById(req: Request, res: Response) {
-    // Check if requested customer id exist in database
-    await checkExistingId<Client>(req.params.id, Client)
-        .then(() =>
-            // Delete requested customer by its id
-            Client.destroy({ where: { id: req.params.id } })
-        )
-        .then((client) => res.status(204).json(client))
-        .catch((err) => controllerErrorHandler(err, res))
+const del = async (req: Request, res: Response) => {
+    try {
+        // Parse identifier
+        if (req.params.clientId && !isNumber(req.params.clientId)) throw createHttpError(400, 'Please provide a valid identifier')
+        const identifier = parseInt(req.params.clientId)
+
+        const client = await Clients.findByPk(identifier)
+        if (!client) throw createHttpError(404, 'User not found')
+
+        await Clients.destroy({
+            where: {
+                clientId: identifier
+            }
+        })
+    } catch (err) {
+        if (err instanceof HttpError) controllerErrorHandler(err, res)
+        else throw err
+    }
+}
+
+const clientController = {
+    getAll,
+    getByPk,
+    create,
+    del,
+    update
 }
 
 export default clientController

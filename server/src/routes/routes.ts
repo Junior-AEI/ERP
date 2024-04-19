@@ -1,37 +1,56 @@
-// Copyright (C) 2023 Nesrine ABID, Nadjime BARTEAU, Mathieu DUPOUX, Léo-Paul MAZIÈRE, Maël PAUL, Antoine RAOULT, Lisa VEILLAT, Marine VOVARD
-
-// Authors: Nesrine ABID, Nadjime BARTEAU, Mathieu DUPOUX, Léo-Paul MAZIÈRE, Maël PAUL, Antoine RAOULT, Lisa VEILLAT, Marine VOVARD
-// Maintainer: contact@junior-aei.com
-
-// This file is part of LATIME.
-
-// LATIME is free software: you can redistribute it and/or modify it under the terms of the GNU Affero General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
-
-// LATIME is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more details.
-
-// You should have received a copy of the GNU Affero General Public License along with LATIME. If not, see <https://www.gnu.org/licenses/>.
 import express from 'express'
-import utilisateurRouter from './utilisateur.route'
+import personRouter from './person.route'
+import clientRouter from './client.route'
+import memberRouter from './member.route'
+import userRouter from './user.route'
 import authRoutes from './auth.route'
-import posteRoute from './poste.route'
-import poleRoute from './pole.route'
-import adresseRoute from './adresse.route'
-import memberRoute from './member.route'
-import entrepriseRoute from './entreprise.route'
-import clientRoute from './client.route'
+import companyRouter from './company.route'
+import addressRouter from './address.route'
+import belongerRouter from './belonger.route'
+import groupRouter from './group.route'
+import concernedRouter from './concerned.route'
+import permissionRouter from './permission.route'
+import projectRouter from './project.route'
+import projectNotesRouter from './projectNotes.route'
+import contributorRouter from './contributor.route'
+import projectManagerRouter from './projectManager.route'
 import documentRouter from './document.route'
+import documentTypeRouter from './documentType.route'
+import eventRouter from './event.route'
+import eventTypeRouter from './eventType.route'
+import partnerRouter from './partner.route'
+import eventGroupConcernedRouter from './eventGroupConcerned.route'
+import taskRouter from './task.route'
+import itTicketRouter from './itTicket.route'
+import expenseAccountRouter from './expenseAccount.route'
 
 import { getUsername, verifyAuthentication } from '../middlewares/auth.middleware'
 
 const router = express.Router()
 
 router.use(authRoutes)
-router.use('/pole', getUsername, verifyAuthentication, poleRoute)
-router.use('/poste', getUsername, verifyAuthentication, posteRoute)
-router.use('/utilisateur', getUsername, verifyAuthentication, utilisateurRouter)
-router.use('/adresse', getUsername, verifyAuthentication, adresseRoute)
-router.use('/adherent', getUsername, verifyAuthentication, memberRoute)
-router.use('/entreprise', getUsername, verifyAuthentication, entrepriseRoute)
-router.use('/client', getUsername, verifyAuthentication, clientRoute)
+router.use('/person', getUsername, verifyAuthentication, personRouter)
+router.use('/client', getUsername, verifyAuthentication, clientRouter)
+router.use('/member', getUsername, verifyAuthentication, memberRouter)
+router.use('/user', getUsername, verifyAuthentication, userRouter)
+router.use('/company', getUsername, verifyAuthentication, companyRouter)
+router.use('/address', getUsername, verifyAuthentication, addressRouter)
+router.use('/belonger', getUsername, verifyAuthentication, belongerRouter)
+router.use('/group', getUsername, verifyAuthentication, groupRouter)
+router.use('/concerned', getUsername, verifyAuthentication, concernedRouter)
+router.use('/permission', getUsername, verifyAuthentication, permissionRouter)
+router.use('/project', getUsername, verifyAuthentication, projectRouter)
+router.use('/projectManager', getUsername, verifyAuthentication, projectManagerRouter)
+router.use('/contributor', getUsername, verifyAuthentication, contributorRouter)
+router.use('/projectNotes', getUsername, verifyAuthentication, projectNotesRouter)
 router.use('/document', getUsername, verifyAuthentication, documentRouter)
+router.use('/documentType', getUsername, verifyAuthentication, documentTypeRouter)
+router.use('./event', getUsername, verifyAuthentication, eventRouter)
+router.use('./eventType', getUsername, verifyAuthentication, eventTypeRouter)
+router.use('./partner', getUsername, verifyAuthentication, partnerRouter)
+router.use('./eventGroupConcerned', getUsername, verifyAuthentication, eventGroupConcernedRouter)
+router.use('./task', getUsername, verifyAuthentication, taskRouter)
+router.use('./itTicket', getUsername, verifyAuthentication, itTicketRouter)
+router.use('./expenseAccount', getUsername, verifyAuthentication, expenseAccountRouter)
+
 export default router

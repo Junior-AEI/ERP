@@ -16,16 +16,20 @@ const configuration: { [key: string]: SequelizeOptions } = {
     },
     // Test database configuration (SQLite)
     test: {
-        storage: 'tests/dbTest.sqlite',
-        dialect: 'sqlite'
+        storage: 'tests/database/dbTest.sqlite',
+        dialect: 'sqlite',
+        models: [__dirname + '/../models'],
+        logging: false
     },
 
     // Prod database server configuration (from .env file)
     production: {
+        models: [__dirname + '/../models'],
         username: process.env.DB_USER,
         password: process.env.DB_PASSWORD,
-        database: process.env.DB,
+        database: process.env.DB_NAME,
         host: process.env.DB_HOST,
+        port: process.env.DB_PORT ? parseInt(process.env.DB_PORT) : 3306,
         dialect: 'mysql'
     }
 }

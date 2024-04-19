@@ -10,116 +10,40 @@
 // LATIME is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more details.
 
 // You should have received a copy of the GNU Affero General Public License along with LATIME. If not, see <https://www.gnu.org/licenses/>.
-import {
-    Table,
-    Column,
-    Model,
-    DataType,
-    CreatedAt,
-    UpdatedAt,
-    ForeignKey,
-    BelongsTo,
-    IsIn,
-    IsDate,
-    IsEmail
-} from 'sequelize-typescript'
-import validator from 'validator'
-import Entreprise from './entreprise.model'
-
-const GENDER = ['F', 'M', 'O']
+import { Table, Column, Model, DataType, ForeignKey, BelongsTo, PrimaryKey, HasMany } from 'sequelize-typescript'
+import Companies from './company.model'
+import Persons from './person.model'
+import Projects from './project.model'
 
 @Table
-export default class Client extends Model {
-    @Column({
-        type: DataType.INTEGER,
-        allowNull: false,
-        primaryKey: true,
-        autoIncrement: true
-    })
-    id!: number
-
-    @Column({
-        type: DataType.STRING,
-        allowNull: false
-    })
-    nom!: string
-
-    @Column({
-        type: DataType.STRING,
-        allowNull: false
-    })
-    prenom!: string
-
-    @IsIn([GENDER])
-    @Column({
-        type: DataType.ENUM,
-        values: GENDER,
-        allowNull: false
-    })
-    sexe!: string
-
-    @Column({
-        type: DataType.STRING,
-        allowNull: false,
-        validate: {
-            checkPhone(str: string) {
-                if (!validator.isMobilePhone(str)) {
-                    throw new Error('Invalid phone number')
-                }
-            }
-        }
-    })
-    telephoneMobile!: string
-
-    @IsEmail
-    @Column({
-        type: DataType.STRING,
-        allowNull: false
-    })
-    email!: string
-
-    @Column({
-        type: DataType.STRING,
-        allowNull: false
-    })
-    fonction!: string
-
-    @Column({
-        type: DataType.STRING,
-        allowNull: false,
-        validate: {
-            checkPhone(str: string) {
-                if (!validator.isMobilePhone(str)) {
-                    throw new Error('Invalid phone number')
-                }
-            }
-        }
-    })
-    telephoneFixe!: string
-
-    @ForeignKey(() => Entreprise)
+export default class Clients extends Model {
+    @PrimaryKey
+    @ForeignKey(() => Persons)
     @Column({
         type: DataType.INTEGER,
         allowNull: false
     })
-    entrepriseId!: number
+    clientId!: number
 
-    @BelongsTo(() => Entreprise)
-    entreprise!: Entreprise
+    @BelongsTo(() => Persons)
+    person!: Persons
 
-    @IsDate
-    @CreatedAt
     @Column({
-        type: DataType.DATE,
+        type: DataType.STRING,
         allowNull: false
     })
-    createdAt!: Date
+    function!: string
 
-    @IsDate
-    @UpdatedAt
+    @ForeignKey(() => Companies)
     @Column({
-        type: DataType.DATE,
+        type: DataType.INTEGER,
         allowNull: false
     })
-    updatedAt!: Date
+    companyId!: number
+
+    @BelongsTo(() => Companies)
+    address!: Companies
+
+    @HasMany(() => Projects)
+    project!: Projects
 }

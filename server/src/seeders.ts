@@ -40,6 +40,7 @@ const createUser = async () => {
         paymentMethod: 'CB',
         department: 'Informatique',
         telegramId: '@pabechou',
+        membershipNumber: '1234',
         addressId: address.addressId
     })
 
@@ -47,7 +48,7 @@ const createUser = async () => {
 
     const user = await Users.create({
         userId: member.memberId,
-        username: person.firstname + '.' + person.lastname,
+        username: person.firstname.toLowerCase() + '.' + person.lastname.toLowerCase(),
         password: hashedPassword,
         lastLogin: ct,
         mandateStart: ct,

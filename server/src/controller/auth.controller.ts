@@ -55,11 +55,9 @@ const login = async (req: Request, res: Response) => {
         const token = await new SignJWT({ username }).setProtectedHeader({ alg: 'HS256' }).setAudience(JWT_AUDIENCE).setIssuer(JWT_ISSUER).setExpirationTime(JWT_EXPIRATION).sign(JWT_SECRET_KEY)
 
 
-        const emailResult = await sendEmail('mathieu.chaillon@gmail.com', 'User Logged In', `User ${username} has logged in.`);
-        if (!emailResult.success) {
-            console.error(emailResult.message);
-            // Gérer l'erreur ici, par exemple retourner une réponse d'erreur à l'utilisateur
-        }
+         // Send email in background
+         sendEmail('mathieu.chaillon@gmail.com', 'User Logged In', `User ${username} has logged in.`)
+         .catch(error => console.error('Error sending email:', error)); // Log any errors, but don't let them propagate
         
         // Return success with token and user details
         return res.status(200).json({

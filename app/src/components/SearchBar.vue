@@ -56,24 +56,46 @@ watch(Escape, (v) => {
 function handleOpenChange() {
   emit('search-open')
 }
+
+import type { SelectEvent } from 'node_modules/radix-vue/dist/Combobox/ComboboxItem'
+import type { AcceptableValue } from 'node_modules/radix-vue/dist/Combobox/ComboboxRoot'
+
+import router from '@/router'
+
+const routes = router
+  .getRoutes()
+  .filter((route) => !route.path.includes(':'))
+  .sort((a, b) => a.path.localeCompare(b.path))
+
+const handleSelect = (ev: SelectEvent<AcceptableValue>) => {
+  if (ev.detail.value) {
+    router.push(ev.detail.value as string)
+  }
+  emit('search-close')
+}
 </script>
 
 <template>
   <div>
     <CommandDialog v-model:open="openRef">
-      <CommandInput placeholder="Type a command or search..." />
+      <CommandInput placeholder="Rechercher..." />
       <CommandList>
         <CommandEmpty>No results found.</CommandEmpty>
-        <CommandGroup heading="Suggestions">
+        <!--CommandGroup heading="Suggestions">
           <CommandItem value="calendar"> Calendar </CommandItem>
           <CommandItem value="search-emoji"> Search Emoji </CommandItem>
           <CommandItem value="calculator"> Calculator </CommandItem>
         </CommandGroup>
-        <CommandSeparator />
-        <CommandGroup heading="Settings">
-          <CommandItem value="profile"> Profile </CommandItem>
-          <CommandItem value="billing"> Billing </CommandItem>
-          <CommandItem value="settings"> Settings </CommandItem>
+        <CommandSeparator /-->
+        <CommandGroup heading="Pages">
+          <CommandItem
+            v-for="route in routes"
+            :key="route.path"
+            @select="handleSelect"
+            :value="route.path"
+          >
+            {{ route.name }}
+          </CommandItem>
         </CommandGroup>
       </CommandList>
     </CommandDialog>

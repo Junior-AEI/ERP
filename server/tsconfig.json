@@ -97,9 +97,5 @@
     },
     "include": [
         "src/**/*.ts"
-    ],
-    "exclude": [
-        // Exclude template because of "wrong" path inside them
-        "src/migrations/templates/*"
     ]
 }

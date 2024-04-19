@@ -22,10 +22,10 @@ export default class Partners extends Model {
         type: DataType.INTEGER,
         allowNull: false
     })
-    memberId!: number
+    companyId!: number
 
     @BelongsTo(() => Companies)
-    member!: Companies
+    company!: Companies
 
     @PrimaryKey
     @ForeignKey(() => Events)
@@ -33,8 +33,8 @@ export default class Partners extends Model {
         type: DataType.INTEGER,
         allowNull: false
     })
-    projectId!: number
+    eventId!: number
 
     @BelongsTo(() => Events)
-    project!: Events
+    event!: Events
 }

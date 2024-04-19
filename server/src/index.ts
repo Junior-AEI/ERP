@@ -1,15 +1,13 @@
-import { Application } from 'express';
 import { sequelizeInit } from './config/database.config'
 import dotenv from 'dotenv'
 
 import app from "./app";
 
 dotenv.config()
-const port = process.env.PORT
 
 function startServer() {
-    app.listen(port, () => {
-        console.log(`Express app listening on port ${port}`)
+    app.listen(5000, () => {
+        console.log(`Express app listening on port 5000`)
     })
     sequelizeInit()
 }

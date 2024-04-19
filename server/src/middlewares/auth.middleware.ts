@@ -21,25 +21,29 @@ const extractBearerToken = (headerValue: string) => {
  * @returns
  */
 const getUsername = async (req: Request, res: Response, next: () => void) => {
+
+
     // Get token in headers
     const token = req.headers.authorization && extractBearerToken(req.headers.authorization)
 
+    
     if (token) {
         // If token found
         try {
             // Try to verify token
             const { payload } = await jwtVerify(token, JWT_SECRET_KEY)
-
+            
+            
             // Extract user from token
             const username = payload.username
-
+            
             // Fetch user
             const user = await Users.findOne({
                 where: {
                     username: username
                 }
             })
-
+            
             // if user then fill info, else return an error
             if (user) {
                 res.locals.user = {

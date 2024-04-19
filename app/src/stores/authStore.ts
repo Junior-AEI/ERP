@@ -8,7 +8,6 @@ export const useAuthStore = defineStore('auth', {
     return {
       token: null,
       userId: null,
-      memberId: null,
       username: null,
       firstName: null,
       lastName: null
@@ -23,12 +22,12 @@ export const useAuthStore = defineStore('auth', {
       request
         .then((response) => {
           console.log(response.data)
-          this.token = response.data.token
-          this.userId = response.data.userId
-          this.memberId = response.data.memberId
-          this.username = response.data.username
-          this.firstName = response.data.firstName
-          this.lastName = response.data.lastName
+          this.token = response.data.data.token
+          this.userId = response.data.data.userId
+          this.username = response.data.data.username
+          this.firstName = response.data.data.firstName
+          this.lastName = response.data.data.lastName
+          console.log(this.lastName)
         })
         .catch((error) => {
           console.log(error)
@@ -38,7 +37,6 @@ export const useAuthStore = defineStore('auth', {
     logout() {
       this.token = null
       this.userId = null
-      this.memberId = null
       this.username = null
       this.firstName = null
       this.lastName = null

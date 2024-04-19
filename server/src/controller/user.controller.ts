@@ -89,9 +89,9 @@ async function create(req: Request, res: Response) {
             userId: identifier,
             username: req.body.user.username,
             password: req.body.user.password,
-            mandateStart: req.body.user.mandateStart,
-            mandateEnd: req.body.user.mandateEnd,
-            emailJE: req.body.user.emailJE
+            mandateStart: new Date(req.body.user.mandateStart),
+            mandateEnd: new Date(req.body.user.mandateEnd),
+            emailJE: req.body.user.emailJE,
         });
 
         // Return success
@@ -115,8 +115,8 @@ async function create(req: Request, res: Response) {
 const update = async (req: Request, res: Response) => {
     try {
         // Parse identifier
-        if (req.params.userId && !isNumber(req.params.userId)) throw createHttpError(400, 'Please provide a valid identifier')
         const identifier = parseInt(req.params.userId)
+        if (isNaN(identifier)) throw createHttpError(400, 'Please provide a valid identifier')
 
         const user = await Users.findByPk(identifier)
         if (!user) throw createHttpError(404, 'User not found')
@@ -125,7 +125,7 @@ const update = async (req: Request, res: Response) => {
 
         if (validator.valid == 0) throw createHttpError(400, validator.message as string)
 
-        const encryptedPassword = bcrypt.hash(req.body.password, 10)
+        const encryptedPassword = await bcrypt.hash(req.body.user.password, 10)
         req.body.user.updatedAt = null
         req.body.user.password = encryptedPassword
 
@@ -150,8 +150,8 @@ const update = async (req: Request, res: Response) => {
 const del = async (req: Request, res: Response) => {
     try {
         // Parse identifier
-        if (req.params.userId && !isNumber(req.params.userId)) throw createHttpError(400, 'Please provide a valid identifier')
         const identifier = parseInt(req.params.userId)
+        if (isNaN(identifier)) throw createHttpError(400, 'Please provide a valid identifier')
 
         const user = await Users.findByPk(identifier)
         if (!user) throw createHttpError(404, 'User not found')
@@ -160,6 +160,10 @@ const del = async (req: Request, res: Response) => {
             where: {
                 userId: identifier
             }
+        })
+
+        return res.status(200).json({
+            status: 'success'
         })
     } catch (err) {
         if (err instanceof HttpError) controllerErrorHandler(err, res)

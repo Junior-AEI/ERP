@@ -20,7 +20,7 @@ export const sequelizeInit = async () => {
     const databaseConfig = config[env]
     // ORM initialization
     sequelize = new Sequelize(databaseConfig)
-    await sequelize.sync({ force: true, logging: env === "test" })
+    await sequelize.sync({ force: true, logging: env !== "test" })
     if (env !== "test") {
         await testConnection()
         await createFakeData()

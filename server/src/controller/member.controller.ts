@@ -67,7 +67,7 @@ const create = async (req: Request, res: Response) => {
         const identifier = parseInt(req.body.member.personId)
 
         // Test params
-        const validator = isValidMember(req.body.member.birthDate, req.body.member.birthPlace, req.body.member.nationality, req.body.member.promotion, req.body.member.contributionDate, req.body.member.department)
+        const validator = isValidMember(req.body.member.birthDate, req.body.member.birthPlace, req.body.member.nationality, req.body.member.promotion, req.body.member.contributionDate, req.body.member.department, req.body.member.membershipNumber)
         if (!validator.valid) throw createHttpError(400, validator.message as string)
 
         // Try to find linked person
@@ -82,7 +82,8 @@ const create = async (req: Request, res: Response) => {
             nationality: req.body.member.nationality,
             promotion: req.body.member.promotion,
             contributionDate: req.body.member.contributionDate,
-            department: req.body.member.department
+            department: req.body.member.department,
+            membershipNumber: req.body.member.membershipNumber
         })
 
         // Return success
@@ -113,7 +114,7 @@ const update = async (req: Request, res: Response) => {
         const member = await Members.findByPk(identifier)
         if (!member) throw createHttpError(404, 'User not found')
 
-        const validator = isValidMember(req.body.group.birthDate, req.body.group.birthPlace, req.body.group.nationality, req.body.group.promotion, req.body.group.contributionDate, req.body.group.department)
+        const validator = isValidMember(req.body.member.birthDate, req.body.member.birthPlace, req.body.member.nationality, req.body.member.promotion, req.body.member.contributionDate, req.body.member.department, req.body.member.membershipNumber)
 
         if (validator.valid == 0) throw createHttpError(400, validator.message as string)
 
@@ -142,11 +143,11 @@ async function del(req: Request, res: Response) {
         const identifier = parseInt(req.params.memberId)
 
         const member = await Members.findByPk(identifier)
-        if (!member) throw createHttpError(404, 'Group not found')
+        if (!member) throw createHttpError(404, 'Member not found')
 
         await Members.destroy({
             where: {
-                userId: req.body.user.userId
+                memberId: req.body.user.memberId
             }
         })
     } catch (err) {

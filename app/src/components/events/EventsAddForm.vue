@@ -2,33 +2,21 @@
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Textarea } from '@/components/ui/textarea'
-
-import { useForm } from 'vee-validate'
-import { toTypedSchema } from '@vee-validate/zod'
-import * as z from 'zod'
+import { ref } from 'vue'
+import { Checkbox } from '@/components/ui/checkbox'
 
 import { format } from 'date-fns'
 import { Calendar as CalendarIcon } from 'lucide-vue-next'
-
-import { cn } from '@/lib/utils'
 import { Calendar } from '@/components/ui/calendar'
 import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover'
 
-import { FormControl, FormField, FormItem, FormLabel } from '@/components/ui/form'
+import { Card, CardContent, CardFooter, CardHeader } from '@/components/ui/card'
+import { Label } from '@/components/ui/label'
 
-const formSchema = toTypedSchema(
-  z.object({
-    username: z.string().min(2).max(50)
-  })
-)
+import { Collapsible, CollapsibleContent, CollapsibleTrigger } from '@/components/ui/collapsible'
 
-const form = useForm({
-  validationSchema: formSchema
-})
-
-const onSubmit = form.handleSubmit((values) => {
-  console.log('Form submitted!', values)
-})
+const isOpen = ref(false)
+const date = ref<Date>()
 </script>
 
 <template>
@@ -38,95 +26,73 @@ const onSubmit = form.handleSubmit((values) => {
         <span class="material-symbols-outlined"> calendar_add_on </span>
         <span class="text-accent">Ajouter un événement</span>
       </CardHeader>
-      <CardContent>
-        <form @submit="onSubmit" class="flex flex-col gap-2">
-          <FormField v-slot="{ componentField }" name="username">
-            <FormItem class="flex flex-col">
-              <FormLabel>Nom de l'événement</FormLabel>
-              <FormControl>
-                <Input
-                  type="text"
-                  placeholder="Formation Alten : Être performant face à un intervenant"
-                  v-bind="componentField"
-                />
-              </FormControl>
-            </FormItem>
-          </FormField>
-          <FormField v-slot="{ componentField, value }" name="startDate">
-            <FormItem class="flex flex-col">
-              <FormLabel>Date de début</FormLabel>
-              <Popover>
-                <PopoverTrigger as-child>
-                  <FormControl>
-                    <Button
-                      variant="outline"
-                      :class="
-                        cn(
-                          'w-[240px] ps-3 text-start font-normal',
-                          !value && 'text-muted-foreground'
-                        )
-                      "
-                    >
-                      <span>{{ value ? format(value, 'PPP') : '01/01/2024' }}</span>
-                      <CalendarIcon class="ms-auto h-4 w-4 opacity-50" />
-                    </Button>
-                  </FormControl>
-                </PopoverTrigger>
-                <PopoverContent class="p-0">
-                  <Calendar v-bind="componentField" />
-                </PopoverContent>
-              </Popover>
-            </FormItem>
-          </FormField>
-          <FormField v-slot="{ componentField, value }" name="endDate">
-            <FormItem class="flex flex-col">
-              <FormLabel>Date de fin</FormLabel>
-              <Popover>
-                <PopoverTrigger as-child>
-                  <FormControl>
-                    <Button
-                      variant="outline"
-                      :class="
-                        cn(
-                          'w-[240px] ps-3 text-start font-normal',
-                          !value && 'text-muted-foreground'
-                        )
-                      "
-                    >
-                      <span>{{ value ? format(value, 'PPP') : '01/01/2024' }}</span>
-                      <CalendarIcon class="ms-auto h-4 w-4 opacity-50" />
-                    </Button>
-                  </FormControl>
-                </PopoverTrigger>
-                <PopoverContent class="p-0">
-                  <Calendar v-bind="componentField" />
-                </PopoverContent>
-              </Popover>
-            </FormItem>
-          </FormField>
-          <FormField v-slot="{ componentField }" name="location">
-            <FormItem>
-              <FormLabel>Emplacement</FormLabel>
-              <Input
-                type="text"
-                placeholder="Où est-ce que ça se passe ?"
-                v-bind="componentField"
-              />
-            </FormItem>
-          </FormField>
-          <FormField name="description">
-            <FormItem>
-              <FormLabel>Description</FormLabel>
-              <FormControl>
-                <Textarea
-                  placeholder="Une description très fournie. Elle peut être sur plusieurs lignes."
-                />
-              </FormControl>
-            </FormItem>
-          </FormField>
-          <Button type="submit"> Ajouter un événement </Button>
-        </form>
+      <CardContent class="grid gap-4">
+        <div class="grid grid-cols-2 gap-2">
+          <Label>Nom de l'événement</Label>
+          <Label>Emplacement</Label>
+          <Input placeholder="Formation Alten : être performant face à un intervenant" />
+          <Input placeholder="Où est-ce que ca se passe ?" />
+        </div>
+        <div class="grid grid-cols-2 gap-2">
+          <Label>Date de début </Label>
+          <Label>Date de fin</Label>
+          <Popover>
+            <PopoverTrigger as-child>
+              <Button variant="outline">
+                <CalendarIcon class="mr-2 h-4 w-4" />
+                <span>{{ date ? format(date, 'PPP - HH:mm') : '01/01/2024' }}</span>
+              </Button>
+            </PopoverTrigger>
+            <PopoverContent class="w-auto p-0">
+              <Calendar v-model="date" mode="datetime" />
+            </PopoverContent>
+          </Popover>
+          <Popover>
+            <PopoverTrigger as-child>
+              <Button variant="outline">
+                <CalendarIcon class="mr-2 h-4 w-4" />
+                <span>{{ date ? format(date, 'PPP - HH:mm') : '01/01/2024' }}</span>
+              </Button>
+            </PopoverTrigger>
+            <PopoverContent class="w-auto p-0">
+              <Calendar v-model="date" mode="datetime" />
+            </PopoverContent>
+          </Popover>
+        </div>
+        <div class="grid gap-2">
+          <Label>Description</Label>
+          <Textarea
+            placeholder="Une description très fournie. Elle peut être sur plusieurs lignes."
+          />
+        </div>
+        <div class="grid gap-2">
+          <Label for="document">Ajouter une pièce jointe</Label>
+          <Input id="document" type="file" />
+        </div>
+        <div class="grid gap-4">
+          <Collapsible v-model:open="isOpen">
+            <CollapsibleTrigger>
+              <div class="item-center flex gap-2">
+                Notifier certaines personnes
+                <span class="material-symbols-outlined"> unfold_more </span>
+              </div>
+            </CollapsibleTrigger>
+            <CollapsibleContent>
+              <div class="flex items-center space-x-2">
+                <Checkbox id="bureau" />
+                <label> Bureau </label>
+              </div>
+              <div class="flex items-center space-x-2">
+                <Checkbox id="administration" />
+                <label> Conseil d'administration </label>
+              </div>
+            </CollapsibleContent>
+          </Collapsible>
+        </div>
       </CardContent>
+      <CardFooter>
+        <Button class="w-full"> Ajouter un événement</Button>
+      </CardFooter>
     </Card>
   </Wrapper>
 </template>

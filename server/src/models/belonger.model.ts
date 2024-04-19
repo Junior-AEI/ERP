@@ -19,10 +19,10 @@ export default class Belongers extends Model {
     @PrimaryKey
     @ForeignKey(() => Users)
     @Column({
-        type: DataType.STRING,
+        type: DataType.INTEGER,
         allowNull: false
     })
-    userId!: string
+    userId!: number
 
     @BelongsTo(() => Users)
     user!: Users

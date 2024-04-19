@@ -39,7 +39,7 @@ const getByPk = async (req: Request, res: Response) => {
 
         const group = await Groups.findByPk(identifier)
 
-        if (!group) throw createHttpError(404, 'User not found')
+        if (!group) throw createHttpError(404, 'Group not found')
 
         return res.status(200).json({
             status: 'success',

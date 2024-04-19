@@ -22,10 +22,10 @@ interface Member {
 }
 
 interface User {
-  userId: number,
-  username: string,
-  mandateStart: Date,
-  mandateEnd: Date,
+  userId: number
+  username: string
+  mandateStart: Date
+  mandateEnd: Date
   emailJE: string
 }
 

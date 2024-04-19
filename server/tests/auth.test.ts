@@ -13,6 +13,7 @@ afterAll(afterAllTests)
 // ! DONE
 describe('ROUTE (POST): /api/login (Login)', () => {
 
+
     afterEach(clearDatabase);
 
     it('Wrong informations', async () => {
@@ -66,6 +67,7 @@ describe('ROUTE (POST): /api/login (Login)', () => {
                 password: 'mdp'
             })
         expect(res.status).toEqual(200);
+
         expect(res.body.data.token).toBeDefined();
 
     })
@@ -76,6 +78,7 @@ describe('ROUTE (POST): /api/login (Login)', () => {
 describe('ROUTE (POST): /api/forget (Forget password way)', () => {
 
     afterEach(clearDatabase);
+
 
     it('Wrong username', async () => {
 
@@ -108,6 +111,7 @@ describe('ROUTE (POST): /api/forget (Forget password way)', () => {
             })
 
         expect(res.status).toEqual(200);
+
         expect(res.body.data.token).toBeDefined();
 
         const user = await Users.findOne({
@@ -174,6 +178,7 @@ describe('ROUTE (POST): /api/new-password (Change password)', () => {
         await createUser('john.doe');
 
         const oldUser = await Users.findOne({
+          
             where: {
                 username: "john.doe"
             }

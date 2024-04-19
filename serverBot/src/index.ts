@@ -16,6 +16,8 @@ import express from "express";
 import bodyParser from "body-parser";
 import routes from "./routes/routes";
 import cors from "cors";
+import { setupMessageHandling } from "./controller/receiver.controller";
+
 // import { sequelizeInit } from "./config/database.config";
 
 const app = express();
@@ -24,6 +26,8 @@ app.use(cors());
 app.use(bodyParser.json({ limit: "50mb" }));
 
 app.use("/api", routes);
+setupMessageHandling();
+
 
 const port = process.env.PORT;
 app.listen(port, () => {

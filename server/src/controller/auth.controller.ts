@@ -7,7 +7,7 @@ import Tokens from '../models/token.model'
 import Members from '../models/member.model'
 import { promisify } from 'util'
 import { controllerErrorHandler } from './utils.controller'
-import { HttpError } from 'http-errors'
+import createHttpError, { HttpError } from 'http-errors'
 import Persons from '../models/person.model'
 
 /**
@@ -39,23 +39,13 @@ const login = async (req: Request, res: Response) => {
         })
 
         // Return error if user not found
-        if (!user) {
-            return res.status(401).json({
-                status: 'error',
-                message: 'Invalid username or password'
-            })
-        }
+        if (!user) throw createHttpError(401, 'Invalid username or password')
 
         // Compare passwords
         const match = await promisify(bcrypt.compare)(password, user.password)
 
         // Return error if password doesn't match
-        if (!match) {
-            return res.status(401).json({
-                status: 'error',
-                message: 'Invalid username or password'
-            })
-        }
+        if (!match) throw createHttpError(401, 'Invalid username or password')
 
         // Create JWT token
         const token = await new SignJWT({ username }).setProtectedHeader({ alg: 'HS256' }).setAudience(JWT_AUDIENCE).setIssuer(JWT_ISSUER).setExpirationTime(JWT_EXPIRATION).sign(JWT_SECRET_KEY)
@@ -163,9 +153,9 @@ const askNewPassword = async (req: Request, res: Response) => {
             }
         })
 
-        if (!foundToken) throw new Error('Unable to find the provided token')
+        if (!foundToken) throw createHttpError(401, 'Unable to find the provided token')
 
-        if (foundToken.validity <= new Date()) throw new Error('Link is expired')
+        if (foundToken.validity <= new Date()) throw createHttpError(401, 'Link is expired')
 
         // TODO : Check password before insertion ?
 

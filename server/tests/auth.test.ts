@@ -1,28 +1,22 @@
 const request = require('supertest')
-import { sequelizeInit, sequelizeClose } from '../src/config/database.config'
 import bcrypt from 'bcrypt'
-import app from "../src/app";
-import { createUser } from './seeders/user.seeders';
-import { clearDatabase } from './utils';
-import Tokens from '../src/models/token.model';
-import Users from '../src/models/user.model';
-import { promisify } from 'util';
+import app from "../src/app"
+import { createUser } from './seeders/user.seeders'
+import { afterAllTests, beforeAllTests, clearDatabase } from './utils'
+import Tokens from '../src/models/token.model'
+import Users from '../src/models/user.model'
+import { promisify } from 'util'
 
-beforeAll(async () => {
-    await sequelizeInit()
-});
+beforeAll(beforeAllTests)
+afterAll(afterAllTests)
 
-afterAll(async () => {
-    await sequelizeClose();
-});
-
-describe('ROUTE: /api/login', () => {
+describe('ROUTE (POST): /api/login (Login)', () => {
 
     afterEach(clearDatabase);
 
     it('Wrong informations', async () => {
 
-        await createUser();
+        await createUser('john.doe');
 
         const wrongInformationsList = [
             // Void
@@ -56,14 +50,13 @@ describe('ROUTE: /api/login', () => {
                     password: wrongInformations.password
                 })
             expect(res.status).toEqual(401);
-            expect(res.body.status).toEqual("error");
         })
 
     })
 
     it('Good usage', async () => {
 
-        await createUser();
+        await createUser('john.doe');
 
         const res = await request(app)
             .post('/api/login')
@@ -72,7 +65,6 @@ describe('ROUTE: /api/login', () => {
                 password: 'mdp'
             })
         expect(res.status).toEqual(200);
-        expect(res.body.status).toEqual("success");
         expect(res.body.data.token).toBeDefined();
 
     })
@@ -80,7 +72,7 @@ describe('ROUTE: /api/login', () => {
 })
 
 
-describe('ROUTE: /api/forget', () => {
+describe('ROUTE (POST): /api/forget (Forget password way)', () => {
 
     afterEach(clearDatabase);
 
@@ -100,14 +92,13 @@ describe('ROUTE: /api/forget', () => {
                     username: wrongUsername,
                 })
             expect(res.status).toEqual(404);
-            expect(res.body.status).toEqual("error");
         })
 
     })
 
     it('Good usage', async () => {
 
-        await createUser();
+        await createUser('john.doe');
 
         const res = await request(app)
             .post('/api/forget')
@@ -116,7 +107,6 @@ describe('ROUTE: /api/forget', () => {
             })
 
         expect(res.status).toEqual(200);
-        expect(res.body.status).toEqual("success");
         expect(res.body.data.token).toBeDefined();
 
         const user = await Users.findOne({
@@ -138,91 +128,90 @@ describe('ROUTE: /api/forget', () => {
 
 })
 
-describe('ROUTE: /api/new-password', () => {
+describe('ROUTE (POST): /api/new-password (Change password)', () => {
 
     afterEach(clearDatabase);
 
-    // ! 
-    // it('Wrong informations', async () => {
 
-    //     await createUser();
+    it('Wrong informations', async () => {
 
-    //     const wrongInformationsList = [
-    //         // Void
-    //         {
-    //             token: null,
-    //             newPassword: null,
-    //         },
-    //         // Empty
-    //         {
-    //             token: "",
-    //             newPassword: "",
-    //         },
-    //         // Wrong token
-    //         {
-    //             token: "wrongToken",
-    //             newPassword: "randomPassword",
-    //         },
-    //         // ...
-    //         // TODO : Bad new passwords 
-    //     ]
+        await createUser('john.doe');
 
-    //     wrongInformationsList.map(async (wrongInformations) => {
-    //         const res = await request(app)
-    //             .post('/api/new-password')
-    //             .send(wrongInformations)
-    //         expect(res.body.status).toEqual("error");
-    //     })
+        const wrongInformationsList = [
+            // Void
+            {
+                token: null,
+                newPassword: null,
+            },
+            // Empty
+            {
+                token: "",
+                newPassword: "",
+            },
+            // Wrong token
+            {
+                token: "wrongToken",
+                newPassword: "randomPassword",
+            },
+            // ...
+            // TODO : Bad new passwords 
+        ]
 
-    // })
-    // ! 
+        wrongInformationsList.map(async (wrongInformations) => {
+            const res = await request(app)
+                .post('/api/new-password')
+                .send(wrongInformations)
+            expect(res.status).toEqual(401);
+        })
+
+    })
+
 
     it('Good usage', async () => {
 
-        await createUser();
+        await createUser('john.doe');
 
-        let user = await Users.findOne({
+        const oldUser = await Users.findOne({
             where: {
                 username: "john.doe"
             }
         })
 
-        const oldPasswordHash = user?.password ? user.password : ""
+        const oldPasswordHash = oldUser?.password ? oldUser.password : ""
 
         expect(await promisify(bcrypt.compare)('mdp', oldPasswordHash)).toBeTruthy();
-        
+
         const token = "123456789randomTokenAZERTY"
         const currentDate = new Date()
         const tenMinutesLater = new Date(currentDate.getTime() + 10 * 60000)
-        
+
         await Tokens.create({
             token: token,
             validity: tenMinutesLater,
-            userId: user?.userId
+            userId: oldUser?.userId
         })
-        
+
         const res = await request(app)
-        .post('/api/new-password')
-        .send({
-            token: token,
-            password: "validPassword",
-        })
-        
+            .post('/api/new-password')
+            .send({
+                token: token,
+                password: "validPassword",
+            })
+
         expect(res.status).toEqual(200);
-        expect(res.body.status).toEqual("success");
-        
-        user = await Users.findOne({
+
+        const newUser = await Users.findOne({
             where: {
                 username: "john.doe"
             }
         })
-        
-        const newPasswordHash = user?.password ? user.password : ""
-        
+
+        const newPasswordHash = newUser?.password ? newUser.password : ""
+
         expect(newPasswordHash).not.toEqual(oldPasswordHash)
         expect(await promisify(bcrypt.compare)('mdp', newPasswordHash)).toBeFalsy();
         expect(await promisify(bcrypt.compare)('validPassword', newPasswordHash)).toBeTruthy();
-        
+
     })
 
 })

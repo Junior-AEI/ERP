@@ -6,6 +6,7 @@ import { HttpError } from 'http-errors'
 import { isValidUser } from '../validator/user.validator'
 import { controllerErrorHandler, isNumber } from './utils.controller'
 import Members from '../models/member.model'
+import { isStringObject } from 'util/types'
 
 /**
  * Get all users
@@ -38,10 +39,11 @@ const getAll = async (req: Request, res: Response) => {
  * @param res
  */
 const getByPk = async (req: Request, res: Response) => {
+
     try {
-        if (req.params.userId && !isNumber(req.params.userId)) throw createHttpError(400, 'Please provide a valid identifier')
 
         const identifier = parseInt(req.params.userId)
+        if (isNaN(identifier)) throw createHttpError(400, 'Please provide a valid identifier')
 
         const user = await Users.findByPk(identifier, {
             attributes: {
@@ -71,16 +73,16 @@ const getByPk = async (req: Request, res: Response) => {
 async function create(req: Request, res: Response) {
     try {
         // Parse identifier for member heredity
-        if (req.body.user.memberId && !isNumber(req.body.user.memberId)) throw createHttpError(400, 'Please provide a valid identifier for the linked member.')
         const identifier = parseInt(req.body.user.memberId)
-
-        // Test params
-        const validator = isValidUser(req.body.user.username, req.body.user.password, req.body.user.mandateStart, req.body.user.emailJE)
-        if (!validator.valid) return createHttpError(400, validator.message as string)
+        if (isNaN(identifier)) throw createHttpError(400, 'Please provide a valid identifier')
 
         // Try to find the linked member
         const member = await Members.findByPk(identifier)
-        if (!member) return createHttpError(404, 'Unable to find the linked member.')
+        if (!member) throw createHttpError(404, 'Unable to find the linked member.')
+
+        // Test params
+        const validator = isValidUser(req.body.user.username, req.body.user.password, req.body.user.mandateStart, req.body.user.mandateEnd, req.body.user.emailJE)
+        if (!validator.valid) throw createHttpError(400, validator.message as string)
 
         // Insert data
         const user = await Users.create({
@@ -88,8 +90,9 @@ async function create(req: Request, res: Response) {
             username: req.body.user.username,
             password: req.body.user.password,
             mandateStart: req.body.user.mandateStart,
+            mandateEnd: req.body.user.mandateEnd,
             emailJE: req.body.user.emailJE
-        })
+        });
 
         // Return success
         return res.status(200).json({
@@ -118,7 +121,7 @@ const update = async (req: Request, res: Response) => {
         const user = await Users.findByPk(identifier)
         if (!user) throw createHttpError(404, 'User not found')
 
-        const validator = isValidUser(req.body.user.username, req.body.user.password, req.body.user.mandateStart, req.body.user.emailJE)
+        const validator = isValidUser(req.body.user.username, req.body.user.password, req.body.user.mandateStart, req.body.user.mandateEnd, req.body.user.emailJE)
 
         if (validator.valid == 0) throw createHttpError(400, validator.message as string)
 
@@ -126,7 +129,7 @@ const update = async (req: Request, res: Response) => {
         req.body.user.updatedAt = null
         req.body.user.password = encryptedPassword
 
-        await Users.update(req.body, {
+        await Users.update(req.body.user, {
             where: { userId: identifier }
         })
 

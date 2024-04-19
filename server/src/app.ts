@@ -5,7 +5,7 @@ import bodyParser from 'body-parser'
 import routes from './routes/routes'
 import cors from 'cors'
 
-let app: Application = express()
+const app: Application = express()
 
 app.use(cors())
 app.use(bodyParser.json({ limit: '50mb' }))

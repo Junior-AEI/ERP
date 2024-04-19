@@ -48,13 +48,15 @@ const createUser = async () => {
 
     const user = await Users.create({
         userId: member.memberId,
-        username: person.firstname + '.' + person.lastname,
+        username: person.firstname.toLowerCase() + '.' + person.lastname.toLowerCase(),
         password: hashedPassword,
         lastLogin: ct,
         mandateStart: ct,
         mandateEnd: ct,
         emailJE: person.email
     })
+
+    console.log('User created', user)
 }
 
 export default createFakeData

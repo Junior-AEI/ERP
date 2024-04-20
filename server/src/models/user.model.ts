@@ -51,7 +51,7 @@ export default class Users extends Model {
     @IsDate
     @Column({
         type: DataType.DATE,
-        allowNull: false
+        allowNull: true
     })
     lastLogin!: Date
 

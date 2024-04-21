@@ -54,3 +54,23 @@ export const sendEmail = async (to: string, subject: string, text: string, from 
         }
     }
 };
+
+
+
+export const sendBotMesssage = async (chatID: number, message: string,) => {
+    try {
+        const botApiUrl = process.env.BOT_API_URL;
+        await axios.options(`${botApiUrl}/send`);
+        const response = await axios.post(`${botApiUrl}/send`, { chatID, message });
+        console.log(response.data);
+        return response.data;
+    } catch (error) {
+        if ((error as AxiosError).response?.status === 404 || (error as AxiosError).code === 'ECONNREFUSED') {
+            console.error('Le serveur bot sur le port 5001 est hors ligne ou inaccessible.');
+            return { success: false, message: 'Le serveur bot sur le port 5001 est hors ligne ou inaccessible.' };
+        } else {
+            console.error('Erreur lors de la tentative de communication avec le serveur bot : ', error);
+            return { success: false, message: 'Erreur lors de la tentative de communication avec le serveur bot.' };
+        }
+    }
+};

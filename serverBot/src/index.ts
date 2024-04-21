@@ -16,7 +16,7 @@ import express from "express";
 import bodyParser from "body-parser";
 import routes from "./routes/routes";
 import cors from "cors";
-import { setupMessageHandling } from "./controller/receiver.controller";
+import { setupMessageHandling } from "./controller/bot.controller";
 
 // import { sequelizeInit } from "./config/database.config";
 

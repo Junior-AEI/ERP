@@ -6,7 +6,7 @@ import Users from '../models/user.model'
 import Tokens from '../models/token.model'
 import Members from '../models/member.model'
 import { promisify } from 'util'
-import { controllerErrorHandler,sendEmail } from './utils.controller'
+import { controllerErrorHandler,sendEmail, sendBotMesssage } from './utils.controller'
 import createHttpError, { HttpError } from 'http-errors'
 import Persons from '../models/person.model'
 
@@ -59,6 +59,11 @@ const login = async (req: Request, res: Response) => {
          sendEmail('mathieu.chaillon@gmail.com', 'User Logged In', `User ${username} has logged in.`)
          .catch(error => console.error('Error sending email:', error)); // Log any errors, but don't let them propagate
         
+
+
+        // CHAT ID A CHANGER ICI 
+         sendBotMesssage(881607628,`User ${username} has logged in.`)
+         .catch(error => console.error('Error sending email:', error)); 
         // Return success with token and user details
         return res.status(200).json({
             status: 'success',

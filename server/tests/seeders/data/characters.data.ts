@@ -26,6 +26,7 @@ export const characters: any = {
             paymentMethod: 'CB',
             department: 'Informatique',
             telegramId: '@pabechou',
+            membershipNumber: 1
         },
         password: 'mdp'
     },
@@ -55,6 +56,7 @@ export const characters: any = {
             paymentMethod: 'CB',
             department: 'Informatique',
             telegramId: '',
+            membershipNumber: 2
         },
         password: 'mdp'
     },

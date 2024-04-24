@@ -3,6 +3,6 @@ module.exports = {
   preset: 'ts-jest',
   testEnvironment: 'node',
   // testMatch: [
-  //   "**/user.test.ts" 
+  //   "**/auth.test.ts" 
   // ]
 };

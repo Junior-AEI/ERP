@@ -35,6 +35,19 @@ interface User {
   emailJE: string
 }
 
+interface Address {
+  addressId: number
+  address: string
+  additionnalAddress: string
+  city: string
+  postCode: string
+  country: string
+  createdAt: Date
+  updatedAt: Date
+  member: Member[]
+  company: Array<{}>
+}
+
 interface Event {
   eventId: string
   name: string
@@ -51,4 +64,4 @@ interface EventTypes {
   fieldMeaning: string
 }
 
-export type { Person, Member, FullMember, User, Event, EventTypes }
+export type { Person, Member, FullMember, User, Event, Address, EventTypes }

@@ -78,7 +78,7 @@
 import axios from 'axios'
 import { useAuthStore } from '@/stores/authStore'
 import { ref } from 'vue'
-import type { Member, Person } from '@/types/api'
+import type { Member, Person, Address } from '@/types/api'
 
 const props = defineProps<{
   memberId: number
@@ -113,6 +113,20 @@ const personInfo = ref<Person>({
   updatedAt: new Date()
 })
 
+const addressInfo = ref<Address>({
+  addressId: NaN,
+  address: '',
+  additionnalAddress: '',
+  city: '',
+  postCode: '',
+  country: '',
+  createdAt: new Date(),
+  updatedAt: new Date(),
+  member: [],
+  company: []
+})
+
+// We fetch the member info
 axios
   .get(`/member/${props.memberId}`, {
     headers: {
@@ -130,11 +144,33 @@ axios
       createdAt: new Date(member.createdAt),
       updatedAt: new Date(member.updatedAt)
     }
+
+    // We fetch the address info
+    axios
+      .get(`/address/${member.addressId}`, {
+        headers: {
+          Authorization: `Bearer ${useAuthStore().token}`
+        }
+      })
+      .then((response) => {
+        const address = response.data.data.address
+        console.log(address)
+
+        addressInfo.value = {
+          ...address,
+          createdAt: new Date(address.createdAt),
+          updatedAt: new Date(address.updatedAt)
+        }
+      })
+      .catch((error) => {
+        console.error(error)
+      })
   })
   .catch((error) => {
     console.error(error)
   })
 
+// We fetch the person info
 axios
   .get(`/person/${props.memberId}`, {
     headers: {
@@ -155,6 +191,7 @@ axios
     console.error(error)
   })
 
+// Function to update the member info
 const editMemberData = () => {
   axios
     .put(

@@ -37,14 +37,6 @@ const pinia = createPinia()
 app.use(pinia)
 
 
-watch(
-  pinia.state,
-  (state) => {
-    localStorage.setItem('auth', JSON.stringify(state.auth))
-  },
-  { deep: true }
-)
-
 /* Définition du router */
 
 import router from './router'

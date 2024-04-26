@@ -25,6 +25,8 @@ interface Member {
   updatedAt: Date;
 }
 
+type FullMember = Member & Person;
+
 interface User {
   userId: number
   username: string
@@ -49,4 +51,4 @@ interface EventTypes {
   fieldMeaning: string
 }
 
-export type { Person, Member, User, Event, EventTypes }
+export type { Person, Member, FullMember, User, Event, EventTypes }

@@ -36,6 +36,7 @@ import { createPinia } from 'pinia'
 const pinia = createPinia()
 app.use(pinia)
 
+
 watch(
   pinia.state,
   (state) => {

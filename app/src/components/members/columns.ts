@@ -10,6 +10,7 @@ const defaultClasses = 'text-left font-medium'
 export const columns: ColumnDef<Member>[] = [
   {
     accessorKey: 'lastname',
+    accessorFn: (row) => row.person.lastname,
     meta: {
       label: 'Nom'
     },
@@ -22,6 +23,7 @@ export const columns: ColumnDef<Member>[] = [
   },
   {
     accessorKey: 'firstname',
+    accessorFn: (row) => row.person.firstname,
     meta: {
       label: 'Prénom'
     },
@@ -34,6 +36,7 @@ export const columns: ColumnDef<Member>[] = [
   },
   {
     accessorKey: 'mobilePhoneNumber',
+    accessorFn: (row) => row.person.mobilePhone,
     meta: {
       label: 'Téléphone'
     },
@@ -46,6 +49,7 @@ export const columns: ColumnDef<Member>[] = [
   },
   {
     accessorKey: 'email',
+    accessorFn: (row) => row.person.email,
     meta: {
       label: 'Email'
     },
@@ -132,7 +136,9 @@ export const columns: ColumnDef<Member>[] = [
         'div',
         { class: 'relative' },
         h(MembersDataTableDropDown, {
-          item
+          item: {
+            memberId: item.memberId,
+          }
         })
       )
     }

@@ -14,7 +14,7 @@ export function registerModule(module: Module) {
   module.routes.forEach((route) => {
     if (route.children) {
       route.children.forEach((childRoute) => {
-        router.addRoute(route.name, childRoute)
+        router.addRoute(childRoute)
       })
     }
   })

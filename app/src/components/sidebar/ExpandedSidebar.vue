@@ -54,7 +54,7 @@
           <template v-slot:children>
             <Link
               v-for="child in route.children"
-              :to="route.path + '/' + child.path"
+              :to="child.path"
               :key="child.path"
               class="p-1 pl-6"
             >

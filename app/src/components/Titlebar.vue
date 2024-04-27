@@ -6,7 +6,12 @@
         {{ routeName }}
       </span>
     </div>
-    <img src="/logo.svg" alt="logo" class="h-full" />
+    <img
+      @click="$router.push({ path: '/' })"
+      src="/logo.svg"
+      alt="logo"
+      class="h-full cursor-pointer"
+    />
   </div>
 </template>
 

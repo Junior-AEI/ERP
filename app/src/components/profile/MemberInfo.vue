@@ -72,6 +72,40 @@
       <Button @click="editMemberData()">Modifier</Button>
     </CardContent>
   </Card>
+
+  <Card class="flex-1">
+    <CardHeader>
+      <Icon name="location_on" class="text-6xl" />
+      <span class="text-accent"> Adresse du membre</span>
+    </CardHeader>
+    <CardContent>
+      <div class="flex items-end gap-4">
+        <div class="flex flex-1 flex-col gap-2">
+          <Label for="address">Adresse</Label>
+          <Input id="address" v-model="addressInfo.address" />
+        </div>
+        <div class="flex flex-1 flex-col gap-2">
+          <Label for="add">Complément d'adresse</Label>
+          <Input id="add" v-model="addressInfo.additionnalAddress" />
+        </div>
+      </div>
+      <div class="flex items-end gap-4">
+        <div class="flex flex-1 flex-col gap-2">
+          <Label for="city">Ville</Label>
+          <Input id="city" v-model="addressInfo.city" />
+        </div>
+        <div class="flex flex-1 flex-col gap-2">
+          <Label for="postCode">Code Postal</Label>
+          <Input id="postCode" v-model="addressInfo.postCode" />
+        </div>
+        <div class="flex flex-1 flex-col gap-2">
+          <Label for="country">Pays</Label>
+          <Input id="country" v-model="addressInfo.country" />
+        </div>
+      </div>
+      <Button @click="editAdressData()">Modifier l'adresse de l'utilisateur</Button>
+    </CardContent>
+  </Card>
 </template>
 
 <script setup lang="ts">
@@ -239,6 +273,36 @@ const editMemberData = () => {
           email: personInfo.value.email,
           createdAt: personInfo.value.createdAt.toISOString(),
           updatedAt: personInfo.value.updatedAt.toISOString()
+        }
+      },
+      {
+        headers: {
+          Authorization: `Bearer ${useAuthStore().token}`
+        }
+      }
+    )
+    .then((response) => {
+      console.log(response)
+    })
+    .catch((error) => {
+      console.error(error)
+    })
+}
+
+const editAdressData = () => {
+  axios
+    .put(
+      `/address/${addressInfo.value.addressId}`,
+      {
+        address: {
+          addressId: addressInfo.value.addressId,
+          address: addressInfo.value.address,
+          additionnalAddress: addressInfo.value.additionnalAddress,
+          city: addressInfo.value.city,
+          postCode: addressInfo.value.postCode,
+          country: addressInfo.value.country,
+          createdAt: addressInfo.value.createdAt.toISOString(),
+          updatedAt: addressInfo.value.updatedAt.toISOString()
         }
       },
       {

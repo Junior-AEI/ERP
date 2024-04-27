@@ -99,8 +99,16 @@ async function update(req: Request, res: Response) {
         if (req.params.addressId && !isNumber(req.params.addressId)) throw createHttpError(400, 'Please provide a valid identifier.')
         const identifier = parseInt(req.params.addressId)
 
+        console.log(req.body.address)
+
         // Test params
-        const validator = isValidAddress(req.body.address.address, req.body.address.additionnalAddress, req.body.address.city, req.body.address.postCode, req.body.address.country)
+        const validator = isValidAddress(
+            req.body.address.address,
+            req.body.address.additionnalAddress,
+            req.body.address.city,
+            req.body.address.postCode,
+            req.body.address.country
+        )
 
         if (!validator.valid) throw createHttpError(400, validator.message as string)
 

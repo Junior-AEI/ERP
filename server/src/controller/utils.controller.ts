@@ -1,9 +1,7 @@
 import { Response } from 'express'
 import { HttpError } from 'http-errors'
-import dotenv from 'dotenv'
-dotenv.config()
 import axios, { AxiosError } from 'axios';
- 
+
 
 
 
@@ -37,7 +35,7 @@ export async function controllerErrorHandler(err: HttpError, res: Response) {
 
 
 
-export const sendEmail = async (to: string, subject: string, text: string, from : string = 'erp-mail@junior-aei.com') => {
+export const sendEmail = async (to: string, subject: string, text: string, from: string = 'erp-mail@junior-aei.com') => {
     try {
         const mailApiUrl = process.env.MAIL_API_URL;
         await axios.options(`${mailApiUrl}/mail`);

@@ -5,6 +5,8 @@ import { Textarea } from '@/components/ui/textarea'
 import { ref } from 'vue'
 import { Checkbox } from '@/components/ui/checkbox'
 
+import { fr } from 'date-fns/locale'
+
 import { format } from 'date-fns'
 import { Calendar as CalendarIcon } from 'lucide-vue-next'
 import { Calendar } from '@/components/ui/calendar'
@@ -16,7 +18,8 @@ import { Label } from '@/components/ui/label'
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from '@/components/ui/collapsible'
 
 const isOpen = ref(false)
-const date = ref<Date>()
+const dateBegin = ref<Date>()
+const dateEnd = ref<Date>()
 </script>
 
 <template>
@@ -40,22 +43,30 @@ const date = ref<Date>()
             <PopoverTrigger as-child>
               <Button variant="outline">
                 <CalendarIcon class="mr-2 h-4 w-4" />
-                <span>{{ date ? format(date, 'PPP - HH:mm') : '01/01/2024' }}</span>
+                <span>{{
+                  dateBegin
+                    ? format(dateBegin, 'PPP - HH:mm', { locale: fr })
+                    : '1 janvier 2024 - 00:00'
+                }}</span>
               </Button>
             </PopoverTrigger>
             <PopoverContent class="w-auto p-0">
-              <Calendar v-model="date" mode="datetime" />
+              <Calendar v-model="dateBegin" mode="datetime" />
             </PopoverContent>
           </Popover>
           <Popover>
             <PopoverTrigger as-child>
               <Button variant="outline">
                 <CalendarIcon class="mr-2 h-4 w-4" />
-                <span>{{ date ? format(date, 'PPP - HH:mm') : '01/01/2024' }}</span>
+                <span>{{
+                  dateEnd
+                    ? format(dateEnd, 'PPP - HH:mm', { locale: fr })
+                    : '1 janvier 2024 - 00:00'
+                }}</span>
               </Button>
             </PopoverTrigger>
             <PopoverContent class="w-auto p-0">
-              <Calendar v-model="date" mode="datetime" />
+              <Calendar v-model="dateEnd" mode="datetime" time-format="24" />
             </PopoverContent>
           </Popover>
         </div>

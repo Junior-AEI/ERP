@@ -10,10 +10,11 @@
 // LATIME is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more details.
 
 // You should have received a copy of the GNU Affero General Public License along with LATIME. If not, see <https://www.gnu.org/licenses/>.
-import { Table, Column, Model, DataType, PrimaryKey, IsDate, HasMany, ForeignKey, BelongsTo } from 'sequelize-typescript'
+import { Table, Column, Model, DataType, PrimaryKey, IsDate, HasMany, IsIn } from 'sequelize-typescript'
 import Partners from './partner.model'
-import EventTypes from './eventType.model'
 import EventGroupConcerned from './eventGroupConcerned.model'
+
+const EVENTTYPES = ['Congrès', 'Afterwork', 'Réunion', 'CA', 'RDI', 'Formation', 'RDV client', 'Audit', 'Autre'];
 
 @Table
 export default class Events extends Model {
@@ -58,15 +59,13 @@ export default class Events extends Model {
     })
     description!: string
 
-    @ForeignKey(() => EventTypes)
+    @IsIn([EVENTTYPES])
     @Column({
-        type: DataType.INTEGER,
-        allowNull: false
+        type: DataType.ENUM,
+        values: EVENTTYPES,
+        allowNull: false,
     })
-    eventTypeName!: number
-
-    @BelongsTo(() => EventTypes)
-    eventType!: EventTypes
+    eventTypeName!: string
 
     @HasMany(() => Partners)
     member!: Partners

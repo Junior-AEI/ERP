@@ -33,9 +33,8 @@ const getAll = async (req: Request, res: Response) => {
  */
 const getByPk = async (req: Request, res: Response) => {
     try {
-        if (req.params.companyId && !isNumber(req.params.companyId)) throw createHttpError(400, 'Please provide a valid identifier')
-
         const identifier = parseInt(req.params.companyId)
+        if (isNaN(identifier)) throw createHttpError(400, 'Please provide a valid identifier')
 
         const company = await Companies.findByPk(identifier)
 

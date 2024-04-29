@@ -24,7 +24,7 @@ const baseRoutes = [
   },
   {
     path: '/profile/:id',
-    name: 'Profil',
+    name: 'Profil de l\'utilisateur',
     component: () => import('../views/ProfileView.vue'),
     meta: {
       icon: 'person'

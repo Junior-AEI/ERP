@@ -1,32 +1,51 @@
 interface Person {
-  personId: string
-  firstname: string
-  lastname: string
-  gender: string
-  mobilePhoneNumber: string
-  landlinePhoneNumber: string
-  email: string
+  personId: number;
+  lastname: string;
+  firstname: string;
+  gender: string;
+  mobilePhone: string;
+  landlinePhone: string;
+  email: string;
+  createdAt: Date;
+  updatedAt: Date;
 }
 
 interface Member {
-  memberId: string
-  birthDate: string
-  birthPlace: string
-  nationality: string
-  promotion: string
-  contributionDate: string
-  paymentMethod: string
-  department: string
-  createdAt: string
-  updatedAt: string
+  memberId: number;
+  birthDate: Date;
+  birthPlace: string;
+  nationality: string;
+  promotion: string;
+  contributionDate: Date;
+  paymentMethod: string;
+  department: string;
+  membershipNumber: number;
+  addressId: number;
+  createdAt: Date;
+  updatedAt: Date;
 }
+
+type FullMember = Member & Person;
 
 interface User {
   userId: number
   username: string
-  mandateStart: Date
-  mandateEnd: Date
+  mandateStart: Date;
+  mandateEnd: Date;
   emailJE: string
+}
+
+interface Address {
+  addressId: number
+  address: string
+  additionnalAddress: string
+  city: string
+  postCode: string
+  country: string
+  createdAt: Date
+  updatedAt: Date
+  member: Member[]
+  company: Array<{}>
 }
 
 interface Event {
@@ -45,4 +64,4 @@ interface EventTypes {
   fieldMeaning: string
 }
 
-export type { Person, Member, User, Event, EventTypes }
+export type { Person, Member, FullMember, User, Event, Address, EventTypes }

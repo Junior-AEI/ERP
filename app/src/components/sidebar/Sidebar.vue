@@ -1,7 +1,12 @@
 <template>
   <div class="flex h-screen border-r bg-primary-foreground text-lg" v-auto-animate>
-    <ExpandedSidebar @reduce="reduce()" @search="openSearch()" @logout="logout()" v-if="expanded" />
-    <ReducedSidebar @expand="expand()" @search="openSearch()" @logout="logout()" v-else />
+    <ReducedSidebar
+      @expand="expand()"
+      @search="openSearch()"
+      @logout="logout()"
+      v-if="generalStore.sidebarStatusShrink"
+    />
+    <ExpandedSidebar @reduce="shrink()" @search="openSearch()" @logout="logout()" v-else />
     <SearchBar @search-close="closeSearch()" @search-open="openSearch()" :open="searchOpen" />
   </div>
 </template>
@@ -9,21 +14,21 @@
 <script setup lang="ts">
 import { ref } from 'vue'
 import { useAuthStore } from '@/stores/authStore'
+import { useGeneralStore } from '@/stores/generalStore'
 import router from '@/router'
 
 const authStore = useAuthStore()
 
-const expanded = ref(true)
-const displaySearch = ref(false)
+const generalStore = useGeneralStore()
+
 const searchOpen = ref(false)
 
 const expand = () => {
-  expanded.value = true
-  displaySearch.value = false
+  generalStore.expandSidebar()
 }
 
-const reduce = () => {
-  expanded.value = false
+const shrink = () => {
+  generalStore.shrinkSidebar()
 }
 
 const closeSearch = () => {

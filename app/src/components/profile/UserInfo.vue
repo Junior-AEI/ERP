@@ -1,8 +1,8 @@
 <template>
   <Card class="flex-1">
     <CardHeader>
-      <Icon name="person" class="text-6xl" />
-      <span class="text-accent"> Informations sur l'Utilisateur </span>
+      <Icon name="user_attributes" class="text-6xl" />
+      <span class="text-accent"> Informations du compte utilisateur </span>
     </CardHeader>
     <CardContent>
       <div class="flex items-end gap-4">

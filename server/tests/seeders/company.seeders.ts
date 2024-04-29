@@ -14,3 +14,8 @@ export const createCompany = async (name: string) => {
     return company.companyId
 }
 
+export const createAddress = async (name: string) => {
+    const address = await Addresses.create(companies[name].address)
+
+    return address.addressId
+}

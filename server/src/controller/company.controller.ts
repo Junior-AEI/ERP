@@ -4,6 +4,7 @@ import { controllerErrorHandler, isNumber } from './utils.controller'
 import createHttpError from 'http-errors'
 import { HttpError } from 'http-errors'
 import { isValidCompany } from '../validator/company.validator'
+import Addresses from '../models/address.model'
 
 /**
  * Get all companies
@@ -58,23 +59,39 @@ const getByPk = async (req: Request, res: Response) => {
  * @param res
  */
 async function create(req: Request, res: Response) {
-    // Test params
-    const validator = isValidCompany(req.body.company.name, req.body.company.legalEntity)
-    if (!validator.valid) return createHttpError(400, validator.message as string)
-
-    // Insert in database
-    const company = await Companies.create({
-        name: req.body.company.name,
-        legalEntity: req.body.company.legalEntity
-    })
-
-    // Return success
-    return res.status(200).json({
-        status: 'success',
-        data: {
-            companyId: company.companyId
+    try {
+        // Parse identifier for address link
+        const identifier = parseInt(req.body.company.addressId)
+        if (isNaN(identifier)) throw createHttpError(400, 'Please provide a valid identifier');
+            
+        // Try to find the linked address
+        const address = await Addresses.findByPk(identifier)
+        if (!address) throw createHttpError(404, 'Unable to find the linked address.');
+            
+        // Test params
+        const validator = isValidCompany(req.body.company.name, req.body.company.legalEntity)
+        if (!validator.valid) {
+            throw createHttpError(400, validator.message as string);
         }
-    })
+        
+        // Insert in database
+        const company = await Companies.create({
+            name: req.body.company.name,
+            legalEntity: req.body.company.legalEntity,
+            addressId: identifier,
+        })
+
+        // Return success
+        return res.status(200).json({
+            status: 'success',
+            data: {
+                companyId: company.companyId
+            }
+        })
+    } catch (err) {
+        if (err instanceof HttpError) controllerErrorHandler(err, res)
+        else throw err
+    }
 }
 
 /**
@@ -85,18 +102,19 @@ async function create(req: Request, res: Response) {
 const update = async (req: Request, res: Response) => {
     try {
         // Parse identifier
-        if (req.params.companyId && !isNumber(req.params.companyId)) throw createHttpError(400, 'Please provide a valid identifier')
         const identifier = parseInt(req.params.companyId)
-
+        if (isNaN(identifier)) throw createHttpError(400, 'Please provide a valid identifier');
+            
         const company = await Companies.findByPk(identifier)
-        if (!company) throw createHttpError(404, 'User not found')
-
+        if (!company) throw createHttpError(404, 'User not found');
+        
         const validator = isValidCompany(req.body.company.name, req.body.company.legalEntity)
+        if (validator.valid == 0) throw createHttpError(400, validator.message as string);
 
-        if (validator.valid == 0) throw createHttpError(400, validator.message as string)
-
-        await Companies.update(req.body, {
-            where: { companyId: identifier }
+        await Companies.update(req.body.company, {
+            where: { 
+                companyId: identifier,
+            }
         })
 
         return res.status(200).json({
@@ -116,16 +134,20 @@ const update = async (req: Request, res: Response) => {
 const del = async (req: Request, res: Response) => {
     try {
         // Parse identifier
-        if (req.params.companyId && !isNumber(req.params.companyId)) throw createHttpError(400, 'Please provide a valid identifier')
         const identifier = parseInt(req.params.companyId)
+        if (isNaN(identifier)) throw createHttpError(400, 'Please provide a valid identifier')
 
         const company = await Companies.findByPk(identifier)
-        if (!company) throw createHttpError(404, 'User not found')
+        if (!company) throw createHttpError(404, 'Company not found')
 
         await Companies.destroy({
             where: {
-                companyId: req.body.company.companyId
+                companyId: identifier
             }
+        })
+
+        return res.status(200).json({
+            status: 'success'
         })
     } catch (err) {
         if (err instanceof HttpError) controllerErrorHandler(err, res)

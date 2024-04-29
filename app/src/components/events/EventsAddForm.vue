@@ -1,27 +1,3 @@
-<script setup lang="ts">
-import { Button } from '@/components/ui/button'
-import { Input } from '@/components/ui/input'
-import { Textarea } from '@/components/ui/textarea'
-import { ref } from 'vue'
-import { Checkbox } from '@/components/ui/checkbox'
-
-import { fr } from 'date-fns/locale'
-
-import { format } from 'date-fns'
-import { Calendar as CalendarIcon } from 'lucide-vue-next'
-import { Calendar } from '@/components/ui/calendar'
-import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover'
-
-import { Card, CardContent, CardFooter, CardHeader } from '@/components/ui/card'
-import { Label } from '@/components/ui/label'
-
-import { Collapsible, CollapsibleContent, CollapsibleTrigger } from '@/components/ui/collapsible'
-
-const isOpen = ref(false)
-const dateBegin = ref<Date>()
-const dateEnd = ref<Date>()
-</script>
-
 <template>
   <Wrapper class="flex-col">
     <Card>
@@ -107,3 +83,41 @@ const dateEnd = ref<Date>()
     </Card>
   </Wrapper>
 </template>
+
+<script setup lang="ts">
+import axios from 'axios'
+import { useAuthStore } from '@/stores/authStore'
+import type { Event } from '@/types/api'
+
+import { Button } from '@/components/ui/button'
+import { Input } from '@/components/ui/input'
+import { Textarea } from '@/components/ui/textarea'
+import { ref } from 'vue'
+import { Checkbox } from '@/components/ui/checkbox'
+
+import { fr } from 'date-fns/locale'
+
+import { format } from 'date-fns'
+import { Calendar as CalendarIcon } from 'lucide-vue-next'
+import { Calendar } from '@/components/ui/calendar'
+import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover'
+
+import { Card, CardContent, CardFooter, CardHeader } from '@/components/ui/card'
+import { Label } from '@/components/ui/label'
+
+import { Collapsible, CollapsibleContent, CollapsibleTrigger } from '@/components/ui/collapsible'
+
+const isOpen = ref(false)
+const dateBegin = ref<Date>()
+const dateEnd = ref<Date>()
+
+const eventInfo = ref<Event>({
+  eventId: NaN,
+  name: '',
+  startDate: new Date(),
+  endDate: new Date(),
+  location: '',
+  description: '',
+  eventTypeName: ''
+})
+</script>

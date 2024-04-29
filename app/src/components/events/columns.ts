@@ -57,9 +57,9 @@ export const columns: ColumnDef<Event>[] = [
       )
     },
     cell: ({ row }) => {
-      const startDate = row.getValue('startDate') as string
+      const startDate = row.getValue('startDate') as Date
 
-      return h('div', { class: defaultClasses }, startDate)
+      return h('div', { class: defaultClasses }, startDate.toLocaleString())
     }
   },
   {
@@ -86,9 +86,9 @@ export const columns: ColumnDef<Event>[] = [
       )
     },
     cell: ({ row }) => {
-      const endDate = row.getValue('endDate') as string
+      const endDate = row.getValue('endDate') as Date
 
-      return h('div', { class: defaultClasses }, endDate)
+      return h('div', { class: defaultClasses }, endDate.toLocaleString())
     }
   },
   {

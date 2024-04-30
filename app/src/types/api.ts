@@ -49,20 +49,15 @@ interface Address {
 }
 
 interface Event {
-  eventId: string
+  eventId: number
   name: string
-  startDate: string
-  endDate: string
+  startDate: Date
+  endDate: Date
   location: string
   description: string
   eventTypeName: string
 }
 
-interface EventTypes {
-  name: string
-  fieldNumber: string
-  fieldMeaning: string
-}
 
 interface itTicket {
 
@@ -79,4 +74,4 @@ type itTicketInfo = itTicket & User;
 
 
 
-export type { Person, Member, FullMember, User, Event, Address, EventTypes, itTicket, itTicketInfo }
+export type { Person, Member, FullMember, User, Event, Address, itTicket, itTicketInfo }

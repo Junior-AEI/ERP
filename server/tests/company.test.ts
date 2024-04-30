@@ -288,6 +288,50 @@ describe('ROUTE (PUT): /api/company/:id (Update company)', () => {
         expect(res.status).toEqual(404)
     })
 
+    it('Wrong format addressId', async () => {
+
+        const token = await initUser('john.doe')
+
+        const companyId = await createCompany('Enseirb')
+
+        const wrongParamList = [
+            null,
+            undefined,
+            "wrongAddressIdFormat",
+        ]
+
+        for (const wrongParam of wrongParamList) {
+            const res = await request(app)
+                .put(`/api/company/${companyId}}`)
+                .send({
+                    company: {
+                        ...goodParams,
+                        addressId: wrongParam,
+                    }
+                })
+                .set('Authorization', `Bearer ${token}`);
+            expect(res.status).toEqual(400)
+        }
+    })
+
+    it('Wrong addressId', async () => {
+
+        const token = await initUser('john.doe')
+
+        const companyId = await createCompany('Enseirb')
+
+        const res = await request(app)
+            .put(`/api/company/${companyId}}`)
+            .send({
+                company: {
+                    ...goodParams,
+                    addressId: -10,
+                }
+            })
+            .set('Authorization', `Bearer ${token}`);
+        expect(res.status).toEqual(404)
+    })
+
     it('Wrong name', async () => {
         
         const token = await initUser('john.doe')
@@ -347,6 +391,7 @@ describe('ROUTE (PUT): /api/company/:id (Update company)', () => {
 
         const token = await initUser('john.doe')
 
+        const addressId = await createAddress('Enseirb')
         const companyId = await createCompany('Enseirb')
 
         const company = await Companies.findOne({
@@ -364,6 +409,7 @@ describe('ROUTE (PUT): /api/company/:id (Update company)', () => {
             .send({
                 company: {
                     ...goodParams,
+                    addressId: addressId
                 }
             })
             .set('Authorization', `Bearer ${token}`);
@@ -379,10 +425,11 @@ describe('ROUTE (PUT): /api/company/:id (Update company)', () => {
         expect(updatedCompany?.companyId).toEqual(companyId)
         expect(updatedCompany?.name).toEqual(goodParams.name)
         expect(updatedCompany?.legalEntity).toEqual(goodParams.legalEntity)
+        expect(updatedCompany?.addressId).toEqual(addressId)
     })  
 })
 
-
+// ! DONE
 describe('ROUTE (DELETE): /api/company/:id (Delete company)', () => {
 
     afterEach(clearDatabase);

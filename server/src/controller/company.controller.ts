@@ -106,7 +106,15 @@ const update = async (req: Request, res: Response) => {
         if (isNaN(identifier)) throw createHttpError(400, 'Please provide a valid identifier');
             
         const company = await Companies.findByPk(identifier)
-        if (!company) throw createHttpError(404, 'User not found');
+        if (!company) throw createHttpError(404, 'Company not found');
+
+        // Identify address
+        const idAddress = parseInt(req.body.company.addressId)
+        if (isNaN(idAddress)) throw createHttpError(400, 'Please provide a valid address identifier');
+
+        const address = await Addresses.findByPk(idAddress)
+        if (!address) throw createHttpError(404, 'Address not found');
+        
         
         const validator = isValidCompany(req.body.company.name, req.body.company.legalEntity)
         if (validator.valid == 0) throw createHttpError(400, validator.message as string);

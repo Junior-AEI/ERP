@@ -31,14 +31,6 @@ const baseRoutes = [
     }
   },
   {
-    path: '/administration',
-    name: 'Administration',
-    component: () => import('../views/SettingsView.vue'),
-    meta: {
-      icon: 'build'
-    }
-  },
-  {
     path: '/login',
     name: 'Se connecter',
     component: () => import('../views/LoginView.vue'),

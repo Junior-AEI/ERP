@@ -64,4 +64,19 @@ interface EventTypes {
   fieldMeaning: string
 }
 
-export type { Person, Member, FullMember, User, Event, Address, EventTypes }
+interface itTicket {
+
+  ticketId : number
+  userId : number
+  title : string
+  description : string
+  applicationConcerned : string
+  state : string
+
+}
+
+type itTicketInfo = itTicket & User;
+
+
+
+export type { Person, Member, FullMember, User, Event, Address, EventTypes, itTicket, itTicketInfo }

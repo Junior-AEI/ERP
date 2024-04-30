@@ -1,24 +1,32 @@
-// import Persons from '../../src/models/person.model'
-// import Members from '../../src/models/member.model'
-// import Addresses from '../../src/models/address.model'
-// import { characters } from './data/characters.data'
+import Persons from '../../src/models/person.model'
+import Clients from '../../src/models/client.model'
+import Companies from '../../src/models/company.model'
+import Addresses from '../../src/models/address.model'
+import { clients } from './data/clients.data'
 
-// export const createMember = async (username: string) => {
-//     const person = await Persons.create(characters[username].person)
+export const createClient = async (username: string) => {
+    const person = await Persons.create(clients[username].person)
 
-//     const address = await Addresses.create(characters[username].address)
+    const address = await Addresses.create(clients[username].address)
 
-//     const memberBirthDate = new Date(characters[username].memberBirthDate).toISOString()
-//     const ct = new Date().toISOString()
+    const company = await Companies.create({
+        addressId: address.addressId,
+        ...clients[username].company
+    })
 
-//     const member = await Members.create({
-//         memberId: person.personId,
-//         birthDate: memberBirthDate,
-//         contributionDate: ct,
-//         addressId: address.addressId,
-//         ...characters[username].member,
-//     })
+    const client = await Clients.create({
+        clientId: person.personId,
+        addressId: address.addressId,
+        companyId: company.companyId,
+        function: clients[username].function,
+    })
 
-//     return member.memberId
-// }
+    return client.clientId
+}
+
+export const createPerson = async (username: string) => {
+    const person = await Persons.create(clients[username].person)
+
+    return person.personId
+}
 

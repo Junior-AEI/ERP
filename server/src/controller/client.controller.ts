@@ -1,10 +1,11 @@
 import { Request, Response } from 'express'
 import Clients from '../models/client.model'
-import { controllerErrorHandler, isNumber } from './utils.controller'
+import { controllerErrorHandler } from './utils.controller'
 import createHttpError from 'http-errors'
 import { HttpError } from 'http-errors'
 import { isValidClient } from '../validator/client.validator'
 import Companies from '../models/company.model'
+import Persons from '../models/person.model'
 
 /**
  * Get all clients
@@ -34,12 +35,10 @@ const getAll = async (req: Request, res: Response) => {
  */
 const getByPk = async (req: Request, res: Response) => {
     try {
-        if (req.params.clientId || !isNumber(req.params.clientId)) throw createHttpError(400, 'Please provide a valid identifier.')
-
         const identifier = parseInt(req.params.clientId)
+        if (isNaN(identifier)) throw createHttpError(400, 'Please provide a valid identifier.')
 
         const client = await Clients.findByPk(identifier)
-
         if (!client) throw createHttpError(404, 'Client not found.')
 
         return res.status(200).json({
@@ -59,29 +58,45 @@ const getByPk = async (req: Request, res: Response) => {
  * @param res
  */
 async function create(req: Request, res: Response) {
-    // Test if parameters has been filled
-    const validator = isValidClient(req.body.client.function, req.body.client.companyId)
+    try {
+        // Parse identifier
+        const identifier = parseInt(req.body.client.clientId)
+        if (isNaN(identifier)) throw createHttpError(400, 'Please provide a valid identifier');
 
-    // Try to find the company
-    const company = await Companies.findByPk(parseInt(req.body.client.companyId))
-    if (!company) return createHttpError(400, 'Your company id is not valid.')
+        const person = await Persons.findByPk(identifier)
+        if (!person) throw createHttpError(404, 'Linked person not found');
 
-    // Test values
-    if (!validator.valid) return createHttpError(400, validator.message as string)
 
-    // Insert value
-    const client = await Clients.create({
-        function: req.body.client.function,
-        companyId: req.body.client.companyId
-    })
+        const idCompany = parseInt(req.body.client.companyId)
+        if (isNaN(idCompany)) throw createHttpError(400, 'Please provide a valid company identifier.');
+        // Try to find the company
+        const company = await Companies.findByPk(idCompany);
+        if (!company) throw createHttpError(404, 'Linked company not found.');
+            
+        // Test if parameters has been filled
+        const validator = isValidClient(req.body.client.function)
 
-    // Return success
-    return res.status(200).json({
-        status: 'success',
-        data: {
-            clientId: client.clientId
-        }
-    })
+        // Test values
+        if (!validator.valid) throw createHttpError(400, validator.message as string)
+
+        // Insert value
+        const client = await Clients.create({
+            clientId: identifier,
+            function: req.body.client.function,
+            companyId: idCompany
+        })
+
+        // Return success
+        return res.status(200).json({
+            status: 'success',
+            data: {
+                clientId: client.clientId
+            }
+        })
+    } catch (err) {
+        if (err instanceof HttpError) controllerErrorHandler(err, res)
+        else throw err
+    }
 }
 
 /**
@@ -92,17 +107,24 @@ async function create(req: Request, res: Response) {
 const update = async (req: Request, res: Response) => {
     try {
         // Parse identifier
-        if (req.params.clientId && !isNumber(req.params.clientId)) throw createHttpError(400, 'Please provide a valid identifier')
         const identifier = parseInt(req.params.clientId)
+        if (isNaN(identifier)) throw createHttpError(400, 'Please provide a valid identifier')
 
         const client = await Clients.findByPk(identifier)
-        if (!client) throw createHttpError(404, 'User not found')
+        if (!client) throw createHttpError(404, 'Client not found')
 
-        const validator = isValidClient(req.body.client.function, req.body.client.companyId)
+        // Parse company identifier
+        const idCompany = parseInt(req.body.client.companyId)
+        if (isNaN(idCompany)) throw createHttpError(400, 'Please provide a valid company identifier');
 
+        const company = await Companies.findByPk(idCompany)
+        if (!company) throw createHttpError(404, 'Company not found')
+
+        // Check parameters
+        const validator = isValidClient(req.body.client.function)
         if (validator.valid == 0) throw createHttpError(400, validator.message as string)
 
-        await Clients.update(req.body, {
+        await Clients.update(req.body.client, {
             where: { clientId: identifier }
         })
 
@@ -123,16 +145,20 @@ const update = async (req: Request, res: Response) => {
 const del = async (req: Request, res: Response) => {
     try {
         // Parse identifier
-        if (req.params.clientId && !isNumber(req.params.clientId)) throw createHttpError(400, 'Please provide a valid identifier')
         const identifier = parseInt(req.params.clientId)
+        if (isNaN(identifier)) throw createHttpError(400, 'Please provide a valid identifier')
 
         const client = await Clients.findByPk(identifier)
-        if (!client) throw createHttpError(404, 'User not found')
+        if (!client) throw createHttpError(404, 'Client not found')
 
         await Clients.destroy({
             where: {
                 clientId: identifier
             }
+        })
+
+        return res.status(200).json({
+            status: 'success'
         })
     } catch (err) {
         if (err instanceof HttpError) controllerErrorHandler(err, res)

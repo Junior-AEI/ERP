@@ -1,6 +1,6 @@
 import { Request, Response } from 'express'
 import Companies from '../models/company.model'
-import { controllerErrorHandler, isNumber } from './utils.controller'
+import { controllerErrorHandler } from './utils.controller'
 import createHttpError from 'http-errors'
 import { HttpError } from 'http-errors'
 import { isValidCompany } from '../validator/company.validator'
@@ -114,7 +114,6 @@ const update = async (req: Request, res: Response) => {
 
         const address = await Addresses.findByPk(idAddress)
         if (!address) throw createHttpError(404, 'Address not found');
-        
         
         const validator = isValidCompany(req.body.company.name, req.body.company.legalEntity)
         if (validator.valid == 0) throw createHttpError(400, validator.message as string);

@@ -1,12 +1,18 @@
 <script setup lang="ts">
-type Task = {
-    id: number
-    title: string
-    deadline: Date
-    user: number
-    concerned_user: number
-    state: string
-}
+import { type Task } from "@/types/api"
+import { ref } from "vue"
+import { useAuthStore } from "@/stores/authStore";
+import axios from "axios"
+
+// const tasks = ref<Task[]>([])
+
+// const authStore = useAuthStore() 
+
+// axios.get(`/task/byUser/${authStore.userId}`).then((response)=>{
+//     tasks.value.push(...response.data.data.tasks)
+//     console.log(tasks.value);
+    
+//  })
 
 const tasks: Task[] = [
     {

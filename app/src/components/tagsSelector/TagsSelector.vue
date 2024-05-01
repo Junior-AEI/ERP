@@ -4,10 +4,8 @@ import { ComboboxAnchor, ComboboxInput, ComboboxPortal, ComboboxRoot } from 'rad
 import { CommandEmpty, CommandGroup, CommandItem, CommandList } from '@/components/ui/command'
 import { TagsInput, TagsInputInput, TagsInputItem, TagsInputItemDelete, TagsInputItemText } from '@/components/ui/tags-input'
 
-type Field = {
-  label: string,
-  value: string
-}
+import {type Field} from "."
+
 
 const props = defineProps<{
   placeholder: string,
@@ -19,6 +17,8 @@ const props = defineProps<{
 const modelValue = defineModel<string[]>()
 const open = ref(false)
 const searchTerm = ref('')
+console.log("props :",props);
+
 
 const filteredfields = computed(
   () => props.fields.filter
@@ -79,3 +79,4 @@ const filteredfields = computed(
     </ComboboxRoot>
   </TagsInput>
 </template>
+

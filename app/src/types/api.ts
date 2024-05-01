@@ -63,7 +63,6 @@ interface Event {
 
 
 interface itTicket {
-
   ticketId: number
   userId: number
   title: string
@@ -75,6 +74,20 @@ interface itTicket {
 
 type itTicketInfo = itTicket & User;
 
+interface Group {
+  groupName: string
+  createdAt: DateString
+  updatedAt: DateString
+}
+
+interface Task {
+  id: number
+  title: string
+  deadline: Date
+  user: number
+  concerned_user: number
+  state: string
+}
 
 
-export type { Person, Member, FullMember, User, Event, Address, itTicket, itTicketInfo }
+export type { Person, Member, FullMember, User, Event, Address, itTicket, itTicketInfo, Group, Task}

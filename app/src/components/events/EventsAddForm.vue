@@ -173,7 +173,7 @@ const eventInfo = ref<Event>({
 const addEvent = () => {
   axios
     .post(
-      `/event/`,
+      `/event`,
       {
         event: {
           name: eventInfo.value.name,

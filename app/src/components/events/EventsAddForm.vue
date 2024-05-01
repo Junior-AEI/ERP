@@ -38,11 +38,56 @@
           <Label for="document">Ajouter une pièce jointe</Label>
           <Label for="eventType">Type d'événement</Label>
           <Input id="document" type="file" />
-          <Input
-            id="eventType"
-            v-model="eventInfo.eventTypeName"
-            placeholder="Congrès, Formation..."
-          />
+          <Popover v-model:open="isOpen">
+            <PopoverTrigger as-child>
+              <Button
+                variant="outline"
+                role="combobox"
+                :aria-expanded="isOpen"
+                class="justify-between"
+              >
+                {{
+                  eventTypeName
+                    ? eventTypes.find((eventType) => eventType.value === eventTypeName)?.label
+                    : "Sélectionner le type d'événement"
+                }}
+                <ChevronsUpDown class="ml-2 h-4 w-4 shrink-0 opacity-50" />
+              </Button>
+            </PopoverTrigger>
+            <PopoverContent class="p-0">
+              <Command>
+                <CommandInput class="h-9" placeholder="Search framework..." />
+                <CommandEmpty>No framework found.</CommandEmpty>
+                <CommandList>
+                  <CommandGroup>
+                    <CommandItem
+                      v-for="eventType in eventTypes"
+                      :key="eventType.value"
+                      :value="eventType.value"
+                      @select="
+                        (ev) => {
+                          if (typeof ev.detail.value === 'string') {
+                            eventTypeName = ev.detail.value
+                          }
+                          isOpen = false
+                        }
+                      "
+                    >
+                      {{ eventType.label }}
+                      <Check
+                        :class="
+                          cn(
+                            'ml-auto h-4 w-4',
+                            eventTypeName === eventType.value ? 'opacity-100' : 'opacity-0'
+                          )
+                        "
+                      />
+                    </CommandItem>
+                  </CommandGroup>
+                </CommandList>
+              </Command>
+            </PopoverContent>
+          </Popover>
         </div>
         <div class="grid gap-4">
           <Collapsible v-model:open="isOpen">
@@ -84,6 +129,17 @@ import { Textarea } from '@/components/ui/textarea'
 import { ref } from 'vue'
 import { Checkbox } from '@/components/ui/checkbox'
 
+import { cn } from '@/lib/utils'
+
+import {
+  Command,
+  CommandEmpty,
+  CommandGroup,
+  CommandInput,
+  CommandItem,
+  CommandList
+} from '@/components/ui/command'
+
 import { Card, CardContent, CardFooter, CardHeader } from '@/components/ui/card'
 import { Label } from '@/components/ui/label'
 
@@ -91,8 +147,21 @@ import { Collapsible, CollapsibleContent, CollapsibleTrigger } from '@/component
 
 const isOpen = ref(false)
 
+const eventTypes = [
+  { value: 'Afterwork', label: 'Afterwork' },
+  { value: 'Audit', label: 'Audit' },
+  { value: 'Autre', label: 'Autre' },
+  { value: 'CA', label: "Conseil d'administration (CA)" },
+  { value: 'Congrès', label: 'Congrès' },
+  { value: 'Formation', label: 'Formation' },
+  { value: 'Réunion', label: 'Réunion' },
+  { value: 'RDI', label: "Réunion d'informations (RDI)" },
+  { value: 'RDV client', label: 'Rendez-vous client' }
+]
+
 const startDate = ref<DateValue>()
 const endDate = ref<DateValue>()
+const eventTypeName = ref('')
 
 const eventInfo = ref<Event>({
   eventId: NaN,
@@ -115,7 +184,7 @@ const addEvent = () => {
           endDate: endDate.value?.toString() ?? null,
           location: eventInfo.value.location,
           description: eventInfo.value.description,
-          eventTypeName: eventInfo.value.eventTypeName
+          eventTypeName: eventTypeName.value
         }
       },
       {

@@ -18,7 +18,7 @@
           <Popover>
             <PopoverTrigger as-child>
               <Button variant="outline">
-                <CalendarIcon class="mr-2 h-4 w-4" />
+                <Icon name="date_range" class="mr-2 h-4 w-4" />
                 <span>{{
                   dateBegin
                     ? format(dateBegin, 'PPP - HH:mm', { locale: fr })
@@ -33,7 +33,7 @@
           <Popover>
             <PopoverTrigger as-child>
               <Button variant="outline">
-                <CalendarIcon class="mr-2 h-4 w-4" />
+                <Icon name="date_range" class="mr-2 h-4 w-4" />
                 <span>{{
                   dateEnd
                     ? format(dateEnd, 'PPP - HH:mm', { locale: fr })

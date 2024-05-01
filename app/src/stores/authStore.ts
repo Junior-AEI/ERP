@@ -67,6 +67,7 @@ export const useAuthStore = defineStore('auth', {
       if (this.token) {
         const decodedToken = this.decodeJWT
         if (decodedToken) {
+          /* @ts-ignore */
           const expirationDate = new Date(decodedToken.exp * 1000).getTime()
           const now = new Date().getTime()
           if (expirationDate > now) {

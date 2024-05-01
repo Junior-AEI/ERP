@@ -1,27 +1,25 @@
 <script lang="ts" setup>
-import { type HTMLAttributes, computed } from 'vue'
-import { CalendarHeading, type CalendarHeadingProps, useForwardProps } from 'radix-vue'
-import { cn } from '@/lib/utils'
+const props = defineProps<{
+  month: number
+  year: number
+  yearMode: boolean
+}>()
 
-const props = defineProps<CalendarHeadingProps & { class?: HTMLAttributes['class'] }>()
-
-const delegatedProps = computed(() => {
-  const { class: _, ...delegated } = props
-
-  return delegated
-})
-
-const forwardedProps = useForwardProps(delegatedProps)
+console.log(props.month)
 </script>
 
 <template>
-  <CalendarHeading
-    v-slot="{ headingValue }"
-    :class="cn('text-sm font-medium', props.class)"
-    v-bind="forwardedProps"
-  >
-    <slot :heading-value>
-      {{ headingValue }}
-    </slot>
-  </CalendarHeading>
+  <div>
+    <span class="text-center text-lg font-semibold" v-if="!yearMode">
+      {{
+        new Date(props.year, props.month - 1).toLocaleString('default', {
+          month: 'long',
+          year: 'numeric'
+        })
+      }}
+    </span>
+    <span class="text-center text-lg font-semibold" v-else>
+      {{ props.year }}
+    </span>
+  </div>
 </template>

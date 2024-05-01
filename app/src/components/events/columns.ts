@@ -10,7 +10,6 @@ const df = new DateFormatter('fr-FR', {
   dateStyle: 'long'
 })
 
-
 const defaultClasses = 'text-left font-medium'
 
 export const columns: ColumnDef<Event>[] = [
@@ -65,7 +64,11 @@ export const columns: ColumnDef<Event>[] = [
     cell: ({ row }) => {
       const startDate = row.getValue('startDate') as string
 
-      return h('div', { class: defaultClasses }, df.format(parseDate(startDate).toDate(getLocalTimeZone())))
+      return h(
+        'div',
+        { class: defaultClasses },
+        df.format(parseDate(startDate).toDate(getLocalTimeZone()))
+      )
     }
   },
   {
@@ -94,7 +97,11 @@ export const columns: ColumnDef<Event>[] = [
     cell: ({ row }) => {
       const endDate = row.getValue('endDate') as string
 
-      return h('div', { class: defaultClasses }, df.format(parseDate(endDate).toDate(getLocalTimeZone())))
+      return h(
+        'div',
+        { class: defaultClasses },
+        df.format(parseDate(endDate).toDate(getLocalTimeZone()))
+      )
     }
   },
   {

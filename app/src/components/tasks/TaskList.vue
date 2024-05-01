@@ -15,53 +15,52 @@ import axios from "axios"
 //  })
 
 const tasks: Task[] = [
-    {
-        id: 1,
-        title: "Tâche 001",
-        deadline: new Date(),
-        user: 1,
-        concerned_user: 1,
-        state: "À faire"
-    },
-    {
-        id: 2,
-        title: "Tâche 002",
-        deadline: new Date(),
-        user: 1,
-        concerned_user: 1,
-        state: "À faire"
-    },
-    {
-        id: 3,
-        title: "Tâche 003 : une tâche vraiment très longue qui prend beaucoup de plaaaaaace",
-        deadline: new Date(),
-        user: 1,
-        concerned_user: 1,
-        state: "À faire"
-    }
-
+  {
+    id: 1,
+    title: 'Tâche 001',
+    deadline: new Date(),
+    user: 1,
+    concerned_user: 1,
+    state: 'À faire'
+  },
+  {
+    id: 2,
+    title: 'Tâche 002',
+    deadline: new Date(),
+    user: 1,
+    concerned_user: 1,
+    state: 'À faire'
+  },
+  {
+    id: 3,
+    title: 'Tâche 003 : une tâche vraiment très longue qui prend beaucoup de plaaaaaace',
+    deadline: new Date(),
+    user: 1,
+    concerned_user: 1,
+    state: 'À faire'
+  }
 ]
-
 </script>
 
 <template>
-    <div class="gap-2">
+  <div class="gap-2">
+    <h3>Tâches à effectuer</h3>
 
-        <h3>Tâches à effectuer</h3>
+    <!-- Afficher seulement les tasks qui sont "A faire", "En cours", ou "Terminé",   -->
 
-        <!-- Afficher seulement les tasks qui sont "A faire", "En cours", ou "Terminé",   -->
-
-        <div class="flex flex-1 flex-col gap-1">
-            <Task v-for="task in tasks" 
-                :id="task.id" 
-                :title="task.title" 
-                :deadline="task.deadline" 
-                :user="task.user"
-                :concerned_user="task.concerned_user" 
-                :state="task.state"> </Task>
-        </div>
-
+    <div class="flex flex-1 flex-col gap-1">
+      <Task
+        v-for="task in tasks"
+        :id="task.id"
+        :title="task.title"
+        :deadline="task.deadline"
+        :user="task.user"
+        :concerned_user="task.concerned_user"
+        :state="task.state"
+      >
+      </Task>
     </div>
+  </div>
 </template>
 
 <!-- <Tile

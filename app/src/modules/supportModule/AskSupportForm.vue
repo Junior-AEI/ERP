@@ -7,21 +7,24 @@
       </CardHeader>
       <CardContent>
         <div class="flex flex-col gap-2">
-          <Label for="title">{{titleHint}}</Label>
+          <Label for="title">{{ titleHint }}</Label>
           <Input v-model="form.title" id="title" placeholder="Décrivez brièvement le problème" />
         </div>
         <div class="flex flex-col gap-2">
           <Label for="application">Application concernée</Label>
           <Combobox
-          @input="handleInput"
-                      :options="appList"
+            @input="handleInput"
+            :options="appList"
             :comboboxLabel="'Selectionner l\'application concernée'"
           ></Combobox>
-
         </div>
         <div class="flex flex-col gap-2">
           <Label for="description">Description</Label>
-          <Textarea v-model="form.description" id="description" placeholder="Décrivez précisément le problème" />
+          <Textarea
+            v-model="form.description"
+            id="description"
+            placeholder="Décrivez précisément le problème"
+          />
         </div>
         <div class="flex flex-col gap-2">
           <Label for="file"
@@ -51,15 +54,13 @@ const appList = ref([
 
 const user = useAuthStore()
 
-
 const form = ref<itTicket>({
   ticketId: NaN,
-  userId : user.userId,
+  userId: user.userId,
   title: '',
   applicationConcerned: '', //Valeur par défaut à MODIFIER
   description: '',
-  state : ''
-
+  state: ''
 })
 const handleInput = (value: string) => {
   form.value.applicationConcerned = value
@@ -81,12 +82,12 @@ const handleClick = () => {
     .post(
       `/itTicket/`,
       {
-        itTicket:{
+        itTicket: {
           ticketId: form.value.ticketId,
-          userId : form.value.userId,
+          userId: form.value.userId,
           title: form.value.title,
           applicationConcerned: form.value.applicationConcerned,
-          description: form.value.description,
+          description: form.value.description
         }
       },
       {
@@ -101,7 +102,5 @@ const handleClick = () => {
     .catch((error) => {
       console.error(error)
     })
-
-
 }
 </script>

@@ -2,6 +2,7 @@
 import { ref, onMounted } from 'vue'
 import { columns } from './columns'
 import type { Event } from '@/types/api'
+import { CalendarDate } from '@internationalized/date'
 
 const data = ref<Event[]>([])
 
@@ -11,8 +12,8 @@ async function getData(): Promise<Event[]> {
     {
       eventId: 1,
       name: 'Cocktail de passation',
-      startDate: new Date('2024-04-02T18:00:00.000Z'),
-      endDate: new Date('2024-04-02T20:00:00.000Z'),
+      startDate: new CalendarDate(2024, 2, 3).toString(),
+      endDate: new CalendarDate(2024, 2, 3).toString(),
       location: 'ENSEIRB-MATMECA',
       description:
         'Cocktail de passation entre les anciens et les nouveaux membres de la junior entreprise',
@@ -21,8 +22,8 @@ async function getData(): Promise<Event[]> {
     {
       eventId: 2,
       name: "Congrès National d'été",
-      startDate: new Date('2024-05-23T00:00:00.000Z'),
-      endDate: new Date('2024-05-25T23:59:00.000Z'),
+      startDate: new CalendarDate(2024, 5, 23).toString(),
+      endDate: new CalendarDate(2024, 5, 25).toString(),
       location: 'Château du Rouret',
       description: "Congrès National d'Été 2024",
       eventTypeName: 'congress'
@@ -30,8 +31,8 @@ async function getData(): Promise<Event[]> {
     {
       eventId: 3,
       name: 'Audit',
-      startDate: new Date('2024-04-13T08:00:00.000Z'),
-      endDate: new Date('2024-04-13T18:00:00.000Z'),
+      startDate: new CalendarDate(2024, 4, 13).toString(),
+      endDate: new CalendarDate(2024, 4, 13).toString(),
       location: 'ENSEIRB-MATMECA',
       description: 'Audit de la junior entreprise',
       eventTypeName: 'audit'

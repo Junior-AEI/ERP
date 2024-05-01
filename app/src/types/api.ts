@@ -1,4 +1,5 @@
-import { type DateValue } from '@internationalized/date';
+
+type DateString = string;
 
 interface Person {
   personId: number;
@@ -8,23 +9,23 @@ interface Person {
   mobilePhone: string;
   landlinePhone: string;
   email: string;
-  createdAt: DateValue;
-  updatedAt: DateValue;
+  createdAt: DateString;
+  updatedAt: DateString;
 }
 
 interface Member {
   memberId: number;
-  birthDate: DateValue;
+  birthDate: DateString;
   birthPlace: string;
   nationality: string;
   promotion: string;
-  contributionDate: DateValue;
+  contributionDate: DateString;
   paymentMethod: string;
   department: string;
   membershipNumber: number;
   addressId: number;
-  createdAt: DateValue;
-  updatedAt: DateValue;
+  createdAt: DateString;
+  updatedAt: DateString;
 }
 
 type FullMember = Member & Person;
@@ -32,8 +33,8 @@ type FullMember = Member & Person;
 interface User {
   userId: number
   username: string
-  mandateStart: DateValue;
-  mandateEnd: DateValue;
+  mandateStart: DateString;
+  mandateEnd: DateString;
   emailJE: string
 }
 
@@ -44,8 +45,8 @@ interface Address {
   city: string
   postCode: string
   country: string
-  createdAt: DateValue
-  updatedAt: DateValue
+  createdAt: DateString
+  updatedAt: DateString
   member: Member[]
   company: Array<{}>
 }
@@ -53,8 +54,8 @@ interface Address {
 interface Event {
   eventId: number
   name: string
-  startDate: DateValue
-  endDate: DateValue
+  startDate: DateString | null
+  endDate: DateString | null
   location: string
   description: string
   eventTypeName: string
@@ -63,12 +64,12 @@ interface Event {
 
 interface itTicket {
 
-  ticketId : number
-  userId : number
-  title : string
-  description : string
-  applicationConcerned : string
-  state : string
+  ticketId: number
+  userId: number
+  title: string
+  description: string
+  applicationConcerned: string
+  state: string
 
 }
 

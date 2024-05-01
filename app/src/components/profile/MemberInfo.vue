@@ -33,29 +33,7 @@
       <div class="flex items-end gap-4">
         <div class="flex flex-1 flex-col gap-2">
           <Label for="birthDate">Date de Naissance</Label>
-          <Popover>
-            <PopoverTrigger as-child>
-              <Button
-                variant="outline"
-                :class="
-                  cn(
-                    'justify-start text-left font-normal',
-                    !memberBirthDate && 'text-muted-foreground'
-                  )
-                "
-              >
-                <Icon name="date_range" class="mr-2 h-4 w-4" />
-                {{
-                  memberBirthDate
-                    ? df.format(memberBirthDate.toDate(getLocalTimeZone()))
-                    : 'Choisir une date'
-                }}
-              </Button>
-            </PopoverTrigger>
-            <PopoverContent class="w-auto p-0">
-              <Calendar v-model="memberBirthDate" initial-focus />
-            </PopoverContent>
-          </Popover>
+          <DatePickerComponent v-model="memberBirthDate" />
         </div>
         <div class="flex flex-1 flex-col gap-2">
           <Label for="birthPlace">Lieu de naissance</Label>
@@ -79,29 +57,7 @@
       <div class="flex items-end gap-4">
         <div class="flex flex-1 flex-col gap-2">
           <Label for="contrib">Date de cotisation</Label>
-          <Popover>
-            <PopoverTrigger as-child>
-              <Button
-                variant="outline"
-                :class="
-                  cn(
-                    'justify-start text-left font-normal',
-                    !memberContributionDate && 'text-muted-foreground'
-                  )
-                "
-              >
-                <Icon name="date_range" class="mr-2 h-4 w-4" />
-                {{
-                  memberContributionDate
-                    ? df.format(memberContributionDate.toDate(getLocalTimeZone()))
-                    : 'Pick a date'
-                }}
-              </Button>
-            </PopoverTrigger>
-            <PopoverContent class="w-auto p-0">
-              <Calendar v-model="memberContributionDate" initial-focus />
-            </PopoverContent>
-          </Popover>
+          <DatePickerComponent v-model="memberContributionDate" />
         </div>
         <div class="flex flex-1 flex-col gap-2">
           <Label for="contribmeth">Moyen de payement</Label>

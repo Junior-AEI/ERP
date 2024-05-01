@@ -4,6 +4,12 @@ import type { Event } from '@/types/api'
 import EventsDataTableButton from './EventsDataTableButton.vue'
 import { Button } from '../ui/button'
 import Icon from '../Icon.vue'
+import { parseDate, DateFormatter, getLocalTimeZone } from '@internationalized/date'
+
+const df = new DateFormatter('fr-FR', {
+  dateStyle: 'long'
+})
+
 
 const defaultClasses = 'text-left font-medium'
 
@@ -57,9 +63,9 @@ export const columns: ColumnDef<Event>[] = [
       )
     },
     cell: ({ row }) => {
-      const startDate = row.getValue('startDate') as Date
+      const startDate = row.getValue('startDate') as string
 
-      return h('div', { class: defaultClasses }, startDate.toLocaleString())
+      return h('div', { class: defaultClasses }, df.format(parseDate(startDate).toDate(getLocalTimeZone())))
     }
   },
   {
@@ -86,9 +92,9 @@ export const columns: ColumnDef<Event>[] = [
       )
     },
     cell: ({ row }) => {
-      const endDate = row.getValue('endDate') as Date
+      const endDate = row.getValue('endDate') as string
 
-      return h('div', { class: defaultClasses }, endDate.toLocaleString())
+      return h('div', { class: defaultClasses }, df.format(parseDate(endDate).toDate(getLocalTimeZone())))
     }
   },
   {

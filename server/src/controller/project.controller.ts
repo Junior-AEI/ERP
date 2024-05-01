@@ -4,9 +4,10 @@ import Projects from '../models/project.model'
 import { HttpError } from 'http-errors'
 import { isValidProject } from '../validator/project.validator'
 import { controllerErrorHandler, isNumber } from './utils.controller'
+import Clients from '../models/client.model'
 
 /**
- * Get all users
+ * Get all projects
  * @param req
  * @param res
  */
@@ -27,14 +28,14 @@ const getAll = async (req: Request, res: Response) => {
 }
 
 /**
- * Select a specific user
+ * Select a specific project
  * @param req
  * @param res
  */
 const getByPk = async (req: Request, res: Response) => {
     try {
-        if (req.params.projectId && !isNumber(req.params.projectId)) throw createHttpError(400, 'Please provide a valid identifier')
         const identifier = parseInt(req.params.projectId)
+        if (isNaN(identifier)) throw createHttpError(400, 'Please provide a valid identifier')
 
         const project = await Projects.findByPk(identifier, {})
         if (!project) throw createHttpError(404, 'Project not found')
@@ -52,25 +53,29 @@ const getByPk = async (req: Request, res: Response) => {
 }
 
 /**
- * Create an user
+ * Create an project
  * @param req
  * @param res
  */
 async function create(req: Request, res: Response) {
     try {
-        if (req.params.projectId && !isNumber(req.params.projectId)) throw createHttpError(400, 'Please provide a valid identifier')
-        const identifier = parseInt(req.params.projectId)
+        const identifier = parseInt(req.body.project.clientId)
+        if (isNaN(identifier)) throw createHttpError(400, 'Please provide a valid client identifier');
+
+        // Try to find the linked client
+        const client = await Clients.findByPk(identifier)
+        if (!client) throw createHttpError(404, 'Unable to find the linked client.');
 
         // Test params
-        const validator = isValidProject(req.body.user.acronym, req.body.user.startDate, req.body.user.endDate)
-        if (!validator.valid) return createHttpError(400, validator.message as string)
+        const validator = isValidProject(req.body.project.acronym, req.body.project.startDate, req.body.project.endDate)
+        if (!validator.valid) throw createHttpError(400, validator.message as string);
 
         // Insert data
         const project = await Projects.create({
-            projectId: identifier,
-            acronym: req.body.user.acronym,
-            startDate: req.body.user.startDate,
-            endDate: req.body.user.endDate
+            clientId: identifier,
+            acronym: req.body.project.acronym,
+            startDate: new Date(req.body.project.startDate),
+            endDate: new Date(req.body.project.endDate),
         })
 
         // Return success
@@ -87,23 +92,31 @@ async function create(req: Request, res: Response) {
 }
 
 /**
- * Update an user
+ * Update an project
  * @param req
  * @param res
  */
 const update = async (req: Request, res: Response) => {
     try {
-        if (req.params.projectId && !isNumber(req.params.projectId)) throw createHttpError(400, 'Please provide a valid identifier')
         const identifier = parseInt(req.params.projectId)
+        if (isNaN(identifier)) throw createHttpError(400, 'Please provide a valid identifier')
 
         const project = await Projects.findByPk(identifier, {})
-        if (!project) throw createHttpError(404, 'Project not found')
+        if (!project) throw createHttpError(404, 'Project not found');
+
+        // parse client identifier
+        const idClient = parseInt(req.body.project.clientId)
+        if (isNaN(idClient)) throw createHttpError(400, 'Please provide a valid client identifier');
+
+        // Try to find the linked client
+        const client = await Clients.findByPk(idClient)
+        if (!client) throw createHttpError(404, 'Unable to find the linked client.');
 
         // Test params
-        const validator = isValidProject(req.body.user.acronym, req.body.user.startDate, req.body.user.endDate)
-        if (!validator.valid) return createHttpError(400, validator.message as string)
+        const validator = isValidProject(req.body.project.acronym, req.body.project.startDate, req.body.project.endDate)
+        if (!validator.valid) throw createHttpError(400, validator.message as string)
 
-        await Projects.update(req.body, {
+        await Projects.update(req.body.project, {
             where: { projectId: identifier }
         })
 
@@ -117,22 +130,26 @@ const update = async (req: Request, res: Response) => {
 }
 
 /**
- * Delete an user
+ * Delete an project
  * @param req
  * @param res
  */
 const del = async (req: Request, res: Response) => {
     try {
-        if (req.params.projectId && !isNumber(req.params.projectId)) throw createHttpError(400, 'Please provide a valid identifier')
         const identifier = parseInt(req.params.projectId)
+        if (isNaN(identifier)) throw createHttpError(400, 'Please provide a valid identifier')
 
         const project = await Projects.findByPk(identifier, {})
-        if (!project) throw createHttpError(404, 'Project not found')
+        if (!project) throw createHttpError(404, 'Project not found');
 
         await Projects.destroy({
             where: {
                 projectId: identifier
             }
+        })
+
+        return res.status(200).json({
+            status: 'success'
         })
     } catch (err) {
         if (err instanceof HttpError) controllerErrorHandler(err, res)

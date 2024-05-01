@@ -1,40 +1,39 @@
-
-type DateString = string;
+type DateString = string
 
 interface Person {
-  personId: number;
-  lastname: string;
-  firstname: string;
-  gender: string;
-  mobilePhone: string;
-  landlinePhone: string;
-  email: string;
-  createdAt: DateString;
-  updatedAt: DateString;
+  personId: number
+  lastname: string
+  firstname: string
+  gender: string
+  mobilePhone: string
+  landlinePhone: string
+  email: string
+  createdAt: DateString
+  updatedAt: DateString
 }
 
 interface Member {
-  memberId: number;
-  birthDate: DateString;
-  birthPlace: string;
-  nationality: string;
-  promotion: string;
-  contributionDate: DateString;
-  paymentMethod: string;
-  department: string;
-  membershipNumber: number;
-  addressId: number;
-  createdAt: DateString;
-  updatedAt: DateString;
+  memberId: number
+  birthDate: DateString
+  birthPlace: string
+  nationality: string
+  promotion: string
+  contributionDate: DateString
+  paymentMethod: string
+  department: string
+  membershipNumber: number
+  addressId: number
+  createdAt: DateString
+  updatedAt: DateString
 }
 
-type FullMember = Member & Person;
+type FullMember = Member & Person
 
 interface User {
   userId: number
   username: string
-  mandateStart: DateString;
-  mandateEnd: DateString;
+  mandateStart: DateString
+  mandateEnd: DateString
   emailJE: string
 }
 
@@ -61,20 +60,15 @@ interface Event {
   eventTypeName: string
 }
 
-
 interface itTicket {
-
   ticketId: number
   userId: number
   title: string
   description: string
   applicationConcerned: string
   state: string
-
 }
 
-type itTicketInfo = itTicket & User;
-
-
+type itTicketInfo = itTicket & User
 
 export type { Person, Member, FullMember, User, Event, Address, itTicket, itTicketInfo }

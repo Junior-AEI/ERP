@@ -22,7 +22,6 @@ import { supportModule } from '@/modules/supportModule'
 import { requestNFGModule } from '@/modules/requestNFGModule'
 import { adminModule } from '@/modules/adminModule'
 
-
 registerModule(eventsModule)
 registerModule(treasuryModule)
 registerModule(membersModule)
@@ -38,7 +37,6 @@ import { createPinia } from 'pinia'
 
 const pinia = createPinia()
 app.use(pinia)
-
 
 /* Définition du router */
 

@@ -64,7 +64,6 @@
           </template>
         </CollapsibleMenu>
       </div>
-
     </div>
 
     <div class="flex flex-col items-start gap-1">

@@ -29,6 +29,7 @@ const forwarded = useForwardPropsEmits(delegatedProps, emits)
       class="fixed inset-0 z-50 bg-black/80 data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0"
     />
     <DialogContent
+      aria-describedby="undefined"
       v-bind="forwarded"
       :class="
         cn(
@@ -45,6 +46,8 @@ const forwarded = useForwardPropsEmits(delegatedProps, emits)
         <Icon name="close" lass="h-5 w-5" />
         <span class="sr-only">Close</span>
       </DialogClose>
+      <DialogDescription class="hidden"></DialogDescription>
+      <DialogTitle class="hidden"></DialogTitle>
     </DialogContent>
   </DialogPortal>
 </template>

@@ -55,6 +55,7 @@
             <Link
               v-for="child in route.children"
               :to="child.path"
+              :icon="child.meta?.icon"
               :key="child.path"
               class="p-1 pl-6"
             >
@@ -64,14 +65,6 @@
         </CollapsibleMenu>
       </div>
 
-      <Link
-        to="/administration"
-        icon="build"
-        class="w-full justify-start"
-        :variant="matchRoute('/administration')"
-      >
-        Administration
-      </Link>
     </div>
 
     <div class="flex flex-col items-start gap-1">

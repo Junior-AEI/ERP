@@ -1,14 +1,15 @@
 import { Request, Response } from 'express'
-import { SignJWT } from 'jose'
+import { SignJWT, errors } from 'jose'
 import bcrypt from 'bcrypt'
 import { JWT_AUDIENCE, JWT_EXPIRATION, JWT_ISSUER, JWT_SECRET_KEY } from '../config/auth.config'
 import Users from '../models/user.model'
 import Tokens from '../models/token.model'
 import Members from '../models/member.model'
 import { promisify } from 'util'
-import { controllerErrorHandler } from './utils.controller'
+import { controllerErrorHandler,sendEmail, sendBotMesssage } from './utils.controller'
 import createHttpError, { HttpError } from 'http-errors'
 import Persons from '../models/person.model'
+
 
 /**
  * Login route
@@ -38,6 +39,9 @@ const login = async (req: Request, res: Response) => {
             ]
         })
 
+        
+
+
         // Return error if user not found
         if (!user) throw createHttpError(401, 'Invalid username or password')
 
@@ -50,6 +54,16 @@ const login = async (req: Request, res: Response) => {
         // Create JWT token
         const token = await new SignJWT({ username }).setProtectedHeader({ alg: 'HS256' }).setAudience(JWT_AUDIENCE).setIssuer(JWT_ISSUER).setExpirationTime(JWT_EXPIRATION).sign(JWT_SECRET_KEY)
 
+
+         // Send email in background
+         sendEmail('mathieu.chaillon@gmail.com', 'User Logged In', `User ${username} has logged in.`)
+         .catch(error => console.error('Error sending email:', error)); // Log any errors, but don't let them propagate
+        
+
+
+        // CHAT ID A CHANGER ICI 
+         sendBotMesssage(881607628,`User ${username} has logged in.`)
+         .catch(error => console.error('Error sending email:', error)); 
         // Return success with token and user details
         return res.status(200).json({
             status: 'success',
@@ -61,9 +75,13 @@ const login = async (req: Request, res: Response) => {
                 token: token
             }
         })
-    } catch (err) {
+    } catch (err ) {
+        // Gestion des erreurs
+        
+            // Vous pouvez choisir de journaliser l'erreur, de retourner une réponse d'erreur, ou prendre toute autre action appropriée
         // Handle errors
         if (err instanceof HttpError) {
+           
             return controllerErrorHandler(err, res)
         }
         throw err

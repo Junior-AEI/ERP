@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref } from 'vue'
+import { ref , watch, defineEmits} from 'vue'
 import { Button } from '@/components/ui/button'
 import {
   Command,
@@ -30,6 +30,15 @@ defineProps({
     type: Array as PropType<Option[]>,
     required: true
   }
+})
+const emits = defineEmits(['input'])
+const test = ref('')
+
+watch(value, (newValue) => {
+  // Émettre un événement lorsque la valeur change
+  test.value = newValue
+  emits('input', newValue)
+
 })
 </script>
 
@@ -63,4 +72,5 @@ defineProps({
       </Command>
     </PopoverContent>
   </Popover>
+
 </template>

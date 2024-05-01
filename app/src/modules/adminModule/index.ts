@@ -17,15 +17,17 @@ export const adminModule: Module = {
           component: () => import('./views/SettingsView.vue'),
           meta: {
             icon: 'construction'
-          }},{
-          path: '/gestion-tickets',
-          name: 'Gestion des Tickets',
-          component: () => import('./views/SupportAdmin.vue'),
-          meta: {
-            icon: 'construction'
           }
-        }
-      ],
+        },
+        /*         {
+                  path: '/gestion-tickets',
+                  name: 'Gestion des Tickets',
+                  component: () => import('./views/SupportAdmin.vue'),
+                  meta: {
+                    icon: 'construction'
+                  }
+                } */
+      ]
     }
   ]
 }

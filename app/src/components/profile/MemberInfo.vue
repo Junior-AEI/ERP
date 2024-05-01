@@ -32,8 +32,30 @@
 
       <div class="flex items-end gap-4">
         <div class="flex flex-1 flex-col gap-2">
-          <Label for="memberId">Date de Naissance</Label>
-          <Input id="nationality" v-model="temp" />
+          <Label for="birthDate">Date de Naissance</Label>
+          <Popover>
+            <PopoverTrigger as-child>
+              <Button
+                variant="outline"
+                :class="
+                  cn(
+                    'justify-start text-left font-normal',
+                    !memberBirthDate && 'text-muted-foreground'
+                  )
+                "
+              >
+                <Icon name="date_range" class="mr-2 h-4 w-4" />
+                {{
+                  memberBirthDate
+                    ? df.format(memberBirthDate.toDate(getLocalTimeZone()))
+                    : 'Choisir une date'
+                }}
+              </Button>
+            </PopoverTrigger>
+            <PopoverContent class="w-auto p-0">
+              <Calendar v-model="memberBirthDate" initial-focus />
+            </PopoverContent>
+          </Popover>
         </div>
         <div class="flex flex-1 flex-col gap-2">
           <Label for="birthPlace">Lieu de naissance</Label>
@@ -41,7 +63,7 @@
         </div>
       </div>
       <div class="flex flex-1 flex-col gap-2">
-        <Label for="memberId">Nationalité</Label>
+        <Label for="nationality">Nationalité</Label>
         <Input id="nationality" v-model="memberNationality" />
       </div>
       <div class="flex items-end gap-4">
@@ -56,10 +78,6 @@
       </div>
       <div class="flex items-end gap-4">
         <div class="flex flex-1 flex-col gap-2">
-          <Label for="ncotz">Numéro de cotisation</Label>
-          <Input id="ncotz" v-model="memberContributionNumber" />
-        </div>
-        <div class="flex flex-1 flex-col gap-2">
           <Label for="contrib">Date de cotisation</Label>
           <Popover>
             <PopoverTrigger as-child>
@@ -67,7 +85,7 @@
                 variant="outline"
                 :class="
                   cn(
-                    'w-[280px] justify-start text-left font-normal',
+                    'justify-start text-left font-normal',
                     !memberContributionDate && 'text-muted-foreground'
                   )
                 "
@@ -86,7 +104,7 @@
           </Popover>
         </div>
         <div class="flex flex-1 flex-col gap-2">
-          <Label for="contribmeth">Payement</Label>
+          <Label for="contribmeth">Moyen de payement</Label>
           <Input id="contribmeth" v-model="memberPaymentMethod" />
         </div>
       </div>
@@ -98,12 +116,12 @@
   <Card class="flex-1">
     <CardHeader>
       <Icon name="location_on" class="text-6xl" />
-      <span class="text-accent"> addresse du membre</span>
+      <span class="text-accent">Adresse du membre</span>
     </CardHeader>
     <CardContent>
       <div class="flex items-end gap-4">
         <div class="flex flex-1 flex-col gap-2">
-          <Label for="address">addresse</Label>
+          <Label for="address">Adresse</Label>
           <Input id="address" v-model="addressAddress" />
         </div>
         <div class="flex flex-1 flex-col gap-2">
@@ -140,13 +158,10 @@ const props = defineProps<{
   memberId: number
 }>()
 
-const temp = ref(22)
-
 import {
   DateFormatter,
   getLocalTimeZone,
   parseAbsoluteToLocal,
-  now,
   type DateValue
 } from '@internationalized/date'
 
@@ -156,7 +171,7 @@ const df = new DateFormatter('fr-FR', {
 
 // We define the data for the member
 
-const memberBirthDate = ref<DateValue>(now(getLocalTimeZone()))
+const memberBirthDate = ref<DateValue>()
 const memberBirthPlace = ref<string>('')
 const memberNationality = ref<string>('')
 const memberPromotion = ref<string>('')
@@ -165,9 +180,8 @@ const memberDepartment = ref<string>('')
 const memberMembershipNumber = ref<number>(NaN)
 const memberAddressId = ref<number>(NaN)
 const memberContributionDate = ref<DateValue>()
-const memberContributionNumber = ref<number>(NaN)
-const memberCreatedAt = ref<DateValue>(now(getLocalTimeZone()))
-const memberUpdatedAt = ref<DateValue>(now(getLocalTimeZone()))
+const memberCreatedAt = ref<DateValue>()
+const memberUpdatedAt = ref<DateValue>()
 
 // We define the data for the person
 
@@ -177,8 +191,8 @@ const personGender = ref<string>('')
 const personMobilePhone = ref<string>('')
 const personLandlinePhone = ref<string>('')
 const personEmail = ref<string>('')
-const personCreatedAt = ref<DateValue>(now(getLocalTimeZone()))
-const personUpdatedAt = ref<DateValue>(now(getLocalTimeZone()))
+const personCreatedAt = ref<DateValue>()
+const personUpdatedAt = ref<DateValue>()
 
 // We define the data for the address
 
@@ -187,8 +201,8 @@ const addressAdditionnalAddress = ref<string>('')
 const addressCity = ref<string>('')
 const addressPostCode = ref<string>('')
 const addressCountry = ref<string>('')
-const addressCreatedAt = ref<DateValue>(now(getLocalTimeZone()))
-const addressUpdatedAt = ref<DateValue>(now(getLocalTimeZone()))
+const addressCreatedAt = ref<DateValue>()
+const addressUpdatedAt = ref<DateValue>()
 
 // We fetch the member info
 axios
@@ -278,8 +292,8 @@ const editMemberData = () => {
           department: memberDepartment.value,
           membershipNumber: memberMembershipNumber.value,
           addressId: memberAddressId.value,
-          createdAt: memberCreatedAt.value.toString(),
-          updatedAt: memberUpdatedAt.value.toString()
+          createdAt: memberCreatedAt.value?.toString(),
+          updatedAt: memberUpdatedAt.value?.toString()
         }
       },
       {
@@ -307,8 +321,8 @@ const editMemberData = () => {
           mobilePhone: personMobilePhone.value,
           landlinePhone: personLandlinePhone.value,
           email: personEmail.value,
-          createdAt: personCreatedAt.value.toString(),
-          updatedAt: personUpdatedAt.value.toString()
+          createdAt: personCreatedAt.value?.toString(),
+          updatedAt: personUpdatedAt.value?.toString()
         }
       },
       {
@@ -337,8 +351,8 @@ const editaddressData = () => {
           city: addressCity.value,
           postCode: addressPostCode.value,
           country: addressCountry.value,
-          createdAt: addressCreatedAt.value.toString(),
-          updatedAt: addressUpdatedAt.value.toString()
+          createdAt: addressCreatedAt.value?.toString(),
+          updatedAt: addressUpdatedAt.value?.toString()
         }
       },
       {

@@ -4,6 +4,7 @@ import Tasks from '../models/task.model'
 import { HttpError } from 'http-errors'
 import { isValidTask } from '../validator/task.validator'
 import { controllerErrorHandler, isNumber } from './utils.controller'
+import sequelize from 'sequelize'
 
 /**
  * Get all users
@@ -97,8 +98,8 @@ const getByUser = async (req: Request, res: Response) => {
  */
 async function create(req: Request, res: Response) {
     try {
-        if (req.params.taskId && !isNumber(req.params.taskId)) throw createHttpError(400, 'Please provide a valid identifier')
-        const identifier = parseInt(req.params.taskId)
+        // Generate identifier
+        // const identifier = 
 
         // Test params
         const validator = isValidTask(req.body.task.dueDate, req.body.task.description, req.body.task.state)
@@ -106,7 +107,7 @@ async function create(req: Request, res: Response) {
 
         // Insert data
         const task = await Tasks.create({
-            taskId: identifier,
+            // taskId: identifier,
             dueDate: req.body.task.dueDate,
             description: req.body.task.description,
             state: req.body.task.state

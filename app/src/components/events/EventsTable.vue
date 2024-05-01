@@ -10,7 +10,7 @@ const data = ref<Event[]>([])
 
 async function getData(): Promise<Event[]> {
   // Fetch data from your API here.
-  const events = await axios.get(`/events`, {
+  const events = await axios.get(`/event`, {
     headers: {
       Authorization: `Bearer ${useAuthStore().token}`
     }

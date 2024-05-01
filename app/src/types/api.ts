@@ -78,12 +78,12 @@ interface Group {
 }
 
 interface Task {
-  id: number
-  title: string
-  deadline: Date
-  user: number
-  concerned_user: number
+  taskId: number
+  userId: number
+  dueDate: string
+  description: string
   state: string
+  issuerId: number
 }
 
 

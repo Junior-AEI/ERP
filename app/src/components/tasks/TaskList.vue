@@ -6,28 +6,29 @@ import axios from "axios"
 
 const tasks = ref<Task[]>([
   {
-    id: 1,
-    title: 'Tâche 001',
-    deadline: new Date(),
-    user: 1,
-    concerned_user: 1,
-    state: 'À faire'
+    taskId: 1,
+    userId: 1,
+    dueDate: new Date().toISOString(),
+    description: 'Tâche 001',
+    state: 'À faire',
+    issuerId: 1    
   },
   {
-    id: 2,
-    title: 'Tâche 002',
-    deadline: new Date(),
-    user: 1,
-    concerned_user: 1,
-    state: 'À faire'
+    taskId: 2,
+    userId: 1,
+    dueDate: new Date().toISOString(),
+    description: 'Tâche 002',
+    state: 'À faire',
+    issuerId: 1    
   },
   {
-    id: 3,
-    title: 'Tâche 003 : une tâche vraiment très longue qui prend beaucoup de plaaaaaace',
-    deadline: new Date(),
-    user: 1,
-    concerned_user: 1,
-    state: 'À faire'
+    
+    taskId: 1,
+    userId: 1,
+    dueDate: new Date().toISOString(),
+    description: 'Tâche 003 : une tâche vraiment très longue qui prend beaucoup de plaaaaaace',
+    state: 'À faire',
+    issuerId: 1    
   }
 ])
 
@@ -42,6 +43,8 @@ axios.get(`/task/byUser/${authStore.userId}`, {
     console.log(tasks.value);
     
  })
+ console.log("tasks :",tasks.value);
+ 
 
 
 </script>
@@ -55,12 +58,12 @@ axios.get(`/task/byUser/${authStore.userId}`, {
     <div class="flex flex-1 flex-col gap-1">
       <Task
         v-for="task in tasks"
-        :id="task.id"
-        :title="task.title"
-        :deadline="task.deadline"
-        :user="task.user"
-        :concerned_user="task.concerned_user"
+        :taskId="task.taskId"
+        :userId="task.userId"
+        :dueDate="task.dueDate"
+        :description="task.description"
         :state="task.state"
+        :issuerId="task.issuerId"
       >
       </Task>
     </div>

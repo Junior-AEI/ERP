@@ -37,13 +37,13 @@
         <div class="grid grid-cols-2 gap-2">
           <Label for="document">Ajouter une pièce jointe</Label>
           <Label for="eventType">Type d'événement</Label>
-          <Input id="document" type="file" />
-          <Popover v-model:open="isOpen">
+          <Input disabled id="document" type="file" />
+          <Popover v-model:open="isOpenEventType">
             <PopoverTrigger as-child>
               <Button
                 variant="outline"
                 role="combobox"
-                :aria-expanded="isOpen"
+                :aria-expanded="isOpenEventType"
                 class="justify-between"
               >
                 {{
@@ -56,8 +56,8 @@
             </PopoverTrigger>
             <PopoverContent class="p-0">
               <Command>
-                <CommandInput class="h-9" placeholder="Search framework..." />
-                <CommandEmpty>No framework found.</CommandEmpty>
+                <CommandInput class="h-9" placeholder="Rechercher un événement" />
+                <CommandEmpty>Aucun événement trouvé</CommandEmpty>
                 <CommandList>
                   <CommandGroup>
                     <CommandItem
@@ -69,7 +69,7 @@
                           if (typeof ev.detail.value === 'string') {
                             eventTypeName = ev.detail.value
                           }
-                          isOpen = false
+                          isOpenEventType = false
                         }
                       "
                     >
@@ -99,12 +99,8 @@
             </CollapsibleTrigger>
             <CollapsibleContent>
               <div class="flex items-center space-x-2">
-                <Checkbox id="bureau" />
+                <Checkbox disabled id="bureau" />
                 <label> Bureau </label>
-              </div>
-              <div class="flex items-center space-x-2">
-                <Checkbox id="administration" />
-                <label> Conseil d'administration </label>
               </div>
             </CollapsibleContent>
           </Collapsible>
@@ -146,6 +142,7 @@ import { Label } from '@/components/ui/label'
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from '@/components/ui/collapsible'
 
 const isOpen = ref(false)
+const isOpenEventType = ref(false)
 
 const eventTypes = [
   { value: 'Afterwork', label: 'Afterwork' },
@@ -176,7 +173,7 @@ const eventInfo = ref<Event>({
 const addEvent = () => {
   axios
     .post(
-      `/event/`,
+      `/event`,
       {
         event: {
           name: eventInfo.value.name,

@@ -38,72 +38,72 @@ export const columns: ColumnDef<Event>[] = [
     },
     cell: ({ row }) => h('div', { class: 'text-left' }, row.getValue('name'))
   },
-  {
-    accessorKey: 'startDate',
-    meta: {
-      label: 'Date de début'
-    },
-    header: ({ column }) => {
-      return h(
-        Button,
-        {
-          variant: 'ghost',
-          onClick: () => column.toggleSorting(column.getIsSorted() === 'asc')
-        },
-        () => [
-          'Date de début',
-          h(
-            h(Icon, {
-              name: 'unfold_more'
-            }),
-            { class: defaultClasses }
-          )
-        ]
-      )
-    },
-    cell: ({ row }) => {
-      const startDate = row.getValue('startDate') as string
+  // {
+  //   accessorKey: 'startDate',
+  //   meta: {
+  //     label: 'Date de début'
+  //   },
+  //   header: ({ column }) => {
+  //     return h(
+  //       Button,
+  //       {
+  //         variant: 'ghost',
+  //         onClick: () => column.toggleSorting(column.getIsSorted() === 'asc')
+  //       },
+  //       () => [
+  //         'Date de début',
+  //         h(
+  //           h(Icon, {
+  //             name: 'unfold_more'
+  //           }),
+  //           { class: defaultClasses }
+  //         )
+  //       ]
+  //     )
+  //   },
+  //   cell: ({ row }) => {
+  //     const startDate = row.getValue('startDate') as string
 
-      return h(
-        'div',
-        { class: defaultClasses },
-        df.format(parseDate(startDate).toDate(getLocalTimeZone()))
-      )
-    }
-  },
-  {
-    accessorKey: 'endDate',
-    meta: {
-      label: 'endDate'
-    },
-    header: ({ column }) => {
-      return h(
-        Button,
-        {
-          variant: 'ghost',
-          onClick: () => column.toggleSorting(column.getIsSorted() === 'asc')
-        },
-        () => [
-          'Date de fin',
-          h(
-            h(Icon, {
-              name: 'unfold_more'
-            }),
-            { class: defaultClasses }
-          )
-        ]
-      )
-    },
-    cell: ({ row }) => {
-      const endDate = row.getValue('endDate') as string
+  //     return h(
+  //       'div',
+  //       { class: defaultClasses },
+  //       df.format(parseDate(startDate).toDate(getLocalTimeZone()))
+  //     )
+  //   }
+  // },
+  // {
+  //   accessorKey: 'endDate',
+  //   meta: {
+  //     label: 'endDate'
+  //   },
+  //   header: ({ column }) => {
+  //     return h(
+  //       Button,
+  //       {
+  //         variant: 'ghost',
+  //         onClick: () => column.toggleSorting(column.getIsSorted() === 'asc')
+  //       },
+  //       () => [
+  //         'Date de fin',
+  //         h(
+  //           h(Icon, {
+  //             name: 'unfold_more'
+  //           }),
+  //           { class: defaultClasses }
+  //         )
+  //       ]
+  //     )
+  //   },
+  //   cell: ({ row }) => {
+  //     const endDate = row.getValue('endDate') as string
 
-      return h(
-        'div',
-        { class: defaultClasses },
-        df.format(parseDate(endDate).toDate(getLocalTimeZone()))
-      )
-    }
-  },
+  //     return h(
+  //       'div',
+  //       { class: defaultClasses },
+  //       df.format(parseDate(endDate).toDate(getLocalTimeZone()))
+  //     )
+  //   }
+  // },
   {
     accessorKey: 'location',
     meta: {
@@ -115,6 +115,31 @@ export const columns: ColumnDef<Event>[] = [
 
       return h('div', { class: defaultClasses }, location)
     }
+  },
+  {
+    accessorKey: 'eventTypeName',
+    meta: {
+      label: 'Type d\'événement'
+    },
+    header: ({ column }) => {
+      return h(
+        Button,
+        {
+          variant: 'ghost',
+          onClick: () => column.toggleSorting(column.getIsSorted() === 'asc')
+        },
+        () => [
+          'Type d\'événement',
+          h(
+            h(Icon, {
+              name: 'unfold_more'
+            }),
+            { class: '' }
+          )
+        ]
+      )
+    },
+    cell: ({ row }) => h('div', { class: 'text-left' }, row.getValue('eventTypeName'))
   },
   {
     id: 'actions',

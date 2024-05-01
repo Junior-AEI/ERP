@@ -1,18 +1,8 @@
 <template>
-  <Card>
-    <h2>Tâches à effectuer</h2>
-    <div>
-      <Task> </Task>
+  <Wrapper>
+    <div class="flex flex-1 flex-col gap-2">  
+      <TaskList></TaskList>
+      <TaskAdd></TaskAdd>
     </div>
-    <div>
-      <h3>Ajouter une tâche :</h3>
-      <div>
-        <Input type="text" placeholder="ma tâche" />
-        <div class="flex-col">
-          <Input type="date" placeholder="Deadline" />
-          <Button> Ajouter </Button>
-        </div>
-      </div>
-    </div>
-  </Card>
+  </Wrapper>
 </template>

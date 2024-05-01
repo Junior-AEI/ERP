@@ -401,7 +401,8 @@ describe('ROUTE (PUT): /api/user/:id (Update user)', () => {
             "",
             null,
             undefined,
-            "NameToooooooooooooooooooooooooooooooooLong"
+            "NameToooooooooooooooooooooooooooooooooLong",
+            19
         ]
 
         for (const wrongUsername of wrongUsernameList) {

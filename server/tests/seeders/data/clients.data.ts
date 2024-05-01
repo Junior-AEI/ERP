@@ -1,8 +1,7 @@
+export const clients: any = {
 
-export const characters: any = {
-
-    // John Doe character
-    'john.doe': {
+    // Johnny Doe character
+    'johnny.doe': {
         person: {
             firstname: 'John',
             lastname: 'Doe',
@@ -18,17 +17,11 @@ export const characters: any = {
             postCode: '33400',
             country: 'FRA'
         },
-        memberBirthDate: '2002-07-26T12:00:00',
-        member: {
-            birthPlace: 'Royan',
-            nationality: 'FRA',
-            promotion: '2024',
-            paymentMethod: 'CB',
-            department: 'Informatique',
-            telegramId: '@pabechou',
-            membershipNumber: 1
+        company: {
+            name: 'Enseirb',
+            legalEntity: 'Oui',
         },
-        password: 'mdp'
+        function: "RH",
     },
 
     // Jane Doe character
@@ -48,17 +41,10 @@ export const characters: any = {
             postCode: '33800',
             country: 'FRA'
         },
-        memberBirthDate: '2002-02-12T16:00:00',
-        member: {
-            birthPlace: 'Paris',
-            nationality: 'FRA',
-            promotion: '2024',
-            paymentMethod: 'CB',
-            department: 'Informatique',
-            telegramId: '',
-            membershipNumber: 2
+        company: {
+            name: 'Matmeca',
+            legalEntity: 'Non',
         },
-        password: 'mdp'
-    },
-
+        function: "Développeur",
+    }
 }

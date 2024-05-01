@@ -4,17 +4,7 @@ import { ref } from "vue"
 import { useAuthStore } from "@/stores/authStore";
 import axios from "axios"
 
-// const tasks = ref<Task[]>([])
-
-// const authStore = useAuthStore() 
-
-// axios.get(`/task/byUser/${authStore.userId}`).then((response)=>{
-//     tasks.value.push(...response.data.data.tasks)
-//     console.log(tasks.value);
-    
-//  })
-
-const tasks: Task[] = [
+const tasks = ref<Task[]>([
   {
     id: 1,
     title: 'Tâche 001',
@@ -39,7 +29,21 @@ const tasks: Task[] = [
     concerned_user: 1,
     state: 'À faire'
   }
-]
+])
+
+const authStore = useAuthStore() 
+
+axios.get(`/task/byUser/${authStore.userId}`, {
+        headers: {
+          Authorization: `Bearer ${useAuthStore().token}`
+        }
+      }).then((response)=>{
+    tasks.value.push(...response.data.data.tasks)
+    console.log(tasks.value);
+    
+ })
+
+
 </script>
 
 <template>

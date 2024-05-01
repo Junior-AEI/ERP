@@ -108,22 +108,12 @@
 import axios from 'axios'
 import { useAuthStore } from '@/stores/authStore'
 import { ref } from 'vue'
-import { cn } from '@/lib/utils'
 
 const props = defineProps<{
   memberId: number
 }>()
 
-import {
-  DateFormatter,
-  getLocalTimeZone,
-  parseAbsoluteToLocal,
-  type DateValue
-} from '@internationalized/date'
-
-const df = new DateFormatter('fr-FR', {
-  dateStyle: 'long'
-})
+import { parseAbsoluteToLocal, type DateValue } from '@internationalized/date'
 
 // We define the data for the member
 

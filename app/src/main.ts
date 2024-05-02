@@ -20,6 +20,7 @@ import { eventsModule } from '@/modules/eventsModule'
 import { treasuryModule } from '@/modules/treasuryModule'
 import { supportModule } from '@/modules/supportModule'
 import { requestNFGModule } from '@/modules/requestNFGModule'
+import { adminModule } from '@/modules/adminModule'
 
 registerModule(eventsModule)
 registerModule(treasuryModule)
@@ -28,6 +29,7 @@ registerModule(projectsModule)
 registerModule(reviewsModule)
 registerModule(supportModule)
 registerModule(requestNFGModule)
+registerModule(adminModule)
 
 /* Définition des stores */
 
@@ -35,14 +37,6 @@ import { createPinia } from 'pinia'
 
 const pinia = createPinia()
 app.use(pinia)
-
-watch(
-  pinia.state,
-  (state) => {
-    localStorage.setItem('auth', JSON.stringify(state.auth))
-  },
-  { deep: true }
-)
 
 /* Définition du router */
 

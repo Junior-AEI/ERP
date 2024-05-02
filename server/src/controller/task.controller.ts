@@ -4,6 +4,7 @@ import Tasks from '../models/task.model'
 import { HttpError } from 'http-errors'
 import { isValidTask } from '../validator/task.validator'
 import { controllerErrorHandler, isNumber } from './utils.controller'
+import sequelize from 'sequelize'
 
 /**
  * Get all users
@@ -52,14 +53,53 @@ const getByPk = async (req: Request, res: Response) => {
 }
 
 /**
+ * HelloWorld
+ * @param req
+ * @param res
+ */
+const getTheUser = async (req: Request, res: Response) => {
+    console.log('getTheUser');
+}
+
+    
+
+/**
+ * Select all tasks for a specific user
+ * @param req
+ * @param res
+ */
+const getByUser = async (req: Request, res: Response) => {
+    try {
+        if (req.params.taskUser && !isNumber(req.params.taskUser)) throw createHttpError(400, 'Please provide a valid identifier')
+        const identifier = parseInt(req.params.taskUser)
+
+        const tasks = await Tasks.findAll({
+            where: {
+                userId: identifier
+            }
+        })
+
+        return res.status(200).json({
+            status: 'success',
+            data: {
+                tasks: tasks
+            }
+        })
+    } catch (err) {
+        if (err instanceof HttpError) controllerErrorHandler(err, res)
+        else throw err
+    }
+}
+
+/**
  * Create an user
  * @param req
  * @param res
  */
 async function create(req: Request, res: Response) {
     try {
-        if (req.params.taskId && !isNumber(req.params.taskId)) throw createHttpError(400, 'Please provide a valid identifier')
-        const identifier = parseInt(req.params.taskId)
+        // Generate identifier
+        // const identifier = 
 
         // Test params
         const validator = isValidTask(req.body.task.dueDate, req.body.task.description, req.body.task.state)
@@ -67,7 +107,7 @@ async function create(req: Request, res: Response) {
 
         // Insert data
         const task = await Tasks.create({
-            taskId: identifier,
+            // taskId: identifier,
             dueDate: req.body.task.dueDate,
             description: req.body.task.description,
             state: req.body.task.state
@@ -144,6 +184,8 @@ const del = async (req: Request, res: Response) => {
 const taskController = {
     getAll,
     getByPk,
+    getByUser,
+    getTheUser,
     create,
     del,
     update

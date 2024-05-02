@@ -3,11 +3,12 @@ import { type VariantProps, cva } from 'class-variance-authority'
 export { default as Link } from './Link.vue'
 
 export const linkVariants = cva(
-  'inline-flex items-center justify-center rounded-sm  hover:text-accent transition transition-ease-in',
+  'inline-flex items-center justify-center rounded-md  hover:text-accent transition transition-ease-in',
   {
     variants: {
       variant: {
         default: '',
+        outline: 'border border-input bg-background hover:border-accent/40 hover:text-accent',
         active: 'text-accent bg-card/80 shadow-sm hover:shadow-accent/40'
       },
       size: {

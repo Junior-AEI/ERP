@@ -61,6 +61,7 @@ import type { SelectEvent } from 'node_modules/radix-vue/dist/Combobox/ComboboxI
 import type { AcceptableValue } from 'node_modules/radix-vue/dist/Combobox/ComboboxRoot'
 
 import router from '@/router'
+import type { MaterialSymbol } from 'material-symbols'
 
 const routes = router
   .getRoutes()
@@ -80,7 +81,7 @@ const handleSelect = (ev: SelectEvent<AcceptableValue>) => {
     <CommandDialog v-model:open="openRef">
       <CommandInput placeholder="Rechercher..." />
       <CommandList>
-        <CommandEmpty>No results found.</CommandEmpty>
+        <CommandEmpty>Aucun résultat </CommandEmpty>
         <!--CommandGroup heading="Suggestions">
           <CommandItem value="calendar"> Calendar </CommandItem>
           <CommandItem value="search-emoji"> Search Emoji </CommandItem>
@@ -90,10 +91,12 @@ const handleSelect = (ev: SelectEvent<AcceptableValue>) => {
         <CommandGroup heading="Pages">
           <CommandItem
             v-for="route in routes"
-            :key="route.path"
+            :key="route.name"
             @select="handleSelect"
             :value="route.path"
+            class="flex gap-2"
           >
+            <Icon :name="route.meta.icon as MaterialSymbol" />
             {{ route.name }}
           </CommandItem>
         </CommandGroup>

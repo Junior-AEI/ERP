@@ -12,10 +12,8 @@
 // You should have received a copy of the GNU Affero General Public License along with LATIME. If not, see <https://www.gnu.org/licenses/>.
 import express from "express";
 
-import botController from "../controller/Bot.controller";
+import senderController from "../controller/bot.controller";
 
 const router = express.Router();
-router.post("/", botController.notif);
-router.post("/connexion", botController.connexion);
-router.post("/uploadDoc", botController.uploadDoc);
+router.post("/", senderController.sendMessage);
 export default router;

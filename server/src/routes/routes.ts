@@ -17,7 +17,6 @@ import projectManagerRouter from './projectManager.route'
 import documentRouter from './document.route'
 import documentTypeRouter from './documentType.route'
 import eventRouter from './event.route'
-import eventTypeRouter from './eventType.route'
 import partnerRouter from './partner.route'
 import eventGroupConcernedRouter from './eventGroupConcerned.route'
 import taskRouter from './task.route'
@@ -45,12 +44,11 @@ router.use('/contributor', getUsername, verifyAuthentication, contributorRouter)
 router.use('/projectNotes', getUsername, verifyAuthentication, projectNotesRouter)
 router.use('/document', getUsername, verifyAuthentication, documentRouter)
 router.use('/documentType', getUsername, verifyAuthentication, documentTypeRouter)
-router.use('./event', getUsername, verifyAuthentication, eventRouter)
-router.use('./eventType', getUsername, verifyAuthentication, eventTypeRouter)
-router.use('./partner', getUsername, verifyAuthentication, partnerRouter)
-router.use('./eventGroupConcerned', getUsername, verifyAuthentication, eventGroupConcernedRouter)
-router.use('./task', getUsername, verifyAuthentication, taskRouter)
-router.use('./itTicket', getUsername, verifyAuthentication, itTicketRouter)
-router.use('./expenseAccount', getUsername, verifyAuthentication, expenseAccountRouter)
+router.use('/event', getUsername, verifyAuthentication, eventRouter)
+router.use('/partner', getUsername, verifyAuthentication, partnerRouter)
+router.use('/eventGroupConcerned', getUsername, verifyAuthentication, eventGroupConcernedRouter)
+router.use('/task', getUsername, verifyAuthentication, taskRouter)
+router.use('/itTicket', getUsername, verifyAuthentication, itTicketRouter)
+router.use('/expenseAccount', getUsername, verifyAuthentication, expenseAccountRouter)
 
 export default router

@@ -20,7 +20,9 @@ export default class Tasks extends Model {
     @PrimaryKey
     @Column({
         type: DataType.INTEGER,
-        allowNull: false
+        allowNull: false,
+        primaryKey: true,
+        autoIncrement: true
     })
     taskId!: number
 

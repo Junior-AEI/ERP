@@ -2,15 +2,15 @@
 <script setup lang="ts">
 defineProps<{
   item: {
-    memberId: string
+    memberId: number
   }
 }>()
 
 import router from '@/router'
 
-function goToProfile(id: string) {
+function goToProfile(id: number) {
   console.log('Go to profile', id)
-  router.push({ name: 'members.show', params: { id } })
+  router.push({ path: `/profile/${id}` })
 }
 </script>
 

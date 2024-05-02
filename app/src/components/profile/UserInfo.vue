@@ -1,48 +1,48 @@
 <template>
   <Card class="flex-1">
     <CardHeader>
-      <Icon name="person" class="text-6xl" />
-      <span class="text-accent"> Informations sur l'Utilisateur </span>
+      <Icon name="user_attributes" class="text-6xl" />
+      <span class="text-accent"> Informations du compte utilisateur </span>
     </CardHeader>
     <CardContent>
       <div class="flex items-end gap-4">
         <div class="flex flex-1 flex-col gap-2">
           <Label for="userId">Identifiant Utilisateur</Label>
-          <Input disabled id="userId" v-model="userInfo.userId" />
+          <Input disabled id="userId" :placeholder="userId" />
         </div>
         <div class="flex flex-1 flex-col gap-2">
           <Label for="username">Nom d'utilisateur</Label>
-          <Input id="username" v-model="userInfo.username" />
+          <Input id="username" v-model="username" />
         </div>
       </div>
       <div class="flex flex-1 flex-col gap-2">
         <Label for="emailJE">Email J.E.</Label>
-        <Input id="emailJE" v-model="userInfo.emailJE" />
+        <Input id="emailJE" v-model="emailJE" />
       </div>
       <div class="flex items-end gap-4">
         <div class="flex flex-1 flex-col gap-2">
-          <Label for="lastname">Date de début de mandat</Label>
+          <Label for="mandateStart">Date de début de mandat</Label>
           <Popover>
             <PopoverTrigger as-child>
               <Button
-                :variant="'outline'"
+                variant="outline"
                 :class="
                   cn(
-                    'w-full justify-start text-left font-normal',
-                    !userInfo.mandateStart && 'text-muted-foreground'
+                    'justify-start text-left font-normal',
+                    !mandateStart && 'text-muted-foreground'
                   )
                 "
               >
-                <Icon name="calendar_month" class="mr-2" />
-                <span>{{
-                  userInfo.mandateStart
-                    ? userInfo.mandateStart.toLocaleDateString('fr-FR')
-                    : 'Définir la date de début de mandat'
-                }}</span>
+                <Icon name="date_range" class="mr-2 h-4 w-4" />
+                {{
+                  mandateStart
+                    ? df.format(mandateStart.toDate(getLocalTimeZone()))
+                    : 'Choisir une date'
+                }}
               </Button>
             </PopoverTrigger>
             <PopoverContent class="w-auto p-0">
-              <Calendar v-model="userInfo.mandateStart" />
+              <Calendar v-model="mandateStart" initial-focus />
             </PopoverContent>
           </Popover>
         </div>
@@ -51,24 +51,19 @@
           <Popover>
             <PopoverTrigger as-child>
               <Button
-                :variant="'outline'"
+                variant="outline"
                 :class="
-                  cn(
-                    'w-full justify-start text-left font-normal',
-                    !userInfo.mandateEnd && 'text-muted-foreground'
-                  )
+                  cn('justify-start text-left font-normal', !mandateEnd && 'text-muted-foreground')
                 "
               >
-                <Icon name="calendar_month" class="mr-2" />
-                <span>{{
-                  userInfo.mandateEnd
-                    ? userInfo.mandateEnd.toLocaleDateString('fr-FR')
-                    : 'Définir la date de fin de mandat'
-                }}</span>
+                <Icon name="date_range" class="mr-2 h-4 w-4" />
+                {{
+                  mandateEnd ? df.format(mandateEnd.toDate(getLocalTimeZone())) : 'Choisir une date'
+                }}
               </Button>
             </PopoverTrigger>
             <PopoverContent class="w-auto p-0">
-              <Calendar v-model="userInfo.mandateEnd" />
+              <Calendar v-model="mandateEnd" initial-focus />
             </PopoverContent>
           </Popover>
         </div>
@@ -80,19 +75,22 @@
 
 <script setup lang="ts">
 import axios from 'axios'
-import type { User } from '@/types/api'
 import { ref } from 'vue'
 import { cn } from '@/lib/utils'
 import { useAuthStore } from '@/stores/authStore'
 
+import {
+  DateFormatter,
+  getLocalTimeZone,
+  parseAbsoluteToLocal,
+  type DateValue
+} from '@internationalized/date'
+
+const df = new DateFormatter('fr-FR', {
+  dateStyle: 'long'
+})
+
 const editUserData = () => {
-  console.log({
-    userId: userInfo.value.userId,
-    username: userInfo.value.username,
-    mandateStart: userInfo.value.mandateStart.toISOString(),
-    mandateEnd: userInfo.value.mandateEnd.toISOString(),
-    emailJE: userInfo.value.emailJE
-  })
   alert('Not Implemented Yet (route not ready)')
 }
 
@@ -100,13 +98,10 @@ const props = defineProps<{
   userId: number
 }>()
 
-const userInfo = ref<User>({
-  userId: props.userId,
-  username: '',
-  mandateStart: new Date(),
-  mandateEnd: new Date(),
-  emailJE: ''
-})
+const username = ref('')
+const mandateStart = ref<DateValue>()
+const mandateEnd = ref<DateValue>()
+const emailJE = ref('')
 
 axios
   .get(`/user/${props.userId}`, {
@@ -116,11 +111,10 @@ axios
   })
   .then((response) => {
     const user = response.data.data.user
-    userInfo.value.userId = user.userId
-    userInfo.value.username = user.username
-    userInfo.value.mandateStart = new Date(user.mandateStart)
-    userInfo.value.mandateEnd = new Date(user.mandateEnd)
-    userInfo.value.emailJE = user.emailJE
+    username.value = user.username
+    mandateStart.value = parseAbsoluteToLocal(user.mandateStart)
+    mandateEnd.value = parseAbsoluteToLocal(user.mandateEnd)
+    emailJE.value = user.emailJE
   })
   .catch((error) => {
     console.error(error)

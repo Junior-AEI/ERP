@@ -1,48 +1,90 @@
+type DateString = string
+
 interface Person {
-  personId: string
-  firstname: string
+  personId: number
   lastname: string
+  firstname: string
   gender: string
-  mobilePhoneNumber: string
-  landlinePhoneNumber: string
+  mobilePhone: string
+  landlinePhone: string
   email: string
+  createdAt: DateString
+  updatedAt: DateString
 }
 
 interface Member {
-  memberId: string
-  birthDate: string
+  memberId: number
+  birthDate: DateString
   birthPlace: string
   nationality: string
   promotion: string
-  contributionDate: string
+  contributionDate: DateString
   paymentMethod: string
   department: string
-  createdAt: string
-  updatedAt: string
+  membershipNumber: number
+  addressId: number
+  createdAt: DateString
+  updatedAt: DateString
 }
+
+type FullMember = Member & Person
 
 interface User {
   userId: number
   username: string
-  mandateStart: Date
-  mandateEnd: Date
+  mandateStart: DateString
+  mandateEnd: DateString
   emailJE: string
 }
 
+interface Address {
+  addressId: number
+  address: string
+  additionnalAddress: string
+  city: string
+  postCode: string
+  country: string
+  createdAt: DateString
+  updatedAt: DateString
+  member: Member[]
+  company: Array<{}>
+}
+
 interface Event {
-  eventId: string
+  eventId: number
   name: string
-  startDate: string
-  endDate: string
+  startDate: DateString | null
+  endDate: DateString | null
   location: string
   description: string
   eventTypeName: string
 }
 
-interface EventTypes {
-  name: string
-  fieldNumber: string
-  fieldMeaning: string
+interface itTicket {
+  ticketId: number
+  userId: number
+  title: string
+  description: string
+  applicationConcerned: string
+  state: string
 }
 
-export type { Person, Member, User, Event, EventTypes }
+type itTicketInfo = itTicket & User;
+
+interface Group {
+  groupName: string
+  createdAt: DateString
+  updatedAt: DateString
+}
+
+interface Task {
+  taskId: number
+  userId: number
+  dueDate: string
+  description: string
+  state: string
+  issuerId: number
+}
+
+
+export type { Person, Member, FullMember, User, Event, Address, itTicket, itTicketInfo, Group, Task}

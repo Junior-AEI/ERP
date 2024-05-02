@@ -11,7 +11,8 @@
 
 // You should have received a copy of the GNU Affero General Public License along with LATIME. If not, see <https://www.gnu.org/licenses/>.
 import express from "express";
-import botRoutes from "./bot.route";
+import senderRoutes from "./bot.route";
+
 // import {
 //     getUsername,
 //     verifyAuthentication,
@@ -19,5 +20,5 @@ import botRoutes from "./bot.route";
 
 const router = express.Router();
 
-router.use("/bot", botRoutes);
+router.use("/send", senderRoutes);
 export default router;

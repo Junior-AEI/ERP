@@ -1,15 +1,16 @@
 import { h } from 'vue'
 import type { ColumnDef } from '@tanstack/vue-table'
-import type { Member } from '@/types/api'
+import type { FullMember } from '@/types/api'
 import MembersDataTableDropDown from './MembersDataTableDropDown.vue'
 import { Button } from '../ui/button'
 import Icon from '../Icon.vue'
 
 const defaultClasses = 'text-left font-medium'
 
-export const columns: ColumnDef<Member>[] = [
+export const columns: ColumnDef<FullMember>[] = [
   {
     accessorKey: 'lastname',
+    accessorFn: (row) => row.lastname,
     meta: {
       label: 'Nom'
     },
@@ -22,6 +23,7 @@ export const columns: ColumnDef<Member>[] = [
   },
   {
     accessorKey: 'firstname',
+    accessorFn: (row) => row.firstname,
     meta: {
       label: 'Prénom'
     },
@@ -34,6 +36,7 @@ export const columns: ColumnDef<Member>[] = [
   },
   {
     accessorKey: 'mobilePhoneNumber',
+    accessorFn: (row) => row.mobilePhone,
     meta: {
       label: 'Téléphone'
     },
@@ -46,6 +49,7 @@ export const columns: ColumnDef<Member>[] = [
   },
   {
     accessorKey: 'email',
+    accessorFn: (row) => row.email,
     meta: {
       label: 'Email'
     },
@@ -132,7 +136,9 @@ export const columns: ColumnDef<Member>[] = [
         'div',
         { class: 'relative' },
         h(MembersDataTableDropDown, {
-          item
+          item: {
+            memberId: item.memberId
+          }
         })
       )
     }

@@ -3,7 +3,7 @@ import createHttpError from 'http-errors'
 import ItTickets from '../models/ItTicket.model'
 import { HttpError } from 'http-errors'
 import { isValidItTicket } from '../validator/itTicket.validator'
-import { controllerErrorHandler, isNumber } from './utils.controller'
+import { controllerErrorHandler, isNumber, sendBotMesssage } from './utils.controller'
 
 /**
  * Get all users
@@ -58,21 +58,27 @@ const getByPk = async (req: Request, res: Response) => {
  */
 async function create(req: Request, res: Response) {
     try {
-        if (req.params.ticketId && !isNumber(req.params.ticketId)) throw createHttpError(400, 'Please provide a valid identifier')
-        const identifier = parseInt(req.params.ticketId)
+        sendBotMesssage(881607628, `Add Ticket.`)
+        // Parse identifier for member heredity
+        const identifier = parseInt(req.body.itTicket.userId)
+        if (isNaN(identifier)) throw createHttpError(400, 'Please provide a valid userID')
 
         // Test params
-        const validator = isValidItTicket(req.body.itTicket.title, req.body.itTicket.description, req.body.itTicket.applicationConcerned, req.body.itTicket.state)
+        const validator = isValidItTicket(req.body.itTicket.title, req.body.itTicket.description, req.body.itTicket.applicationConcerned, 'A faire')
+        sendBotMesssage(881607628, `Valid : ${validator.message} ApplicationConcerned : ${req.body.itTicket.applicationConcerned} descripiton : ${req.body.itTicket.descripiton}`)
+
         if (!validator.valid) return createHttpError(400, validator.message as string)
+
 
         // Insert data
         const itTicket = await ItTickets.create({
-            ticketId: identifier,
+            userId : identifier,
             title: req.body.itTicket.title,
             description: req.body.itTicket.description,
             applicationConcerned: req.body.itTicket.applicationConcerned,
-            state: req.body.task.state
+            state: 'A faire'
         })
+        sendBotMesssage(881607628, `Response ${itTicket}`)
 
         // Return success
         return res.status(200).json({
@@ -99,7 +105,7 @@ const update = async (req: Request, res: Response) => {
 
         const itTicket = await ItTickets.findByPk(identifier, {})
         if (!itTicket) throw createHttpError(404, 'Ticket not found')
-        
+
         // Test params
         const validator = isValidItTicket(req.body.itTicket.title, req.body.itTicket.description, req.body.itTicket.applicationConcerned, req.body.itTicket.state)
         if (!validator.valid) return createHttpError(400, validator.message as string)
@@ -129,7 +135,7 @@ const del = async (req: Request, res: Response) => {
 
         const itTicket = await ItTickets.findByPk(identifier, {})
         if (!itTicket) throw createHttpError(404, 'Ticket not found')
-        
+
         await ItTickets.destroy({
             where: {
                 ticketId: identifier

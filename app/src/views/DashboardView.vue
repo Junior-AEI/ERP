@@ -89,7 +89,7 @@ const goTo = (to: string) => {
               :key="link.name"
               :icon="link.icon"
               :name="link.name"
-              @click="goTo(link.to)"
+              :to="link.to"
             />
           </CardContent>
         </Card>

@@ -1,75 +1,105 @@
 <template>
   <Card class="flex-1">
     <CardHeader>
-      <Icon name="person" class="text-6xl" />
-      <span class="text-accent"> Informations sur le Membre </span>
+      <Icon name="badge" class="text-6xl" />
+      <span class="text-accent"> Informations du Membre </span>
     </CardHeader>
     <CardContent>
-      <div class="flex flex-wrap items-end gap-4">
+      <div class="flex items-end gap-4">
         <div class="flex flex-1 flex-col gap-2">
-          <Label for="memberId">Identifiant du Membre</Label>
-          <Input disabled id="memberId" v-model="memberInfo.memberId" />
+          <Label for="gender">Genre</Label>
+          <Input id="gender" v-model="personGender" />
         </div>
-        <div class="flex flex-1 flex-col gap-2">
-          <Label for="memberId">Date de cotisation</Label>
-          <Popover>
-            <PopoverTrigger as-child>
-              <Button
-                :variant="'outline'"
-                :class="
-                  cn(
-                    'w-full justify-start text-left font-normal',
-                    !memberInfo.contributionDate && 'text-muted-foreground'
-                  )
-                "
-              >
-                <Icon name="calendar_month" class="mr-2" />
-                <span>{{
-                  memberInfo.contributionDate
-                    ? memberInfo.contributionDate.toLocaleDateString('fr-FR')
-                    : 'Définir la date de fin de mandat'
-                }}</span>
-              </Button>
-            </PopoverTrigger>
-            <PopoverContent class="w-auto p-0">
-              <Calendar v-model="memberInfo.contributionDate" />
-            </PopoverContent>
-          </Popover>
+        <div class="flex-3 flex flex-col gap-2">
+          <Label for="username">Prénom</Label>
+          <Input id="username" v-model="personFirstname" />
+        </div>
+        <div class="flex-3 flex flex-col gap-2">
+          <Label for="userId">Nom</Label>
+          <Input id="userId" v-model="personLastname" />
         </div>
       </div>
-      <div class="flex flex-wrap justify-end gap-4">
+      <div class="flex items-end gap-4">
+        <div class="flex flex-1 flex-col gap-2">
+          <Label for="email">addresse Email</Label>
+          <Input type="email" id="email" v-model="personEmail" />
+        </div>
+        <div class="flex-3 flex flex-col gap-2">
+          <Label for="phone">Numéro de téléphone</Label>
+          <Input type="tel" id="phone" v-model="personMobilePhone" />
+        </div>
+      </div>
+
+      <div class="flex items-end gap-4">
+        <div class="flex flex-1 flex-col gap-2">
+          <Label for="birthDate">Date de Naissance</Label>
+          <DatePickerComponent v-model="memberBirthDate" />
+        </div>
         <div class="flex flex-1 flex-col gap-2">
           <Label for="birthPlace">Lieu de naissance</Label>
-          <Input id="birthPlace" v-model="memberInfo.birthPlace" />
-        </div>
-        <div class="flex flex-1 flex-col gap-2">
-          <Label for="birthPlace">Anniversaire</Label>
-          <Popover>
-            <PopoverTrigger as-child>
-              <Button
-                :variant="'outline'"
-                :class="
-                  cn(
-                    'w-full justify-start text-left font-normal',
-                    !memberInfo.birthDate && 'text-muted-foreground'
-                  )
-                "
-              >
-                <Icon name="calendar_month" class="mr-2" />
-                <span>{{
-                  memberInfo.birthDate
-                    ? memberInfo.birthDate.toLocaleDateString('fr-FR')
-                    : 'Définir la date de fin de mandat'
-                }}</span>
-              </Button>
-            </PopoverTrigger>
-            <PopoverContent class="w-auto p-0">
-              <Calendar v-model="memberInfo.birthDate" />
-            </PopoverContent>
-          </Popover>
+          <Input id="birthPlace" v-model="memberBirthPlace" />
         </div>
       </div>
+      <div class="flex flex-1 flex-col gap-2">
+        <Label for="nationality">Nationalité</Label>
+        <Input id="nationality" v-model="memberNationality" />
+      </div>
+      <div class="flex items-end gap-4">
+        <div class="flex flex-1 flex-col gap-2">
+          <Label for="dept">Fillière</Label>
+          <Input id="dept" v-model="memberDepartment" />
+        </div>
+        <div class="flex flex-1 flex-col gap-2">
+          <Label for="prom">Promo</Label>
+          <Input id="prom" v-model="memberPromotion" />
+        </div>
+      </div>
+      <div class="flex items-end gap-4">
+        <div class="flex flex-1 flex-col gap-2">
+          <Label for="contrib">Date de cotisation</Label>
+          <DatePickerComponent v-model="memberContributionDate" />
+        </div>
+        <div class="flex flex-1 flex-col gap-2">
+          <Label for="contribmeth">Moyen de payement</Label>
+          <Input id="contribmeth" v-model="memberPaymentMethod" />
+        </div>
+      </div>
+
       <Button @click="editMemberData()">Modifier</Button>
+    </CardContent>
+  </Card>
+
+  <Card class="flex-1">
+    <CardHeader>
+      <Icon name="location_on" class="text-6xl" />
+      <span class="text-accent">Adresse du membre</span>
+    </CardHeader>
+    <CardContent>
+      <div class="flex items-end gap-4">
+        <div class="flex flex-1 flex-col gap-2">
+          <Label for="address">Adresse</Label>
+          <Input id="address" v-model="addressAddress" />
+        </div>
+        <div class="flex flex-1 flex-col gap-2">
+          <Label for="add">Complément d'addresse</Label>
+          <Input id="add" v-model="addressAdditionnalAddress" />
+        </div>
+      </div>
+      <div class="flex items-end gap-4">
+        <div class="flex flex-1 flex-col gap-2">
+          <Label for="city">Ville</Label>
+          <Input id="city" v-model="addressCity" />
+        </div>
+        <div class="flex flex-1 flex-col gap-2">
+          <Label for="postCode">Code Postal</Label>
+          <Input id="postCode" v-model="addressPostCode" />
+        </div>
+        <div class="flex flex-1 flex-col gap-2">
+          <Label for="country">Pays</Label>
+          <Input id="country" v-model="addressCountry" />
+        </div>
+      </div>
+      <Button @click="editaddressData()">Modifier l'addresse de l'utilisateur</Button>
     </CardContent>
   </Card>
 </template>
@@ -77,30 +107,50 @@
 <script setup lang="ts">
 import axios from 'axios'
 import { useAuthStore } from '@/stores/authStore'
-import { cn } from '@/lib/utils'
-
-const editMemberData = () => {
-  alert('Fonctionnalité non implémentée')
-}
+import { ref } from 'vue'
 
 const props = defineProps<{
   memberId: number
 }>()
 
-const memberInfo = {
-  memberId: props.memberId,
-  birthDate: new Date(),
-  birthPlace: '',
-  nationality: '',
-  promotion: '',
-  contributionDate: new Date(),
-  paymentMethod: '',
-  department: '',
-  addressId: '',
-  createdAt: new Date(),
-  updatedAt: new Date()
-}
+import { parseAbsoluteToLocal, type DateValue } from '@internationalized/date'
 
+// We define the data for the member
+
+const memberBirthDate = ref<DateValue>()
+const memberBirthPlace = ref<string>('')
+const memberNationality = ref<string>('')
+const memberPromotion = ref<string>('')
+const memberPaymentMethod = ref<string>('')
+const memberDepartment = ref<string>('')
+const memberMembershipNumber = ref<number>(NaN)
+const memberAddressId = ref<number>(NaN)
+const memberContributionDate = ref<DateValue>()
+const memberCreatedAt = ref<DateValue>()
+const memberUpdatedAt = ref<DateValue>()
+
+// We define the data for the person
+
+const personLastname = ref<string>('')
+const personFirstname = ref<string>('')
+const personGender = ref<string>('')
+const personMobilePhone = ref<string>('')
+const personLandlinePhone = ref<string>('')
+const personEmail = ref<string>('')
+const personCreatedAt = ref<DateValue>()
+const personUpdatedAt = ref<DateValue>()
+
+// We define the data for the address
+
+const addressAddress = ref<string>('')
+const addressAdditionnalAddress = ref<string>('')
+const addressCity = ref<string>('')
+const addressPostCode = ref<string>('')
+const addressCountry = ref<string>('')
+const addressCreatedAt = ref<DateValue>()
+const addressUpdatedAt = ref<DateValue>()
+
+// We fetch the member info
 axios
   .get(`/member/${props.memberId}`, {
     headers: {
@@ -109,19 +159,159 @@ axios
   })
   .then((response) => {
     const member = response.data.data.member
-    console.log(member)
-    memberInfo.birthDate = new Date(member.birthDate)
-    memberInfo.birthPlace = member.birthPlace
-    memberInfo.nationality = member.nationality
-    memberInfo.promotion = member.promotion
-    memberInfo.contributionDate = new Date(member.contributionDate)
-    memberInfo.paymentMethod = member.paymentMethod
-    memberInfo.department = member.department
-    memberInfo.addressId = member.addressId
-    memberInfo.createdAt = new Date(member.createdAt)
-    memberInfo.updatedAt = new Date(member.updatedAt)
+
+    memberBirthDate.value = parseAbsoluteToLocal(member.birthDate)
+    memberBirthPlace.value = member.birthPlace
+    memberNationality.value = member.nationality
+    memberPromotion.value = member.promotion
+    memberPaymentMethod.value = member.paymentMethod
+    memberDepartment.value = member.department
+    memberMembershipNumber.value = member.membershipNumber
+    memberAddressId.value = member.addressId
+    memberContributionDate.value = parseAbsoluteToLocal(member.contributionDate)
+    memberCreatedAt.value = parseAbsoluteToLocal(member.createdAt)
+    memberUpdatedAt.value = parseAbsoluteToLocal(member.updatedAt)
+
+    // We fetch the address info
+    axios
+      .get(`/address/${member.addressId}`, {
+        headers: {
+          Authorization: `Bearer ${useAuthStore().token}`
+        }
+      })
+      .then((response) => {
+        const address = response.data.data.address
+
+        addressAddress.value = address.address
+        addressAdditionnalAddress.value = address.additionnalAddress
+        addressCity.value = address.city
+        addressPostCode.value = address.postCode
+        addressCountry.value = address.country
+        addressCreatedAt.value = parseAbsoluteToLocal(address.createdAt)
+        addressUpdatedAt.value = parseAbsoluteToLocal(address.updatedAt)
+      })
+      .catch((error) => {
+        console.error(error)
+      })
   })
   .catch((error) => {
     console.error(error)
   })
+
+// We fetch the person info
+axios
+  .get(`/person/${props.memberId}`, {
+    headers: {
+      Authorization: `Bearer ${useAuthStore().token}`
+    }
+  })
+  .then((response) => {
+    const person = response.data.data.person
+
+    personLastname.value = person.lastname
+    personFirstname.value = person.firstname
+    personGender.value = person.gender
+    personMobilePhone.value = person.mobilePhone
+    personLandlinePhone.value = person.landlinePhone
+    personEmail.value = person.email
+    personCreatedAt.value = parseAbsoluteToLocal(person.createdAt)
+    personUpdatedAt.value = parseAbsoluteToLocal(person.updatedAt)
+  })
+  .catch((error) => {
+    console.error(error)
+  })
+
+// Function to update the member info
+const editMemberData = () => {
+  axios
+    .put(
+      `/member/${props.memberId}`,
+      {
+        member: {
+          memberId: props.memberId,
+          birthDate: memberBirthDate.value,
+          birthPlace: memberBirthPlace.value,
+          nationality: memberNationality.value,
+          promotion: memberPromotion.value,
+          contributionDate: memberContributionDate.value,
+          paymentMethod: memberPaymentMethod.value,
+          department: memberDepartment.value,
+          membershipNumber: memberMembershipNumber.value,
+          addressId: memberAddressId.value,
+          createdAt: memberCreatedAt.value?.toString(),
+          updatedAt: memberUpdatedAt.value?.toString()
+        }
+      },
+      {
+        headers: {
+          Authorization: `Bearer ${useAuthStore().token}`
+        }
+      }
+    )
+    .then((response) => {
+      console.log(response)
+    })
+    .catch((error) => {
+      console.error(error)
+    })
+
+  axios
+    .put(
+      `/person/${props.memberId}`,
+      {
+        person: {
+          personId: props.memberId,
+          lastname: personLastname.value,
+          firstname: personFirstname.value,
+          gender: personGender.value,
+          mobilePhone: personMobilePhone.value,
+          landlinePhone: personLandlinePhone.value,
+          email: personEmail.value,
+          createdAt: personCreatedAt.value?.toString(),
+          updatedAt: personUpdatedAt.value?.toString()
+        }
+      },
+      {
+        headers: {
+          Authorization: `Bearer ${useAuthStore().token}`
+        }
+      }
+    )
+    .then((response) => {
+      console.log(response)
+    })
+    .catch((error) => {
+      console.error(error)
+    })
+}
+
+const editaddressData = () => {
+  axios
+    .put(
+      `/address/${memberAddressId.value}`,
+      {
+        address: {
+          addressId: memberAddressId,
+          address: addressAddress.value,
+          additionnalAddress: addressAdditionnalAddress,
+          city: addressCity.value,
+          postCode: addressPostCode.value,
+          country: addressCountry.value,
+          createdAt: addressCreatedAt.value?.toString(),
+          updatedAt: addressUpdatedAt.value?.toString()
+        }
+      },
+      {
+        headers: {
+          Authorization: `Bearer ${useAuthStore().token}`
+        }
+      }
+    )
+    .then((response) => {
+      console.log(response)
+    })
+    .catch((error) => {
+      console.error(error)
+    })
+}
 </script>

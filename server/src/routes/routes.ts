@@ -45,10 +45,10 @@ router.use('/projectNotes', getUsername, verifyAuthentication, projectNotesRoute
 router.use('/document', getUsername, verifyAuthentication, documentRouter)
 router.use('/documentType', getUsername, verifyAuthentication, documentTypeRouter)
 router.use('/event', getUsername, verifyAuthentication, eventRouter)
-router.use('./partner', getUsername, verifyAuthentication, partnerRouter)
-router.use('./eventGroupConcerned', getUsername, verifyAuthentication, eventGroupConcernedRouter)
-router.use('./task', getUsername, verifyAuthentication, taskRouter)
-router.use('./itTicket', getUsername, verifyAuthentication, itTicketRouter)
-router.use('./expenseAccount', getUsername, verifyAuthentication, expenseAccountRouter)
+router.use('/partner', getUsername, verifyAuthentication, partnerRouter)
+router.use('/eventGroupConcerned', getUsername, verifyAuthentication, eventGroupConcernedRouter)
+router.use('/task', getUsername, verifyAuthentication, taskRouter)
+router.use('/itTicket', getUsername, verifyAuthentication, itTicketRouter)
+router.use('/expenseAccount', getUsername, verifyAuthentication, expenseAccountRouter)
 
 export default router

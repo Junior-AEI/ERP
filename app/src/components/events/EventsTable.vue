@@ -14,22 +14,7 @@ async function getData(): Promise<Event[]> {
       Authorization: `Bearer ${useAuthStore().token}`
     }
   })
-  // For debug purposes only
-  // console.log(response.data.data.events)
   return response.data.data.events
-
-  // return [
-  //   {
-  //     eventId: 1,
-  //     name: 'Cocktail de passation',
-  //     startDate: '2024-05-13T00:00:00.000Z',
-  //     endDate: '2024-05-13T00:00:00.000Z',
-  //     location: 'ENSEIRB-MATMECA',
-  //     description:
-  //       'Cocktail de passation entre les anciens et les nouveaux membres de la junior entreprise',
-  //     eventTypeName: 'Afterwork'
-  //   }
-  // ]
 }
 
 onMounted(async () => {

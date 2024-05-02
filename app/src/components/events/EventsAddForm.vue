@@ -192,6 +192,7 @@ const addEvent = () => {
     )
     .then((response) => {
       console.log(response)
+      location.reload()
     })
     .catch((error) => {
       console.error(error)

@@ -67,6 +67,7 @@ interface itTicket {
   description: string
   applicationConcerned: string
   state: string
+  createdAt : DateString
 }
 
 type itTicketInfo = itTicket & User;

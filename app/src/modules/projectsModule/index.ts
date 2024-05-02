@@ -9,7 +9,7 @@ export const projectsModule: Module = {
       component: () => import('@/views/Construction.vue'),
       children: [
         {
-          path: 'liste-des-prospects',
+          path: '/liste-des-prospects',
           name: 'Liste des prospects',
           component: () => import('@/views/Construction.vue'),
           meta: {

@@ -20,6 +20,7 @@ import { valueUpdater } from '@/lib/utils'
 const props = defineProps<{
   columns: ColumnDef<TData, TValue>[]
   data: TData[]
+  onClickFn?: (...args: any[]) => void
 }>()
 
 const sorting = ref<SortingState>([])
@@ -118,6 +119,7 @@ const setFilterModelValue = (event: string | number) => {
       <TableBody>
         <template v-if="table.getRowModel().rows?.length">
           <TableRow
+            @click="onClickFn"
             v-for="row in table.getRowModel().rows"
             :key="row.id"
             :data-state="row.getIsSelected() ? 'selected' : undefined"

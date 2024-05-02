@@ -1,16 +1,16 @@
 import { defineStore } from 'pinia'
 import axios from 'axios'
 import router from '@/router/index'
+import { useLocalStorage } from '@vueuse/core'
 
 export const useAuthStore = defineStore('auth', {
   state: () => {
-    if (localStorage.getItem('auth')) return JSON.parse(localStorage.getItem('auth') as string)
     return {
-      token: null,
-      userId: null,
-      username: null,
-      firstName: null,
-      lastName: null
+      token: useLocalStorage('token', ''),
+      userId: useLocalStorage('userId', 0),
+      username: useLocalStorage('username', ''),
+      firstName: useLocalStorage('firstName', ''),
+      lastName: useLocalStorage('lastName', '')
     }
   },
   actions: {
@@ -35,12 +35,11 @@ export const useAuthStore = defineStore('auth', {
       return request
     },
     logout() {
-      this.token = null
-      this.userId = null
-      this.username = null
-      this.firstName = null
-      this.lastName = null
-      localStorage.removeItem('auth')
+      this.token = ''
+      this.userId = 0
+      this.username = ''
+      this.firstName = ''
+      this.lastName = ''
       this.redirectToLogin()
     },
     redirectToLogin() {
@@ -68,6 +67,7 @@ export const useAuthStore = defineStore('auth', {
       if (this.token) {
         const decodedToken = this.decodeJWT
         if (decodedToken) {
+          /* @ts-ignore */
           const expirationDate = new Date(decodedToken.exp * 1000).getTime()
           const now = new Date().getTime()
           if (expirationDate > now) {

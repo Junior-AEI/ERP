@@ -9,7 +9,17 @@ export const membersModule: Module = {
       component: () => import('./Members.vue'),
       meta: {
         icon: 'group'
-      }
+      },
+      children: [
+        {
+          path: '/members/new',
+          name: 'Nouveau membre',
+          component: () => import('./createMember.vue'),
+          meta: {
+            icon: 'group'
+          }
+        }
+      ]
     }
   ]
 }

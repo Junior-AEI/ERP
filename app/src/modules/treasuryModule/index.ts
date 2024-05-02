@@ -9,7 +9,7 @@ export const treasuryModule: Module = {
       component: () => import('./views/DashBoardTreasuryView.vue'),
       children: [
         {
-          path: 'carte-d-aei',
+          path: '/carte-d-aei',
           name: "Codes de carte D'AEI",
           component: () => import('@/views/Construction.vue'),
           meta: {

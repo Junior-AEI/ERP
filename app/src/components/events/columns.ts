@@ -4,6 +4,28 @@ import type { Event } from '@/types/api'
 import EventsDataTableButton from './EventsDataTableButton.vue'
 import { Button } from '../ui/button'
 import Icon from '../Icon.vue'
+import { CalendarDate, parseDate, DateFormatter, getLocalTimeZone } from '@internationalized/date'
+
+const df = new DateFormatter('fr-FR', {
+  dateStyle: 'long'
+})
+
+function convertToCalendarDate(isoDateString: string): string {
+  const dateObject = new Date(isoDateString);
+
+  // Check if the date object is valid
+  if (isNaN(dateObject.getTime())) {
+    throw new Error('Invalid date string');
+  }
+
+  // Extract year, month, and day from the date object
+  const year = dateObject.getFullYear();
+  const month = dateObject.getMonth() + 1; // Months are 0-based in JavaScript
+  const day = dateObject.getDate();
+
+  // Create and return a new CalendarDate object
+  return new CalendarDate(year, month, day).toString();
+}
 
 const defaultClasses = 'text-left font-medium'
 
@@ -31,7 +53,7 @@ export const columns: ColumnDef<Event>[] = [
         ]
       )
     },
-    cell: ({ row }) => h('div', { class: 'text-left' }, row.getValue('name'))
+    cell: ({ row }) => h('div', { class: 'text-leftbah ' }, row.getValue('name'))
   },
   {
     accessorKey: 'startDate',
@@ -57,15 +79,19 @@ export const columns: ColumnDef<Event>[] = [
       )
     },
     cell: ({ row }) => {
-      const startDate = row.getValue('startDate') as string
+      const startDate = convertToCalendarDate(row.getValue('startDate'))
 
-      return h('div', { class: defaultClasses }, startDate)
+      return h(
+        'div',
+        { class: defaultClasses },
+        df.format(parseDate(startDate).toDate(getLocalTimeZone()))
+      )
     }
   },
   {
     accessorKey: 'endDate',
     meta: {
-      label: 'endDate'
+      label: 'Date de fin'
     },
     header: ({ column }) => {
       return h(
@@ -86,9 +112,13 @@ export const columns: ColumnDef<Event>[] = [
       )
     },
     cell: ({ row }) => {
-      const endDate = row.getValue('endDate') as string
+      const endDate = convertToCalendarDate(row.getValue('endDate'))
 
-      return h('div', { class: defaultClasses }, endDate)
+      return h(
+        'div',
+        { class: defaultClasses },
+        df.format(parseDate(endDate).toDate(getLocalTimeZone()))
+      )
     }
   },
   {
@@ -102,6 +132,31 @@ export const columns: ColumnDef<Event>[] = [
 
       return h('div', { class: defaultClasses }, location)
     }
+  },
+  {
+    accessorKey: 'eventTypeName',
+    meta: {
+      label: 'Type d\'événement'
+    },
+    header: ({ column }) => {
+      return h(
+        Button,
+        {
+          variant: 'ghost',
+          onClick: () => column.toggleSorting(column.getIsSorted() === 'asc')
+        },
+        () => [
+          'Type d\'événement',
+          h(
+            h(Icon, {
+              name: 'unfold_more'
+            }),
+            { class: '' }
+          )
+        ]
+      )
+    },
+    cell: ({ row }) => h('div', { class: 'text-left' }, row.getValue('eventTypeName'))
   },
   {
     id: 'actions',

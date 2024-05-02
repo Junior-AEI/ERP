@@ -1,6 +1,9 @@
 <template>
-  <Sidebar v-if="logedMode" />
-  <div class="flex h-screen flex-1 flex-col overflow-y-auto">
+  <Sidebar v-if="logedMode" :class="generalStore.sidebarStatusShrink ? '' : 'w-full sm:w-fit'" />
+  <div
+    class="h-screen flex-1 flex-col overflow-y-auto"
+    :class="generalStore.sidebarStatusShrink ? 'flex' : 'hidden sm:flex'"
+  >
     <Titlebar v-if="logedMode" />
     <RouterView class="flex flex-col gap-3 p-6" v-auto-animate />
   </div>
@@ -8,7 +11,20 @@
 
 <script setup lang="ts">
 import { RouterView, useRoute } from 'vue-router'
-import { watch, ref } from 'vue'
+import { watch, ref, onMounted } from 'vue'
+
+import { useGeneralStore } from '@/stores/generalStore'
+
+const generalStore = useGeneralStore()
+
+onMounted(() => {
+  let windowWidth = window.innerWidth
+  window.addEventListener('resize', () => {
+    if (window.innerWidth < 800 && windowWidth - window.innerWidth > 100) {
+      generalStore.shrinkSidebar()
+    }
+  })
+})
 
 const route = useRoute()
 

@@ -24,18 +24,10 @@ const baseRoutes = [
   },
   {
     path: '/profile/:id',
-    name: 'Profil',
+    name: "Profil de l'utilisateur",
     component: () => import('../views/ProfileView.vue'),
     meta: {
       icon: 'person'
-    }
-  },
-  {
-    path: '/administration',
-    name: 'Administration',
-    component: () => import('../views/SettingsView.vue'),
-    meta: {
-      icon: 'build'
     }
   },
   {
@@ -54,18 +46,14 @@ const baseRoutes = [
     meta: {
       icon: 'troubleshoot'
     }
-  },
+  }
 ]
 
 const modules: Array<Route> = []
 
-
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
-  routes: [
-    ...baseRoutes,
-    ...modules
-  ]
+  routes: [...baseRoutes, ...modules]
 })
 
 const isPublicRoute = (route: Route | RouteLocationNormalized) => {

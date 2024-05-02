@@ -13,7 +13,7 @@ import Persons from '../models/person.model'
  */
 const getAll = async (req: Request, res: Response) => {
     try {
-        const members = await Members.findAll({})
+        const members = await Members.findAll()
 
         return res.status(200).json({
             status: 'success',
@@ -46,7 +46,7 @@ const getByPk = async (req: Request, res: Response) => {
         return res.status(200).json({
             status: 'success',
             data: {
-                member: member
+                member: member,
             }
         })
     } catch (err) {
@@ -108,8 +108,9 @@ const create = async (req: Request, res: Response) => {
 const update = async (req: Request, res: Response) => {
     try {
         // Parse identifier
-        if (req.params.memberId && !isNumber(req.params.memberId)) throw createHttpError(400, 'Please provide a valid identifier')
+        if (!req.params.memberId && !isNumber(req.params.memberId)) throw createHttpError(400, 'Please provide a valid identifier')
         const identifier = parseInt(req.params.memberId)
+
 
         const member = await Members.findByPk(identifier)
         if (!member) throw createHttpError(404, 'User not found')

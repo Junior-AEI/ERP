@@ -13,7 +13,7 @@
 import { Table, Column, Model, DataType, ForeignKey, BelongsTo, IsDate, PrimaryKey, IsIn } from 'sequelize-typescript'
 import Users from './user.model'
 
-const STATE = ['A faire', 'En cours', 'Terminée', 'annulé', 'archivé']
+const STATE = ['A faire', 'En cours', 'Terminée', 'Annulé', 'Archivé']
 
 @Table
 export default class Tasks extends Model {
@@ -45,7 +45,7 @@ export default class Tasks extends Model {
         type: DataType.STRING,
         allowNull: false
     })
-    description!: Date
+    description!: string
 
     @IsIn([STATE])
     @Column({

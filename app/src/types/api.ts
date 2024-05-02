@@ -78,6 +78,14 @@ interface Group {
   updatedAt: DateString
 }
 
+
+interface Belonger {
+  userId : number
+  groupName : string
+}
+
+type UserInGroup = Group & Belonger
+
 interface Task {
   taskId: number
   userId: number
@@ -88,4 +96,4 @@ interface Task {
 }
 
 
-export type { Person, Member, FullMember, User, Event, Address, itTicket, itTicketInfo, Group, Task}
+export type { Person, Member, FullMember, User, Event, Address, itTicket, itTicketInfo, Group, Task, UserInGroup}

@@ -23,7 +23,7 @@ async function getData(): Promise<FullMember[]> {
   })
 
   const fullMembers = members.data.data?.members.map((member: any) => {
-    const person = persons.data.data?.persons.find((person: any) => person.id === member.person_id)
+    const person = persons.data.data?.persons.find((person: any) => person.personId === member.memberId)
     return {
       ...member,
       ...person

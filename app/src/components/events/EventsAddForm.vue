@@ -111,6 +111,7 @@
       </CardFooter>
     </Card>
   </Wrapper>
+  <Toaster />
 </template>
 
 <script setup lang="ts">
@@ -126,6 +127,9 @@ import { ref } from 'vue'
 import { Checkbox } from '@/components/ui/checkbox'
 
 import { cn } from '@/lib/utils'
+
+import { useToast } from '@/components/ui/toast/use-toast'
+import { Toaster } from '@/components/ui/toast'
 
 import {
   Command,
@@ -160,6 +164,8 @@ const startDate = ref<DateValue>()
 const endDate = ref<DateValue>()
 const eventTypeName = ref('')
 
+const { toast } = useToast()
+
 const eventInfo = ref<Event>({
   eventId: NaN,
   name: '',
@@ -170,7 +176,7 @@ const eventInfo = ref<Event>({
   eventTypeName: ''
 })
 
-const addEvent = () => {
+const addEvent = async () => {
   axios
     .post(
       `/event`,
@@ -196,6 +202,11 @@ const addEvent = () => {
     })
     .catch((error) => {
       console.error(error)
+      toast({
+        title: 'Something wrong happened',
+        variant: 'destructive',
+        description: `${error.response.data.message}`
+      })
     })
 }
 </script>

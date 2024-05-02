@@ -130,7 +130,7 @@
           </Collapsible>
         </div>
         <DialogFooter>
-          <Button variant="destructive"> Supprimer l'événement </Button>
+          <Button @click="deleteEvent()" variant="destructive"> Supprimer l'événement </Button>
           <Button @click="editEvent()" type="submit"> Enregistrer les modifications </Button>
         </DialogFooter>
       </DialogContent>
@@ -232,5 +232,19 @@ const editEvent = () => {
     })
 }
 
-const deleteEvent = () => {}
+const deleteEvent = () => {
+  axios
+    .delete(`/event/${eventInfo.value.eventId}`, {
+      headers: {
+        Authorization: `Bearer ${useAuthStore().token}`
+      }
+    })
+    .then((response) => {
+      console.log(response)
+      location.reload()
+    })
+    .catch((error) => {
+      console.error(error)
+    })
+}
 </script>

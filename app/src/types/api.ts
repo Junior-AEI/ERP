@@ -1,37 +1,39 @@
+type DateString = string
+
 interface Person {
-  personId: number;
-  lastname: string;
-  firstname: string;
-  gender: string;
-  mobilePhone: string;
-  landlinePhone: string;
-  email: string;
-  createdAt: Date;
-  updatedAt: Date;
+  personId: number
+  lastname: string
+  firstname: string
+  gender: string
+  mobilePhone: string
+  landlinePhone: string
+  email: string
+  createdAt: DateString
+  updatedAt: DateString
 }
 
 interface Member {
-  memberId: number;
-  birthDate: Date;
-  birthPlace: string;
-  nationality: string;
-  promotion: string;
-  contributionDate: Date;
-  paymentMethod: string;
-  department: string;
-  membershipNumber: number;
-  addressId: number;
-  createdAt: Date;
-  updatedAt: Date;
+  memberId: number
+  birthDate: DateString
+  birthPlace: string
+  nationality: string
+  promotion: string
+  contributionDate: DateString
+  paymentMethod: string
+  department: string
+  membershipNumber: number
+  addressId: number
+  createdAt: DateString
+  updatedAt: DateString
 }
 
-type FullMember = Member & Person;
+type FullMember = Member & Person
 
 interface User {
   userId: number
   username: string
-  mandateStart: Date;
-  mandateEnd: Date;
+  mandateStart: DateString
+  mandateEnd: DateString
   emailJE: string
 }
 
@@ -42,26 +44,47 @@ interface Address {
   city: string
   postCode: string
   country: string
-  createdAt: Date
-  updatedAt: Date
+  createdAt: DateString
+  updatedAt: DateString
   member: Member[]
   company: Array<{}>
 }
 
 interface Event {
-  eventId: string
+  eventId: number
   name: string
-  startDate: string
-  endDate: string
+  startDate: DateString | null
+  endDate: DateString | null
   location: string
   description: string
   eventTypeName: string
 }
 
-interface EventTypes {
-  name: string
-  fieldNumber: string
-  fieldMeaning: string
+interface itTicket {
+  ticketId: number
+  userId: number
+  title: string
+  description: string
+  applicationConcerned: string
+  state: string
 }
 
-export type { Person, Member, FullMember, User, Event, Address, EventTypes }
+type itTicketInfo = itTicket & User;
+
+interface Group {
+  groupName: string
+  createdAt: DateString
+  updatedAt: DateString
+}
+
+interface Task {
+  taskId: number
+  userId: number
+  dueDate: string
+  description: string
+  state: string
+  issuerId: number
+}
+
+
+export type { Person, Member, FullMember, User, Event, Address, itTicket, itTicketInfo, Group, Task}

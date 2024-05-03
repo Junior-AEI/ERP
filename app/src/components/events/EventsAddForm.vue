@@ -1,24 +1,3 @@
-<script setup lang="ts">
-import { Button } from '@/components/ui/button'
-import { Input } from '@/components/ui/input'
-import { Textarea } from '@/components/ui/textarea'
-import { ref } from 'vue'
-import { Checkbox } from '@/components/ui/checkbox'
-
-import { format } from 'date-fns'
-import { Calendar as CalendarIcon } from 'lucide-vue-next'
-import { Calendar } from '@/components/ui/calendar'
-import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover'
-
-import { Card, CardContent, CardFooter, CardHeader } from '@/components/ui/card'
-import { Label } from '@/components/ui/label'
-
-import { Collapsible, CollapsibleContent, CollapsibleTrigger } from '@/components/ui/collapsible'
-
-const isOpen = ref(false)
-const date = ref<Date>()
-</script>
-
 <template>
   <Wrapper class="flex-col">
     <Card>
@@ -30,44 +9,85 @@ const date = ref<Date>()
         <div class="grid grid-cols-2 gap-2">
           <Label>Nom de l'événement</Label>
           <Label>Emplacement</Label>
-          <Input placeholder="Formation Alten : être performant face à un intervenant" />
-          <Input placeholder="Où est-ce que ca se passe ?" />
+          <Input
+            id="eventName"
+            v-model="eventInfo.name"
+            placeholder="Formation Alten : être performant face à un intervenant"
+          />
+          <Input
+            id="location"
+            v-model="eventInfo.location"
+            placeholder="Où est-ce que ca se passe ?"
+          />
         </div>
         <div class="grid grid-cols-2 gap-2">
           <Label>Date de début </Label>
           <Label>Date de fin</Label>
-          <Popover>
-            <PopoverTrigger as-child>
-              <Button variant="outline">
-                <CalendarIcon class="mr-2 h-4 w-4" />
-                <span>{{ date ? format(date, 'PPP - HH:mm') : '01/01/2024' }}</span>
-              </Button>
-            </PopoverTrigger>
-            <PopoverContent class="w-auto p-0">
-              <Calendar v-model="date" mode="datetime" />
-            </PopoverContent>
-          </Popover>
-          <Popover>
-            <PopoverTrigger as-child>
-              <Button variant="outline">
-                <CalendarIcon class="mr-2 h-4 w-4" />
-                <span>{{ date ? format(date, 'PPP - HH:mm') : '01/01/2024' }}</span>
-              </Button>
-            </PopoverTrigger>
-            <PopoverContent class="w-auto p-0">
-              <Calendar v-model="date" mode="datetime" />
-            </PopoverContent>
-          </Popover>
+          <DatePickerComponent v-model="startDate" />
+          <DatePickerComponent v-model="endDate" />
         </div>
         <div class="grid gap-2">
           <Label>Description</Label>
           <Textarea
+            id="description"
+            v-model="eventInfo.description"
             placeholder="Une description très fournie. Elle peut être sur plusieurs lignes."
           />
         </div>
-        <div class="grid gap-2">
+        <div class="grid grid-cols-2 gap-2">
           <Label for="document">Ajouter une pièce jointe</Label>
-          <Input id="document" type="file" />
+          <Label for="eventType">Type d'événement</Label>
+          <Input disabled id="document" type="file" />
+          <Popover v-model:open="isOpenEventType">
+            <PopoverTrigger as-child>
+              <Button
+                variant="outline"
+                role="combobox"
+                :aria-expanded="isOpenEventType"
+                class="justify-between"
+              >
+                {{
+                  eventTypeName
+                    ? eventTypes.find((eventType) => eventType.value === eventTypeName)?.label
+                    : "Sélectionner le type d'événement"
+                }}
+                <ChevronsUpDown class="ml-2 h-4 w-4 shrink-0 opacity-50" />
+              </Button>
+            </PopoverTrigger>
+            <PopoverContent class="p-0">
+              <Command>
+                <CommandInput class="h-9" placeholder="Rechercher un événement" />
+                <CommandEmpty>Aucun événement trouvé</CommandEmpty>
+                <CommandList>
+                  <CommandGroup>
+                    <CommandItem
+                      v-for="eventType in eventTypes"
+                      :key="eventType.value"
+                      :value="eventType.value"
+                      @select="
+                        (ev) => {
+                          if (typeof ev.detail.value === 'string') {
+                            eventTypeName = ev.detail.value
+                          }
+                          isOpenEventType = false
+                        }
+                      "
+                    >
+                      {{ eventType.label }}
+                      <Check
+                        :class="
+                          cn(
+                            'ml-auto h-4 w-4',
+                            eventTypeName === eventType.value ? 'opacity-100' : 'opacity-0'
+                          )
+                        "
+                      />
+                    </CommandItem>
+                  </CommandGroup>
+                </CommandList>
+              </Command>
+            </PopoverContent>
+          </Popover>
         </div>
         <div class="grid gap-4">
           <Collapsible v-model:open="isOpen">
@@ -79,20 +99,114 @@ const date = ref<Date>()
             </CollapsibleTrigger>
             <CollapsibleContent>
               <div class="flex items-center space-x-2">
-                <Checkbox id="bureau" />
+                <Checkbox disabled id="bureau" />
                 <label> Bureau </label>
-              </div>
-              <div class="flex items-center space-x-2">
-                <Checkbox id="administration" />
-                <label> Conseil d'administration </label>
               </div>
             </CollapsibleContent>
           </Collapsible>
         </div>
       </CardContent>
       <CardFooter>
-        <Button class="w-full"> Ajouter un événement</Button>
+        <Button @click="addEvent()" class="w-full"> Ajouter un événement</Button>
       </CardFooter>
     </Card>
   </Wrapper>
+  <Toaster />
 </template>
+
+<script setup lang="ts">
+import axios from 'axios'
+import { useAuthStore } from '@/stores/authStore'
+import { type DateValue } from '@internationalized/date'
+import type { Event } from '@/types/api'
+
+import { Button } from '@/components/ui/button'
+import { Input } from '@/components/ui/input'
+import { Textarea } from '@/components/ui/textarea'
+import { ref } from 'vue'
+import { Checkbox } from '@/components/ui/checkbox'
+
+import { cn } from '@/lib/utils'
+
+import { useToast } from '@/components/ui/toast/use-toast'
+import { Toaster } from '@/components/ui/toast'
+
+import {
+  Command,
+  CommandEmpty,
+  CommandGroup,
+  CommandInput,
+  CommandItem,
+  CommandList
+} from '@/components/ui/command'
+
+import { Card, CardContent, CardFooter, CardHeader } from '@/components/ui/card'
+import { Label } from '@/components/ui/label'
+
+import { Collapsible, CollapsibleContent, CollapsibleTrigger } from '@/components/ui/collapsible'
+
+const isOpen = ref(false)
+const isOpenEventType = ref(false)
+
+const eventTypes = [
+  { value: 'Afterwork', label: 'Afterwork' },
+  { value: 'Audit', label: 'Audit' },
+  { value: 'Autre', label: 'Autre' },
+  { value: 'CA', label: "Conseil d'administration (CA)" },
+  { value: 'Congrès', label: 'Congrès' },
+  { value: 'Formation', label: 'Formation' },
+  { value: 'Réunion', label: 'Réunion' },
+  { value: 'RDI', label: "Réunion d'informations (RDI)" },
+  { value: 'RDV client', label: 'Rendez-vous client' }
+]
+
+const startDate = ref<DateValue>()
+const endDate = ref<DateValue>()
+const eventTypeName = ref('')
+
+const { toast } = useToast()
+
+const eventInfo = ref<Event>({
+  eventId: NaN,
+  name: '',
+  startDate: null,
+  endDate: null,
+  location: '',
+  description: '',
+  eventTypeName: ''
+})
+
+const addEvent = async () => {
+  axios
+    .post(
+      `/event`,
+      {
+        event: {
+          name: eventInfo.value.name,
+          startDate: startDate.value?.toString() ?? null,
+          endDate: endDate.value?.toString() ?? null,
+          location: eventInfo.value.location,
+          description: eventInfo.value.description,
+          eventTypeName: eventTypeName.value
+        }
+      },
+      {
+        headers: {
+          Authorization: `Bearer ${useAuthStore().token}`
+        }
+      }
+    )
+    .then((response) => {
+      console.log(response)
+      location.reload()
+    })
+    .catch((error) => {
+      console.error(error)
+      toast({
+        title: 'Something wrong happened',
+        variant: 'destructive',
+        description: `${error.response.data.message}`
+      })
+    })
+}
+</script>

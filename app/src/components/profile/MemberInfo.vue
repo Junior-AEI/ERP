@@ -8,64 +8,60 @@
       <div class="flex items-end gap-4">
         <div class="flex flex-1 flex-col gap-2">
           <Label for="gender">Genre</Label>
-          <Input id="gender" v-model="personInfo.gender" />
+          <Input id="gender" v-model="personGender" />
         </div>
         <div class="flex-3 flex flex-col gap-2">
           <Label for="username">Prénom</Label>
-          <Input id="username" v-model="personInfo.firstname" />
+          <Input id="username" v-model="personFirstname" />
         </div>
         <div class="flex-3 flex flex-col gap-2">
           <Label for="userId">Nom</Label>
-          <Input id="userId" v-model="personInfo.lastname" />
+          <Input id="userId" v-model="personLastname" />
         </div>
       </div>
       <div class="flex items-end gap-4">
         <div class="flex flex-1 flex-col gap-2">
-          <Label for="email">Adresse Email</Label>
-          <Input type="email" id="email" v-model="personInfo.email" />
+          <Label for="email">addresse Email</Label>
+          <Input type="email" id="email" v-model="personEmail" />
         </div>
         <div class="flex-3 flex flex-col gap-2">
           <Label for="phone">Numéro de téléphone</Label>
-          <Input type="tel" id="phone" v-model="personInfo.mobilePhone" />
+          <Input type="tel" id="phone" v-model="personMobilePhone" />
         </div>
       </div>
 
       <div class="flex items-end gap-4">
         <div class="flex flex-1 flex-col gap-2">
-          <Label for="memberId">Date de Naissance</Label>
-          <Input id="nationality" v-model="temp" />
+          <Label for="birthDate">Date de Naissance</Label>
+          <DatePickerComponent v-model="memberBirthDate" />
         </div>
         <div class="flex flex-1 flex-col gap-2">
           <Label for="birthPlace">Lieu de naissance</Label>
-          <Input id="birthPlace" v-model="memberInfo.birthPlace" />
+          <Input id="birthPlace" v-model="memberBirthPlace" />
         </div>
       </div>
       <div class="flex flex-1 flex-col gap-2">
-        <Label for="memberId">Nationalité</Label>
-        <Input id="nationality" v-model="memberInfo.nationality" />
+        <Label for="nationality">Nationalité</Label>
+        <Input id="nationality" v-model="memberNationality" />
       </div>
       <div class="flex items-end gap-4">
         <div class="flex flex-1 flex-col gap-2">
           <Label for="dept">Fillière</Label>
-          <Input id="dept" v-model="memberInfo.department" />
+          <Input id="dept" v-model="memberDepartment" />
         </div>
         <div class="flex flex-1 flex-col gap-2">
           <Label for="prom">Promo</Label>
-          <Input id="prom" v-model="memberInfo.promotion" />
+          <Input id="prom" v-model="memberPromotion" />
         </div>
       </div>
       <div class="flex items-end gap-4">
         <div class="flex flex-1 flex-col gap-2">
-          <Label for="ncotz">Numéro de cotisation</Label>
-          <Input id="ncotz" v-model="memberInfo.membershipNumber" />
-        </div>
-        <div class="flex flex-1 flex-col gap-2">
           <Label for="contrib">Date de cotisation</Label>
-          <Input id="contrib" v-model="temp" />
+          <DatePickerComponent v-model="memberContributionDate" />
         </div>
         <div class="flex flex-1 flex-col gap-2">
-          <Label for="contribmeth">Payement</Label>
-          <Input id="contribmeth" v-model="memberInfo.paymentMethod" />
+          <Label for="contribmeth">Moyen de payement</Label>
+          <Input id="contribmeth" v-model="memberPaymentMethod" />
         </div>
       </div>
 
@@ -76,34 +72,34 @@
   <Card class="flex-1">
     <CardHeader>
       <Icon name="location_on" class="text-6xl" />
-      <span class="text-accent"> Adresse du membre</span>
+      <span class="text-accent">Adresse du membre</span>
     </CardHeader>
     <CardContent>
       <div class="flex items-end gap-4">
         <div class="flex flex-1 flex-col gap-2">
           <Label for="address">Adresse</Label>
-          <Input id="address" v-model="addressInfo.address" />
+          <Input id="address" v-model="addressAddress" />
         </div>
         <div class="flex flex-1 flex-col gap-2">
-          <Label for="add">Complément d'adresse</Label>
-          <Input id="add" v-model="addressInfo.additionnalAddress" />
+          <Label for="add">Complément d'addresse</Label>
+          <Input id="add" v-model="addressAdditionnalAddress" />
         </div>
       </div>
       <div class="flex items-end gap-4">
         <div class="flex flex-1 flex-col gap-2">
           <Label for="city">Ville</Label>
-          <Input id="city" v-model="addressInfo.city" />
+          <Input id="city" v-model="addressCity" />
         </div>
         <div class="flex flex-1 flex-col gap-2">
           <Label for="postCode">Code Postal</Label>
-          <Input id="postCode" v-model="addressInfo.postCode" />
+          <Input id="postCode" v-model="addressPostCode" />
         </div>
         <div class="flex flex-1 flex-col gap-2">
           <Label for="country">Pays</Label>
-          <Input id="country" v-model="addressInfo.country" />
+          <Input id="country" v-model="addressCountry" />
         </div>
       </div>
-      <Button @click="editAdressData()">Modifier l'adresse de l'utilisateur</Button>
+      <Button @click="editaddressData()">Modifier l'addresse de l'utilisateur</Button>
     </CardContent>
   </Card>
 </template>
@@ -112,53 +108,47 @@
 import axios from 'axios'
 import { useAuthStore } from '@/stores/authStore'
 import { ref } from 'vue'
-import type { Member, Person, Address } from '@/types/api'
 
 const props = defineProps<{
   memberId: number
 }>()
 
-const temp = ref(22)
+import { parseAbsoluteToLocal, type DateValue } from '@internationalized/date'
 
-const memberInfo = ref<Member>({
-  memberId: props.memberId,
-  birthDate: new Date(),
-  birthPlace: '',
-  nationality: '',
-  promotion: '',
-  contributionDate: new Date(),
-  paymentMethod: '',
-  department: '',
-  addressId: NaN,
-  createdAt: new Date(),
-  updatedAt: new Date(),
-  membershipNumber: NaN
-})
+// We define the data for the member
 
-const personInfo = ref<Person>({
-  personId: props.memberId,
-  lastname: '',
-  firstname: '',
-  gender: '',
-  mobilePhone: '',
-  landlinePhone: '',
-  email: '',
-  createdAt: new Date(),
-  updatedAt: new Date()
-})
+const memberBirthDate = ref<DateValue>()
+const memberBirthPlace = ref<string>('')
+const memberNationality = ref<string>('')
+const memberPromotion = ref<string>('')
+const memberPaymentMethod = ref<string>('')
+const memberDepartment = ref<string>('')
+const memberMembershipNumber = ref<number>(NaN)
+const memberAddressId = ref<number>(NaN)
+const memberContributionDate = ref<DateValue>()
+const memberCreatedAt = ref<DateValue>()
+const memberUpdatedAt = ref<DateValue>()
 
-const addressInfo = ref<Address>({
-  addressId: NaN,
-  address: '',
-  additionnalAddress: '',
-  city: '',
-  postCode: '',
-  country: '',
-  createdAt: new Date(),
-  updatedAt: new Date(),
-  member: [],
-  company: []
-})
+// We define the data for the person
+
+const personLastname = ref<string>('')
+const personFirstname = ref<string>('')
+const personGender = ref<string>('')
+const personMobilePhone = ref<string>('')
+const personLandlinePhone = ref<string>('')
+const personEmail = ref<string>('')
+const personCreatedAt = ref<DateValue>()
+const personUpdatedAt = ref<DateValue>()
+
+// We define the data for the address
+
+const addressAddress = ref<string>('')
+const addressAdditionnalAddress = ref<string>('')
+const addressCity = ref<string>('')
+const addressPostCode = ref<string>('')
+const addressCountry = ref<string>('')
+const addressCreatedAt = ref<DateValue>()
+const addressUpdatedAt = ref<DateValue>()
 
 // We fetch the member info
 axios
@@ -168,16 +158,19 @@ axios
     }
   })
   .then((response) => {
-    console.log(response)
     const member = response.data.data.member
 
-    memberInfo.value = {
-      ...member,
-      birthDate: new Date(member.birthDate),
-      contributionDate: new Date(member.contributionDate),
-      createdAt: new Date(member.createdAt),
-      updatedAt: new Date(member.updatedAt)
-    }
+    memberBirthDate.value = parseAbsoluteToLocal(member.birthDate)
+    memberBirthPlace.value = member.birthPlace
+    memberNationality.value = member.nationality
+    memberPromotion.value = member.promotion
+    memberPaymentMethod.value = member.paymentMethod
+    memberDepartment.value = member.department
+    memberMembershipNumber.value = member.membershipNumber
+    memberAddressId.value = member.addressId
+    memberContributionDate.value = parseAbsoluteToLocal(member.contributionDate)
+    memberCreatedAt.value = parseAbsoluteToLocal(member.createdAt)
+    memberUpdatedAt.value = parseAbsoluteToLocal(member.updatedAt)
 
     // We fetch the address info
     axios
@@ -188,13 +181,14 @@ axios
       })
       .then((response) => {
         const address = response.data.data.address
-        console.log(address)
 
-        addressInfo.value = {
-          ...address,
-          createdAt: new Date(address.createdAt),
-          updatedAt: new Date(address.updatedAt)
-        }
+        addressAddress.value = address.address
+        addressAdditionnalAddress.value = address.additionnalAddress
+        addressCity.value = address.city
+        addressPostCode.value = address.postCode
+        addressCountry.value = address.country
+        addressCreatedAt.value = parseAbsoluteToLocal(address.createdAt)
+        addressUpdatedAt.value = parseAbsoluteToLocal(address.updatedAt)
       })
       .catch((error) => {
         console.error(error)
@@ -212,14 +206,16 @@ axios
     }
   })
   .then((response) => {
-    console.log(response)
     const person = response.data.data.person
 
-    personInfo.value = {
-      ...person,
-      createdAt: new Date(person.createdAt),
-      updatedAt: new Date(person.updatedAt)
-    }
+    personLastname.value = person.lastname
+    personFirstname.value = person.firstname
+    personGender.value = person.gender
+    personMobilePhone.value = person.mobilePhone
+    personLandlinePhone.value = person.landlinePhone
+    personEmail.value = person.email
+    personCreatedAt.value = parseAbsoluteToLocal(person.createdAt)
+    personUpdatedAt.value = parseAbsoluteToLocal(person.updatedAt)
   })
   .catch((error) => {
     console.error(error)
@@ -233,17 +229,17 @@ const editMemberData = () => {
       {
         member: {
           memberId: props.memberId,
-          birthDate: memberInfo.value.birthDate.toISOString(),
-          birthPlace: memberInfo.value.birthPlace,
-          nationality: memberInfo.value.nationality,
-          promotion: memberInfo.value.promotion,
-          contributionDate: memberInfo.value.contributionDate.toISOString(),
-          paymentMethod: memberInfo.value.paymentMethod,
-          department: memberInfo.value.department,
-          membershipNumber: memberInfo.value.membershipNumber,
-          addressId: memberInfo.value.addressId,
-          createdAt: memberInfo.value.createdAt.toISOString(),
-          updatedAt: memberInfo.value.updatedAt.toISOString()
+          birthDate: memberBirthDate.value,
+          birthPlace: memberBirthPlace.value,
+          nationality: memberNationality.value,
+          promotion: memberPromotion.value,
+          contributionDate: memberContributionDate.value,
+          paymentMethod: memberPaymentMethod.value,
+          department: memberDepartment.value,
+          membershipNumber: memberMembershipNumber.value,
+          addressId: memberAddressId.value,
+          createdAt: memberCreatedAt.value?.toString(),
+          updatedAt: memberUpdatedAt.value?.toString()
         }
       },
       {
@@ -265,14 +261,14 @@ const editMemberData = () => {
       {
         person: {
           personId: props.memberId,
-          lastname: personInfo.value.lastname,
-          firstname: personInfo.value.firstname,
-          gender: personInfo.value.gender,
-          mobilePhone: personInfo.value.mobilePhone,
-          landlinePhone: personInfo.value.landlinePhone,
-          email: personInfo.value.email,
-          createdAt: personInfo.value.createdAt.toISOString(),
-          updatedAt: personInfo.value.updatedAt.toISOString()
+          lastname: personLastname.value,
+          firstname: personFirstname.value,
+          gender: personGender.value,
+          mobilePhone: personMobilePhone.value,
+          landlinePhone: personLandlinePhone.value,
+          email: personEmail.value,
+          createdAt: personCreatedAt.value?.toString(),
+          updatedAt: personUpdatedAt.value?.toString()
         }
       },
       {
@@ -289,20 +285,20 @@ const editMemberData = () => {
     })
 }
 
-const editAdressData = () => {
+const editaddressData = () => {
   axios
     .put(
-      `/address/${addressInfo.value.addressId}`,
+      `/address/${memberAddressId.value}`,
       {
         address: {
-          addressId: addressInfo.value.addressId,
-          address: addressInfo.value.address,
-          additionnalAddress: addressInfo.value.additionnalAddress,
-          city: addressInfo.value.city,
-          postCode: addressInfo.value.postCode,
-          country: addressInfo.value.country,
-          createdAt: addressInfo.value.createdAt.toISOString(),
-          updatedAt: addressInfo.value.updatedAt.toISOString()
+          addressId: memberAddressId,
+          address: addressAddress.value,
+          additionnalAddress: addressAdditionnalAddress,
+          city: addressCity.value,
+          postCode: addressPostCode.value,
+          country: addressCountry.value,
+          createdAt: addressCreatedAt.value?.toString(),
+          updatedAt: addressUpdatedAt.value?.toString()
         }
       },
       {

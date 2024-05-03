@@ -7,8 +7,6 @@ import Icon from '../Icon.vue'
 
 const defaultClasses = 'text-left font-medium'
 
-
-
 export const columns: ColumnDef<FullMember>[] = [
   {
     accessorKey: 'lastname',
@@ -139,7 +137,7 @@ export const columns: ColumnDef<FullMember>[] = [
         { class: 'relative' },
         h(MembersDataTableDropDown, {
           item: {
-            memberId: item.memberId,
+            memberId: item.memberId
           }
         })
       )

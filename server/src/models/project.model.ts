@@ -38,7 +38,7 @@ export default class Projects extends Model {
         type: DataType.INTEGER,
         allowNull: false
     })
-    companyId!: number
+    clientId!: number
 
     @BelongsTo(() => Clients)
     client!: Clients

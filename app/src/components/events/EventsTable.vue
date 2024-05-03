@@ -2,41 +2,19 @@
 import { ref, onMounted } from 'vue'
 import { columns } from './columns'
 import type { Event } from '@/types/api'
+import axios from 'axios'
+import { useAuthStore } from '@/stores/authStore'
 
 const data = ref<Event[]>([])
 
 async function getData(): Promise<Event[]> {
   // Fetch data from your API here.
-  return [
-    {
-      eventId: '1',
-      name: 'Cocktail de passation',
-      startDate: '2024-04-02',
-      endDate: '2024-04-02',
-      location: 'ENSEIRB-MATMECA',
-      description:
-        'Cocktail de passation entre les anciens et les nouveaux membres de la junior entreprise',
-      eventTypeName: 'afterwork'
-    },
-    {
-      eventId: '2',
-      name: "Congrès National d'été",
-      startDate: '2024-05-24',
-      endDate: '2024-05-25',
-      location: 'Château du Rouret',
-      description: "Congrès National d'Été 2024",
-      eventTypeName: 'congress'
-    },
-    {
-      eventId: '3',
-      name: 'Audit',
-      startDate: '2024-04-13',
-      endDate: '2024-04-13',
-      location: 'ENSEIRB-MATMECA',
-      description: 'Audit de la junior entreprise',
-      eventTypeName: 'audit'
+  const response = await axios.get(`/event`, {
+    headers: {
+      Authorization: `Bearer ${useAuthStore().token}`
     }
-  ]
+  })
+  return response.data.data.events
 }
 
 onMounted(async () => {

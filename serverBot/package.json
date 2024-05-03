@@ -10,7 +10,8 @@
         "seed": "node src/migrations/seed.js",
         "test": "vitest",
         "test_ui": "vitest --ui",
-        "coverage": "vitest --config ./vitest.config.ts run --coverage"
+        "coverage": "vitest --config ./vitest.config.ts run --coverage",
+        "build": "tsc"
     },
     "keywords": [],
     "author": "",

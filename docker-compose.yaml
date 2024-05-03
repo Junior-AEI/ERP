@@ -29,6 +29,8 @@ services:
             args:
                 - NODE_ENV=${NODE_ENV}
                 - NODE_JWT_ISSUER=${NODE_JWT_ISSUER}
+                - BOT_PORT=${BOT_PORT}
+                - MAIL_PORT=${MAIL_PORT}
                 - NODE_JWT_SECRET=${NODE_JWT_SECRET}
                 - DB_HOST=${DB_HOST}
                 - DB_NAME=${DB_NAME}
@@ -56,3 +58,31 @@ services:
             - '${VITE_APP_PORT}:80'
         depends_on:
             - server
+
+    servermail:
+        hostname: servermail
+        container_name: junioraei-erp-servermail
+        restart: unless-stopped
+        build:
+            context: ./serverMail
+            dockerfile: Dockerfile.serverMail
+            args:
+                - NODE_ENV=${NODE_ENV}
+        ports:
+            - '${MAIL_PORT}:5002'
+        depends_on:
+            - database
+
+    serverbot:
+        hostname: serverbot
+        container_name: junioraei-erp-serverbot
+        restart: unless-stopped
+        build:
+            context: ./serverBot
+            dockerfile: Dockerfile.serverBot
+            args:
+                - NODE_ENV=${NODE_ENV}
+        ports:
+            - '${BOT_PORT}:5001'
+        depends_on:
+            - database

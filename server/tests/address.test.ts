@@ -4,8 +4,6 @@ import { beforeAllTests, afterAllTests, clearDatabase, showErrorMessage } from '
 import { createToken } from './seeders/token.seeders'
 import { initUser } from './seeders/general'
 import { characters } from "./seeders/data/characters.data"
-import { createPerson } from "./seeders/person.seeders "
-import Persons from "../src/models/person.model"
 import { createdAddress } from "./seeders/address.seeders"
 import Addresses from "../src/models/address.model"
 

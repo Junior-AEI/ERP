@@ -55,15 +55,14 @@ const login = async (req: Request, res: Response) => {
         // Create JWT token
         const token = await new SignJWT({ username }).setProtectedHeader({ alg: 'HS256' }).setAudience(JWT_AUDIENCE).setIssuer(JWT_ISSUER).setExpirationTime(JWT_EXPIRATION).sign(JWT_SECRET_KEY)
 
-        if (process.env.NODE_ENV !== "test") {
-            // Send email in background
-            sendEmail('mathieu.chaillon@gmail.com', 'User Logged In', `User ${username} has logged in.`)
-                .catch(error => console.error('Error sending email:', error)); // Log any errors, but don't let them propagate
+        // Send email in background
+        sendEmail('mathieu.chaillon@gmail.com', 'User Logged In', `User ${username} has logged in.`)
+            .catch(error => console.error('Error sending email:', error)); // Log any errors, but don't let them propagate
 
-            // CHAT ID A CHANGER ICI 
-            sendBotMesssage(881607628, `User ${username} has logged in.`)
-                .catch(error => console.error('Error sending email:', error));
-        }
+        // CHAT ID A CHANGER ICI 
+        sendBotMesssage(881607628, `User ${username} has logged in.`)
+            .catch(error => console.error('Error sending email:', error));
+
 
         // Return success with token and user details
         return res.status(200).json({

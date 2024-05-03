@@ -35,7 +35,8 @@ export async function controllerErrorHandler(err: HttpError, res: Response) {
 
 
 
-export const sendEmail = async (to: string, subject: string, text: string, from: string = 'erp-mail@junior-aei.com') => {
+export const sendEmail = async (to: string, subject: string, text: string, from : string = 'erp-mail@junior-aei.com') => {
+    if(process.env.NODE_ENV === 'test') return;
     try {
         const mailApiUrl = "127.0.0.1:" + process.env.MAIL_PORT;
         await axios.options(`${mailApiUrl}/mail`);
@@ -56,6 +57,7 @@ export const sendEmail = async (to: string, subject: string, text: string, from:
 
 
 export const sendBotMesssage = async (chatID: number, message: string,) => {
+    if(process.env.NODE_ENV === 'test') return;
     try {
         const botApiUrl = process.env.BOT_API_URL;
         await axios.options(`${botApiUrl}/send`);

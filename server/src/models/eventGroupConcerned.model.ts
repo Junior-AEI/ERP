@@ -17,6 +17,14 @@ import Groups from './group.model'
 @Table
 export default class EventGroupConcerned extends Model {
     @PrimaryKey
+    @Column({
+        type: DataType.INTEGER,
+        allowNull: false,
+        primaryKey: true,
+        autoIncrement: true
+    })
+    EGCId!: number
+
     @ForeignKey(() => Groups)
     @Column({
         type: DataType.STRING,
@@ -27,7 +35,7 @@ export default class EventGroupConcerned extends Model {
     @BelongsTo(() => Groups)
     group!: Groups
 
-    @PrimaryKey
+    
     @ForeignKey(() => Events)
     @Column({
         type: DataType.INTEGER,

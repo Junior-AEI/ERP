@@ -7,13 +7,13 @@ import Projects from '../models/project.model'
 import Contributors from '../models/contributor.model'
 
 /**
- * Get all users
+ * Get all contributors
  * @param req
  * @param res
  */
 const getAll = async (req: Request, res: Response) => {
     try {
-        const contributors = await Contributors.findAll({ })
+        const contributors = await Contributors.findAll({})
 
         return res.status(200).json({
             status: 'success',
@@ -28,20 +28,17 @@ const getAll = async (req: Request, res: Response) => {
 }
 
 /**
- * Select a specific user
+ * Select a specific contributor
  * @param req
  * @param res
  */
 const getByPk = async (req: Request, res: Response) => {
     try {
-        if (req.params.memberId && !isNumber(req.params.memberId)) throw createHttpError(400, 'Please provide a valid identifier')
-        if (req.params.projectId && !isNumber(req.params.projectId)) throw createHttpError(400, 'Please provide a valid identifier')
+        const identifier = parseInt(req.params.contributorId)
+        if (isNaN(identifier)) throw createHttpError(400, 'Please provide a valid identifier')
 
-        const identifier = [parseInt(req.params.memberId), parseInt(req.params.projectId)];
-
-        const contributor = await Contributors.findByPk((identifier[0], identifier[1]), {})
-
-        if (!contributor) throw createHttpError(404, 'Project manager not found')
+        const contributor = await Contributors.findByPk(identifier)
+        if (!contributor) throw createHttpError(404, 'Contributor not found')
 
         return res.status(200).json({
             status: 'success',
@@ -62,32 +59,32 @@ const getByPk = async (req: Request, res: Response) => {
  */
 async function create(req: Request, res: Response) {
     try {
-        if (req.params.memberId && !isNumber(req.params.memberId)) throw createHttpError(400, 'Please provide a valid identifier')
-        if (req.params.projectId && !isNumber(req.params.projectId)) throw createHttpError(400, 'Please provide a valid identifier')
+        // parse project identifier
+        const idProject = parseInt(req.body.contributor.projectId)
+        if (isNaN(idProject)) throw createHttpError(400, 'Please provide a valid project identifier');
 
-        const identifier = [parseInt(req.params.memberId), parseInt(req.params.projectId)];
+        const project = await Projects.findByPk(idProject)
+        if (!project) throw createHttpError(404, 'Link project not found');
 
-        // Try to find the linked member
-        const member = await Members.findByPk(identifier[0])
-        if (!member) return createHttpError(404, 'Unable to find the linked member.')
+        // parse user identifier
+        const idMember = parseInt(req.body.contributor.memberId)
+        if (isNaN(idMember)) throw createHttpError(400, 'Please provide a valid member identifier');
 
-        // Try to find the linked project
-        const project = await Projects.findByPk(identifier[1])
-        if (!project) return createHttpError(404, 'Unable to find the linked project.')
+        const member = await Members.findByPk(idMember)
+        if (!member) throw createHttpError(404, 'Link member not found')
 
         
         // Insert data
         const contributor = await Contributors.create({
-            memberId: identifier[0],
-            projectId: identifier[1]
+            memberId: idMember,
+            projectId: idProject
         })
 
         // Return success
         return res.status(200).json({
             status: 'success',
             data: {
-                memberId: contributor.memberId,
-                projectId:contributor.projectId
+                contributorId: contributor.contributorId
             }
         })
     } catch (err) {
@@ -103,17 +100,31 @@ async function create(req: Request, res: Response) {
  */
 const update = async (req: Request, res: Response) => {
     try {
-        if (req.params.memberId && !isNumber(req.params.memberId)) throw createHttpError(400, 'Please provide a valid identifier')
-        if (req.params.projectId && !isNumber(req.params.projectId)) throw createHttpError(400, 'Please provide a valid identifier')
+        // parse identifier
+        const identifier = parseInt(req.params.contributorId)
+        if (isNaN(identifier)) throw createHttpError(400, 'Please provide a valid identifier')
 
-        const identifier = [parseInt(req.params.memberId), parseInt(req.params.projectId)];
-
-        const contributor = await Contributors.findByPk((identifier[0], identifier[1]))
+        const contributor = await Contributors.findByPk(identifier)
         if (!contributor) throw createHttpError(404, 'Contributor not found')
 
-        await Contributors.update(req.body, {
-            where: { memberId: identifier[0],
-                     projectId: identifier[1]
+        // parse project identifier
+        const idProject = parseInt(req.body.contributor.projectId)
+        if (isNaN(idProject)) throw createHttpError(400, 'Please provide a valid project identifier');
+
+        const project = await Projects.findByPk(idProject)
+        if (!project) throw createHttpError(404, 'Link project not found');
+
+        // parse user identifier
+        const idMember = parseInt(req.body.contributor.memberId)
+        if (isNaN(idMember)) throw createHttpError(400, 'Please provide a valid member identifier');
+
+        const member = await Members.findByPk(idMember)
+        if (!member) throw createHttpError(404, 'Link member not found')
+
+
+        await Contributors.update(req.body.contributor, {
+            where: { 
+                contributorId: identifier
             }
         })
 
@@ -133,19 +144,21 @@ const update = async (req: Request, res: Response) => {
  */
 const del = async (req: Request, res: Response) => {
     try {
-        if (req.params.memberId && !isNumber(req.params.memberId)) throw createHttpError(400, 'Please provide a valid identifier')
-        if (req.params.projectId && !isNumber(req.params.projectId)) throw createHttpError(400, 'Please provide a valid identifier')
+        // parse identifier
+        const identifier = parseInt(req.params.contributorId)
+        if (isNaN(identifier)) throw createHttpError(400, 'Please provide a valid identifier')
 
-        const identifier = [parseInt(req.params.memberId), parseInt(req.params.projectId)];
-
-        const contributor = await Contributors.findByPk((identifier[0], identifier[1]))
+        const contributor = await Contributors.findByPk(identifier)
         if (!contributor) throw createHttpError(404, 'Contributor not found')
 
         await Contributors.destroy({
             where: {
-                memberId: identifier[0],
-                groupName: identifier[1]
+                contributorId: identifier
             }
+        })
+
+        return res.status(200).json({
+            status: 'success'
         })
     } catch (err) {
         if (err instanceof HttpError) controllerErrorHandler(err, res)

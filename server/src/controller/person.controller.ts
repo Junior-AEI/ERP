@@ -33,13 +33,11 @@ const getAll = async (req: Request, res: Response) => {
  */
 const getByPk = async (req: Request, res: Response) => {
     try {
-        if (req.params.personId && !isNumber(req.params.personId)) throw createHttpError(400, 'Please provide a valid identifier')
-
         const identifier = parseInt(req.params.personId)
+        if (isNaN(identifier)) throw createHttpError(400, 'Please provide a valid identifier')
 
-        const person = await Persons.findByPk(identifier, { })
-
-        if (!person) throw createHttpError(404, 'User not found')
+        const person = await Persons.findByPk(identifier, {})
+        if (!person) throw createHttpError(404, 'Person not found')
 
         return res.status(200).json({
             status: 'success',
@@ -57,25 +55,23 @@ const getByPk = async (req: Request, res: Response) => {
  * Create an user
  * @param req
  * @param res
- */
+*/
 async function create(req: Request, res: Response) {
     try {
-        // Parse identifier for member heredity
-        if (req.body.user.personId && !isNumber(req.body.user.personId)) throw createHttpError(400, 'Please provide a valid identifier for the linked member.')
-        const identifier = parseInt(req.body.user.personId)
-
         // Test params
-        const validator = isValidPerson(req.body.person.lastname,
-                                        req.body.person.firstname,
-                                        req.body.person.gender,
-                                        req.body.person.mobilePhone,
-                                        req.body.person.email
-            )
-        if (!validator.valid) return createHttpError(400, validator.message as string)
+        const validator = isValidPerson(
+            req.body.person.lastname,
+            req.body.person.firstname,
+            req.body.person.gender,
+            req.body.person.mobilePhone,
+            req.body.person.email,
+            req.body.person.landlinePhone
+        )
+        if (!validator.valid) throw createHttpError(400, validator.message as string)
+
 
         // Insert data
         const person = await Persons.create({
-            personId: identifier,
             lastname: req.body.person.lastname,
             firstname: req.body.person.firstname,
             gender: req.body.person.gender,
@@ -101,26 +97,28 @@ async function create(req: Request, res: Response) {
  * Update an user
  * @param req
  * @param res
- */
+*/
 const update = async (req: Request, res: Response) => {
     try {
         // Parse identifier
-        if (req.params.personId && !isNumber(req.params.personId)) throw createHttpError(400, 'Please provide a valid identifier')
         const identifier = parseInt(req.params.personId)
+        if (isNaN(identifier)) throw createHttpError(400, 'Please provide a valid identifier')
 
         const person = await Persons.findByPk(identifier)
-        if (!person) throw createHttpError(404, 'User not found')
+        if (!person) throw createHttpError(404, 'Person not found')
 
-        const validator = isValidPerson(req.body.person.lastname,
+        const validator = isValidPerson(
+            req.body.person.lastname,
             req.body.person.firstname,
             req.body.person.gender,
             req.body.person.mobilePhone,
-            req.body.person.email
+            req.body.person.email,
+            req.body.person.landlinePhone,
         )
         if (validator.valid == 0) throw createHttpError(400, validator.message as string)
 
 
-        await Persons.update(req.body, {
+        await Persons.update(req.body.person, {
             where: { personId: identifier }
         })
 
@@ -141,16 +139,20 @@ const update = async (req: Request, res: Response) => {
 const del = async (req: Request, res: Response) => {
     try {
         // Parse identifier
-        if (req.params.userId && !isNumber(req.params.userId)) throw createHttpError(400, 'Please provide a valid identifier')
-        const identifier = parseInt(req.params.userId)
+        const identifier = parseInt(req.params.personId)
+        if (isNaN(identifier)) throw createHttpError(400, 'Please provide a valid identifier')
 
         const person = await Persons.findByPk(identifier)
-        if (!person) throw createHttpError(404, 'User not found')
+        if (!person) throw createHttpError(404, 'Person not found')
 
         await Persons.destroy({
             where: {
-                userId: identifier
+                personId: identifier
             }
+        })
+
+        return res.status(200).json({
+            status: 'success'
         })
     } catch (err) {
         if (err instanceof HttpError) controllerErrorHandler(err, res)

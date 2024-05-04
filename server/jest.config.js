@@ -2,6 +2,7 @@
 module.exports = {
   preset: 'ts-jest',
   testEnvironment: 'node',
+  silent: true,
   // testMatch: [
   //   "**/company.test.ts" 
   // ]

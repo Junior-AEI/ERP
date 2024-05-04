@@ -1,6 +1,6 @@
 import ProjectNotes from "../../src/models/projectNote.model";
 import { projectNotes } from "./data/projectNotes.data";
-import { createProject } from "./project.seeder";
+import { createProject } from "./project.seeders";
 import { createUser } from "./user.seeders";
 
 export const createProjectNote = async (n: number) => {

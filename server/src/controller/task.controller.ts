@@ -107,7 +107,6 @@ async function create(req: Request, res: Response) {
 
         // Insert data
         const task = await Tasks.create({
-            // taskId: identifier,
             dueDate: req.body.task.dueDate,
             description: req.body.task.description,
             state: req.body.task.state

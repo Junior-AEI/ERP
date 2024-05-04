@@ -60,10 +60,7 @@ const getByPk = async (req: Request, res: Response) => {
  */
 async function create(req: Request, res: Response) {
     try {
-        // Parse identifier for member heredity
-        if (req.body.user.personId && !isNumber(req.body.user.personId)) throw createHttpError(400, 'Please provide a valid identifier for the linked member.')
-        const identifier = parseInt(req.body.user.personId)
-
+       
         // Test params
         const validator = isValidPerson(req.body.person.lastname,
                                         req.body.person.firstname,
@@ -75,7 +72,6 @@ async function create(req: Request, res: Response) {
 
         // Insert data
         const person = await Persons.create({
-            personId: identifier,
             lastname: req.body.person.lastname,
             firstname: req.body.person.firstname,
             gender: req.body.person.gender,

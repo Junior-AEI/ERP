@@ -47,16 +47,6 @@ const links: Link[] = [
     to: '/'
   }
 ]
-
-import router from '@/router'
-
-const goTo = (to: string) => {
-  if (to.startsWith('http') || to.startsWith('www') || to.startsWith('https')) {
-    window.location.href = to
-  } else {
-    router.push(to)
-  }
-}
 </script>
 
 <template>

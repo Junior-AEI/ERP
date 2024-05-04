@@ -14,6 +14,8 @@ import { Table, Column, Model, DataType, CreatedAt, ForeignKey, BelongsTo, IsDat
 import Users from './user.model'
 import DocumentTypes from './documentType.model'
 
+export const STATUS = ['A relire', 'A corriger', 'Relu'] 
+
 @Table
 export default class Documents extends Model {
     @PrimaryKey

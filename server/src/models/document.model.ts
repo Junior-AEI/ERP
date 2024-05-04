@@ -41,10 +41,10 @@ export default class Documents extends Model {
 
     @ForeignKey(() => DocumentTypes)
     @Column({
-        type: DataType.STRING,
+        type: DataType.INTEGER,
         allowNull: false
     })
-    DocumentTypeName!: string
+    typeId!: number
 
     @BelongsTo(() => DocumentTypes)
     documentType!: DocumentTypes

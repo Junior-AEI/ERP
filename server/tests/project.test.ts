@@ -3,7 +3,7 @@ import app from "../src/app"
 import { beforeAllTests, afterAllTests, clearDatabase } from './utils'
 import Projects from '../src/models/project.model'
 import { initUser } from './seeders/general'
-import { createProject } from './seeders/project.seeder'
+import { createProject } from './seeders/project.seeders'
 import { createClient } from './seeders/client.seeders'
 
 beforeAll(beforeAllTests)

@@ -169,8 +169,8 @@ const { toast } = useToast()
 const eventInfo = ref<Event>({
   eventId: NaN,
   name: '',
-  startDate: null,
-  endDate: null,
+  startDate: '',
+  endDate: '',
   location: '',
   description: '',
   eventTypeName: ''

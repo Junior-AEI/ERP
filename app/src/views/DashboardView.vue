@@ -179,7 +179,7 @@ onMounted(async () => {
   events.value = await getEvents()
   events.value = getNextFiveEvents(
     events.value.sort((a, b) => new Date(a.endDate).getTime() - new Date(b.endDate).getTime())
-  )
+  ).sort((a, b) => new Date(a.startDate).getTime() - new Date(b.startDate).getTime())
   noEvents.value = events.value.length == 0
   console.log(events.value)
 })

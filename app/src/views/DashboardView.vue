@@ -56,8 +56,27 @@
               <div v-if="noEvents">
                 <span class="text-muted-foreground">Aucun évènement à venir</span>
               </div>
-              <div v-else>
-                <EventCard />
+              <div class="flex flex-1 flex-col gap-2" v-else>
+                <div v-for="event in events" :key="event.eventId">
+                  <Card>
+                    <CardContent>
+                      <div class="flex flex-1 flex-col justify-start">
+                        <h3>{{ event.name }}</h3>
+                        <div class="flex flex-1 flex-row items-center justify-between">
+                          <span> {{ event.eventTypeName }}</span>
+                        </div>
+                        <div class="flex flex-1 flex-row items-center justify-between">
+                          <span>
+                            {{ format(new Date(event.startDate), 'd MMMM yyyy', { locale: fr }) }} -
+                            {{
+                              format(new Date(event.endDate), 'd MMMM yyyy', { locale: fr })
+                            }}</span
+                          >
+                        </div>
+                      </div>
+                    </CardContent>
+                  </Card>
+                </div>
               </div>
             </CardContent>
           </Card>
@@ -74,6 +93,9 @@ import axios from 'axios'
 
 import type { MaterialSymbol } from 'material-symbols'
 import type { Event } from '@/types/api'
+
+import { format } from 'date-fns'
+import { fr } from 'date-fns/locale'
 
 const user = useAuthStore()
 
@@ -155,8 +177,10 @@ const getNextFiveEvents = (events: Event[]): Event[] => {
 
 onMounted(async () => {
   events.value = await getEvents()
-  events.value.sort((a, b) => new Date(b.endDate).getTime() - new Date(a.endDate).getTime())
-  events.value = getNextFiveEvents(events.value)
+  events.value = getNextFiveEvents(
+    events.value.sort((a, b) => new Date(a.endDate).getTime() - new Date(b.endDate).getTime())
+  )
   noEvents.value = events.value.length == 0
+  console.log(events.value)
 })
 </script>

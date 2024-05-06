@@ -53,8 +53,8 @@ interface Address {
 interface Event {
   eventId: number
   name: string
-  startDate: DateString | null
-  endDate: DateString | null
+  startDate: DateString
+  endDate: DateString
   location: string
   description: string
   eventTypeName: string
@@ -67,7 +67,7 @@ interface itTicket {
   description: string
   applicationConcerned: string
   state: string
-  createdAt : DateString
+  createdAt: DateString
 }
 
 type itTicketInfo = itTicket & User;
@@ -80,8 +80,8 @@ interface Group {
 
 
 interface Belonger {
-  userId : number
-  groupName : string
+  userId: number
+  groupName: string
 }
 
 type UserInGroup = Group & Belonger
@@ -112,4 +112,4 @@ interface ProjectNotes {
   createdAt: DateString
 }
 
-export type { Person, Member, FullMember, User, Event, Address, itTicket, itTicketInfo, Group, Task, UserInGroup, Project, ProjectNotes }
+export type { Person, Member, FullMember, User, Event, Address, itTicket, itTicketInfo, Group, Task, UserInGroup, Project, ProjectNotes  }

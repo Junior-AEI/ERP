@@ -4,9 +4,9 @@ import documentTypeController from '../controller/documentType.controller'
 const router = express.Router()
 
 router.get('/', documentTypeController.getAll)
-router.get('/:nameDocumentType', documentTypeController.getByPk)
+router.get('/:typeId', documentTypeController.getByPk)
 router.post('/', documentTypeController.create)
-router.put('/:nameDocumentType', documentTypeController.update)
-router.delete('/:nameDocumentType', documentTypeController.del)
+router.put('/:typeId', documentTypeController.update)
+router.delete('/:typeId', documentTypeController.del)
 
 export default router

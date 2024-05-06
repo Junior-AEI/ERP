@@ -136,6 +136,7 @@
       </DialogContent>
     </Dialog>
   </div>
+  <Toaster />
 </template>
 
 <script setup lang="ts">
@@ -171,6 +172,9 @@ import {
   CommandList
 } from '@/components/ui/command'
 
+import { useToast } from '@/components/ui/toast/use-toast'
+import { Toaster } from '@/components/ui/toast'
+
 const selectedEvent = ref<Event>()
 
 const props = defineProps<{
@@ -203,6 +207,8 @@ const eventTypes = [
 const isOpen = ref(false)
 const isOpenEventType = ref(false)
 
+const { toast } = useToast()
+
 const editEvent = () => {
   axios
     .put(
@@ -229,6 +235,11 @@ const editEvent = () => {
     })
     .catch((error) => {
       console.error(error)
+      toast({
+        title: 'Something wrong happened',
+        variant: 'destructive',
+        description: `${error.response.data.message}`
+      })
     })
 }
 
@@ -245,6 +256,11 @@ const deleteEvent = () => {
     })
     .catch((error) => {
       console.error(error)
+      toast({
+        title: 'Something wrong happened',
+        variant: 'destructive',
+        description: `${error.response.data.message}`
+      })
     })
 }
 </script>

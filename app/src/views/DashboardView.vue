@@ -157,9 +157,14 @@ onMounted(async () => {
                         </div>
                         <div class="flex flex-1 flex-row items-center justify-between">
                           <span>
-                            {{ format(new Date(event.startDate), 'd MMMM yyyy', { locale: fr }) }} -
                             {{
-                              format(new Date(event.endDate), 'd MMMM yyyy', { locale: fr })
+                              format(new Date(event.startDate), 'd MMMM yyyy à HH:mm', {
+                                locale: fr
+                              })
+                            }}
+                            -
+                            {{
+                              format(new Date(event.endDate), 'd MMMM yyyy à HH:mm', { locale: fr })
                             }}</span
                           >
                         </div>

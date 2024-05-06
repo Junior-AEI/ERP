@@ -74,6 +74,7 @@ export interface itTicket {
   applicationConcerned: string
   state: string
   createdAt: DateString
+
 }
 
 export type itTicketInfo = itTicket & User;
@@ -101,3 +102,14 @@ export interface Task {
   issuerId: number
 }
 
+export interface ExpenseAccount {
+  expenseId: number
+  userId: number
+  approbatorId: number
+  reason: string
+  expenseDate: DateString
+  description: string
+  state: string
+}
+
+export type ExpenseAccountInfo = ExpenseAccount & User;

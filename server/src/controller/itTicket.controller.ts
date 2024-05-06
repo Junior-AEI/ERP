@@ -102,6 +102,7 @@ const update = async (req: Request, res: Response) => {
     try {
         if (req.params.ticketId && !isNumber(req.params.ticketId)) throw createHttpError(400, 'Please provide a valid identifier')
         const identifier = parseInt(req.params.ticketId)
+        console.log("Le n° Id est " + identifier + "String:" + req.params.ticketId + "\n")
 
         const itTicket = await ItTickets.findByPk(identifier, {})
         if (!itTicket) throw createHttpError(404, 'Ticket not found')
@@ -110,7 +111,14 @@ const update = async (req: Request, res: Response) => {
         const validator = isValidItTicket(req.body.itTicket.title, req.body.itTicket.description, req.body.itTicket.applicationConcerned, req.body.itTicket.state)
         if (!validator.valid) return createHttpError(400, validator.message as string)
 
-        await ItTickets.update(req.body, {
+
+        await ItTickets.update({
+            userId : req.body.itTicket.userId,
+            title: req.body.itTicket.title,
+            description: req.body.itTicket.description,
+            applicationConcerned: req.body.itTicket.applicationConcerned,
+            state: req.body.itTicket.state,
+        }, {
             where: { ticketId: identifier }
         })
 

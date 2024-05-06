@@ -18,18 +18,14 @@ import { projectsModule } from '@/modules/projectsModule'
 import { reviewsModule } from '@/modules/reviewsModule'
 import { eventsModule } from '@/modules/eventsModule'
 import { treasuryModule } from '@/modules/treasuryModule'
-import { supportModule } from '@/modules/supportModule'
-import { requestNFGModule } from '@/modules/requestNFGModule'
 import { adminModule } from '@/modules/adminModule'
 
 registerModule(eventsModule)
+registerModule(adminModule)
 registerModule(treasuryModule)
 registerModule(membersModule)
 registerModule(projectsModule)
 registerModule(reviewsModule)
-registerModule(supportModule)
-registerModule(requestNFGModule)
-registerModule(adminModule)
 
 /* Définition des stores */
 

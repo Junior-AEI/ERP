@@ -25,7 +25,7 @@ const value = defineModel<DateValue>()
       </Button>
     </PopoverTrigger>
     <PopoverContent class="w-auto p-0">
-      <Calendar v-model="value" initial-value="2022-01-01" />
+      <Calendar v-model="value" initial-value="2024-01-01" />
     </PopoverContent>
   </Popover>
 </template>

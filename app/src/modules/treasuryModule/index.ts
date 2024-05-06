@@ -9,9 +9,9 @@ export const treasuryModule: Module = {
       component: () => import('./views/DashBoardTreasuryView.vue'),
       children: [
         {
-          path: '/carte-d-aei',
-          name: "Codes de carte D'AEI",
-          component: () => import('@/views/Construction.vue'),
+          path: '/notes-de-frais',
+          name: "Notes de Frais",
+          component: () => import('./views/ExpenseAdmin.vue'),
           meta: {
             icon: 'credit_card'
           }
@@ -19,6 +19,15 @@ export const treasuryModule: Module = {
       ],
       meta: {
         icon: 'savings'
+      }
+    },
+    {
+      path: '/request-nfg',
+      name: 'Demander une note de frais',
+      component: () => import('./views/AskExpenseForm.vue'),
+      meta: {
+        icon: 'receipt_long',
+        positionInSidebar: 'bottom'
       }
     }
   ]

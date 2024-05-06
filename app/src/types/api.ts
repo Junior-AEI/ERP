@@ -113,3 +113,14 @@ export interface ExpenseAccount {
 }
 
 export type ExpenseAccountInfo = ExpenseAccount & User;
+
+export interface Document {
+  documentId: number
+  path: string
+  version: number
+  typeId: number
+  information: string
+  status: string
+  authorId: number
+  createdAt: DateString
+}

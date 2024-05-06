@@ -9,10 +9,17 @@
         <Dropzone />
       </CardContent>
       <CardFooter>
-        <Button class="w-full"> Téléverser un document</Button>
+        <Button class="w-full" @click="uploadDocument()"> Téléverser un document</Button>
       </CardFooter>
     </Card>
   </Wrapper>
 </template>
 
-<script lang="ts"></script>
+<script setup lang="ts">
+import { Button } from '@/components/ui/button'
+import { Card, CardContent, CardFooter, CardHeader } from '@/components/ui/card'
+
+const uploadDocument = () => {
+  console.log('TODO\n')
+}
+</script>

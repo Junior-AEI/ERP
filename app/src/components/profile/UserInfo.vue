@@ -8,22 +8,22 @@
       <div class="flex items-end gap-4">
         <div class="flex flex-1 flex-col gap-2">
           <Label for="userId">Identifiant Utilisateur</Label>
-          <Input disabled id="userId" :placeholder="userId" />
+          <Input :disabled="!canEdit" id="userId" :placeholder="userId" />
         </div>
         <div class="flex flex-1 flex-col gap-2">
           <Label for="username">Nom d'utilisateur</Label>
-          <Input id="username" v-model="username" />
+          <Input :disabled="!canEdit" id="username" v-model="username" />
         </div>
       </div>
       <div class="flex flex-1 flex-col gap-2">
         <Label for="emailJE">Email J.E.</Label>
-        <Input id="emailJE" v-model="emailJE" />
+        <Input :disabled="!canEdit" id="emailJE" v-model="emailJE" />
       </div>
       <div class="flex items-end gap-4">
         <div class="flex flex-1 flex-col gap-2">
           <Label for="mandateStart">Date de début de mandat</Label>
           <Popover>
-            <PopoverTrigger as-child>
+            <PopoverTrigger :disabled="!canEdit" as-child>
               <Button
                 variant="outline"
                 :class="
@@ -49,7 +49,7 @@
         <div class="flex flex-1 flex-col gap-2">
           <Label for="lastname">Date de fin de mandat</Label>
           <Popover>
-            <PopoverTrigger as-child>
+            <PopoverTrigger :disabled="!canEdit" as-child>
               <Button
                 variant="outline"
                 :class="
@@ -97,6 +97,8 @@ const editUserData = () => {
 const props = defineProps<{
   userId: number
 }>()
+
+const canEdit = ref(false) // to be edited when permissions are added
 
 const username = ref('')
 const mandateStart = ref<DateValue>()

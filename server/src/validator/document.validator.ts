@@ -1,3 +1,5 @@
+import { STATUS } from "../models/document.model"
+
 /* eslint-disable @typescript-eslint/no-explicit-any */
 export const isValidDocument = (path: any, version: any, information: any, status: any) => {
    
@@ -15,6 +17,7 @@ export const isValidDocument = (path: any, version: any, information: any, statu
         }
     if (typeof status !== 'string') return { valid: 0, message: 'Your status is not correctly formatted.' }
     if (status.length < 2 || status.length >= 20) return { valid: 0, message: 'Your status size has to be bigger than 2 and smaller than 20' }
+    if (!STATUS.includes(status)) return { valid: 0, message: 'Your status must be in the enum : STATUS.' }
 
     return { valid: 1 }
 }

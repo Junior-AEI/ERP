@@ -68,7 +68,7 @@
           </Popover>
         </div>
       </div>
-      <Button @click="editUserData()">Modifier</Button>
+      <Button v-if="canEdit" @click="editUserData()">Modifier</Button>
     </CardContent>
   </Card>
 </template>

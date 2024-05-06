@@ -48,11 +48,11 @@ import { ref } from 'vue'
 const props = defineProps({
   accept: {
     type: String,
-    default: 'image/*'
+    default: '.pdf, .png, .jpg, .jpeg'
   },
   acceptLabels: {
     type: String,
-    default: 'PNG, JPG ou JPEG'
+    default: 'PDF, PNG, JPG ou JPEG uniquement'
   },
   multiple: {
     type: Boolean,
@@ -77,15 +77,11 @@ const uploadFile = (event: any) => {
     alert('Erreur Aucun fichier sélectionné')
     return
   }
-  if (!file.type.match(props.accept)) {
-    alert("Erreur Le fichier n'est pas du type attendu")
-    return
-  }
   if (file.size > props.maxFileSize * 10 ** 6) {
     alert('Erreur Le fichier est trop volumineux')
     return
   }
   files.value.push(file)
-  //imagePreview.value = URL.createObjectURL(file.value);
+  //imagePreview.value = URL.createObjectURL(file.value)
 }
 </script>

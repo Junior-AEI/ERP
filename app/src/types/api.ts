@@ -1,6 +1,12 @@
-type DateString = string
+export type DateString = string
 
-interface Person {
+export type TimeValue = {
+  hour: string
+  minute: string
+  second: string
+}
+
+export interface Person {
   personId: number
   lastname: string
   firstname: string
@@ -12,7 +18,7 @@ interface Person {
   updatedAt: DateString
 }
 
-interface Member {
+export interface Member {
   memberId: number
   birthDate: DateString
   birthPlace: string
@@ -27,9 +33,9 @@ interface Member {
   updatedAt: DateString
 }
 
-type FullMember = Member & Person
+export type FullMember = Member & Person
 
-interface User {
+export interface User {
   userId: number
   username: string
   mandateStart: DateString
@@ -37,7 +43,7 @@ interface User {
   emailJE: string
 }
 
-interface Address {
+export interface Address {
   addressId: number
   address: string
   additionnalAddress: string
@@ -50,7 +56,7 @@ interface Address {
   company: Array<{}>
 }
 
-interface Event {
+export interface Event {
   eventId: number
   name: string
   startDate: DateString
@@ -60,7 +66,7 @@ interface Event {
   eventTypeName: string
 }
 
-interface itTicket {
+export interface itTicket {
   ticketId: number
   userId: number
   title: string
@@ -70,23 +76,23 @@ interface itTicket {
   createdAt: DateString
 }
 
-type itTicketInfo = itTicket & User;
+export type itTicketInfo = itTicket & User;
 
-interface Group {
+export interface Group {
   groupName: string
   createdAt: DateString
   updatedAt: DateString
 }
 
 
-interface Belonger {
+export interface Belonger {
   userId: number
   groupName: string
 }
 
-type UserInGroup = Group & Belonger
+export type UserInGroup = Group & Belonger
 
-interface Task {
+export interface Task {
   taskId: number
   userId: number
   dueDate: string
@@ -95,5 +101,3 @@ interface Task {
   issuerId: number
 }
 
-
-export type { Person, Member, FullMember, User, Event, Address, itTicket, itTicketInfo, Group, Task, UserInGroup }

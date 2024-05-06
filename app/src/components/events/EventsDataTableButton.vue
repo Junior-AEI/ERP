@@ -75,7 +75,7 @@
                     ? eventTypes.find((eventType) => eventType.value === eventTypeName)?.label
                     : "Sélectionner l'événement"
                 }}
-                <ChevronsUpDown class="ml-2 h-4 w-4 shrink-0 opacity-50" />
+                <Icon name="unfold_less" class="ml-2 h-4 w-4 shrink-0 opacity-50" />
               </Button>
             </PopoverTrigger>
             <PopoverContent class="p-0">
@@ -98,7 +98,8 @@
                       "
                     >
                       {{ eventType.label }}
-                      <Check
+                      <Icon
+                        name="check"
                         :class="
                           cn(
                             'ml-auto h-4 w-4',

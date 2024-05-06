@@ -95,5 +95,21 @@ interface Task {
   issuerId: number
 }
 
+interface Project {
+  projectId: number
+  acronym: string
+  clientId: number
+  startDate: DateString
+  endDate: DateString
+}
 
-export type { Person, Member, FullMember, User, Event, Address, itTicket, itTicketInfo, Group, Task, UserInGroup}
+interface ProjectNotes {
+  noteId: number
+  projectId: number
+  writerId: number
+  comment : string
+  advancement: string
+  createdAt: DateString
+}
+
+export type { Person, Member, FullMember, User, Event, Address, itTicket, itTicketInfo, Group, Task, UserInGroup, Project, ProjectNotes }

@@ -51,6 +51,75 @@ const getByPk = async (req: Request, res: Response) => {
     }
 }
 
+
+const getByProject = async (req: Request, res: Response) => {
+    try {
+        if (req.params.projectId && !isNumber(req.params.projectId)) throw createHttpError(400, 'Please provide a valid identifier')
+        const identifier = parseInt(req.params.projectId)
+
+        const projectNotes = await ProjectNotes.findAll({
+            where: {
+                projectId: identifier
+            }
+        })
+
+        return res.status(200).json({
+            status: 'success',
+            data: {
+                projectNotes: projectNotes
+            }
+        })
+    } catch (err) {
+        if (err instanceof HttpError) controllerErrorHandler(err, res)
+        else throw err
+    }
+}
+
+const getLastNoteByProject = async (req: Request, res: Response) => {
+    try {
+        if (req.params.projectId && !isNumber(req.params.projectId)) throw createHttpError(400, 'Please provide a valid identifier')
+        const identifier = parseInt(req.params.projectId)
+        console.log('identifier', identifier);
+        
+        const projectNotes = await ProjectNotes.findOne({
+            where: {
+                projectId: identifier
+            },
+            order: [['createdAt', 'DESC']],
+        })
+
+        return res.status(200).json({
+            status: 'success',
+            data: {
+                projectNotes: projectNotes
+            }
+        })
+    } catch (err) {
+        if (err instanceof HttpError) controllerErrorHandler(err, res)
+        else throw err
+    }
+}
+
+const search = async (req: Request, res: Response) => {
+    try {
+        const projectNotes = await ProjectNotes.findAll({
+            where: {
+                
+            }
+        })
+
+        return res.status(200).json({
+            status: 'success',
+            data: {
+                projectNotes: projectNotes
+            }
+        })
+    } catch (err) {
+        if (err instanceof HttpError) controllerErrorHandler(err, res)
+        else throw err
+    }
+}
+
 /**
  * Create an user
  * @param req
@@ -142,7 +211,10 @@ const del = async (req: Request, res: Response) => {
 const projectNotesController = {
     getAll,
     getByPk,
+    getLastNoteByProject,
+    getByProject,
     create,
+    search,
     del,
     update
 }

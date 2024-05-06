@@ -6,6 +6,11 @@ import bcrypt from 'bcrypt'
 import Groups from './models/group.model'
 import Belongers from './models/belonger.model'
 import Tasks from './models/task.model'
+import Events from './models/event.model'
+import Projects from './models/project.model'
+import Clients from './models/client.model'
+import Companies from './models/company.model'
+import ProjectNotes from './models/projectNote.model'
 
 const createFakeData = async () => {
     await createUser()
@@ -258,6 +263,103 @@ const createUser = async () => {
         groupName: groupperson3.groupName
     })
 
+    const event1 = await Events.create({
+        eventId: 1,
+        name: 'Event1',
+        startDate: new Date('2023-07-26T12:00:00').toISOString(),
+        endDate: new Date('2023-07-27T12:00:00').toISOString(),
+        location: 'Bordeaux',
+        description: 'Event1',
+        eventTypeName: 'Réunion'
+    })
+    const event2 = await Events.create({
+        eventId: 2,
+        name: 'Event2',
+        startDate: new Date('2024-05-23T12:00:00').toISOString(),
+        endDate: new Date('2024-05-24T12:00:00').toISOString(),
+        location: 'Bordeaux',
+        description: 'Event2',
+        eventTypeName: 'Congrès'
+    })
+
+    const personClient1 = await Persons.create({
+        firstname: 'Jacques',
+        lastname: 'Client1',
+        gender : 'M',
+        mobilePhone: '+33678657890',
+        email: 'jacques@client.fr',
+        landlinePhone: '+33687996621'
+    })
+    
+    const addressCompany1 = await Addresses.create({
+        address: 'Allée de la Company1',
+        additionalAddress: '',
+        city: 'ClientVille',
+        postCode: '99999',
+        country: 'FRA'
+    })
+
+    const company1 = await Companies.create({
+        companyId: 1,
+        name: 'Company1',
+        legalEntity: 'SAS',
+        addressId: addressCompany1.addressId,
+        createdAt: ct,
+        updatedAt: ct
+    })
+
+    const client1 = await Clients.create({
+        clientId: personClient1.personId,
+        function: 'PDG',
+        companyId: company1.companyId
+    })        
+
+    const project1 = await Projects.create({
+        projectId: 1,
+        acronym: 'PRO1',
+        clientId: client1.clientId,
+        startDate: new Date('2023-07-26T12:00:00'),
+        endDate: new Date('2024-07-27T12:00:00')
+    })
+
+    const project2 = await Projects.create({
+        projectId: 2,
+        acronym: 'PRO2',
+        clientId: client1.clientId,
+        startDate: new Date('2022-07-26T12:00:00'),
+        endDate: new Date('2023-07-27T12:00:00')
+    })
+
+    const note1Project1 = await ProjectNotes.create({
+        noteId: 1,
+        writerId: 2,
+        projectId: 1 ,
+        comment: 'Ca avance bien', 
+        advancement: 'CE signé'
+    })
+
+    const note2Project1 = await ProjectNotes.create({
+        noteId: 2,
+        writerId: 2,
+        projectId: 1 ,
+        comment: 'Ca avance toujours bien', 
+        advancement: 'FA émise'
+    })
+
+    const note1Project2 = await ProjectNotes.create({
+        noteId: 3,
+        writerId: 2,
+        projectId: 2 ,
+        comment: 'Ca avance plutot bien', 
+        advancement: 'Prospection'
+    })
+    const note2Project2 = await ProjectNotes.create({
+        noteId: 4,
+        writerId: 2,
+        projectId: 2 ,
+        comment: 'Ca avance plutot bien', 
+        advancement: 'CE signé'
+    })
 }
 
 export default createFakeData

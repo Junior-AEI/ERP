@@ -4,10 +4,11 @@ import type { Event } from '@/types/api'
 import EventsDataTableButton from './EventsDataTableButton.vue'
 import { Button } from '../ui/button'
 import Icon from '../Icon.vue'
-import { CalendarDate, parseDate, DateFormatter, getLocalTimeZone } from '@internationalized/date'
+import { CalendarDateTime, parseDateTime, DateFormatter, getLocalTimeZone } from '@internationalized/date'
 
 const df = new DateFormatter('fr-FR', {
-  dateStyle: 'long'
+  dateStyle: 'long',
+  timeStyle: 'short',
 })
 
 function convertToCalendarDate(isoDateString: string): string {
@@ -22,9 +23,10 @@ function convertToCalendarDate(isoDateString: string): string {
   const year = dateObject.getFullYear();
   const month = dateObject.getMonth() + 1; // Months are 0-based in JavaScript
   const day = dateObject.getDate();
-
+  const hour = dateObject.getHours();
+  const minute = dateObject.getMinutes();
   // Create and return a new CalendarDate object
-  return new CalendarDate(year, month, day).toString();
+  return new CalendarDateTime(year, month, day, hour, minute).toString();
 }
 
 const defaultClasses = 'text-left font-medium'
@@ -84,7 +86,7 @@ export const columns: ColumnDef<Event>[] = [
       return h(
         'div',
         { class: defaultClasses },
-        df.format(parseDate(startDate).toDate(getLocalTimeZone()))
+        df.format(parseDateTime(startDate).toDate(getLocalTimeZone()))
       )
     }
   },
@@ -117,7 +119,7 @@ export const columns: ColumnDef<Event>[] = [
       return h(
         'div',
         { class: defaultClasses },
-        df.format(parseDate(endDate).toDate(getLocalTimeZone()))
+        df.format(parseDateTime(endDate).toDate(getLocalTimeZone()))
       )
     }
   },

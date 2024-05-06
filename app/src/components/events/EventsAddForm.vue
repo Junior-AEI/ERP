@@ -182,9 +182,16 @@ const eventTypes = [
   { value: 'RDV client', label: 'Rendez-vous client' }
 ]
 
+const today = new Date()
+const calendarDateToday = new CalendarDate(
+  today.getFullYear(),
+  today.getMonth() + 1,
+  today.getDate()
+)
+
 const dateRange = ref({
-  start: new CalendarDate(2022, 1, 20),
-  end: new CalendarDate(2022, 1, 20).add({ days: 20 })
+  start: calendarDateToday,
+  end: calendarDateToday.add({ days: 1 })
 }) as Ref<DateRange>
 
 const timeStart = ref({

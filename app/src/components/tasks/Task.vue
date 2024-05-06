@@ -4,7 +4,7 @@
       <div class="flex flex-1 flex-col justify-start">
         <h3>{{ description }}</h3>
         <div class="flex flex-1 flex-row items-center justify-between">
-          <span>{{ duedate.toLocaleDateString("fr-FR") }}</span>
+          <span>{{ duedate.toLocaleDateString('fr-FR') }}</span>
 
           <Select>
             <SelectTrigger class="w-[150px]">
@@ -29,8 +29,7 @@
 </template>
 
 <script setup lang="ts">
-import axios from 'axios';
-import { STATUS_CODES } from 'http'
+import axios from 'axios'
 import { defineProps, ref } from 'vue'
 
 const states: string[] = []
@@ -51,7 +50,7 @@ const props = defineProps<{
   issuerId: number
 }>()
 
-const duedate = ref<Date>(new Date(props.dueDate)) 
+const duedate = ref<Date>(new Date(props.dueDate))
 
 function changeState() {
   console.log('change state')
@@ -59,6 +58,4 @@ function changeState() {
     console.log(response)
   })
 }
-
-
 </script>

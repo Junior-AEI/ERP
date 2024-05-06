@@ -1,11 +1,19 @@
 <script setup lang="ts">
+import { ref, onMounted } from 'vue'
+import axios from 'axios'
 import { useAuthStore } from '@/stores/authStore'
-import type { MaterialSymbol } from 'material-symbols'
+
+import { type IconNames } from '@/types'
+
+import type { Event } from '@/types/api'
+
+import { format } from 'date-fns'
+import { fr } from 'date-fns/locale'
 
 const user = useAuthStore()
 
 type Link = {
-  icon: MaterialSymbol
+  icon: IconNames
   name: string
   to: string
 }
@@ -47,6 +55,37 @@ const links: Link[] = [
     to: '/'
   }
 ]
+
+const noEvents = ref(true)
+const events = ref<Event[]>([])
+
+async function getEvents(): Promise<Event[]> {
+  const response = await axios.get(`/event`, {
+    headers: {
+      Authorization: `Bearer ${useAuthStore().token}`
+    }
+  })
+  return response.data.data.events
+}
+
+const getNextFiveEvents = (events: Event[]): Event[] => {
+  const todayDate = new Date().toISOString()
+  return events.reduce((acc: Event[], event: Event) => {
+    if (event.endDate > todayDate && acc.length < 5) {
+      acc.push(event)
+    }
+    return acc
+  }, [])
+}
+
+onMounted(async () => {
+  events.value = await getEvents()
+  events.value = getNextFiveEvents(
+    events.value.sort((a, b) => new Date(a.endDate).getTime() - new Date(b.endDate).getTime())
+  )
+  noEvents.value = events.value.length == 0
+  console.log(events.value)
+})
 </script>
 
 <template>

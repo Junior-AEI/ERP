@@ -60,7 +60,8 @@ const form = ref<itTicket>({
   title: '',
   applicationConcerned: '', //Valeur par défaut à MODIFIER
   description: '',
-  state: ''
+  state: '',
+  createdAt :''
 })
 const handleInput = (value: string) => {
   form.value.applicationConcerned = value

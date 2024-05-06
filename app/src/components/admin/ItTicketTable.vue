@@ -1,36 +1,36 @@
 <script setup lang="ts">
 import { ref, onMounted } from 'vue'
 import { columns } from './columns'
-import type { FullMember } from '@/types/api'
+import type { itTicketInfo } from '@/types/api'
 import axios from 'axios'
 
-const data = ref<FullMember[]>([])
+const data = ref<itTicketInfo[]>([])
 import { useAuthStore } from '@/stores/authStore'
 
-async function getData(): Promise<FullMember[]> {
+async function getData(): Promise<itTicketInfo[]> {
   // Fetch data from your API here.
 
-  const members = await axios.get(`/member`, {
+  const itTickets = await axios.get(`/itTicket`, {
     headers: {
       Authorization: `Bearer ${useAuthStore().token}`
     }
   })
 
-  const persons = await axios.get(`/person`, {
+  const users = await axios.get(`/user`, {
     headers: {
       Authorization: `Bearer ${useAuthStore().token}`
     }
   })
 
-  const fullMembers = members.data.data?.members.map((member: any) => {
-    const person = persons.data.data?.persons.find((person: any) => person.personId === member.memberId)
+  const itTicketsInfo = itTickets.data.data?.itTickets.map((itTicket: any) => {
+    const user = users.data.data?.users.find((user: any) => user.userId === itTicket.userId)
     return {
-      ...member,
-      ...person
+      ...itTicket,
+      ...user
     }
   })
 
-  return fullMembers
+  return itTicketsInfo
 }
 
 onMounted(async () => {
@@ -44,6 +44,6 @@ const handleClick = (e: any) => {
 
 <template>
   <div>
-    <DataTable :columns="columns" :data="data" :onClickFn="handleClick" />
+    <DataTable :columns="columns" :data="data" :onClickFn="handleClick"/>
   </div>
 </template>

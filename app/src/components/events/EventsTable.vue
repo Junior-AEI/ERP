@@ -19,6 +19,9 @@ async function getData(): Promise<Event[]> {
 
 onMounted(async () => {
   data.value = await getData()
+  data.value = data.value.sort(
+    (a, b) => new Date(a.startDate).getTime() - new Date(b.startDate).getTime()
+  )
 })
 </script>
 

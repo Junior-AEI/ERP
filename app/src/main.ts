@@ -3,7 +3,7 @@ import './assets/main.css'
 import './assets/inter/inter.css'
 import 'material-symbols'
 
-import { createApp, watch } from 'vue'
+import { createApp } from 'vue'
 
 import App from './App.vue'
 

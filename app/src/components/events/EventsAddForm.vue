@@ -139,9 +139,6 @@ import axios from 'axios'
 import { useAuthStore } from '@/stores/authStore'
 import type { Event } from '@/types/api'
 
-import { Button } from '@/components/ui/button'
-import { Input } from '@/components/ui/input'
-import { Textarea } from '@/components/ui/textarea'
 import { ref, type Ref, computed } from 'vue'
 import { Checkbox } from '@/components/ui/checkbox'
 
@@ -226,8 +223,6 @@ const dateStartISO = computed(() => {
       timeStart.value.minute
     ).toString()
   }
-
-  console.log(timeStart.value.hour)
 
   return new CalendarDateTime(
     /* @ts-ignore */

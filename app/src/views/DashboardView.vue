@@ -104,7 +104,31 @@ const links: Link[] = [
               <span class="text-accent">Prochains évènements </span>
             </CardHeader>
             <CardContent>
-              <span class="text-muted-foreground">Aucun évènement à venir</span>
+              <div v-if="noEvents">
+                <span class="text-muted-foreground">Aucun évènement à venir</span>
+              </div>
+              <div class="flex flex-1 flex-col gap-2" v-else>
+                <div v-for="event in events" :key="event.eventId">
+                  <Card>
+                    <CardContent>
+                      <div class="flex flex-1 flex-col justify-start">
+                        <h3>{{ event.name }}</h3>
+                        <div class="flex flex-1 flex-row items-center justify-between">
+                          <span> {{ event.eventTypeName }}</span>
+                        </div>
+                        <div class="flex flex-1 flex-row items-center justify-between">
+                          <span>
+                            {{ format(new Date(event.startDate), 'd MMMM yyyy', { locale: fr }) }} -
+                            {{
+                              format(new Date(event.endDate), 'd MMMM yyyy', { locale: fr })
+                            }}</span
+                          >
+                        </div>
+                      </div>
+                    </CardContent>
+                  </Card>
+                </div>
+              </div>
             </CardContent>
           </Card>
         </Wrapper>

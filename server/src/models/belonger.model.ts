@@ -17,6 +17,15 @@ import Groups from './group.model'
 @Table
 export default class Belongers extends Model {
     @PrimaryKey
+    @Column({
+        type: DataType.INTEGER,
+        allowNull: false,
+        primaryKey: true,
+        autoIncrement: true
+    })
+    belongerId!: number
+
+
     @ForeignKey(() => Users)
     @Column({
         type: DataType.INTEGER,
@@ -27,7 +36,7 @@ export default class Belongers extends Model {
     @BelongsTo(() => Users)
     user!: Users
 
-    @PrimaryKey
+    
     @ForeignKey(() => Groups)
     @Column({
         type: DataType.STRING,

@@ -35,9 +35,9 @@ const getAll = async (req: Request, res: Response) => {
  */
 const getByPk = async (req: Request, res: Response) => {
     try {
-        if (req.params.memberId && !isNumber(req.params.memberId)) throw createHttpError(400, 'Please provide a valid identifier')
 
         const identifier = parseInt(req.params.memberId)
+        if (isNaN(identifier)) throw createHttpError(400, 'Please provide a valid identifier')
 
         const member = await Members.findByPk(identifier)
 
@@ -62,21 +62,12 @@ const getByPk = async (req: Request, res: Response) => {
  */
 const create = async (req: Request, res: Response) => {
     try {
-        // Parse identifier for person heredity
-        if (req.body.member.personId && !isNumber(req.body.member.memberId)) throw createHttpError(400, 'Please provide a valid identifier for the linked person.')
-        const identifier = parseInt(req.body.member.personId)
-
         // Test params
         const validator = isValidMember(req.body.member.birthDate, req.body.member.birthPlace, req.body.member.nationality, req.body.member.promotion, req.body.member.contributionDate, req.body.member.department, req.body.member.membershipNumber)
         if (!validator.valid) throw createHttpError(400, validator.message as string)
 
-        // Try to find linked person
-        const person = Persons.findByPk(identifier)
-        if (!person) throw createHttpError(404, 'Unable to find linked person.')
-
         // Insert data
         const member = await Members.create({
-            memberId: identifier,
             birthDate: req.body.member.birthDate,
             birthPlace: req.body.member.birthPlace,
             nationality: req.body.member.nationality,

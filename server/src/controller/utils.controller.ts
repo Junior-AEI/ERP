@@ -1,9 +1,7 @@
 import { Response } from 'express'
 import { HttpError } from 'http-errors'
-import dotenv from 'dotenv'
-dotenv.config()
 import axios, { AxiosError } from 'axios';
- 
+
 
 
 
@@ -38,8 +36,9 @@ export async function controllerErrorHandler(err: HttpError, res: Response) {
 
 
 export const sendEmail = async (to: string, subject: string, text: string, from : string = 'erp-mail@junior-aei.com') => {
+    if(process.env.NODE_ENV === 'test') return;
     try {
-        const mailApiUrl = process.env.MAIL_API_URL;
+        const mailApiUrl = "127.0.0.1:" + process.env.MAIL_PORT;
         await axios.options(`${mailApiUrl}/mail`);
         const response = await axios.post(`${mailApiUrl}/mail`, { from, to, subject, text });
         console.log(response.data);
@@ -58,6 +57,7 @@ export const sendEmail = async (to: string, subject: string, text: string, from 
 
 
 export const sendBotMesssage = async (chatID: number, message: string,) => {
+    if(process.env.NODE_ENV === 'test') return;
     try {
         const botApiUrl = process.env.BOT_API_URL;
         await axios.options(`${botApiUrl}/send`);

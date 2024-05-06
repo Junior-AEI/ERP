@@ -4,9 +4,9 @@ import express from 'express'
 
 const router = express.Router()
 router.get('/', documentController.getAll)
-router.post('/', documentController.create)
 router.get('/:documentId', documentController.getByPk)
-router.post('/:documentId', documentController.update)
-router.post('/:documentId', documentController.del)
+router.post('/', documentController.create)
+router.put('/:documentId', documentController.update)
+router.delete('/:documentId', documentController.del)
 
 export default router

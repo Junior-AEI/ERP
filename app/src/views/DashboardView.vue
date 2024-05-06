@@ -1,3 +1,54 @@
+<script setup lang="ts">
+import { useAuthStore } from '@/stores/authStore'
+import type { MaterialSymbol } from 'material-symbols'
+
+const user = useAuthStore()
+
+type Link = {
+  icon: MaterialSymbol
+  name: string
+  to: string
+}
+
+const links: Link[] = [
+  {
+    icon: 'mail',
+    name: 'Webmail',
+    to: 'https://www.ovhcloud.com/fr/mail/'
+  },
+  {
+    icon: 'local_library',
+    name: 'Wiki',
+    to: 'https://wikix.junior-aei.com/'
+  },
+  {
+    icon: 'lock',
+    name: 'Passbolt',
+    to: 'https://passwords.junior-aei.com/'
+  },
+  {
+    icon: 'person',
+    name: 'Kiwi',
+    to: 'https://kiwix.junior-entreprises.com/'
+  },
+  /*   {
+    icon: 'cloud_upload',
+    name: 'Uploader un document',
+    to: '/upload'
+  }, */
+  {
+    icon: 'person',
+    name: 'Mon profil',
+    to: '/profile'
+  },
+  {
+    icon: 'cloud_upload',
+    name: 'Uploader un document',
+    to: '/'
+  }
+]
+</script>
+
 <template>
   <main class="flex flex-1 flex-col gap-6">
     <Wrapper class="w-full">
@@ -85,102 +136,3 @@
     </div>
   </main>
 </template>
-
-<script setup lang="ts">
-import { useAuthStore } from '@/stores/authStore'
-import { ref, onMounted } from 'vue'
-import axios from 'axios'
-
-import type { MaterialSymbol } from 'material-symbols'
-import type { Event } from '@/types/api'
-
-import { format } from 'date-fns'
-import { fr } from 'date-fns/locale'
-
-const user = useAuthStore()
-
-type Link = {
-  icon: MaterialSymbol
-  name: string
-  to: string
-}
-
-const links: Link[] = [
-  {
-    icon: 'mail',
-    name: 'Webmail',
-    to: 'https://www.ovhcloud.com/fr/mail/'
-  },
-  {
-    icon: 'local_library',
-    name: 'Wiki',
-    to: 'https://wikix.junior-aei.com/'
-  },
-  {
-    icon: 'lock',
-    name: 'Passbolt',
-    to: 'https://passwords.junior-aei.com/'
-  },
-  {
-    icon: 'person',
-    name: 'Kiwi',
-    to: 'https://kiwix.junior-entreprises.com/'
-  },
-  /*   {
-    icon: 'cloud_upload',
-    name: 'Uploader un document',
-    to: '/upload'
-  }, */
-  {
-    icon: 'person',
-    name: 'Mon profil',
-    to: '/profile'
-  },
-  {
-    icon: 'cloud_upload',
-    name: 'Uploader un document',
-    to: '/'
-  }
-]
-
-import router from '@/router'
-
-const goTo = (to: string) => {
-  if (to.startsWith('http') || to.startsWith('www') || to.startsWith('https')) {
-    window.location.href = to
-  } else {
-    router.push(to)
-  }
-}
-
-const noEvents = ref(true)
-const events = ref<Event[]>([])
-
-async function getEvents(): Promise<Event[]> {
-  const response = await axios.get(`/event`, {
-    headers: {
-      Authorization: `Bearer ${useAuthStore().token}`
-    }
-  })
-  return response.data.data.events
-}
-
-const getNextFiveEvents = (events: Event[]): Event[] => {
-  const todayDate = new Date().toISOString()
-  return events.reduce((acc: Event[], event: Event) => {
-    if (event.endDate > todayDate && acc.length < 5) {
-      acc.push(event)
-    }
-    return acc
-  }, [])
-}
-
-onMounted(async () => {
-  events.value = await getEvents()
-  events.value = getNextFiveEvents(
-    events.value.sort((a, b) => new Date(a.endDate).getTime() - new Date(b.endDate).getTime())
-  ).sort((a, b) => new Date(a.startDate).getTime() - new Date(b.startDate).getTime())
-  noEvents.value = events.value.length == 0
-  console.log(events.value)
-})
-</script>

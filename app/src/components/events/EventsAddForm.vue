@@ -36,8 +36,6 @@
             </div>
           </div>
         </div>
-        {{ dateRange.start }}
-        {{ dateRange.end }}
         <p
           v-if="!timeSelectionIsValid"
           class="text-sm text-red-500"

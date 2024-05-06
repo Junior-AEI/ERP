@@ -31,8 +31,6 @@
               </PopoverTrigger>
               <PopoverContent class="p-0">
                 <Command>
-                  <CommandInput class="h-9" placeholder="Rechercher un document" />
-                  <CommandEmpty>Aucun document trouvé</CommandEmpty>
                   <CommandList>
                     <CommandGroup>
                       <CommandItem
@@ -49,15 +47,6 @@
                         "
                       >
                         {{ documentType.label }}
-                        <Icon
-                          name="check"
-                          :class="
-                            cn(
-                              'ml-auto h-4 w-4',
-                              documentTypeName === documentType.value ? 'opacity-100' : 'opacity-0'
-                            )
-                          "
-                        />
                       </CommandItem>
                     </CommandGroup>
                   </CommandList>
@@ -79,7 +68,6 @@
 import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardFooter, CardHeader } from '@/components/ui/card'
 import { ref } from 'vue'
-import { cn } from '@/lib/utils'
 import { Input } from '@/components/ui/input'
 
 const isReady = ref(true)

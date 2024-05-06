@@ -39,11 +39,6 @@ const links: Link[] = [
     name: 'Kiwi',
     to: 'https://kiwix.junior-entreprises.com/'
   },
-  /*   {
-    icon: 'cloud_upload',
-    name: 'Uploader un document',
-    to: '/upload'
-  }, */
   {
     icon: 'person',
     name: 'Mon profil',
@@ -52,7 +47,7 @@ const links: Link[] = [
   {
     icon: 'cloud_upload',
     name: 'Uploader un document',
-    to: '/'
+    to: '/documents'
   }
 ]
 

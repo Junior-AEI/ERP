@@ -7,16 +7,21 @@
       </CardHeader>
       <CardContent>
         <div class="flex flex-col gap-2">
-          <Label for="title">{{ titleHint }}</Label>
+          <Label for="title">Titre </Label>
           <Input v-model="form.title" id="title" placeholder="Décrivez brièvement le problème" />
         </div>
         <div class="flex flex-col gap-2">
-          <Label for="application">Application concernée</Label>
-          <Combobox
+          <Label for="application">Outil concerné</Label>
+          <div class="flex flex-row gap-2"><Combobox
             @input="handleInput"
             :options="appList"
-            :comboboxLabel="'Selectionner l\'application concernée'"
-          ></Combobox>
+            :comboboxLabel="'Selectionner l\'outil concernée'"
+          ></Combobox> 
+          <Input       v-if="form.applicationConcerned === 'Autre (non renseigné)'"
+v-model="otherApplicationConcerned" id="title" placeholder="Veuillez renseignez l'outil concerné" />
+    </div>
+          
+          
         </div>
         <div class="flex flex-col gap-2">
           <Label for="description">Description</Label>
@@ -28,7 +33,7 @@
         </div>
         <div class="flex flex-col gap-2">
           <Label for="file"
-            >Déposer un fichier <span class="text-secondary-foreground">(facultatif)</span></Label
+            >Ajouter une Capture d'Ecran ou tout document permettant de mieux traiter votre ticket <span class="text-secondary-foreground">(facultatif)</span></Label
           >
           <Dropzone v-model="file" />
         </div>
@@ -48,11 +53,16 @@ import { ref, computed } from 'vue'
 import axios from 'axios'
 
 const appList = ref([
-  { value: 'erp', label: 'ERP' },
-  { value: 'passbolt', label: 'Passbolt' }
+  { value: 'ERP', label: 'ERP' },
+  { value: 'Passbolt', label: 'Passbolt' },
+  { value: 'Wikix', label: 'Wikix' },
+  { value: 'Mail', label: 'Mail' },
+  { value: 'Autre (non renseigné)', label: 'Autre (renseignez le champ)' },
 ])
 
 const user = useAuthStore()
+
+const otherApplicationConcerned = ref('');
 
 const form = ref<itTicket>({
   ticketId: NaN,
@@ -63,28 +73,26 @@ const form = ref<itTicket>({
   state: '',
   createdAt :''
 })
+
+var ShowTextAreaApp = false
+
+
+
 const handleInput = (value: string) => {
   form.value.applicationConcerned = value
 }
-const titleHint = computed(() => {
-  // Utilisez une condition pour déterminer le texte en fonction de la valeur de form.title
-  if (form.value.applicationConcerned === '') {
-    return 'Veuillez saisir un titre'
-  } else {
-    return 'Titre valide'
-  }
-})
-
 const file = null
 
 const handleClick = () => {
+  if (form.value.applicationConcerned === 'Autre (non renseigné)' && otherApplicationConcerned.value != '') {
+    form.value.applicationConcerned = otherApplicationConcerned.value;
+  }
   // Crée un objet pour envoyer en requête
   axios
     .post(
       `/itTicket/`,
       {
         itTicket: {
-          ticketId: form.value.ticketId,
           userId: form.value.userId,
           title: form.value.title,
           applicationConcerned: form.value.applicationConcerned,

@@ -28,6 +28,15 @@ export const adminModule: Module = {
           }
         }
       ]
+    },
+    {
+      path: '/assistance',
+      name: "Demande d'assistance",
+      component: () => import('./views/AskSupportForm.vue'),
+      meta: {
+        icon: 'support_agent',
+        positionInSidebar: 'bottom'
+      }
     }
   ]
 }

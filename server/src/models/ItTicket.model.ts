@@ -13,7 +13,7 @@
 import { Table, Column, Model, DataType, CreatedAt, UpdatedAt, PrimaryKey, IsIn, IsDate, ForeignKey, BelongsTo } from 'sequelize-typescript'
 import Users from './user.model'
 
-const STATE = ['A faire', 'En cours', 'Terminée', 'Annulé', 'Archivé']
+const STATE = ['A faire', 'En cours', 'Clos']
 
 @Table
 export default class ItTickets extends Model {

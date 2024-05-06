@@ -1,11 +1,11 @@
 import { h } from 'vue'
 import type { ColumnDef } from '@tanstack/vue-table'
 import type { itTicketInfo } from '@/types/api'
-import itTicketsDataTableButton from './itTicketsDataTableButton.vue'
+import ExpenseDataTableButton from './ExpenseDataTableButton.vue'
 import { Button } from '../ui/button'
 import Icon from '../Icon.vue'
 import { CalendarDateTime, parseDateTime, DateFormatter, getLocalTimeZone } from '@internationalized/date'
-import itTicketDataTableDropDown from './itTicketDataTableDropDown.vue'
+import ExpenseDataTableDropDown from './ExpenseDataTableDropDown.vue'
 
 
 const defaultClasses = 'text-left font-medium'
@@ -86,7 +86,7 @@ export const columns: ColumnDef<itTicketInfo>[] = [
 
       return h('div', { class: 'flex items-center' }, [
         h('div', { class: `text-white p-1 rounded mr-2 ${badgeColorClass}` }, row.getValue('state')),
-        h(itTicketDataTableDropDown, {
+        h(ExpenseDataTableDropDown, {
           item: {
             ticketId: item.ticketId,
             userId: item.userId,
@@ -220,7 +220,7 @@ export const columns: ColumnDef<itTicketInfo>[] = [
       return h(
         'div',
         { class: 'relative' },
-        h(itTicketsDataTableButton, {
+        h(ExpenseDataTableButton, {
           item
         })
       )

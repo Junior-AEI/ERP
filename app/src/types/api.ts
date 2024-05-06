@@ -68,6 +68,7 @@ interface itTicket {
   applicationConcerned: string
   state: string
   createdAt: DateString
+
 }
 
 type itTicketInfo = itTicket & User;
@@ -95,5 +96,17 @@ interface Task {
   issuerId: number
 }
 
+interface ExpenseAccount {
+  expenseId: number
+  userId: number
+  approbatorId: number
+  reason: string
+  expenseDate: DateString
+  description: string
+  state: string
+}
 
-export type { Person, Member, FullMember, User, Event, Address, itTicket, itTicketInfo, Group, Task, UserInGroup }
+type ExpenseAccountInfo = ExpenseAccount & User;
+
+
+export type { ExpenseAccount, ExpenseAccountInfo, Person, Member, FullMember, User, Event, Address, itTicket, itTicketInfo, Group, Task, UserInGroup }

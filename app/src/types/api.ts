@@ -149,3 +149,6 @@ export interface DocumentType {
   fieldMeaning: string
 }
 
+export type DocumentFull = Document & DocumentType // combine Document and DocumentType
+
+

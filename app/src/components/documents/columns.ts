@@ -1,6 +1,6 @@
 import { h } from 'vue'
 import type { ColumnDef } from '@tanstack/vue-table'
-import type { Document } from '@/types/api'
+import type { DocumentFull } from '@/types/api'
 import { Button } from '../ui/button'
 import DocumentsDataTableButton from './DocumentsDataTableButton.vue'
 import Icon from '../Icon.vue'
@@ -25,9 +25,9 @@ function convertToCalendarDate(isoDateString: string): string {
 
 const defaultClasses = 'text-left font-medium'
 
-export const columns: ColumnDef<Document>[] = [
+export const columns: ColumnDef<DocumentFull>[] = [
   {
-    accessorKey: 'documentTypeName',
+    accessorKey: 'type',
     meta: {
       label: 'Type de document'
     },
@@ -49,7 +49,7 @@ export const columns: ColumnDef<Document>[] = [
         ]
       )
     },
-    cell: ({ row }) => h('div', { class: 'text-leftbah ' }, row.getValue('documentTypeName'))
+    cell: ({ row }) => h('div', { class: 'text-leftbah ' }, row.getValue('type'))
   },
   {
     accessorKey: 'version',
@@ -139,7 +139,6 @@ export const columns: ColumnDef<Document>[] = [
     enableHiding: false,
     cell: ({ row }) => {
       const item = row.original
-
       return h(
         'div',
         { class: 'relative' },

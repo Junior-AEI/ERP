@@ -28,20 +28,20 @@ export default class Concerned extends Model {
 
     @ForeignKey(() => Permissions)
     @Column({
-        type: DataType.STRING,
+        type: DataType.INTEGER,
         allowNull: false
     })
-    permissionName!: string
+    permissionId!: number
 
     @BelongsTo(() => Permissions)
     permission!: Permissions
 
     @ForeignKey(() => Groups)
     @Column({
-        type: DataType.STRING,
+        type: DataType.INTEGER,
         allowNull: false
     })
-    groupName!: string
+    groupId!: number
 
     @BelongsTo(() => Groups)
     group!: Groups

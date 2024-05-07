@@ -74,7 +74,7 @@ const createUser = async () => {
 
     const belongerBureau = await Belongers.create({
         userId: user.userId,
-        groupName: groupBureau.groupName
+        groupId: groupBureau.groupId
     })
 
     console.log('Belonger created', belongerBureau)
@@ -89,7 +89,7 @@ const createUser = async () => {
 
     const belongerTrezo = await Belongers.create({
         userId: user.userId,
-        groupName: groupTrezo.groupName
+        groupId: groupTrezo.groupId
     })
 
     console.log('Belonger created', belongerTrezo)
@@ -240,7 +240,7 @@ const createUser = async () => {
     })
     const belongerperson = await Belongers.create({
         userId: user.userId,
-        groupName: groupperson.groupName
+        groupId: groupperson.groupId
     })
     const groupperson2 = await Groups.create({
         groupName: person2.firstname + ' ' + person2.lastname,
@@ -249,7 +249,7 @@ const createUser = async () => {
     })
     const belongerperson2 = await Belongers.create({
         userId: user2.userId,
-        groupName: groupperson2.groupName
+        groupId: groupperson2.groupId
     })
     const groupperson3 = await Groups.create({
         groupName: person3.firstname + ' ' + person3.lastname,
@@ -258,7 +258,7 @@ const createUser = async () => {
     })
     const belongerperson3 = await Belongers.create({
         userId: user3.userId,
-        groupName: groupperson3.groupName
+        groupId: groupperson3.groupId
     })
 
     const event1 = await Events.create({

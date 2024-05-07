@@ -39,10 +39,10 @@ export default class Belongers extends Model {
     
     @ForeignKey(() => Groups)
     @Column({
-        type: DataType.STRING,
+        type: DataType.INTEGER,
         allowNull: false
     })
-    groupName!: string
+    groupId!: string
 
     @BelongsTo(() => Groups)
     group!: Groups

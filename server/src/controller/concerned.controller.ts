@@ -34,10 +34,10 @@ const getAll = async (req: Request, res: Response) => {
  */
 const getByPk = async (req: Request, res: Response) => {
     try {
-        if (req.params.permissionName) throw createHttpError(400, 'Please provide a valid identifier')
-        if (req.params.groupName) throw createHttpError(400, 'Please provide a valid identifier')
+        if (req.params.permissionId) throw createHttpError(400, 'Please provide a valid identifier')
+        if (req.params.groupId) throw createHttpError(400, 'Please provide a valid identifier')
 
-        const identifier = [parseInt(req.params.permissionName), req.params.groupName];
+        const identifier = [parseInt(req.params.permissionId), req.params.groupId];
 
         const permission = await Permissions.findByPk((identifier[0], identifier[1]), {})
 
@@ -62,10 +62,10 @@ const getByPk = async (req: Request, res: Response) => {
  */
 async function create(req: Request, res: Response) {
     try {
-        if (req.params.permissionName) throw createHttpError(400, 'Please provide a valid identifier')
-        if (req.params.groupName) throw createHttpError(400, 'Please provide a valid identifier')
+        if (req.params.permissionId) throw createHttpError(400, 'Please provide a valid identifier')
+        if (req.params.groupId) throw createHttpError(400, 'Please provide a valid identifier')
 
-        const identifier = [req.params.permissionName, req.params.groupName];
+        const identifier = [req.params.permissionId, req.params.groupId];
 
         // Try to find the linked permission
         const user = await Permissions.findByPk(identifier[0])
@@ -78,16 +78,15 @@ async function create(req: Request, res: Response) {
         
         // Insert data
         const concerned = await Concerned.create({
-            permissionName: identifier[0],
-            groupName: identifier[1]
+            permissionId: identifier[0],
+            groupId: identifier[1]
         })
 
         // Return success
         return res.status(200).json({
             status: 'success',
             data: {
-                permissionName: concerned.permission,
-                groupName: concerned.groupName
+                concernedId: concerned.concernedId
             }
         })
     } catch (err) {
@@ -103,17 +102,16 @@ async function create(req: Request, res: Response) {
  */
 const update = async (req: Request, res: Response) => {
     try {
-        if (req.params.permissionName) throw createHttpError(400, 'Please provide a valid identifier')
-        if (req.params.groupName) throw createHttpError(400, 'Please provide a valid identifier')
+        if (req.params.permissionId) throw createHttpError(400, 'Please provide a valid identifier')
+        if (req.params.groupId) throw createHttpError(400, 'Please provide a valid identifier')
 
-        const identifier = [req.params.permissionName, req.params.groupName];
+        const identifier = [req.params.permissionId, req.params.groupId];
 
         const permission = await Permissions.findByPk((identifier[0], identifier[1]))
         if (!permission) throw createHttpError(404, 'Concerned not found')
 
-        await Concerned.update(req.body, {
-            where: { permissionName: identifier[0],
-                     groupName: identifier[1]
+        await Concerned.update(req.body.concerned, {
+            where: { 
             }
         })
 
@@ -133,18 +131,18 @@ const update = async (req: Request, res: Response) => {
  */
 const del = async (req: Request, res: Response) => {
     try {
-        if (req.params.permissionName) throw createHttpError(400, 'Please provide a valid identifier')
-        if (req.params.groupName) throw createHttpError(400, 'Please provide a valid identifier')
+        if (req.params.permissionId) throw createHttpError(400, 'Please provide a valid identifier')
+        if (req.params.groupId) throw createHttpError(400, 'Please provide a valid identifier')
 
-        const identifier = [req.params.permissionName, req.params.groupName];
+        const identifier = [req.params.permissionId, req.params.groupId];
 
         const permission = await Permissions.findByPk((identifier[0], identifier[1]))
         if (!permission) throw createHttpError(404, 'Concerned not found')
 
         await Concerned.destroy({
             where: {
-                permissionName: identifier[0],
-                groupName: identifier[1]
+                permissionId: identifier[0],
+                groupId: identifier[1]
             }
         })
     } catch (err) {

@@ -157,10 +157,7 @@ const uploadDocument = () => {
             typeId:
               documentTypes.value.find(
                 (documentType) => documentType.type === documentTypeName.value
-              )?.typeId ?? 0,
-            documentType: documentTypes.value.find(
-              (documentType) => documentType.type === documentTypeName.value
-            ),
+              )?.typeId ?? 0, // should not be equal to 0
             information: documentStringJoin(documentInfos.value),
             status: status.value,
             authorId: authorId.value,

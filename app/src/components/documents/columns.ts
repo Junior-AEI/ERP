@@ -27,7 +27,7 @@ const defaultClasses = 'text-left font-medium'
 
 export const columns: ColumnDef<Document>[] = [
   {
-    accessorKey: 'typeId',
+    accessorKey: 'documentTypeName',
     meta: {
       label: 'Type de document'
     },
@@ -49,7 +49,7 @@ export const columns: ColumnDef<Document>[] = [
         ]
       )
     },
-    cell: ({ row }) => h('div', { class: 'text-leftbah ' }, row.getValue('typeId'))
+    cell: ({ row }) => h('div', { class: 'text-leftbah ' }, row.getValue('documentTypeName'))
   },
   {
     accessorKey: 'version',

@@ -59,20 +59,43 @@ function handleOpenChange() {
 
 import type { SelectEvent } from 'node_modules/radix-vue/dist/Combobox/ComboboxItem'
 import type { AcceptableValue } from 'node_modules/radix-vue/dist/Combobox/ComboboxRoot'
+import { type RouteRecordNormalized } from 'vue-router'
 
 import router from '@/router'
 import type { MaterialSymbol } from 'material-symbols'
 
+const sortRoutes = (a: RouteRecordNormalized, b: RouteRecordNormalized) => {
+  const aSlashs = a.path.split('/').length
+  const bSlashs = b.path.split('/').length
+  if (aSlashs === bSlashs && a.name && b.name) {
+    const aString = a.name as string
+    const bString = b.name as string
+    return aString.localeCompare(bString)
+  }
+  return aSlashs - bSlashs
+}
+
 const routes = router
   .getRoutes()
   .filter((route) => !route.path.includes(':'))
-  .sort((a, b) => a.path.localeCompare(b.path))
+  .filter((route) => route.path !== '/login')
+  .sort(sortRoutes)
 
 const handleSelect = (ev: SelectEvent<AcceptableValue>) => {
   if (ev.detail.value) {
-    router.push(ev.detail.value as string)
+    const { path } = decodeNameAndPath(ev.detail.value as string)
+    router.push(path)
   }
   emit('search-close')
+}
+
+const encodeNameAndPath = (name: string, path: string) => {
+  return `${name}!.%separator??${path}`
+}
+
+const decodeNameAndPath = (value: string) => {
+  const [name, path] = value.split('!.%separator??')
+  return { name, path }
 }
 </script>
 
@@ -93,7 +116,7 @@ const handleSelect = (ev: SelectEvent<AcceptableValue>) => {
             v-for="route in routes"
             :key="route.name"
             @select="handleSelect"
-            :value="route.path"
+            :value="encodeNameAndPath(route.name as string, route.path)"
             class="flex gap-2"
           >
             <Icon :name="route.meta.icon as MaterialSymbol" />

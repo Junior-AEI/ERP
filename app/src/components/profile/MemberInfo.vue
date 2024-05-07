@@ -57,11 +57,11 @@
       <div class="flex items-end gap-4">
         <div class="flex flex-1 flex-col gap-2">
           <Label for="contrib">Date de cotisation</Label>
-          <DatePickerComponent v-model="memberContributionDate" />
+          <DatePickerComponent :disabled="!canEdit" v-model="memberContributionDate" />
         </div>
         <div class="flex flex-1 flex-col gap-2">
           <Label for="contribmeth">Moyen de payement</Label>
-          <Input id="contribmeth" v-model="memberPaymentMethod" />
+          <Input :disabled="!canEdit" id="contribmeth" v-model="memberPaymentMethod" />
         </div>
       </div>
 
@@ -114,6 +114,8 @@ const props = defineProps<{
 }>()
 
 import { parseAbsoluteToLocal, type DateValue } from '@internationalized/date'
+
+const canEdit = ref(false) // to be modified when permissions are added
 
 // We define the data for the member
 

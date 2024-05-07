@@ -11,6 +11,7 @@ export const isValidUser = (username: any, password: any, mandateStart: any, man
     if (password.length < 8 || password.length >= 20) return { valid: 0, message: 'Your password size has to be bigger than 8.' }
     if (!(isValidDate(mandateStart))) return { valid: 0, message: 'Your mandate start is not correctly formatted.' }
     if (!(isValidDate(mandateEnd))) return { valid: 0, message: 'Your mandate end is not correctly formatted.' }
+    if (new Date(mandateStart) > new Date(mandateEnd)) return { valid: 0, message: 'Your mandate end is before your mandate start.' }
     const emailRegex: RegExp = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
     if (!emailRegex.test(emailJE)) return { valid: 0, message: 'Your email is not correcly formatted.' }
 

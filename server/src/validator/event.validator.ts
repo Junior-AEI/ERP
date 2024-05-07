@@ -1,8 +1,9 @@
 import { isValidDate } from "./utils"
+import { EVENTTYPES } from "../models/event.model";
+
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 export const isValidEvent = (name: any, startDate: any, endDate: any, location: any, description: any, eventTypeName: any) => {
-    const EVENTTYPES = ['Congrès', 'Afterwork', 'Réunion', 'CA', 'RDI', 'Formation', 'RDV client', 'Audit', 'Autre'];
     if (typeof name !== 'string') return { valid: 0, message: 'Your name is not correctly formatted.' }
     if (name.length < 3 || name.length >= 64) return { valid: 0, message: 'The size of your name is not valid' }
     if (!startDate) return { valid: 0, message: 'Your start date has to be defined.' }

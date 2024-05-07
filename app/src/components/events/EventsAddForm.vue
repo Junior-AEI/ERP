@@ -12,7 +12,7 @@
           <Input
             id="eventName"
             v-model="eventInfo.name"
-            placeholder="Formation Alten : être performant face à un intervenant"
+            placeholder="Formation : Apprendre à utiliser le nouvel ERP"
           />
           <Input
             id="location"
@@ -20,12 +20,31 @@
             placeholder="Où est-ce que ca se passe ?"
           />
         </div>
-        <div class="grid grid-cols-2 gap-2">
-          <Label>Date de début </Label>
-          <Label>Date de fin</Label>
-          <DatePickerComponent v-model="startDate" />
-          <DatePickerComponent v-model="endDate" />
+        <div class="flex items-end gap-4">
+          <div class="md:sm-w-72 flex flex-col gap-2">
+            <Label>Période</Label>
+            <RangeDatePickerComponent v-model="dateRange" />
+          </div>
+          <div class="flex gap-4">
+            <div class="flex flex-col gap-2">
+              <Label>Début</Label>
+              <TimeSelector v-model="timeStart" />
+            </div>
+            <div class="flex flex-col gap-2">
+              <Label>Fin</Label>
+              <TimeSelector v-model="timeEnd" />
+            </div>
+          </div>
         </div>
+        <p
+          v-if="!timeSelectionIsValid"
+          class="text-sm text-red-500"
+          role="alert"
+          aria-live="assertive"
+        >
+          L'heure de fin doit être après l'heure de début
+        </p>
+
         <div class="grid gap-2">
           <Label>Description</Label>
           <Textarea
@@ -51,7 +70,7 @@
                     ? eventTypes.find((eventType) => eventType.value === eventTypeName)?.label
                     : "Sélectionner le type d'événement"
                 }}
-                <ChevronsUpDown class="ml-2 h-4 w-4 shrink-0 opacity-50" />
+                <Icon name="unfold_more" class="ml-2 h-4 w-4 shrink-0 opacity-50" />
               </Button>
             </PopoverTrigger>
             <PopoverContent class="p-0">
@@ -74,7 +93,8 @@
                       "
                     >
                       {{ eventType.label }}
-                      <Check
+                      <Icon
+                        name="check"
                         :class="
                           cn(
                             'ml-auto h-4 w-4',
@@ -117,16 +137,15 @@
 <script setup lang="ts">
 import axios from 'axios'
 import { useAuthStore } from '@/stores/authStore'
-import { type DateValue } from '@internationalized/date'
 import type { Event } from '@/types/api'
 
-import { Button } from '@/components/ui/button'
-import { Input } from '@/components/ui/input'
-import { Textarea } from '@/components/ui/textarea'
-import { ref } from 'vue'
+import { ref, type Ref, computed } from 'vue'
 import { Checkbox } from '@/components/ui/checkbox'
 
 import { cn } from '@/lib/utils'
+
+import { CalendarDate, CalendarDateTime } from '@internationalized/date'
+import { type DateRange } from 'radix-vue'
 
 import { useToast } from '@/components/ui/toast/use-toast'
 import { Toaster } from '@/components/ui/toast'
@@ -160,8 +179,83 @@ const eventTypes = [
   { value: 'RDV client', label: 'Rendez-vous client' }
 ]
 
-const startDate = ref<DateValue>()
-const endDate = ref<DateValue>()
+const today = new Date()
+const calendarDateToday = new CalendarDate(
+  today.getFullYear(),
+  today.getMonth() + 1,
+  today.getDate()
+)
+
+const dateRange = ref({
+  start: calendarDateToday,
+  end: calendarDateToday.add({ days: 1 })
+}) as Ref<DateRange>
+
+const timeStart = ref({
+  hour: '12',
+  minute: '00',
+  second: '00'
+})
+
+const timeEnd = ref({
+  hour: '12',
+  minute: '00',
+  second: '00'
+})
+
+const timeSelectionIsValid = computed(() => {
+  if (dateRange.value.start === dateRange.value.end) {
+    if (timeStart.value.hour > timeEnd.value.hour) {
+      return false
+    }
+  }
+  return true
+})
+
+const dateStartISO = computed(() => {
+  if (!dateRange.value.start) {
+    return new CalendarDateTime(
+      /* @ts-ignore */
+      new Date().getFullYear(),
+      new Date().getMonth() + 1,
+      new Date().getDate(),
+      timeStart.value.hour,
+      timeStart.value.minute
+    ).toString()
+  }
+
+  return new CalendarDateTime(
+    /* @ts-ignore */
+    dateRange.value.start.year,
+    dateRange.value.start.month,
+    dateRange.value.start.day,
+    timeStart.value.hour,
+    timeStart.value.minute
+  ).toString()
+})
+
+const dateEndISO = computed(() => {
+  if (!dateRange.value.end) {
+    return new CalendarDateTime(
+      /* @ts-ignore */
+      new Date().getFullYear(),
+      new Date().getMonth() + 1,
+      new Date().getDate(),
+      timeEnd.value.hour,
+      timeEnd.value.minute
+    ).toString()
+  }
+
+  return new CalendarDateTime(
+    /* @ts-ignore */
+    dateRange.value.end.year,
+    dateRange.value.end.month,
+    dateRange.value.end.day,
+    timeEnd.value.hour,
+    timeEnd.value.minute
+  ).toString()
+})
+
 const eventTypeName = ref('')
 
 const { toast } = useToast()
@@ -183,8 +277,8 @@ const addEvent = async () => {
       {
         event: {
           name: eventInfo.value.name,
-          startDate: startDate.value?.toString() ?? null,
-          endDate: endDate.value?.toString() ?? null,
+          startDate: dateStartISO.value,
+          endDate: dateEndISO.value,
           location: eventInfo.value.location,
           description: eventInfo.value.description,
           eventTypeName: eventTypeName.value

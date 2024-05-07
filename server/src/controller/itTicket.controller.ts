@@ -3,7 +3,8 @@ import createHttpError from 'http-errors'
 import ItTickets from '../models/ItTicket.model'
 import { HttpError } from 'http-errors'
 import { isValidItTicket } from '../validator/itTicket.validator'
-import { controllerErrorHandler, isNumber, sendBotMesssage } from './utils.controller'
+import { controllerErrorHandler, sendBotMesssage } from './utils.controller'
+import Users from '../models/user.model'
 
 /**
  * Get all users
@@ -33,8 +34,8 @@ const getAll = async (req: Request, res: Response) => {
  */
 const getByPk = async (req: Request, res: Response) => {
     try {
-        if (req.params.ticketId && !isNumber(req.params.ticketId)) throw createHttpError(400, 'Please provide a valid identifier')
         const identifier = parseInt(req.params.ticketId)
+        if (isNaN(identifier)) throw createHttpError(400, 'Please provide a valid identifier');
 
         const itTicket = await ItTickets.findByPk(identifier, {})
         if (!itTicket) throw createHttpError(404, 'Ticket not found')
@@ -59,9 +60,12 @@ const getByPk = async (req: Request, res: Response) => {
 async function create(req: Request, res: Response) {
     try {
         sendBotMesssage(881607628, `Add Ticket.`)
-        // Parse identifier for member heredity
-        const identifier = parseInt(req.body.itTicket.userId)
-        if (isNaN(identifier)) throw createHttpError(400, 'Please provide a valid userID')
+        // Parse identifier for user heredity
+        const idUser = parseInt(req.body.itTicket.userId)
+        if (isNaN(idUser)) throw createHttpError(400, 'Please provide a valid userID');
+
+        const user = await Users.findByPk(idUser)
+        if (!user) throw createHttpError(404, 'Link user not found')
 
         // Test params
         const validator = isValidItTicket(req.body.itTicket.title, req.body.itTicket.description, req.body.itTicket.applicationConcerned, 'A faire')
@@ -72,7 +76,7 @@ async function create(req: Request, res: Response) {
 
         // Insert data
         const itTicket = await ItTickets.create({
-            userId : identifier,
+            userId : idUser,
             title: req.body.itTicket.title,
             description: req.body.itTicket.description,
             applicationConcerned: req.body.itTicket.applicationConcerned,
@@ -100,12 +104,19 @@ async function create(req: Request, res: Response) {
  */
 const update = async (req: Request, res: Response) => {
     try {
-        if (req.params.ticketId && !isNumber(req.params.ticketId)) throw createHttpError(400, 'Please provide a valid identifier')
+        // parse identifier
         const identifier = parseInt(req.params.ticketId)
-        console.log("Le n° Id est " + identifier + "String:" + req.params.ticketId + "\n")
+        if (isNaN(identifier)) throw createHttpError(400, 'Please provide a valid identifier')
 
         const itTicket = await ItTickets.findByPk(identifier, {})
-        if (!itTicket) throw createHttpError(404, 'Ticket not found')
+        if (!itTicket) throw createHttpError(404, 'Ticket not found');
+        
+        // Parse identifier for user heredity
+        const idUser = parseInt(req.body.itTicket.userId)
+        if (isNaN(idUser)) throw createHttpError(400, 'Please provide a valid userID');
+
+        const user = await Users.findByPk(idUser)
+        if (!user) throw createHttpError(404, 'Link user not found')
 
         // Test params
         const validator = isValidItTicket(req.body.itTicket.title, req.body.itTicket.description, req.body.itTicket.applicationConcerned, req.body.itTicket.state)
@@ -138,11 +149,12 @@ const update = async (req: Request, res: Response) => {
  */
 const del = async (req: Request, res: Response) => {
     try {
-        if (req.params.ticketId && !isNumber(req.params.ticketId)) throw createHttpError(400, 'Please provide a valid identifier')
+        // parse identifier
         const identifier = parseInt(req.params.ticketId)
+        if (isNaN(identifier)) throw createHttpError(400, 'Please provide a valid identifier')
 
         const itTicket = await ItTickets.findByPk(identifier, {})
-        if (!itTicket) throw createHttpError(404, 'Ticket not found')
+        if (!itTicket) throw createHttpError(404, 'Ticket not found');
 
         await ItTickets.destroy({
             where: {

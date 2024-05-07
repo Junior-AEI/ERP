@@ -31,7 +31,7 @@ function convertToCalendarDate(isoDateString: string): string {
 
 
 
-  let date = new CalendarDateTime(year, month, day, hour, minute)
+  const date = new CalendarDateTime(year, month, day, hour, minute)
   // Create and return a new CalendarDate object
   return date.toString();
 }

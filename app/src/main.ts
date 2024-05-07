@@ -3,7 +3,7 @@ import './assets/main.css'
 import './assets/inter/inter.css'
 import 'material-symbols'
 
-import { createApp, watch } from 'vue'
+import { createApp } from 'vue'
 
 import App from './App.vue'
 
@@ -17,6 +17,7 @@ import { membersModule } from '@/modules/membersModule'
 import { projectsModule } from '@/modules/projectsModule'
 import { reviewsModule } from '@/modules/reviewsModule'
 import { eventsModule } from '@/modules/eventsModule'
+import { documentsModule } from '@/modules/documentsModule'
 import { treasuryModule } from '@/modules/treasuryModule'
 import { adminModule } from '@/modules/adminModule'
 
@@ -25,6 +26,7 @@ registerModule(adminModule)
 registerModule(treasuryModule)
 registerModule(membersModule)
 registerModule(projectsModule)
+registerModule(documentsModule)
 registerModule(reviewsModule)
 
 /* Définition des stores */

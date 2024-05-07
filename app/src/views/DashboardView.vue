@@ -39,11 +39,6 @@ const links: Link[] = [
     name: 'Kiwi',
     to: 'https://kiwix.junior-entreprises.com/'
   },
-  /*   {
-    icon: 'cloud_upload',
-    name: 'Uploader un document',
-    to: '/upload'
-  }, */
   {
     icon: 'person',
     name: 'Mon profil',
@@ -52,7 +47,7 @@ const links: Link[] = [
   {
     icon: 'cloud_upload',
     name: 'Uploader un document',
-    to: '/'
+    to: '/documents'
   }
 ]
 
@@ -157,9 +152,14 @@ onMounted(async () => {
                         </div>
                         <div class="flex flex-1 flex-row items-center justify-between">
                           <span>
-                            {{ format(new Date(event.startDate), 'd MMMM yyyy', { locale: fr }) }} -
                             {{
-                              format(new Date(event.endDate), 'd MMMM yyyy', { locale: fr })
+                              format(new Date(event.startDate), 'd MMMM yyyy à HH:mm', {
+                                locale: fr
+                              })
+                            }}
+                            -
+                            {{
+                              format(new Date(event.endDate), 'd MMMM yyyy à HH:mm', { locale: fr })
                             }}</span
                           >
                         </div>

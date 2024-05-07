@@ -12,16 +12,19 @@
         </div>
         <div class="flex flex-col gap-2">
           <Label for="application">Outil concerné</Label>
-          <div class="flex flex-row gap-2"><Combobox
-            @input="handleInput"
-            :options="appList"
-            :comboboxLabel="'Selectionner l\'outil concernée'"
-          ></Combobox> 
-          <Input       v-if="form.applicationConcerned === 'Autre (non renseigné)'"
-v-model="otherApplicationConcerned" id="title" placeholder="Veuillez renseignez l'outil concerné" />
-    </div>
-          
-          
+          <div class="flex flex-row gap-2">
+            <Combobox
+              @input="handleInput"
+              :options="appList"
+              :comboboxLabel="'Selectionner l\'outil concernée'"
+            ></Combobox>
+            <Input
+              v-if="form.applicationConcerned === 'Autre (non renseigné)'"
+              v-model="otherApplicationConcerned"
+              id="title"
+              placeholder="Veuillez renseignez l'outil concerné"
+            />
+          </div>
         </div>
         <div class="flex flex-col gap-2">
           <Label for="description">Description</Label>
@@ -33,7 +36,8 @@ v-model="otherApplicationConcerned" id="title" placeholder="Veuillez renseignez 
         </div>
         <div class="flex flex-col gap-2">
           <Label for="file"
-            >Ajouter une Capture d'Ecran ou tout document permettant de mieux traiter votre ticket <span class="text-secondary-foreground">(facultatif)</span></Label
+            >Ajouter une Capture d'Ecran ou tout document permettant de mieux traiter votre ticket
+            <span class="text-secondary-foreground">(facultatif)</span></Label
           >
           <Dropzone v-model="file" />
         </div>
@@ -44,6 +48,7 @@ v-model="otherApplicationConcerned" id="title" placeholder="Veuillez renseignez 
       </CardFooter>
     </Card>
   </Wrapper>
+  <Toaster />
 </template>
 
 <script setup lang="ts">
@@ -51,18 +56,20 @@ import { useAuthStore } from '@/stores/authStore'
 import type { itTicket } from '@/types/api'
 import { ref, computed } from 'vue'
 import axios from 'axios'
+import { useToast } from '@/components/ui/toast/use-toast'
+import { Toaster } from '@/components/ui/toast'
 
 const appList = ref([
   { value: 'ERP', label: 'ERP' },
   { value: 'Passbolt', label: 'Passbolt' },
   { value: 'Wikix', label: 'Wikix' },
   { value: 'Mail', label: 'Mail' },
-  { value: 'Autre (non renseigné)', label: 'Autre (renseignez le champ)' },
+  { value: 'Autre (non renseigné)', label: 'Autre (renseignez le champ)' }
 ])
 
 const user = useAuthStore()
 
-const otherApplicationConcerned = ref('');
+const otherApplicationConcerned = ref('')
 
 const form = ref<itTicket>({
   ticketId: NaN,
@@ -71,21 +78,24 @@ const form = ref<itTicket>({
   applicationConcerned: '', //Valeur par défaut à MODIFIER
   description: '',
   state: '',
-  createdAt :''
+  createdAt: ''
 })
 
 var ShowTextAreaApp = false
-
-
 
 const handleInput = (value: string) => {
   form.value.applicationConcerned = value
 }
 const file = null
 
+const { toast } = useToast()
+
 const handleClick = () => {
-  if (form.value.applicationConcerned === 'Autre (non renseigné)' && otherApplicationConcerned.value != '') {
-    form.value.applicationConcerned = otherApplicationConcerned.value;
+  if (
+    form.value.applicationConcerned === 'Autre (non renseigné)' &&
+    otherApplicationConcerned.value != ''
+  ) {
+    form.value.applicationConcerned = otherApplicationConcerned.value
   }
   // Crée un objet pour envoyer en requête
   axios
@@ -107,9 +117,18 @@ const handleClick = () => {
     )
     .then((response) => {
       console.log(response)
+      toast({
+        title: 'Ticket envoyé',
+        description: `${form.value.title}`
+      })
     })
     .catch((error) => {
       console.error(error)
+      toast({
+        title: 'Something wrong happened',
+        variant: 'destructive',
+        description: `${error.response.data.message}`
+      })
     })
 }
 </script>

@@ -1,8 +1,8 @@
 import { h } from 'vue'
 import type { ColumnDef } from '@tanstack/vue-table'
-import type { Event } from '@/types/api'
-import EventsDataTableButton from './EventsDataTableButton.vue'
+import type { Document } from '@/types/api'
 import { Button } from '../ui/button'
+import DocumentsDataTableButton from './DocumentsDataTableButton.vue'
 import Icon from '../Icon.vue'
 import { CalendarDateTime, parseDateTime, DateFormatter, getLocalTimeZone } from '@internationalized/date'
 
@@ -13,12 +13,6 @@ const df = new DateFormatter('fr-FR', {
 
 function convertToCalendarDate(isoDateString: string): string {
   const dateObject = new Date(isoDateString);
-
-  // Check if the date object is valid
-  if (isNaN(dateObject.getTime())) {
-    throw new Error('Invalid date string');
-  }
-
   // Extract year, month, and day from the date object
   const year = dateObject.getFullYear();
   const month = dateObject.getMonth() + 1; // Months are 0-based in JavaScript
@@ -31,11 +25,11 @@ function convertToCalendarDate(isoDateString: string): string {
 
 const defaultClasses = 'text-left font-medium'
 
-export const columns: ColumnDef<Event>[] = [
+export const columns: ColumnDef<Document>[] = [
   {
     accessorKey: 'name',
     meta: {
-      label: 'Nom'
+      label: 'Document'
     },
     header: ({ column }) => {
       return h(
@@ -55,12 +49,13 @@ export const columns: ColumnDef<Event>[] = [
         ]
       )
     },
-    cell: ({ row }) => h('div', { class: 'text-leftbah ' }, row.getValue('name'))
+    cell: ({ row }) => h('div', { class: 'text-leftbah ' }, row.getValue('path'))
   },
+
   {
-    accessorKey: 'startDate',
+    accessorKey: 'type',
     meta: {
-      label: 'Date de début'
+      label: 'Type'
     },
     header: ({ column }) => {
       return h(
@@ -70,85 +65,7 @@ export const columns: ColumnDef<Event>[] = [
           onClick: () => column.toggleSorting(column.getIsSorted() === 'asc')
         },
         () => [
-          'Date de début',
-          h(
-            h(Icon, {
-              name: 'unfold_more'
-            }),
-            { class: defaultClasses }
-          )
-        ]
-      )
-    },
-    cell: ({ row }) => {
-      const startDate = convertToCalendarDate(row.getValue('startDate'))
-
-      return h(
-        'div',
-        { class: defaultClasses },
-        df.format(parseDateTime(startDate).toDate(getLocalTimeZone()))
-      )
-    }
-  },
-  {
-    accessorKey: 'endDate',
-    meta: {
-      label: 'Date de fin'
-    },
-    header: ({ column }) => {
-      return h(
-        Button,
-        {
-          variant: 'ghost',
-          onClick: () => column.toggleSorting(column.getIsSorted() === 'asc')
-        },
-        () => [
-          'Date de fin',
-          h(
-            h(Icon, {
-              name: 'unfold_more'
-            }),
-            { class: defaultClasses }
-          )
-        ]
-      )
-    },
-    cell: ({ row }) => {
-      const endDate = convertToCalendarDate(row.getValue('endDate'))
-
-      return h(
-        'div',
-        { class: defaultClasses },
-        df.format(parseDateTime(endDate).toDate(getLocalTimeZone()))
-      )
-    }
-  },
-  {
-    accessorKey: 'location',
-    meta: {
-      label: 'Lieu'
-    },
-    header: () => h('div', { class: defaultClasses }, 'Lieu'),
-    cell: ({ row }) => {
-      const location = row.getValue('location') as string
-
-      return h('div', { class: defaultClasses }, location)
-    }
-  },
-  {
-    accessorKey: 'eventTypeName',
-    meta: {
-      label: 'Type d\'événement'
-    },
-    header: ({ column }) => {
-      return h(
-        Button,
-        {
-          variant: 'ghost',
-          onClick: () => column.toggleSorting(column.getIsSorted() === 'asc')
-        },
-        () => [
-          'Type d\'événement',
+          'Type',
           h(
             h(Icon, {
               name: 'unfold_more'
@@ -158,7 +75,91 @@ export const columns: ColumnDef<Event>[] = [
         ]
       )
     },
-    cell: ({ row }) => h('div', { class: 'text-left' }, row.getValue('eventTypeName'))
+    cell: ({ row }) => h('div', { class: 'text-leftbah ' }, row.getValue('typeId'))
+  },
+
+  {
+    accessorKey: 'version',
+    meta: {
+      label: 'Version'
+    },
+    header: ({ column }) => {
+      return h(
+        Button,
+        {
+          variant: 'ghost',
+          onClick: () => column.toggleSorting(column.getIsSorted() === 'asc')
+        },
+        () => [
+          'Version',
+          h(
+            h(Icon, {
+              name: 'unfold_more'
+            }),
+            { class: '' }
+          )
+        ]
+      )
+    },
+    cell: ({ row }) => h('div', { class: 'text-leftbah ' }, row.getValue('path'))
+  },
+  {
+    accessorKey: 'status',
+    meta: {
+      label: 'Statut'
+    },
+    header: ({ column }) => {
+      return h(
+        Button,
+        {
+          variant: 'ghost',
+          onClick: () => column.toggleSorting(column.getIsSorted() === 'asc')
+        },
+        () => [
+          'Statut',
+          h(
+            h(Icon, {
+              name: 'unfold_more'
+            }),
+            { class: '' }
+          )
+        ]
+      )
+    },
+    cell: ({ row }) => h('div', { class: 'text-leftbah ' }, row.getValue('status'))
+  },
+  {
+    accessorKey: 'createdAt',
+    meta: {
+      label: 'Créé le'
+    },
+    header: ({ column }) => {
+      return h(
+        Button,
+        {
+          variant: 'ghost',
+          onClick: () => column.toggleSorting(column.getIsSorted() === 'asc')
+        },
+        () => [
+          'Créé le',
+          h(
+            h(Icon, {
+              name: 'unfold_more'
+            }),
+            { class: defaultClasses }
+          )
+        ]
+      )
+    },
+    cell: ({ row }) => {
+      const endDate = convertToCalendarDate(row.getValue('createdAt'))
+
+      return h(
+        'div',
+        { class: defaultClasses },
+        df.format(parseDateTime(endDate).toDate(getLocalTimeZone()))
+      )
+    }
   },
   {
     id: 'actions',
@@ -169,7 +170,7 @@ export const columns: ColumnDef<Event>[] = [
       return h(
         'div',
         { class: 'relative' },
-        h(EventsDataTableButton, {
+        h(DocumentsDataTableButton, {
           item
         })
       )

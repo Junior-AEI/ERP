@@ -8,14 +8,20 @@
       <CardContent>
         <div class="flex flex-col gap-2">
           <Label for="title">Raison </Label>
-          <Input v-model="form.reason" id="title" placeholder="Décrivez briévement la raison de la Note de Frais (ex : Lettre recommandée pour PV d'AG)" />
+          <Input
+            v-model="form.reason"
+            id="title"
+            placeholder="Décrivez briévement la raison de la Note de Frais (ex : Lettre recommandée pour PV d'AG)"
+          />
         </div>
-                <div class="w-auto">        
+        <div class="w-auto">
           <DatePickerComponent v-model="expenseDateFormat" />
-</div>
+        </div>
 
         <div class="flex flex-col gap-2">
-          <Label for="application">Qui a approuvé la dépense ? (Forcément un membre du CA différent de toi)</Label>
+          <Label for="application"
+            >Qui a approuvé la dépense ? (Forcément un membre du CA différent de toi)</Label
+          >
           <Combobox
             @input="handleInput"
             :options="approbatorList"
@@ -32,10 +38,12 @@
         </div>
         <div class="flex flex-col gap-2">
           <Label for="file"
-            >Ajouter l'ensemble des justificatifs (Factures au nom de Aquitaine Electronique Informatique, justificatifs de payements ) 
-            <br /> ATTENTION ces justificatifs si reçu en papier doivent être conservés au format papier et fourni sous ce format au Pole Trésorerie   </Label
-          >
-          <Dropzone  />
+            >Ajouter l'ensemble des justificatifs (Factures au nom de Aquitaine Electronique
+            Informatique, justificatifs de payements ) <br />
+            ATTENTION ces justificatifs si reçu en papier doivent être conservés au format papier et
+            fourni sous ce format au Pole Trésorerie
+          </Label>
+          <Dropzone />
         </div>
       </CardContent>
 
@@ -44,13 +52,15 @@
       </CardFooter>
     </Card>
   </Wrapper>
+  <Toaster />
 </template>
 
 <script setup lang="ts">
 import { useAuthStore } from '@/stores/authStore'
-import type { ExpenseAccount , Person} from '@/types/api'
+import type { ExpenseAccount, Person } from '@/types/api'
 import { type DateValue } from '@internationalized/date'
-
+import { useToast } from '@/components/ui/toast/use-toast'
+import { Toaster } from '@/components/ui/toast'
 import { ref, onMounted } from 'vue'
 import axios from 'axios'
 
@@ -65,56 +75,55 @@ const form = ref<ExpenseAccount>({
   expenseId: NaN,
   userId: user.userId,
   approbatorId: NaN,
-  reason: "",
-  expenseDate: "",
-  description: "",
-  state: "",
+  reason: '',
+  expenseDate: '',
+  description: '',
+  state: ''
 })
-
 
 async function getData(): Promise<{ value: string; label: string }[]> {
   // Fetch data from your API here.
-
 
   const belongers = await axios.get(`/belonger`, {
     headers: {
       Authorization: `Bearer ${useAuthStore().token}`
     }
-  });
+  })
 
   const persons = await axios.get(`/person`, {
     headers: {
       Authorization: `Bearer ${useAuthStore().token}`
     }
-  });
+  })
 
-  const belongersData = belongers.data.data?.belongers;
-  const personsData = persons.data.data?.persons;
+  const belongersData = belongers.data.data?.belongers
+  const personsData = persons.data.data?.persons
 
-  const bureauGroup = belongersData.filter((belonger: any) => belonger.groupName === "Bureau");
-
+  const bureauGroup = belongersData.filter((belonger: any) => belonger.groupName === 'Bureau')
 
   const bureauPersons = bureauGroup.map((belonger: any) => {
-    const person = personsData.find((person: any) => person.personId === belonger.userId);
+    const person = personsData.find((person: any) => person.personId === belonger.userId)
     return {
       value: person.personId.toString(),
       label: `${person.firstname} ${person.lastname}`
-    };
-  });
+    }
+  })
 
   return bureauPersons
 }
 
-  const approbatorList = ref([] as { value: string; label: string }[]); // Initialisation d'une liste réactive vide
+const approbatorList = ref([] as { value: string; label: string }[]) // Initialisation d'une liste réactive vide
 
 onMounted(async () => {
   approbatorList.value = await getData()
 })
 const file = null
 
+const { toast } = useToast()
+
 const handleClick = () => {
   // Crée un objet pour envoyer en requête
-  if (expenseDateFormat.value){
+  if (expenseDateFormat.value) {
     form.value.expenseDate = expenseDateFormat.value.toString()
   }
   axios
@@ -125,7 +134,7 @@ const handleClick = () => {
           userId: form.value.userId,
           reason: form.value.reason,
           approbatorId: form.value.approbatorId,
-          expenseDate: form.value.expenseDate ,
+          expenseDate: form.value.expenseDate,
           description: form.value.description
         }
       },
@@ -137,9 +146,18 @@ const handleClick = () => {
     )
     .then((response) => {
       console.log(response)
+      toast({
+        title: 'Demande envoyée',
+        description: `${form.value.reason}`
+      })
     })
     .catch((error) => {
       console.error(error)
+      toast({
+        title: 'Something wrong happened',
+        variant: 'destructive',
+        description: `${error.response.data.message}`
+      })
     })
 }
 </script>

@@ -40,7 +40,6 @@ onMounted(async () => {
       documentTypeName
     }
   })
-  console.log(data.value)
 })
 </script>
 

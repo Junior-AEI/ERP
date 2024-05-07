@@ -6,7 +6,7 @@
         <span class="text-accent">Téléverser un document</span>
       </CardHeader>
       <CardContent class="grid gap-4">
-        <Dropzone />
+        <Dropzone v-model="files" />
         <div v-if="hasDoc">
           <div class="grid grid-cols-2 gap-2">
             <Label>Type de document</Label>
@@ -88,14 +88,11 @@
 import axios from 'axios'
 import { useAuthStore } from '@/stores/authStore'
 import type { DocumentType } from '@/types/api'
-import { Button } from '@/components/ui/button'
-import { Card, CardContent, CardFooter, CardHeader } from '@/components/ui/card'
-import { ref, onMounted } from 'vue'
-import { Input } from '@/components/ui/input'
+import { computed, ref, onMounted } from 'vue'
 import { useToast } from '@/components/ui/toast/use-toast'
 import { Toaster } from '@/components/ui/toast'
 
-const hasDoc = ref(true)
+const hasDoc = computed(() => files.value.length > 0)
 const isOpen = ref(false)
 const { toast } = useToast()
 
@@ -107,6 +104,8 @@ const documentTypeName = ref('')
 const documentInfos = ref<string[]>([])
 const status = ref('A relire')
 const authorId = ref(useAuthStore().userId)
+
+const files = ref<File[]>([])
 
 /* Utils functions for parsing strings */
 const documentStringParse = (documentTypeFields: string): string[] => {

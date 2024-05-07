@@ -1,5 +1,65 @@
 // Work in progress
 
+<script setup lang="ts">
+import { computed } from 'vue'
+
+const props = defineProps({
+  accept: {
+    type: String,
+    default: '.pdf, .png, .jpg, .jpeg'
+  },
+  acceptLabels: {
+    type: String,
+    default: 'PDF, PNG, JPG ou JPEG uniquement'
+  },
+  multiple: {
+    type: Boolean,
+    default: false
+  },
+  maxFileSize: {
+    type: Number,
+    default: 20 // in MB
+  },
+  firstLine: {
+    type: String,
+    default: 'Cliquez pour déposer le fichier'
+  }
+})
+
+const files = defineModel<File[]>({
+  required: true
+})
+
+const generatePreview = (file: File) => {
+  return URL.createObjectURL(file)
+}
+
+const preview = (file: File) => {
+  window.open(generatePreview(file))
+}
+
+const isImageList = computed(() => {
+  return files.value.every((file) => file.type.includes('image'))
+})
+
+const uploadFile = (event: any) => {
+  const file = event.target.files[0]
+  if (!file) {
+    alert('Erreur Aucun fichier sélectionné')
+    return
+  }
+  if (file.size > props.maxFileSize * 10 ** 6) {
+    alert('Erreur Le fichier est trop volumineux')
+    return
+  }
+  if (!props.multiple) {
+    files.value.pop()
+  }
+  files.value.push(file)
+  //imagePreview.value = URL.createObjectURL(file.value)
+}
+</script>
+
 <template>
   <div class="flex w-full items-center justify-center">
     <label
@@ -35,53 +95,32 @@
       }
     "
   />
-  <div class="flex flex-wrap items-start gap-2">
-    <!-- Utiliser un tags input -->
-    <Elevated class="p-2" v-for="file in files" :key="file?.name">{{ file?.name }}</Elevated>
+  <div
+    class="flex flex-wrap items-start gap-1 rounded-md bg-muted p-1"
+    v-if="files.length > 0"
+    v-auto-animate
+  >
+    <Elevated
+      class="flex items-center justify-center gap-2 p-2 text-sm"
+      v-for="file in files"
+      :key="file?.name"
+    >
+      <div class="flex w-full cursor-pointer flex-col gap-2" @click="preview(file)">
+        <img
+          v-if="isImageList"
+          :src="generatePreview(file)"
+          @click="preview(file)"
+          class="h-fit max-h-20 w-fit rounded-md bg-red-300 object-scale-down"
+        />
+        <span class="font-medium">
+          {{ file?.name }}
+        </span>
+      </div>
+      <Icon
+        name="close"
+        class="cursor-pointer pt-1"
+        @click="files = files.filter((f) => f !== file)"
+      />
+    </Elevated>
   </div>
 </template>
-
-<script setup lang="ts">
-import Icon from '@/components/Icon.vue'
-import { ref } from 'vue'
-
-const props = defineProps({
-  accept: {
-    type: String,
-    default: '.pdf, .png, .jpg, .jpeg'
-  },
-  acceptLabels: {
-    type: String,
-    default: 'PDF, PNG, JPG ou JPEG uniquement'
-  },
-  multiple: {
-    type: Boolean,
-    default: false
-  },
-  maxFileSize: {
-    type: Number,
-    default: 20 // in MB
-  },
-  firstLine: {
-    type: String,
-    default: 'Cliquez pour déposer le fichier'
-  }
-})
-
-const files = ref<Array<null | File>>([])
-
-const uploadFile = (event: any) => {
-  const file = event.target.files[0]
-  console.log(file)
-  if (!file) {
-    alert('Erreur Aucun fichier sélectionné')
-    return
-  }
-  if (file.size > props.maxFileSize * 10 ** 6) {
-    alert('Erreur Le fichier est trop volumineux')
-    return
-  }
-  files.value.push(file)
-  //imagePreview.value = URL.createObjectURL(file.value)
-}
-</script>

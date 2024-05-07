@@ -7,7 +7,7 @@
       </CardHeader>
       <CardContent class="grid gap-4">
         <Dropzone />
-        <div v-if="isReady">
+        <div v-if="hasDoc">
           <div class="grid grid-cols-2 gap-2">
             <Label>Type de document</Label>
             <Label> Version du document </Label>
@@ -21,9 +21,8 @@
                 >
                   {{
                     documentTypeName
-                      ? documentTypes.find(
-                          (documentType) => documentType.value === documentTypeName
-                        )?.label
+                      ? documentTypes.find((documentType) => documentType.type === documentTypeName)
+                          ?.type
                       : 'Sélectionner le type de document'
                   }}
                   <Icon name="unfold_more" class="ml-2 h-4 w-4 shrink-0 opacity-50" />
@@ -35,18 +34,18 @@
                     <CommandGroup>
                       <CommandItem
                         v-for="documentType in documentTypes"
-                        :key="documentType.value"
-                        :value="documentType.value"
+                        :key="documentType.typeId"
+                        :value="documentType.type"
                         @select="
                           (ev) => {
-                            if (typeof ev.detail.value === 'number') {
+                            if (typeof ev.detail.value === 'string') {
                               documentTypeName = ev.detail.value
                             }
                             isOpen = false
                           }
                         "
                       >
-                        {{ documentType.label }}
+                        {{ documentType.type }}
                       </CommandItem>
                     </CommandGroup>
                   </CommandList>
@@ -54,6 +53,20 @@
               </PopoverContent>
             </Popover>
             <Input placeholder="1" />
+          </div>
+          <div v-if="documentTypeName">
+            <div
+              v-for="(field, index) in documentStringParse(
+                documentTypes.find((documentType) => documentType.type === documentTypeName)
+                  ?.fieldMeaning ?? ''
+              )"
+              :key="index"
+            >
+              <div class="flex-col gap-2">
+                <Label>{{ field }}</Label>
+                <Input v-model="documentInfos[index]" />
+              </div>
+            </div>
           </div>
         </div>
       </CardContent>
@@ -65,30 +78,47 @@
 </template>
 
 <script setup lang="ts">
+import axios from 'axios'
+import { useAuthStore } from '@/stores/authStore'
+import type { DocumentType } from '@/types/api'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardFooter, CardHeader } from '@/components/ui/card'
-import { ref } from 'vue'
+import { ref, onMounted } from 'vue'
 import { Input } from '@/components/ui/input'
 
-const isReady = ref(true)
+const hasDoc = ref(true)
 const isOpen = ref(false)
 
-enum documentEnum {
-  CE = 1,
-  ACE,
-  RM,
-  FS
-}
-const documentTypes = [
-  { value: documentEnum.CE, label: "Convention d'étude" },
-  { value: documentEnum.ACE, label: "Avenant à la convention d'étude" },
-  { value: documentEnum.RM, label: 'Récapitulatif de mission' },
-  { value: documentEnum.FS, label: 'Facture de solde' }
-]
+/* Values for document information storage */
+const documentTypes = ref<DocumentType[]>([])
 
-const documentTypeName = ref(NaN)
+const documentTypeName = ref('')
+const documentInfos = ref<string[]>([])
+
+/* Utils functions for parsing strings */
+const documentStringParse = (documentTypeFields: string): string[] => {
+  return documentTypeFields.split('|')
+}
+
+const documentStringJoin = (documentTypeFields: string[]): string => {
+  return documentTypeFields.join('|')
+}
+
+/* axios requests */
+async function getDocumentType(): Promise<DocumentType[]> {
+  const response = await axios.get(`/documentType`, {
+    headers: {
+      Authorization: `Bearer ${useAuthStore().token}`
+    }
+  })
+  return response.data.data.documentTypes
+}
 
 const uploadDocument = () => {
   console.log('TODO\n')
 }
+
+onMounted(async () => {
+  documentTypes.value = await getDocumentType()
+})
 </script>

@@ -124,3 +124,10 @@ export interface Document {
   authorId: number
   createdAt: DateString
 }
+
+export interface DocumentType {
+  typeId: number
+  type: string
+  fieldNumber: number
+  fieldMeaning: string
+}

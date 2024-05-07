@@ -307,7 +307,21 @@ const createUser = async () => {
         fieldMeaning: 'Type d\'Avenant|Date de fin de validité'
     })
 
-    console.log("DocumentType created", documentType1, documentType2)
+    const documentType3 = await DocumentTypes.create({
+        documentTypeId: 3,
+        type: 'Récapitulatif de mission',
+        fieldNumber: 3,
+        fieldMeaning: 'Intervenant concerné|Rétribution brute|Date de fin de validité'
+    })
+
+    const documentType4 = await DocumentTypes.create({
+        documentTypeId: 4,
+        type: 'Facture de Solde',
+        fieldNumber: 5,
+        fieldMeaning: 'Numéro de facture|Frais de commande (HT)|Frais de structure (HT)|JEH (HT)|Date de fin de validité'
+    })
+
+    console.log("DocumentType created", documentType1, documentType2, documentType3, documentType4)
 
 }
 

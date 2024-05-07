@@ -64,7 +64,13 @@
             >
               <div class="flex-col gap-2">
                 <Label>{{ field }}</Label>
-                <Input v-model="documentInfos[index]" />
+                <Input v-if="field != 'Date de fin de validité'" v-model="documentInfos[index]" />
+                <Input
+                  v-else
+                  type="date"
+                  v-model="documentInfos[index]"
+                  placeholder="Date de fin de validité"
+                />
               </div>
             </div>
           </div>
@@ -104,6 +110,18 @@ const documentStringJoin = (documentTypeFields: string[]): string => {
   return documentTypeFields.join('|')
 }
 
+const verifyFields = (documentTypeFields: string[], documentTypeName: string): boolean => {
+  const fieldNumber =
+    documentTypes.value.find((documentType) => documentType.type === documentTypeName)
+      ?.fieldNumber ?? 0
+  for (let i = 0; i < fieldNumber; i++) {
+    if (!documentTypeFields[i]) {
+      return false
+    }
+  }
+  return true
+}
+
 /* axios requests */
 async function getDocumentType(): Promise<DocumentType[]> {
   const response = await axios.get(`/documentType`, {
@@ -115,7 +133,12 @@ async function getDocumentType(): Promise<DocumentType[]> {
 }
 
 const uploadDocument = () => {
-  console.log('TODO\n')
+  console.log(documentInfos.value, documentTypeName.value)
+  if (!documentTypeName.value || !verifyFields(documentInfos.value, documentTypeName.value)) {
+    alert("Tous les champs n'ont pas été remplis")
+  } else {
+    console.log('TODO: Upload document')
+  }
 }
 
 onMounted(async () => {

@@ -10,13 +10,10 @@
         <DialogContent>
           <DialogHeader>
             <DialogTitle>Détails sur le document</DialogTitle>
-            <div class="grid-col-1 grid gap-2" v-for="(item, index) in combinedArray" :key="index">
-              <h3>{{ item.title }}</h3>
-              <h4>{{ item.subtitle }}</h4>
-            </div>
           </DialogHeader>
-          <div>
-            <h3></h3>
+          <div class="grid-col-1 grid gap-2" v-for="(item, index) in combinedArray" :key="index">
+            <h3>{{ item.title }}</h3>
+            <h4>{{ item.subtitle }}</h4>
           </div>
         </DialogContent>
       </Dialog>
@@ -57,14 +54,12 @@ const fieldMeaningArray = thisDocument?.value.fieldMeaning.split('|') ?? []
 const informationArray = thisDocument?.value.information.split('|') ?? []
 const combinedArray = fieldMeaningArray.map((title, index) => {
   let subtitle = informationArray[index] || ''
-
   // Vérifie si 'subtitle' est une date au format 'YYYY-MM-DD'
   const datePattern = /^\d{4}-\d{2}-\d{2}$/
   if (datePattern.test(subtitle)) {
     const date = new Date(subtitle)
     subtitle = date.toLocaleDateString()
   }
-
   return {
     title,
     subtitle

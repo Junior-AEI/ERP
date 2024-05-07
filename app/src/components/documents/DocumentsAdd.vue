@@ -92,7 +92,7 @@ import { Card, CardContent, CardFooter, CardHeader } from '@/components/ui/card'
 import { ref, onMounted } from 'vue'
 import { Input } from '@/components/ui/input'
 
-const hasDoc = ref(true)
+const hasDoc = ref(false)
 const isOpen = ref(false)
 
 /* Values for document information storage */

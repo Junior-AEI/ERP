@@ -113,21 +113,39 @@ export interface ExpenseAccount {
 }
 
 export interface InfoExpense {
-  usernameUser : string
-  usernameApprobator : string
+  usernameUser: string
+  usernameApprobator: string
 }
 
 export type ExpenseAccountInfo = ExpenseAccount & InfoExpense;
 
 export interface Company {
-  name :string
+  name: string
   legalEntity: string
-  addressId : number
+  addressId: number
 }
 
 export interface Client {
-  function : string
+  function: string
 }
 
 export type ClientInfo = Client & Company & Person
+
+export interface Document {
+  documentId: number
+  path: string
+  version: number
+  typeId: number
+  information: string
+  status: string
+  authorId: number
+  createdAt: DateString
+}
+
+export interface DocumentType {
+  typeId: number
+  type: string
+  fieldNumber: number
+  fieldMeaning: string
+}
 

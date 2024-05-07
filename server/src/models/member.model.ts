@@ -92,6 +92,18 @@ export default class Members extends Model {
     })
     department!: string
 
+    @Column({
+        type: DataType.STRING,
+        allowNull: true,
+    })
+    telegramId!: string
+
+    @Column({
+        type: DataType.STRING,
+        allowNull: true,
+    })
+    chatBotId!: string
+
     @NotEmpty
     @Column({
         type: DataType.INTEGER,

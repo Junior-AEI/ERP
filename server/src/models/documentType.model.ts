@@ -17,9 +17,16 @@ import Documents from './document.model'
 export default class DocumentTypes extends Model {
     @PrimaryKey
     @Column({
+        type: DataType.INTEGER,
+        allowNull: false,
+        primaryKey: true,
+        autoIncrement: true
+    })
+    typeId!: number
+
+    @Column({
         type: DataType.STRING,
         allowNull: false,
-        primaryKey: true
     })
     type!: string
 

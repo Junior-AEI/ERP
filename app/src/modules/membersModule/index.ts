@@ -16,7 +16,7 @@ export const membersModule: Module = {
           name: 'Nouveau membre',
           component: () => import('./createMember.vue'),
           meta: {
-            icon: 'group'
+            icon: 'person_add'
           }
         }
       ]

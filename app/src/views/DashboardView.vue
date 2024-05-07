@@ -1,11 +1,19 @@
 <script setup lang="ts">
+import { ref, onMounted } from 'vue'
+import axios from 'axios'
 import { useAuthStore } from '@/stores/authStore'
-import type { MaterialSymbol } from 'material-symbols'
+
+import { type IconNames } from '@/types'
+
+import type { Event } from '@/types/api'
+
+import { format } from 'date-fns'
+import { fr } from 'date-fns/locale'
 
 const user = useAuthStore()
 
 type Link = {
-  icon: MaterialSymbol
+  icon: IconNames
   name: string
   to: string
 }
@@ -31,11 +39,6 @@ const links: Link[] = [
     name: 'Kiwi',
     to: 'https://kiwix.junior-entreprises.com/'
   },
-  /*   {
-    icon: 'cloud_upload',
-    name: 'Uploader un document',
-    to: '/upload'
-  }, */
   {
     icon: 'person',
     name: 'Mon profil',
@@ -44,19 +47,40 @@ const links: Link[] = [
   {
     icon: 'cloud_upload',
     name: 'Uploader un document',
-    to: '/'
+    to: '/documents'
   }
 ]
 
-import router from '@/router'
+const noEvents = ref(true)
+const events = ref<Event[]>([])
 
-const goTo = (to: string) => {
-  if (to.startsWith('http') || to.startsWith('www') || to.startsWith('https')) {
-    window.location.href = to
-  } else {
-    router.push(to)
-  }
+async function getEvents(): Promise<Event[]> {
+  const response = await axios.get(`/event`, {
+    headers: {
+      Authorization: `Bearer ${useAuthStore().token}`
+    }
+  })
+  return response.data.data.events
 }
+
+const getNextFiveEvents = (events: Event[]): Event[] => {
+  const todayDate = new Date().toISOString()
+  return events.reduce((acc: Event[], event: Event) => {
+    if (event.endDate > todayDate && acc.length < 5) {
+      acc.push(event)
+    }
+    return acc
+  }, [])
+}
+
+onMounted(async () => {
+  events.value = await getEvents()
+  events.value = getNextFiveEvents(
+    events.value.sort((a, b) => new Date(a.endDate).getTime() - new Date(b.endDate).getTime())
+  )
+  noEvents.value = events.value.length == 0
+  console.log(events.value)
+})
 </script>
 
 <template>
@@ -114,7 +138,36 @@ const goTo = (to: string) => {
               <span class="text-accent">Prochains évènements </span>
             </CardHeader>
             <CardContent>
-              <span class="text-muted-foreground">Aucun évènement à venir</span>
+              <div v-if="noEvents">
+                <span class="text-muted-foreground">Aucun évènement à venir</span>
+              </div>
+              <div class="flex flex-1 flex-col gap-2" v-else>
+                <div v-for="event in events" :key="event.eventId">
+                  <Card>
+                    <CardContent>
+                      <div class="flex flex-1 flex-col justify-start">
+                        <h3>{{ event.name }}</h3>
+                        <div class="flex flex-1 flex-row items-center justify-between">
+                          <span> {{ event.eventTypeName }}</span>
+                        </div>
+                        <div class="flex flex-1 flex-row items-center justify-between">
+                          <span>
+                            {{
+                              format(new Date(event.startDate), 'd MMMM yyyy à HH:mm', {
+                                locale: fr
+                              })
+                            }}
+                            -
+                            {{
+                              format(new Date(event.endDate), 'd MMMM yyyy à HH:mm', { locale: fr })
+                            }}</span
+                          >
+                        </div>
+                      </div>
+                    </CardContent>
+                  </Card>
+                </div>
+              </div>
             </CardContent>
           </Card>
         </Wrapper>

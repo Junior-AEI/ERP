@@ -14,7 +14,7 @@ import { Table, Column, Model, DataType, PrimaryKey, IsDate, HasMany, IsIn } fro
 import Partners from './partner.model'
 import EventGroupConcerned from './eventGroupConcerned.model'
 
-const EVENTTYPES = ['Congrès', 'Afterwork', 'Réunion', 'CA', 'RDI', 'Formation', 'RDV client', 'Audit', 'AG', 'Autre'];
+export const EVENTTYPES = ['Congrès', 'Afterwork', 'Réunion', 'CA', 'RDI', 'Formation', 'RDV client', 'Audit', 'AG', 'Autre'];
 
 @Table
 export default class Events extends Model {

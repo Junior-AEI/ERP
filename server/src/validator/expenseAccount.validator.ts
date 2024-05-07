@@ -6,7 +6,7 @@ export const isValidExpenseAccount = (reason: any, expenseDate: any, description
     if (description.length < 1 || description.length >= 200) return { valid: 0, message: 'The size of your description is not valid' }
     if (typeof state !== 'string') return { valid: 0, message: 'Your state is not correctly formatted.' }
     if (state.length < 4 || state.length >= 20) return { valid: 0, message: 'Your state size has to be bigger than 8.' }
-    if (!(expenseDate instanceof Date)) return { valid: 0, message: 'Your due date is not correctly formatted.' }
+    if (!(expenseDate instanceof Date)) return { valid: 0, message: 'Your expense date is not correctly formatted.' }
 
     return { valid: 1 }
 }

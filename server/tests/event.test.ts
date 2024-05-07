@@ -134,7 +134,7 @@ describe('ROUTE (POST): /api/event (Create new event)', () => {
             "",
             null,
             undefined,
-            "NameToooooooooooooooooooooooooooooooooLong"
+            "NameToooo" + "o".repeat(60) + "ooooooooooooLong",
         ]
 
         for (const wrongName of wrongNameList) {
@@ -371,7 +371,7 @@ describe('ROUTE (PUT): /api/event/:id (Update event)', () => {
             "",
             null,
             undefined,
-            "NameToooooooooooooooooooooooooooooooooLong",
+            "NameToooo" + "o".repeat(60) + "ooooooooooooLong",
             19
         ]
 

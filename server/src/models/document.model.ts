@@ -10,9 +10,11 @@
 // LATIME is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more details.
 
 // You should have received a copy of the GNU Affero General Public License along with LATIME. If not, see <https://www.gnu.org/licenses/>.
-import { Table, Column, Model, DataType, CreatedAt, ForeignKey, BelongsTo, IsDate, NotEmpty, PrimaryKey } from 'sequelize-typescript'
+import { Table, Column, Model, DataType, CreatedAt, ForeignKey, BelongsTo, IsDate, NotEmpty, PrimaryKey, IsIn } from 'sequelize-typescript'
 import Users from './user.model'
 import DocumentTypes from './documentType.model'
+
+export const STATUS = ['A relire', 'A corriger', 'Relu'] 
 
 @Table
 export default class Documents extends Model {
@@ -41,10 +43,10 @@ export default class Documents extends Model {
 
     @ForeignKey(() => DocumentTypes)
     @Column({
-        type: DataType.STRING,
+        type: DataType.INTEGER,
         allowNull: false
     })
-    DocumentTypeName!: string
+    typeId!: number
 
     @BelongsTo(() => DocumentTypes)
     documentType!: DocumentTypes
@@ -57,8 +59,10 @@ export default class Documents extends Model {
     information!: string
 
     @NotEmpty
+    @IsIn([STATUS])
     @Column({
         type: DataType.STRING,
+        values: STATUS,
         allowNull: false
     })
     status!: string

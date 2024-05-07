@@ -1,8 +1,8 @@
 <script setup lang="ts">
-import { type Task } from "@/types/api"
-import { ref } from "vue"
-import { useAuthStore } from "@/stores/authStore";
-import axios from "axios"
+import { type Task } from '@/types/api'
+import { ref } from 'vue'
+import { useAuthStore } from '@/stores/authStore'
+import axios from 'axios'
 
 const tasks = ref<Task[]>([
   {
@@ -11,7 +11,7 @@ const tasks = ref<Task[]>([
     dueDate: new Date().toISOString(),
     description: 'Tâche 001',
     state: 'À faire',
-    issuerId: 1    
+    issuerId: 1
   },
   {
     taskId: 2,
@@ -19,34 +19,31 @@ const tasks = ref<Task[]>([
     dueDate: new Date().toISOString(),
     description: 'Tâche 002',
     state: 'À faire',
-    issuerId: 1    
+    issuerId: 1
   },
   {
-    
     taskId: 1,
     userId: 1,
     dueDate: new Date().toISOString(),
     description: 'Tâche 003 : une tâche vraiment très longue qui prend beaucoup de plaaaaaace',
     state: 'À faire',
-    issuerId: 1    
+    issuerId: 1
   }
 ])
 
-const authStore = useAuthStore() 
+const authStore = useAuthStore()
 
-axios.get(`/task/byUser/${authStore.userId}`, {
-        headers: {
-          Authorization: `Bearer ${useAuthStore().token}`
-        }
-      }).then((response)=>{
+axios
+  .get(`/task/byUser/${authStore.userId}`, {
+    headers: {
+      Authorization: `Bearer ${useAuthStore().token}`
+    }
+  })
+  .then((response) => {
     tasks.value.push(...response.data.data.tasks)
-    console.log(tasks.value);
-    
- })
- console.log("tasks :",tasks.value);
- 
-
-
+    console.log(tasks.value)
+  })
+console.log('tasks :', tasks.value)
 </script>
 
 <template>
@@ -58,6 +55,7 @@ axios.get(`/task/byUser/${authStore.userId}`, {
     <div class="flex flex-1 flex-col gap-1">
       <Task
         v-for="task in tasks"
+        :key="task.taskId"
         :taskId="task.taskId"
         :userId="task.userId"
         :dueDate="task.dueDate"

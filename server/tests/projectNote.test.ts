@@ -2,11 +2,11 @@ import request from 'supertest'
 import app from "../src/app"
 import { beforeAllTests, afterAllTests, clearDatabase } from './utils'
 import { initUser } from './seeders/general'
-import { createProjectNote } from './seeders/projectNote.seeder'
+import { createProjectNote } from './seeders/projectNote.seeders'
 import ProjectNotes from '../src/models/projectNote.model'
 import { projectNotes } from './seeders/data/projectNotes.data'
 import { createUser } from './seeders/user.seeders'
-import { createProject } from './seeders/project.seeder'
+import { createProject } from './seeders/project.seeders'
 
 beforeAll(beforeAllTests)
 afterAll(afterAllTests)
@@ -47,7 +47,7 @@ describe('ROUTE (GET): /api/projectNote/:projectNoteId (Get a specific project n
 
     afterEach(clearDatabase);
 
-    it('Wrong format', async () => {
+    it('Wrong format id', async () => {
 
         const token = await initUser('john.doe')
 
@@ -543,6 +543,7 @@ describe('ROUTE (PUT): /api/projectNote/:id (Update project note)', () => {
     })  
 })
 
+// ! DONE
 describe('ROUTE (DELETE): /api/projectNote/:id (Delete project note)', () => {
 
     afterEach(clearDatabase);

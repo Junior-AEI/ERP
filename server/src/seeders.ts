@@ -6,6 +6,9 @@ import bcrypt from 'bcrypt'
 import Groups from './models/group.model'
 import Belongers from './models/belonger.model'
 import Tasks from './models/task.model'
+import Events from './models/event.model'
+import DocumentTypes from './models/documentType.model'
+
 
 const createFakeData = async () => {
     await createUser()
@@ -66,16 +69,16 @@ const createUser = async () => {
         createdAt: ct,
         updatedAt: ct
     })
-    
+
     console.log('Group created', groupBureau)
-    
+
     const belongerBureau = await Belongers.create({
         userId: user.userId,
         groupName: groupBureau.groupName
     })
-    
+
     console.log('Belonger created', belongerBureau)
-    
+
     const groupTrezo = await Groups.create({
         groupName: 'Trézo',
         createdAt: ct,
@@ -109,11 +112,11 @@ const createUser = async () => {
         issuerId: user.userId
     })
     console.log('Task created', task1, task2);
-    
+
     const person2 = await Persons.create({
         firstname: 'Jane',
         lastname: 'Doe',
-        gender : 'F',
+        gender: 'F',
         mobilePhone: '+33678657890',
         email: 'Jane@Doe.fr',
         landlinePhone: '+33687996621'
@@ -155,7 +158,7 @@ const createUser = async () => {
     const person3 = await Persons.create({
         firstname: 'Tom',
         lastname: 'Doe',
-        gender : 'M',
+        gender: 'M',
         mobilePhone: '+33678657890',
         email: 'tom@doe.fr',
         landlinePhone: '+33687996621'
@@ -211,7 +214,7 @@ const createUser = async () => {
         issuerId: user.userId
     })
     console.log('Task created', task3, task4);
-    
+
     const task5 = await Tasks.create({
         taskId: 5,
         userId: user3.userId,
@@ -231,7 +234,7 @@ const createUser = async () => {
     console.log('Task created', task5, task6);
 
     const groupperson = await Groups.create({
-        groupName: person.firstname+' '+person.lastname,
+        groupName: person.firstname + ' ' + person.lastname,
         createdAt: ct,
         updatedAt: ct
     })
@@ -240,7 +243,7 @@ const createUser = async () => {
         groupName: groupperson.groupName
     })
     const groupperson2 = await Groups.create({
-        groupName: person2.firstname+' '+person2.lastname,
+        groupName: person2.firstname + ' ' + person2.lastname,
         createdAt: ct,
         updatedAt: ct
     })
@@ -249,7 +252,7 @@ const createUser = async () => {
         groupName: groupperson2.groupName
     })
     const groupperson3 = await Groups.create({
-        groupName: person3.firstname+' '+person3.lastname,
+        groupName: person3.firstname + ' ' + person3.lastname,
         createdAt: ct,
         updatedAt: ct
     })
@@ -257,6 +260,68 @@ const createUser = async () => {
         userId: user3.userId,
         groupName: groupperson3.groupName
     })
+
+    const event1 = await Events.create({
+        eventId: 1,
+        name: 'Formation : Apprendre à utiliser le nouvel ERP',
+        startDate: new Date('2024-05-16T10:40:00').toISOString(),
+        endDate: new Date('2024-05-16T11:20:00').toISOString(),
+        location: 'Local AEI',
+        description: 'Toute ressemblance avec un certain événement réel est absolument fortuite.',
+        eventTypeName: 'Formation'
+    })
+
+    const event2 = await Events.create({
+        eventId: 2,
+        name: 'Réunion : préparer la prochaine réunion',
+        startDate: new Date('2024-05-01T10:00:00').toISOString(),
+        endDate: new Date('2024-05-01T11:00:00').toISOString(),
+        location: 'Local AIE',
+        description: 'Ceci est une description',
+        eventTypeName: 'Réunion'
+    })
+
+    const event3 = await Events.create({
+        eventId: 3,
+        name: 'Un événement très lointain',
+        startDate: new Date('2024-07-01T14:00:00').toISOString(),
+        endDate: new Date('2024-07-02T15:00:00').toISOString(),
+        location: 'Local AIE',
+        description: 'Ceci est toujours une description',
+        eventTypeName: 'Autre'
+    })
+
+    console.log("Event created", event1, event2, event3)
+
+    const documentType1 = await DocumentTypes.create({
+        documentTypeId: 1,
+        type: 'Convention d\'Étude',
+        fieldNumber: 4,
+        fieldMeaning: 'Frais de commande (HT)|Frais de Structure (HT)|JEH (HT)|Date de fin de validité'
+    })
+
+    const documentType2 = await DocumentTypes.create({
+        documentTypeId: 2,
+        type: 'Avenant à la convention d\'Étude',
+        fieldNumber: 2,
+        fieldMeaning: 'Type d\'Avenant|Date de fin de validité'
+    })
+
+    const documentType3 = await DocumentTypes.create({
+        documentTypeId: 3,
+        type: 'Récapitulatif de mission',
+        fieldNumber: 3,
+        fieldMeaning: 'Intervenant concerné|Rétribution brute|Date de fin de validité'
+    })
+
+    const documentType4 = await DocumentTypes.create({
+        documentTypeId: 4,
+        type: 'Facture de Solde',
+        fieldNumber: 5,
+        fieldMeaning: 'Numéro de facture|Frais de commande (HT)|Frais de structure (HT)|JEH (HT)|Date de fin de validité'
+    })
+
+    console.log("DocumentType created", documentType1, documentType2, documentType3, documentType4)
 
 }
 

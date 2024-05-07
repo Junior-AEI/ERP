@@ -3,7 +3,7 @@ import createHttpError from 'http-errors'
 import Tasks from '../models/task.model'
 import { HttpError } from 'http-errors'
 import { isValidTask } from '../validator/task.validator'
-import { controllerErrorHandler, isNumber } from './utils.controller'
+import { controllerErrorHandler, isNumber, sendBotMesssage } from './utils.controller'
 import sequelize from 'sequelize'
 
 /**
@@ -98,22 +98,29 @@ async function create(req: Request, res: Response) {
         // Generate identifier
         // const identifier = 
 
+        var dueDateFormat = new Date(req.body.task.dueDate);
         // Test params
-        const validator = isValidTask(req.body.task.dueDate, req.body.task.description, req.body.task.state)
+        const validator = isValidTask(dueDateFormat, req.body.task.description, 'A faire')
+        console.log(dueDateFormat)
+
+        console.log(validator.message)
+
         if (!validator.valid) return createHttpError(400, validator.message as string)
+        sendBotMesssage(881607628, `Valid : ${validator.message} DueDate : ${req.body.task.dueDate}`)
 
         // Insert data
         const task = await Tasks.create({
-            // taskId: identifier,
             dueDate: req.body.task.dueDate,
             description: req.body.task.description,
-            state: req.body.task.state
+            userId : req.body.task.userId,
+            issuerId : req.body.task.issuerId,
+            state: 'A faire'
         })
 
         // Return success
         return res.status(200).json({
             status: 'success',
-            data: {
+            data: { 
                 taskId: task.taskId
             }
         })

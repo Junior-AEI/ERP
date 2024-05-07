@@ -99,7 +99,7 @@ const { toast } = useToast()
 /* Values for document information storage */
 const documentTypes = ref<DocumentType[]>([])
 
-const version = ref(NaN)
+const version = ref(1)
 const documentTypeName = ref('')
 const documentInfos = ref<string[]>([])
 const status = ref('A relire')

@@ -52,7 +52,7 @@
                 </Command>
               </PopoverContent>
             </Popover>
-            <Input placeholder="1" />
+            <Input type="number" v-model="version" placeholder="1" />
           </div>
           <div v-if="documentTypeName">
             <div
@@ -81,6 +81,7 @@
       </CardFooter>
     </Card>
   </Wrapper>
+  <Toaster />
 </template>
 
 <script setup lang="ts">
@@ -91,15 +92,21 @@ import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardFooter, CardHeader } from '@/components/ui/card'
 import { ref, onMounted } from 'vue'
 import { Input } from '@/components/ui/input'
+import { useToast } from '@/components/ui/toast/use-toast'
+import { Toaster } from '@/components/ui/toast'
 
-const hasDoc = ref(false)
+const hasDoc = ref(true)
 const isOpen = ref(false)
+const { toast } = useToast()
 
 /* Values for document information storage */
 const documentTypes = ref<DocumentType[]>([])
 
+const version = ref(NaN)
 const documentTypeName = ref('')
 const documentInfos = ref<string[]>([])
+const status = ref('A relire')
+const authorId = ref(useAuthStore().userId)
 
 /* Utils functions for parsing strings */
 const documentStringParse = (documentTypeFields: string): string[] => {
@@ -110,10 +117,7 @@ const documentStringJoin = (documentTypeFields: string[]): string => {
   return documentTypeFields.join('|')
 }
 
-const verifyFields = (documentTypeFields: string[], documentTypeName: string): boolean => {
-  const fieldNumber =
-    documentTypes.value.find((documentType) => documentType.type === documentTypeName)
-      ?.fieldNumber ?? 0
+const verifyFields = (documentTypeFields: string[], fieldNumber: number): boolean => {
   for (let i = 0; i < fieldNumber; i++) {
     if (!documentTypeFields[i]) {
       return false
@@ -133,11 +137,54 @@ async function getDocumentType(): Promise<DocumentType[]> {
 }
 
 const uploadDocument = () => {
-  console.log(documentInfos.value, documentTypeName.value)
-  if (!documentTypeName.value || !verifyFields(documentInfos.value, documentTypeName.value)) {
-    alert("Tous les champs n'ont pas été remplis")
+  const fieldNumber =
+    documentTypes.value.find((documentType) => documentType.type === documentTypeName.value)
+      ?.fieldNumber ?? 0 // should not be equal to 0
+  if (!documentTypeName.value || !verifyFields(documentInfos.value, fieldNumber)) {
+    toast({
+      title: 'Something wrong happened',
+      variant: 'destructive',
+      description: `All the fields must be filled.`
+    })
   } else {
-    console.log('TODO: Upload document')
+    const response = axios
+      .post(
+        `/document`,
+        {
+          document: {
+            path: 'path/to/file', // TODO : put actual path
+            version: version.value,
+            typeId:
+              documentTypes.value.find(
+                (documentType) => documentType.type === documentTypeName.value
+              )?.typeId ?? 0,
+            documentType: documentTypes.value.find(
+              (documentType) => documentType.type === documentTypeName.value
+            ),
+            information: documentStringJoin(documentInfos.value),
+            status: status.value,
+            authorId: authorId.value,
+            createdAt: new Date()
+          }
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${useAuthStore().token}`
+          }
+        }
+      )
+      .then(() => {
+        console.log(response)
+        location.reload()
+      })
+      .catch((error) => {
+        console.error(error)
+        toast({
+          title: 'Something wrong happened',
+          variant: 'destructive',
+          description: `${error.response.data.message}`
+        })
+      })
   }
 }
 

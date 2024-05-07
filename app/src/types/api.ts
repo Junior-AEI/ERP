@@ -136,6 +136,7 @@ export interface Document {
   path: string
   version: number
   typeId: number
+  documentType: DocumentType
   information: string
   status: string
   authorId: number

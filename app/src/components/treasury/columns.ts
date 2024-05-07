@@ -1,6 +1,6 @@
 import { h } from 'vue'
 import type { ColumnDef } from '@tanstack/vue-table'
-import type { itTicketInfo } from '@/types/api'
+import type { ExpenseAccountInfo } from '@/types/api'
 import ExpenseDataTableButton from './ExpenseDataTableButton.vue'
 import { Button } from '../ui/button'
 import Icon from '../Icon.vue'
@@ -12,7 +12,6 @@ const defaultClasses = 'text-left font-medium'
 
 const df = new DateFormatter('fr-FR', {
   dateStyle: 'long',
-  timeStyle: 'short'
 
 })
 function convertToCalendarDate(isoDateString: string): string {
@@ -38,7 +37,7 @@ function convertToCalendarDate(isoDateString: string): string {
 }
 
 
-export const columns: ColumnDef<itTicketInfo>[] = [
+export const columns: ColumnDef<ExpenseAccountInfo>[] = [
   {
     accessorKey: 'state',
     accessorFn: (row) => row.state,
@@ -71,13 +70,13 @@ export const columns: ColumnDef<itTicketInfo>[] = [
 
       let badgeColorClass = '';
       switch (row.getValue('state')) {
-        case 'A faire':
+        case 'A Traiter':
           badgeColorClass = 'bg-red-500';
           break;
         case 'En cours':
           badgeColorClass = 'bg-orange-500';
           break;
-        case 'Clos':
+        case 'Traitée':
           badgeColorClass = 'bg-green-500';
           break;
         default:
@@ -88,99 +87,65 @@ export const columns: ColumnDef<itTicketInfo>[] = [
         h('div', { class: `text-white p-1 rounded mr-2 ${badgeColorClass}` }, row.getValue('state')),
         h(ExpenseDataTableDropDown, {
           item: {
-            ticketId: item.ticketId,
+            expenseId: item.expenseId,
             userId: item.userId,
             state: item.state,
-            title: item.title,
+            reason : item.reason,
             description: item.description,
-            applicationConcerned: item.applicationConcerned,
-            createdAt: item.createdAt,
+            approbatorId: item.approbatorId,
+            expenseDate: item.expenseDate,
 
           }
         })
       ]);
     }
   },
-  {
-    accessorKey: 'applicationConcerned',
-    accessorFn: (row) => row.applicationConcerned,
-    meta: {
-      label: 'Outil Concerné'
-    },
-    header: ({ column }) => {
-      return h(
-        Button,
-        {
-          variant: 'ghost',
-          onClick: () => column.toggleSorting(column.getIsSorted() === 'asc'),
-          class: 'p-0'
-        },
-        () => [
-          'Outil Concerné',
-          h(
-            h(Icon, {
-              name: 'unfold_more'
-            }),
-            { class: defaultClasses }
-          )
-        ]
-      )
-    },
-    cell: ({ row }) => {
-      let badgeColorClass = '';
-      switch (row.getValue('applicationConcerned')) {
-        case 'Passbolt':
-          badgeColorClass = 'bg-blue-500';
-          break;
-        case 'Wiikix':
-          badgeColorClass = 'bg-orange-500';
-          break;
-        case 'ERP':
-          badgeColorClass = 'bg-red-500';
-          break;
-        case 'Mail':
-          badgeColorClass = 'bg-green-500';
-          break;
-        default:
-          badgeColorClass = 'bg-gray-500';
-      }
 
-      return h('div', { class: `${defaultClasses} flex items-center` }, [
-        h('div', { class: `text-white p-1 rounded mr-2 ${badgeColorClass}` }, row.getValue('applicationConcerned')),
-      ]);
-    }
-  },
   {
-    accessorKey: 'title',
-    accessorFn: (row) => row.title,
+    accessorKey: 'usernameUser',
+    accessorFn: (row) => row.usernameUser,
     meta: {
-      label: 'Titre'
+      label: 'Demandeur'
     },
-    header: () => h('div', { class: defaultClasses }, 'Titre'),
+    header: () => h('div', { class: defaultClasses }, 'Demandeur'),
     cell: ({ row }) => {
-      const title = row.getValue('title') as string
-
-      return h('div', { class: defaultClasses }, title)
-    }
-  },
-  {
-    accessorKey: 'username',
-    accessorFn: (row) => row.username,
-    meta: {
-      label: "Nom d'utilisateur"
-    },
-    header: () => h('div', { class: defaultClasses }, "Nom d'utilisateur"),
-    cell: ({ row }) => {
-      const username = row.getValue('username') as string
+      const username = row.getValue('usernameUser') as string
 
       return h('div', { class: defaultClasses }, username)
     }
   },
   {
-    accessorKey: 'createdAt',
-    accessorFn: (row) => row.createdAt,
+    accessorKey: 'reason',
+    accessorFn: (row) => row.reason,
     meta: {
-      label: 'Date'
+      label: 'Motif'
+    },
+    header: () => h('div', { class: defaultClasses }, 'Motif'),
+    cell: ({ row }) => {
+      const reason = row.getValue('reason') as string
+
+      return h('div', { class: defaultClasses }, reason)
+    }
+  },
+  
+  {
+    accessorKey: 'usernameApprobator',
+    accessorFn: (row) => row.usernameApprobator,
+    meta: {
+      label: 'Approbateur'
+    },
+    header: () => h('div', { class: defaultClasses }, 'Approbateur'),
+    cell: ({ row }) => {
+      const username = row.getValue('usernameApprobator') as string
+
+      return h('div', { class: defaultClasses }, username)
+    }
+  },
+  {
+    accessorKey: 'expenseDate',
+    accessorFn: (row) => row.expenseDate,
+    meta: {
+      label: 'Date de la dépense'
     },
     header: ({ column }) => {
       return h(
@@ -191,7 +156,7 @@ export const columns: ColumnDef<itTicketInfo>[] = [
           class: 'p-0'
         },
         () => [
-          'Date',
+          'Date de la dépense',
           h(
             h(Icon, {
               name: 'unfold_more'
@@ -202,12 +167,12 @@ export const columns: ColumnDef<itTicketInfo>[] = [
       )
     },
     cell: ({ row }) => {
-      const createdAt = convertToCalendarDate(row.getValue('createdAt'))
+      const expenseDate = convertToCalendarDate(row.getValue('expenseDate'))
 
       return h(
         'div',
         { class: defaultClasses },
-        df.format(parseDateTime(createdAt).toDate(getLocalTimeZone()))
+        df.format(parseDateTime(expenseDate).toDate(getLocalTimeZone()))
       )
     }
   },

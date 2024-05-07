@@ -9,24 +9,24 @@
       </DialogTrigger>
       <DialogContent>
         <DialogHeader>
-          <DialogTitle>Ticket n° {{ selectedItTicket?.ticketId }}</DialogTitle>
+          <DialogTitle>Demande de Note de Frais n° {{ selectedExpense?.expenseId }}</DialogTitle>
         </DialogHeader>
         <div class="grid ">
           <div class="flex  flex-col justify-between">
-            <h3> Etat du Ticket</h3>
-            <h4 class = "my-2 ">{{ selectedItTicket?.state }}
+            <h3> Etat de la Demande</h3>
+            <h4 class = "my-2 ">{{ selectedExpense?.state }}
             </h4>
-            <h3> Utilisateur concerné</h3>
-            <h4 class = "my-2 ">              {{ selectedItTicket?.username }}
+            <h3> Demandeur de la Note de Frais</h3>
+            <h4 class = "my-2 ">              {{ selectedExpense?.usernameUser }}
             </h4>
-            <h3>Outil concerné</h3>
-            <h4 class = "my-2 ">              {{ selectedItTicket?.applicationConcerned }}
+            <h3>Approbateur</h3>
+            <h4 class = "my-2 ">              {{ selectedExpense?.usernameApprobator }}
             </h4>
             <h3> Date d'émission du ticket</h3>
             <h4 class = "my-2 ">              {{ dateFormatedFunction() }}
             </h4>
             <h3>Description détaillé</h3>
-            <h4 class = "my-2 ">              {{ selectedItTicket?.description }}
+            <h4 class = "my-2 ">              {{ selectedExpense?.description }}
             </h4>
           </div>
         </div>
@@ -58,7 +58,7 @@ import { Textarea } from '@/components/ui/textarea'
 import { Checkbox } from '@/components/ui/checkbox'
 import { cn } from '@/lib/utils'
 import { type DateValue } from '@internationalized/date'
-import type { itTicketInfo } from '@/types/api'
+import type { ExpenseAccountInfo } from '@/types/api'
 import { Label } from '@/components/ui/label'
 
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from '@/components/ui/collapsible'
@@ -76,10 +76,10 @@ import { useToast } from '@/components/ui/toast/use-toast'
 import { Toaster } from '@/components/ui/toast'
 
 const props = defineProps<{
-  item: itTicketInfo
+  item: ExpenseAccountInfo
 }>()
 
-const selectedItTicket = ref<itTicketInfo>()
+const selectedExpense = ref<ExpenseAccountInfo>()
 
 const df = new DateFormatter('fr-FR', {
   dateStyle: 'long',
@@ -111,15 +111,15 @@ let dateFormated = ""
 
 function dateFormatedFunction():string{
   
-  if (selectedItTicket.value){
-    const createdAt = convertToCalendarDate(selectedItTicket.value.createdAt)
+  if (selectedExpense.value){
+    const expenseDate = convertToCalendarDate(selectedExpense.value.expenseDate)
 
-  dateFormated = df.format(parseDateTime(createdAt).toDate(getLocalTimeZone()))
+  dateFormated = df.format(parseDateTime(expenseDate).toDate(getLocalTimeZone()))
 }
 return dateFormated
 }
 
-const openDialog = (itTicket: itTicketInfo) => {
-  selectedItTicket.value = itTicket
+const openDialog = (expenseAccount: ExpenseAccountInfo) => {
+  selectedExpense.value = expenseAccount
 }
 </script>

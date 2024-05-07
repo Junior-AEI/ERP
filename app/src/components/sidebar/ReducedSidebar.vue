@@ -14,7 +14,6 @@
         :key="route.path"
       >
       </Link>
-      <Link to="/administration" icon="build" :variant="matchRoute('/administration')"></Link>
     </div>
     <div
       class="relative top-0 -mt-8 h-6 w-full bg-gradient-to-b from-primary-foreground/0 to-primary-foreground"

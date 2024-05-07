@@ -11,9 +11,17 @@ export const projectsModule: Module = {
         {
           path: '/liste-des-prospects',
           name: 'Liste des prospects',
-          component: () => import('@/views/Construction.vue'),
+          component: () => import('./Clients.vue'),
           meta: {
             icon: 'contacts'
+          }
+        },
+        {
+          path: '/clients/new',
+          name: 'Ajouter Client',
+          component: () => import('./createClient.vue'),
+          meta: {
+            icon: 'domain_add'
           }
         }
       ],

@@ -1,38 +1,39 @@
 <script setup lang="ts">
 import { ref, onMounted } from 'vue'
 import { columns } from './columns'
-import type { itTicketInfo } from '@/types/api'
+import type { ExpenseAccountInfo } from '@/types/api'
 import axios from 'axios'
 
-const data = ref<itTicketInfo[]>([])
+const data = ref<ExpenseAccountInfo[]>([])
 import { useAuthStore } from '@/stores/authStore'
 
-async function getData(): Promise<itTicketInfo[]> {
+async function getData(): Promise<ExpenseAccountInfo[]> {
   // Fetch data from your API here.
 
-  const itTickets = await axios.get(`/itTicket`, {
+  const ExpenseAccounts = await axios.get(`/expenseAccount`, {
     headers: {
       Authorization: `Bearer ${useAuthStore().token}`
     }
   })
 
-  const users = await axios.get(`/user`, {
+  const persons = await axios.get(`/person`, {
     headers: {
       Authorization: `Bearer ${useAuthStore().token}`
     }
   })
 
-  const itTicketsInfo = itTickets.data.data?.itTickets.map((itTicket: any) => {
-    const user = users.data.data?.users.find((user: any) => user.userId === itTicket.userId)
+  const ExpenseAccountsAll = ExpenseAccounts.data.data?.accountExpenses.map((ExpenseAccount: any) => {
+    const aprob = persons.data.data?.persons.find((person: any) => person.personId === ExpenseAccount.approbatorId)
+    const demandeur = persons.data.data?.persons.find((person: any) => person.personId === ExpenseAccount.userId)
+
     return {
-      ...user,
-      ...itTicket,
-      
-      
+      ...ExpenseAccount,
+      usernameUser: `${demandeur.firstname} ${demandeur.lastname}`,
+      usernameApprobator: `${aprob.firstname} ${aprob.lastname}`
     }
   })
 
-  return itTicketsInfo
+  return ExpenseAccountsAll 
 }
 
 onMounted(async () => {
@@ -45,6 +46,7 @@ const handleClick = (e: any) => {
 </script>
 
 <template>
+  
   <div>
     <DataTable :columns="columns" :data="data" :onClickFn="handleClick"/>
   </div>

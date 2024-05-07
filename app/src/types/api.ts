@@ -106,7 +106,22 @@ interface ExpenseAccount {
   state: string
 }
 
-type ExpenseAccountInfo = ExpenseAccount & User;
+interface InfoExpense {
+  usernameUser : string
+  usernameApprobator : string
+}
 
+type ExpenseAccountInfo = ExpenseAccount & InfoExpense;
 
-export type { ExpenseAccount, ExpenseAccountInfo, Person, Member, FullMember, User, Event, Address, itTicket, itTicketInfo, Group, Task, UserInGroup }
+interface Company {
+  name :string
+  legalEntity: string
+  addressId : number
+}
+
+interface Client {
+  function : string
+}
+
+type ClientInfo = Client & Company & Person
+export type { ClientInfo, ExpenseAccount, ExpenseAccountInfo, Person, Member, FullMember, User, Event, Address, itTicket, itTicketInfo, Group, Task, UserInGroup }

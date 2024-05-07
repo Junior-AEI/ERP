@@ -1,10 +1,10 @@
 <template>
   <div class="p-4">
-      <h1>Liste des Ticket DSI reçus</h1>
+      <h1>Liste des demandes de Note de Frais</h1>
     </div>
 
     <div>
-      <ItTicketTable class="p-4"/>
+      <ExpenseTable class="p-4"/>
     </div>
 </template>
 

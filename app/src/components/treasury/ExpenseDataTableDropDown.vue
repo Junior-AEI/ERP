@@ -2,35 +2,36 @@
 <script setup lang="ts">
 
 import axios from 'axios'
-import type { itTicket } from '@/types/api'
+import type { ExpenseAccount } from '@/types/api'
 import { useAuthStore } from '@/stores/authStore'
 
 
 defineProps<{
   item: {
-  ticketId: number,
-  userId: number,
-  title: string,
+    expenseId: number,
+    userId: number,
   description: string,
-  applicationConcerned: string,
+  approbatorId: number,
   state: string,
-  createdAt: string,
+  reason : string,
+  expenseDate: string,
   }
 }>()
 
 
-function modifyItTicketState(item : itTicket, state:string) {
+function modifyExpenseAccountState(item : ExpenseAccount, state:string) {
   axios
     .put(
-      `/itTicket/${item.ticketId}`,
+      `/expenseAccount/${item.expenseId}`,
       {
-        itTicket: {
-          ticketId: item.ticketId,
+        expenseAccount: {
+          expenseId: item.expenseId,
           userId: item.userId,
-          title: item.title,
-          applicationConcerned: item.applicationConcerned,
+          reason: item.reason,
+          approbatorId: item.approbatorId,
           description: item.description,
-          state:state
+          state:state,
+          expenseDate : item.expenseDate
         }
       },
       {
@@ -62,14 +63,14 @@ function modifyItTicketState(item : itTicket, state:string) {
     </DropdownMenuTrigger>
     <DropdownMenuContent align="end">
 
-      <DropdownMenuItem v-if="item.state != 'A faire'" @click="modifyItTicketState(item, 'A faire')">
-        A faire
+      <DropdownMenuItem v-if="item.state != 'A Traiter'" @click="modifyExpenseAccountState(item, 'A Traiter')">
+        A Traiter
       </DropdownMenuItem>
-      <DropdownMenuItem v-if="item.state != 'En cours'" @click="modifyItTicketState(item, 'En cours')">
+      <DropdownMenuItem v-if="item.state != 'En cours'" @click="modifyExpenseAccountState(item, 'En cours')">
         En cours
       </DropdownMenuItem>
-      <DropdownMenuItem  v-if="item.state != 'Clos'" @click="modifyItTicketState( item,'Clos')">
-        Clos
+      <DropdownMenuItem  v-if="item.state != 'Traitée'" @click="modifyExpenseAccountState( item,'Traitée')">
+        Traitée
       </DropdownMenuItem>
     </DropdownMenuContent>
   </DropdownMenu>

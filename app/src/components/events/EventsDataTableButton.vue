@@ -199,9 +199,6 @@ const openDialog = (event: Event) => {
 
 const eventInfo = ref<Event>(props.item)
 
-const startDate = ref<DateValue>()
-const endDate = ref<DateValue>()
-
 const today = new Date()
 const calendarDateToday = new CalendarDate(
   today.getFullYear(),

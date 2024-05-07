@@ -7,14 +7,13 @@ import { controllerErrorHandler, isNumber } from './utils.controller'
 import sequelize from 'sequelize'
 
 /**
- * Get all users
+ * Get all tasks
  * @param req
  * @param res
  */
 const getAll = async (req: Request, res: Response) => {
     try {
         const tasks = await Tasks.findAll({})
-
         return res.status(200).json({
             status: 'success',
             data: {
@@ -34,8 +33,8 @@ const getAll = async (req: Request, res: Response) => {
  */
 const getByPk = async (req: Request, res: Response) => {
     try {
-        if (req.params.taskId && !isNumber(req.params.taskId)) throw createHttpError(400, 'Please provide a valid identifier')
         const identifier = parseInt(req.params.taskId)
+        if (isNaN(identifier)) throw createHttpError(400, 'Please provide a valid identifier')
 
         const task = await Tasks.findByPk(identifier, {})
         if (!task) throw createHttpError(404, 'Task not found')
@@ -60,8 +59,6 @@ const getByPk = async (req: Request, res: Response) => {
 const getTheUser = async (req: Request, res: Response) => {
     console.log('getTheUser');
 }
-
-    
 
 /**
  * Select all tasks for a specific user

@@ -19,6 +19,7 @@ async function getData(): Promise<Document[]> {
 
 onMounted(async () => {
   data.value = await getData()
+  console.log(data.value)
 })
 </script>
 

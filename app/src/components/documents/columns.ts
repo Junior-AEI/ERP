@@ -27,9 +27,9 @@ const defaultClasses = 'text-left font-medium'
 
 export const columns: ColumnDef<Document>[] = [
   {
-    accessorKey: 'name',
+    accessorKey: 'typeId',
     meta: {
-      label: 'Document'
+      label: 'Type de document'
     },
     header: ({ column }) => {
       return h(
@@ -39,33 +39,7 @@ export const columns: ColumnDef<Document>[] = [
           onClick: () => column.toggleSorting(column.getIsSorted() === 'asc')
         },
         () => [
-          'Nom',
-          h(
-            h(Icon, {
-              name: 'unfold_more'
-            }),
-            { class: '' }
-          )
-        ]
-      )
-    },
-    cell: ({ row }) => h('div', { class: 'text-leftbah ' }, row.getValue('path'))
-  },
-
-  {
-    accessorKey: 'type',
-    meta: {
-      label: 'Type'
-    },
-    header: ({ column }) => {
-      return h(
-        Button,
-        {
-          variant: 'ghost',
-          onClick: () => column.toggleSorting(column.getIsSorted() === 'asc')
-        },
-        () => [
-          'Type',
+          'Type de document',
           h(
             h(Icon, {
               name: 'unfold_more'
@@ -77,7 +51,6 @@ export const columns: ColumnDef<Document>[] = [
     },
     cell: ({ row }) => h('div', { class: 'text-leftbah ' }, row.getValue('typeId'))
   },
-
   {
     accessorKey: 'version',
     meta: {
@@ -101,7 +74,7 @@ export const columns: ColumnDef<Document>[] = [
         ]
       )
     },
-    cell: ({ row }) => h('div', { class: 'text-leftbah ' }, row.getValue('path'))
+    cell: ({ row }) => h('div', { class: 'text-leftbah ' }, row.getValue('version'))
   },
   {
     accessorKey: 'status',

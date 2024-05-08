@@ -1,4 +1,5 @@
 export function isValidDate(dateString: string) {
-    const date = new Date(dateString)
-    return !isNaN(date.getTime())
+  if (!dateString) return false;
+  const date = new Date(dateString);
+  return !isNaN(date.getTime());
 }

@@ -24,17 +24,18 @@ describe('ROUTE (GET): /api/address (Get all addresses)', () => {
 
         expect(res.status).toEqual(200)
         expect(res.body.status).toEqual('success')
-        expect(res.body.data.address.length).toEqual(2)
+
+        expect(res.body.data.addresses.length).toEqual(2)
 
         for (let i = 0; i < 2; i++) {
-            expect(res.body.data.address[i].addressId).toBeDefined()
-            expect(res.body.data.address[i].address).toBeDefined()
-            expect(res.body.data.address[i].additionnalAddress).toBeDefined()
-            expect(res.body.data.address[i].city).toBeDefined()
-            expect(res.body.data.address[i].postCode).toBeDefined()
-            expect(res.body.data.address[i].country).toBeDefined()
-            expect(res.body.data.address[i].createdAt).toBeDefined()
-            expect(res.body.data.address[i].updatedAt).toBeDefined()
+            expect(res.body.data.addresses[i].addressId).toBeDefined()
+            expect(res.body.data.addresses[i].address).toBeDefined()
+            expect(res.body.data.addresses[i].additionnalAddress).toBeDefined()
+            expect(res.body.data.addresses[i].city).toBeDefined()
+            expect(res.body.data.addresses[i].postCode).toBeDefined()
+            expect(res.body.data.addresses[i].country).toBeDefined()
+            expect(res.body.data.addresses[i].createdAt).toBeDefined()
+            expect(res.body.data.addresses[i].updatedAt).toBeDefined()
         }
     })
 })

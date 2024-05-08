@@ -52,8 +52,8 @@
             </div>
           </div>
           <DialogFooter>
-            <Button variant="destructive">Supprimer le document</Button>
-            <Button>Enregistrer les modifications</Button>
+            <Button variant="destructive" @click="deleteDocument()">Supprimer le document</Button>
+            <Button @click="editDocument()">Enregistrer les modifications</Button>
           </DialogFooter>
         </DialogContent>
       </Dialog>
@@ -68,6 +68,8 @@
 </template>
 
 <script setup lang="ts">
+import axios from 'axios'
+import { useAuthStore } from '@/stores/authStore'
 import { ref } from 'vue'
 import type { DocumentFull } from '@/types/api'
 import { Button } from '../ui/button'
@@ -103,6 +105,53 @@ const combinedArray = fieldMeaningArray.map((title, index) => {
     subtitle
   }
 })
+
+// to be fixed : must update the associated file
+const editDocument = () => {
+  // axios
+  //   .put(
+  //     `/document/${thisDocument.value.documentId}`,
+  //     {
+  //       document: {
+  //         path: thisDocument.value.path,
+  //         version: version.value,
+  //         typeId: thisDocument.value.typeId,
+  //         information: infos.value.join('|'),
+  //         status: 'A relire',
+  //         authorId: thisDocument.value.authorId
+  //       }
+  //     },
+  //     {
+  //       headers: {
+  //         Authorization: `Bearer ${useAuthStore().token}`
+  //       }
+  //     }
+  //   )
+  //   .then((response) => {
+  //     console.log(response)
+  //     location.reload()
+  //   })
+  //   .catch((error) => {
+  //     console.error(error)
+  //   })
+}
+
+// to be fixed : must delete the associated file
+const deleteDocument = () => {
+  // axios
+  //   .delete(`/document/${thisDocument.value.documentId}`, {
+  //     headers: {
+  //       Authorization: `Bearer ${useAuthStore().token}`
+  //     }
+  //   })
+  //   .then((response) => {
+  //     console.log(response)
+  //     location.reload()
+  //   })
+  //   .catch((error) => {
+  //     console.error(error)
+  //   })
+}
 
 const openDialog = () => {
   console.log(thisDocument.value)

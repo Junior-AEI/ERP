@@ -1,5 +1,5 @@
 <template>
-  <div class="flex flex-1 flex-col items-center justify-center sm:p-10">
+  <div class="flex h-screen flex-1 flex-col items-center justify-center sm:p-10">
     <Card class="w-full max-w-xs">
       <form
         @click="

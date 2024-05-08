@@ -1,5 +1,5 @@
 import request from 'supertest'
-import app from "../src/app"
+import app from '../src/app'
 import { beforeAllTests, afterAllTests, clearDatabase } from './utils'
 import Clients from '../src/models/client.model'
 import { initUser } from './seeders/general'
@@ -12,8 +12,7 @@ afterAll(afterAllTests)
 
 // ! DONE
 describe('ROUTE (GET): /api/client (Get all clients)', () => {
-
-    afterEach(clearDatabase);
+    afterEach(clearDatabase)
 
     it('Normal usage', async () => {
         // To have authorization
@@ -22,59 +21,44 @@ describe('ROUTE (GET): /api/client (Get all clients)', () => {
         await createClient('johnny.doe')
         await createClient('jane.doe')
 
-        const res = await request(app)
-            .get('/api/client')
-            .set('Authorization', `Bearer ${token}`);
+        const res = await request(app).get('/api/client').set('Authorization', `Bearer ${token}`)
 
         expect(res.status).toEqual(200)
-        expect(res.body.status).toEqual("success")
-        expect(res.body.data.clients.length).toEqual(2);
+        expect(res.body.status).toEqual('success')
+        expect(res.body.data.clients.length).toEqual(2)
 
         for (let i = 0; i < 2; i++) {
-            expect(res.body.data.clients[i].clientId).toBeDefined();
-            expect(res.body.data.clients[i].function).toBeDefined();
-            expect(res.body.data.clients[i].companyId).toBeDefined();
+            expect(res.body.data.clients[i].clientId).toBeDefined()
+            expect(res.body.data.clients[i].function).toBeDefined()
+            expect(res.body.data.clients[i].companyId).toBeDefined()
         }
     })
-
 })
 
 // ! DONE
 describe('ROUTE (GET): /api/client/:clientId (Get a specific client)', () => {
-
-    afterEach(clearDatabase);
+    afterEach(clearDatabase)
 
     it('Wrong format', async () => {
-
         const token = await initUser('john.doe')
 
-        const wrongFormatIdList = [
-            null,
-            undefined,
-            "wrongId"
-        ]
+        const wrongFormatIdList = [null, undefined, 'wrongId']
 
         for (const wrongFormatId of wrongFormatIdList) {
-            const res = await request(app)
-                .get(`/api/client/${wrongFormatId}`)
-                .set('Authorization', `Bearer ${token}`);
+            const res = await request(app).get(`/api/client/${wrongFormatId}`).set('Authorization', `Bearer ${token}`)
 
             expect(res.status).toEqual(400)
         }
-
     })
 
     it('Wrong clientId with a good format', async () => {
-        
         const token = await initUser('john.doe')
-        
-        const res = await request(app)
-        .get(`/api/client/${-10}`)
-        .set('Authorization', `Bearer ${token}`);
-        
+
+        const res = await request(app).get(`/api/client/${-10}`).set('Authorization', `Bearer ${token}`)
+
         expect(res.status).toEqual(404)
     })
-    
+
     it('Normal usage', async () => {
         await createClient('johnny.doe')
         await createClient('jane.doe')
@@ -83,47 +67,39 @@ describe('ROUTE (GET): /api/client/:clientId (Get a specific client)', () => {
 
         const client = await Clients.findOne({
             where: {
-                function: "RH"
+                function: 'RH'
             }
         })
 
-        const res = await request(app)
-            .get(`/api/client/${client?.clientId}`)
-            .set('Authorization', `Bearer ${token}`);
+        const res = await request(app).get(`/api/client/${client?.clientId}`).set('Authorization', `Bearer ${token}`)
 
         expect(res.status).toEqual(200)
-        expect(res.body.status).toEqual("success")
-        expect(res.body.data.client).toBeDefined();
-        expect(res.body.data.client.clientId).toEqual(client?.clientId);
-        expect(res.body.data.client.function).toEqual(client?.function);
-        expect(res.body.data.client.companyId).toEqual(client?.companyId);
+        expect(res.body.status).toEqual('success')
+        expect(res.body.data.client).toBeDefined()
+        expect(res.body.data.client.clientId).toEqual(client?.clientId)
+        expect(res.body.data.client.function).toEqual(client?.function)
+        expect(res.body.data.client.companyId).toEqual(client?.companyId)
     })
 })
 
 // ! DONE
 describe('ROUTE (POST): /api/client (Create new client)', () => {
-
-    afterEach(clearDatabase);
+    afterEach(clearDatabase)
 
     const goodParams = {
-        function: "Directeur",
+        function: 'Directeur'
     }
 
     it('Wrong format personId', async () => {
-
         const token = await initUser('john.doe')
 
         const companyId = await createCompany('Enseirb')
 
-        const wrongFormatIdList = [
-            null,
-            undefined,
-            "Id",
-        ]
+        const wrongFormatIdList = [null, undefined, 'Id']
 
         for (const wrongFormatId of wrongFormatIdList) {
             const res = await request(app)
-                .post("/api/client")
+                .post('/api/client')
                 .send({
                     client: {
                         clientId: wrongFormatId,
@@ -131,44 +107,38 @@ describe('ROUTE (POST): /api/client (Create new client)', () => {
                         ...goodParams
                     }
                 })
-                .set('Authorization', `Bearer ${token}`);
+                .set('Authorization', `Bearer ${token}`)
             expect(res.status).toEqual(400)
         }
     })
-    
-    it('Wrong personId', async () => {
 
+    it('Wrong personId', async () => {
         const token = await initUser('john.doe')
         const companyId = await createCompany('Enseirb')
-        
+
         const res = await request(app)
-        .post("/api/client")
-        .send({
-            client: {
-                clientId: -10,
-                companyId: companyId,
-                ...goodParams
-            }
-        })
-        .set('Authorization', `Bearer ${token}`);
+            .post('/api/client')
+            .send({
+                client: {
+                    clientId: -10,
+                    companyId: companyId,
+                    ...goodParams
+                }
+            })
+            .set('Authorization', `Bearer ${token}`)
         expect(res.status).toEqual(404)
     })
 
     it('Wrong format companyId', async () => {
-
         const token = await initUser('john.doe')
 
         const clientId = await createClient('johnny.doe')
 
-        const wrongFormatIdList = [
-            null,
-            undefined,
-            "Id",
-        ]
+        const wrongFormatIdList = [null, undefined, 'Id']
 
         for (const wrongFormatId of wrongFormatIdList) {
             const res = await request(app)
-                .post("/api/client")
+                .post('/api/client')
                 .send({
                     client: {
                         clientId: clientId,
@@ -176,54 +146,47 @@ describe('ROUTE (POST): /api/client (Create new client)', () => {
                         ...goodParams
                     }
                 })
-                .set('Authorization', `Bearer ${token}`);
+                .set('Authorization', `Bearer ${token}`)
             expect(res.status).toEqual(400)
         }
     })
-    
-    it('Wrong companyId', async () => {
 
+    it('Wrong companyId', async () => {
         const token = await initUser('john.doe')
         const clientId = await createClient('johnny.doe')
-        
+
         const res = await request(app)
-        .post("/api/client")
-        .send({
-            client: {
-                clientId: clientId,
-                companyId: -10,
-                ...goodParams
-            }
-        })
-        .set('Authorization', `Bearer ${token}`);
+            .post('/api/client')
+            .send({
+                client: {
+                    clientId: clientId,
+                    companyId: -10,
+                    ...goodParams
+                }
+            })
+            .set('Authorization', `Bearer ${token}`)
         expect(res.status).toEqual(404)
     })
 
     it('Wrong function', async () => {
-        
         const token = await initUser('john.doe')
 
         const companyId = await createCompany('Matmeca')
         const clientId = await createClient('johnny.doe')
-        
-        const wrongFunctionList = [
-            "",
-            null,
-            undefined,
-            "FunctionToooo" + "o".repeat(40) + "oLong",
-        ]
+
+        const wrongFunctionList = ['', null, undefined, 'FunctionToooo' + 'o'.repeat(40) + 'oLong']
 
         for (const wrongFunction of wrongFunctionList) {
             const res = await request(app)
-                .post("/api/client")
+                .post('/api/client')
                 .send({
                     client: {
                         clientId: clientId,
                         companyId: companyId,
-                        function: wrongFunction,
+                        function: wrongFunction
                     }
                 })
-                .set('Authorization', `Bearer ${token}`);
+                .set('Authorization', `Bearer ${token}`)
             expect(res.status).toEqual(400)
         }
     })
@@ -235,15 +198,15 @@ describe('ROUTE (POST): /api/client (Create new client)', () => {
         const personId = await createPerson('johnny.doe')
 
         const res = await request(app)
-            .post("/api/client")
+            .post('/api/client')
             .send({
                 client: {
                     clientId: personId,
                     companyId: companyId,
-                    ...goodParams,
+                    ...goodParams
                 }
             })
-            .set('Authorization', `Bearer ${token}`);
+            .set('Authorization', `Bearer ${token}`)
 
         expect(res.status).toEqual(200)
         expect(res.body.data.clientId).toBeDefined()
@@ -262,23 +225,18 @@ describe('ROUTE (POST): /api/client (Create new client)', () => {
 
 // ! DONE
 describe('ROUTE (PUT): /api/client/:id (Update client)', () => {
-    afterEach(clearDatabase);
+    afterEach(clearDatabase)
 
     const goodParams = {
-        function: "Directeur",
+        function: 'Directeur'
     }
 
     it('Wrong format clientId', async () => {
-
         const token = await initUser('john.doe')
 
         const companyId = await createCompany('Matmeca')
 
-        const wrongParamList = [
-            null,
-            undefined,
-            "wrongIdFormat",
-        ]
+        const wrongParamList = [null, undefined, 'wrongIdFormat']
 
         for (const wrongParam of wrongParamList) {
             const res = await request(app)
@@ -289,13 +247,12 @@ describe('ROUTE (PUT): /api/client/:id (Update client)', () => {
                         ...goodParams
                     }
                 })
-                .set('Authorization', `Bearer ${token}`);
+                .set('Authorization', `Bearer ${token}`)
             expect(res.status).toEqual(400)
         }
     })
 
     it('Wrong clientId', async () => {
-
         const token = await initUser('john.doe')
 
         const companyId = await createCompany('Matmeca')
@@ -308,21 +265,16 @@ describe('ROUTE (PUT): /api/client/:id (Update client)', () => {
                     ...goodParams
                 }
             })
-            .set('Authorization', `Bearer ${token}`);
+            .set('Authorization', `Bearer ${token}`)
         expect(res.status).toEqual(404)
     })
 
     it('Wrong format companyId', async () => {
-
         const token = await initUser('john.doe')
 
         const clientId = await createClient('johnny.doe')
 
-        const wrongParamList = [
-            null,
-            undefined,
-            "wrongCompanyIdFormat",
-        ]
+        const wrongParamList = [null, undefined, 'wrongCompanyIdFormat']
 
         for (const wrongParam of wrongParamList) {
             const res = await request(app)
@@ -333,13 +285,12 @@ describe('ROUTE (PUT): /api/client/:id (Update client)', () => {
                         ...goodParams
                     }
                 })
-                .set('Authorization', `Bearer ${token}`);
+                .set('Authorization', `Bearer ${token}`)
             expect(res.status).toEqual(400)
         }
     })
 
     it('Wrong companyId', async () => {
-
         const token = await initUser('john.doe')
 
         const clientId = await createClient('johnny.doe')
@@ -352,24 +303,17 @@ describe('ROUTE (PUT): /api/client/:id (Update client)', () => {
                     ...goodParams
                 }
             })
-            .set('Authorization', `Bearer ${token}`);
+            .set('Authorization', `Bearer ${token}`)
         expect(res.status).toEqual(404)
     })
 
     it('Wrong function', async () => {
-        
         const token = await initUser('john.doe')
 
         const companyId = await createCompany('Matmeca')
         const clientId = await createClient('johnny.doe')
 
-        const wrongFunctionList = [
-            "",
-            null,
-            undefined,
-            "FunctionToooo" + "o".repeat(40) + "oLong",
-            19
-        ]
+        const wrongFunctionList = ['', null, undefined, 'FunctionToooo' + 'o'.repeat(40) + 'oLong', 19]
 
         for (const wrongFunction of wrongFunctionList) {
             const res = await request(app)
@@ -377,16 +321,15 @@ describe('ROUTE (PUT): /api/client/:id (Update client)', () => {
                 .send({
                     client: {
                         companyId: companyId,
-                        function: wrongFunction,
+                        function: wrongFunction
                     }
                 })
-                .set('Authorization', `Bearer ${token}`);
+                .set('Authorization', `Bearer ${token}`)
             expect(res.status).toEqual(400)
         }
     })
 
     it('Good usage', async () => {
-
         const token = await initUser('john.doe')
 
         const clientId = await createClient('johnny.doe')
@@ -400,16 +343,16 @@ describe('ROUTE (PUT): /api/client/:id (Update client)', () => {
 
         expect(client?.clientId).toEqual(clientId)
         expect(client?.function).toEqual(clients['johnny.doe'].function)
-        
+
         const res = await request(app)
             .put(`/api/client/${clientId}`)
             .send({
                 client: {
                     ...goodParams,
-                    companyId: companyId,
+                    companyId: companyId
                 }
             })
-            .set('Authorization', `Bearer ${token}`);
+            .set('Authorization', `Bearer ${token}`)
 
         expect(res.status).toEqual(200)
 
@@ -421,45 +364,33 @@ describe('ROUTE (PUT): /api/client/:id (Update client)', () => {
 
         expect(updatedClient?.clientId).toEqual(clientId)
         expect(updatedClient?.companyId).toEqual(companyId)
-        expect(updatedClient?.function).toEqual(goodParams["function"])
-    }) 
+        expect(updatedClient?.function).toEqual(goodParams['function'])
+    })
 })
 
 // ! DONE
 describe('ROUTE (DELETE): /api/client/:id (Delete client)', () => {
-
-    afterEach(clearDatabase);
+    afterEach(clearDatabase)
 
     it('Wrong format clientId', async () => {
-
         const token = await initUser('john.doe')
 
-        const wrongParamList = [
-            null,
-            undefined,
-            "wrongIdFormat",
-        ]
+        const wrongParamList = [null, undefined, 'wrongIdFormat']
 
         for (const wrongParam of wrongParamList) {
-            const res = await request(app)
-                .delete(`/api/client/${wrongParam}`)
-                .set('Authorization', `Bearer ${token}`);
+            const res = await request(app).delete(`/api/client/${wrongParam}`).set('Authorization', `Bearer ${token}`)
             expect(res.status).toEqual(400)
         }
     })
 
     it('Wrong clientId (client not found)', async () => {
-
         const token = await initUser('john.doe')
 
-        const res = await request(app)
-            .delete(`/api/client/${-10}`)
-            .set('Authorization', `Bearer ${token}`);
+        const res = await request(app).delete(`/api/client/${-10}`).set('Authorization', `Bearer ${token}`)
         expect(res.status).toEqual(404)
     })
 
     it('Good usage', async () => {
-
         const token = await initUser('john.doe')
 
         const clientId = await createClient('johnny.doe')
@@ -472,9 +403,7 @@ describe('ROUTE (DELETE): /api/client/:id (Delete client)', () => {
 
         expect(client).toBeTruthy()
 
-        const res = await request(app)
-            .delete(`/api/client/${clientId}`)
-            .set('Authorization', `Bearer ${token}`);
+        const res = await request(app).delete(`/api/client/${clientId}`).set('Authorization', `Bearer ${token}`)
 
         expect(res.status).toEqual(200)
 
@@ -486,5 +415,4 @@ describe('ROUTE (DELETE): /api/client/:id (Delete client)', () => {
 
         expect(deletedClient).not.toBeTruthy()
     })
-
 })

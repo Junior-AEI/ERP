@@ -20,7 +20,6 @@ import { valueUpdater } from '@/lib/utils'
 const props = defineProps<{
   columns: ColumnDef<TData, TValue>[]
   data: TData[]
-  onClickFn?: (...args: any[]) => void
 }>()
 
 const sorting = ref<SortingState>([])
@@ -58,6 +57,14 @@ table.setPageSize(10)
 
 const setFilterModelValue = (event: string | number) => {
   table.setGlobalFilter(event)
+}
+
+const emit = defineEmits(['click:row'])
+
+const handleClickFn = (row: any, e: any) => {
+  if (e.target.tagName === 'DIV') {
+    return emit('click:row', row.original)
+  }
 }
 </script>
 
@@ -119,11 +126,11 @@ const setFilterModelValue = (event: string | number) => {
       <TableBody>
         <template v-if="table.getRowModel().rows?.length">
           <TableRow
-            @click="onClickFn"
+            @click="handleClickFn(row, $event)"
             v-for="row in table.getRowModel().rows"
             :key="row.id"
             :data-state="row.getIsSelected() ? 'selected' : undefined"
->
+          >
             <TableCell v-for="cell in row.getVisibleCells()" :key="cell.id">
               <FlexRender :render="cell.column.columnDef.cell" :props="cell.getContext()" />
             </TableCell>

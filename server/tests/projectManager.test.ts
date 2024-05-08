@@ -1,5 +1,5 @@
 import request from 'supertest'
-import app from "../src/app"
+import app from '../src/app'
 import { beforeAllTests, afterAllTests, clearDatabase } from './utils'
 import { initUser } from './seeders/general'
 import { createProjectManager } from './seeders/projectManager.seeders'
@@ -12,8 +12,7 @@ afterAll(afterAllTests)
 
 // ! DONE
 describe('ROUTE (GET): /api/projectManager (Get all projectManagers)', () => {
-
-    afterEach(clearDatabase);
+    afterEach(clearDatabase)
 
     it('Normal usage', async () => {
         // To have authorization
@@ -22,58 +21,44 @@ describe('ROUTE (GET): /api/projectManager (Get all projectManagers)', () => {
         await createProjectManager('AAA', 'johnny.doe', 'jane.doe')
         await createProjectManager('BBB', 'jane.doe', 'john.doe')
 
-        const res = await request(app)
-            .get('/api/projectManager')
-            .set('Authorization', `Bearer ${token}`);
+        const res = await request(app).get('/api/projectManager').set('Authorization', `Bearer ${token}`)
 
         expect(res.status).toEqual(200)
-        expect(res.body.status).toEqual("success")
-        expect(res.body.data.projectManagers.length).toEqual(2);
+        expect(res.body.status).toEqual('success')
+        expect(res.body.data.projectManagers.length).toEqual(2)
 
         for (let i = 0; i < 2; i++) {
-            expect(res.body.data.projectManagers[i].projectManagerId).toBeDefined();
-            expect(res.body.data.projectManagers[i].projectId).toBeDefined();
-            expect(res.body.data.projectManagers[i].userId).toBeDefined();
+            expect(res.body.data.projectManagers[i].projectManagerId).toBeDefined()
+            expect(res.body.data.projectManagers[i].projectId).toBeDefined()
+            expect(res.body.data.projectManagers[i].userId).toBeDefined()
         }
     })
 })
 
 // ! DONE
 describe('ROUTE (GET): /api/projectManager/:projectManagerId (Get a specific project manager)', () => {
-
-    afterEach(clearDatabase);
+    afterEach(clearDatabase)
 
     it('Wrong format id', async () => {
-
         const token = await initUser('john.doe')
 
-        const wrongFormatIdList = [
-            null,
-            undefined,
-            "wrongId"
-        ]
+        const wrongFormatIdList = [null, undefined, 'wrongId']
 
         for (const wrongFormatId of wrongFormatIdList) {
-            const res = await request(app)
-                .get(`/api/projectManager/${wrongFormatId}`)
-                .set('Authorization', `Bearer ${token}`);
+            const res = await request(app).get(`/api/projectManager/${wrongFormatId}`).set('Authorization', `Bearer ${token}`)
 
             expect(res.status).toEqual(400)
         }
-
     })
 
     it('Wrong managerId with a good format', async () => {
-        
         const token = await initUser('john.doe')
-        
-        const res = await request(app)
-        .get(`/api/projectManager/${-10}`)
-        .set('Authorization', `Bearer ${token}`);
-        
+
+        const res = await request(app).get(`/api/projectManager/${-10}`).set('Authorization', `Bearer ${token}`)
+
         expect(res.status).toEqual(404)
     })
-    
+
     it('Normal usage', async () => {
         const managerId = await createProjectManager('AAA', 'johnny.doe', 'jane.doe')
 
@@ -85,122 +70,106 @@ describe('ROUTE (GET): /api/projectManager/:projectManagerId (Get a specific pro
             }
         })
 
-        const res = await request(app)
-            .get(`/api/projectManager/${manager?.projectManagerId}`)
-            .set('Authorization', `Bearer ${token}`);
+        const res = await request(app).get(`/api/projectManager/${manager?.projectManagerId}`).set('Authorization', `Bearer ${token}`)
 
         expect(res.status).toEqual(200)
-        expect(res.body.status).toEqual("success")
-        expect(res.body.data.projectManager).toBeDefined();
-        expect(res.body.data.projectManager.projectManagerId).toEqual(manager?.projectManagerId);
-        expect(res.body.data.projectManager.projectId).toEqual(manager?.projectId);
-        expect(res.body.data.projectManager.userId).toEqual(manager?.userId);
+        expect(res.body.status).toEqual('success')
+        expect(res.body.data.projectManager).toBeDefined()
+        expect(res.body.data.projectManager.projectManagerId).toEqual(manager?.projectManagerId)
+        expect(res.body.data.projectManager.projectId).toEqual(manager?.projectId)
+        expect(res.body.data.projectManager.userId).toEqual(manager?.userId)
     })
 })
 
 // ! DONE
 describe('ROUTE (POST): /api/projectManager (Create new project manager)', () => {
-
-    afterEach(clearDatabase);
+    afterEach(clearDatabase)
 
     it('Wrong format projectId', async () => {
-
         const token = await initUser('john.doe')
 
-        const wrongFormatIdList = [
-            null,
-            undefined,
-            "Id",
-        ]
+        const wrongFormatIdList = [null, undefined, 'Id']
 
         for (const wrongFormatId of wrongFormatIdList) {
             const res = await request(app)
-                .post("/api/projectManager")
+                .post('/api/projectManager')
                 .send({
                     projectManager: {
-                        projectId: wrongFormatId,
+                        projectId: wrongFormatId
                     }
                 })
-                .set('Authorization', `Bearer ${token}`);
+                .set('Authorization', `Bearer ${token}`)
             expect(res.status).toEqual(400)
         }
     })
-    
-    it('Wrong projectId', async () => {
 
+    it('Wrong projectId', async () => {
         const token = await initUser('john.doe')
-        
+
         const res = await request(app)
-        .post("/api/projectManager")
-        .send({
-            projectManager: {
-                projectId: -10,
-            }
-        })
-        .set('Authorization', `Bearer ${token}`);
+            .post('/api/projectManager')
+            .send({
+                projectManager: {
+                    projectId: -10
+                }
+            })
+            .set('Authorization', `Bearer ${token}`)
         expect(res.status).toEqual(404)
     })
 
     it('Wrong format userId', async () => {
-
         const token = await initUser('john.doe')
 
         const projectId = await createProject('AAA', 'johnny.doe')
 
-        const wrongFormatIdList = [
-            null,
-            undefined,
-            "Id",
-        ]
+        const wrongFormatIdList = [null, undefined, 'Id']
 
         for (const wrongFormatId of wrongFormatIdList) {
             const res = await request(app)
-                .post("/api/projectManager")
+                .post('/api/projectManager')
                 .send({
                     projectManager: {
                         projectId: projectId,
-                        userId: wrongFormatId,
+                        userId: wrongFormatId
                     }
                 })
-                .set('Authorization', `Bearer ${token}`);
+                .set('Authorization', `Bearer ${token}`)
             expect(res.status).toEqual(400)
         }
     })
-    
-    it('Wrong userId', async () => {
 
+    it('Wrong userId', async () => {
         const token = await initUser('john.doe')
 
         const projectId = await createProject('AAA', 'johnny.doe')
-        
+
         const res = await request(app)
-        .post("/api/projectManager")
-        .send({
-            projectManager: {
-                projectId: projectId,
-                userId: -10,
-            }
-        })
-        .set('Authorization', `Bearer ${token}`);
+            .post('/api/projectManager')
+            .send({
+                projectManager: {
+                    projectId: projectId,
+                    userId: -10
+                }
+            })
+            .set('Authorization', `Bearer ${token}`)
         expect(res.status).toEqual(404)
     })
-    
-    it('Good usage', async () => {
 
+    it('Good usage', async () => {
         const token = await initUser('john.doe')
 
         const projectId = await createProject('AAA', 'johnny.doe')
         const userId = await createUser('jane.doe')
 
         const res = await request(app)
-            .post("/api/projectManager")
+            .post('/api/projectManager')
             .send({
                 projectManager: {
                     projectId: projectId,
-                    userId: userId,
+                    userId: userId
                 }
             })
-            .set('Authorization', `Bearer ${token}`);
+            .set('Authorization', `Bearer ${token}`)
 
         expect(res.status).toEqual(200)
         expect(res.body.data.projectManagerId).toBeDefined()
@@ -219,71 +188,57 @@ describe('ROUTE (POST): /api/projectManager (Create new project manager)', () =>
 
 // ! DONE
 describe('ROUTE (PUT): /api/projectManager/:id (Update project manager)', () => {
-    afterEach(clearDatabase);
+    afterEach(clearDatabase)
 
     it('Wrong format managerId', async () => {
-
         const token = await initUser('john.doe')
 
-        const wrongParamList = [
-            null,
-            undefined,
-            "wrongIdFormat",
-        ]
+        const wrongParamList = [null, undefined, 'wrongIdFormat']
 
         for (const wrongParam of wrongParamList) {
             const res = await request(app)
                 .put(`/api/projectManager/${wrongParam}`)
                 .send({
-                    projectManager: {
-                    }
+                    projectManager: {}
                 })
-                .set('Authorization', `Bearer ${token}`);
+                .set('Authorization', `Bearer ${token}`)
             expect(res.status).toEqual(400)
         }
     })
 
     it('Wrong managerId', async () => {
-
         const token = await initUser('john.doe')
 
         const res = await request(app)
             .put(`/api/projectManager/${-10}`)
             .send({
-                projectManager: {
-                }
+                projectManager: {}
             })
-            .set('Authorization', `Bearer ${token}`);
+            .set('Authorization', `Bearer ${token}`)
         expect(res.status).toEqual(404)
     })
 
     it('Wrong format projectId', async () => {
-
         const token = await initUser('john.doe')
 
         const managerId = await createProjectManager('AAA', 'johnny.doe', 'jane.doe')
 
-        const wrongParamList = [
-            null,
-            undefined,
-            "wrongIdFormat",
-        ]
+        const wrongParamList = [null, undefined, 'wrongIdFormat']
 
         for (const wrongParam of wrongParamList) {
             const res = await request(app)
                 .put(`/api/projectManager/${managerId}}`)
                 .send({
                     projectManager: {
-                        projectId: wrongParam,
+                        projectId: wrongParam
                     }
                 })
-                .set('Authorization', `Bearer ${token}`);
+                .set('Authorization', `Bearer ${token}`)
             expect(res.status).toEqual(400)
         }
     })
 
     it('Wrong projectId', async () => {
-
         const token = await initUser('john.doe')
 
         const managerId = await createProjectManager('AAA', 'johnny.doe', 'jane.doe')
@@ -292,25 +247,20 @@ describe('ROUTE (PUT): /api/projectManager/:id (Update project manager)', () => 
             .put(`/api/projectManager/${managerId}}`)
             .send({
                 projectManager: {
-                    projectId: -10,
+                    projectId: -10
                 }
             })
-            .set('Authorization', `Bearer ${token}`);
+            .set('Authorization', `Bearer ${token}`)
         expect(res.status).toEqual(404)
     })
 
     it('Wrong format userId', async () => {
-
         const token = await initUser('john.doe')
 
         const managerId = await createProjectManager('AAA', 'johnny.doe', 'jane.doe')
         const projectId = await createProject('BBB', 'jane.doe')
 
-        const wrongParamList = [
-            null,
-            undefined,
-            "wrongIdFormat",
-        ]
+        const wrongParamList = [null, undefined, 'wrongIdFormat']
 
         for (const wrongParam of wrongParamList) {
             const res = await request(app)
@@ -318,16 +268,15 @@ describe('ROUTE (PUT): /api/projectManager/:id (Update project manager)', () => 
                 .send({
                     projectManager: {
                         projectId: projectId,
-                        writerId: wrongParam,
+                        writerId: wrongParam
                     }
                 })
-                .set('Authorization', `Bearer ${token}`);
+                .set('Authorization', `Bearer ${token}`)
             expect(res.status).toEqual(400)
         }
     })
 
     it('Wrong userId', async () => {
-
         const token = await initUser('john.doe')
 
         const managerId = await createProjectManager('AAA', 'johnny.doe', 'jane.doe')
@@ -338,15 +287,14 @@ describe('ROUTE (PUT): /api/projectManager/:id (Update project manager)', () => 
             .send({
                 projectManager: {
                     projectId: projectId,
-                    userId:  -10,
+                    userId: -10
                 }
             })
-            .set('Authorization', `Bearer ${token}`);
+            .set('Authorization', `Bearer ${token}`)
         expect(res.status).toEqual(404)
     })
 
     it('Good usage', async () => {
-
         const token = await initUser('john.doe')
 
         const managerId = await createProjectManager('AAA', 'johnny.doe', 'jane.doe')
@@ -360,16 +308,16 @@ describe('ROUTE (PUT): /api/projectManager/:id (Update project manager)', () => 
         })
 
         expect(manager?.projectManagerId).toEqual(managerId)
-        
+
         const res = await request(app)
             .put(`/api/projectManager/${managerId}`)
             .send({
                 projectManager: {
                     projectId: projectId,
-                    userId: userId,
+                    userId: userId
                 }
             })
-            .set('Authorization', `Bearer ${token}`);
+            .set('Authorization', `Bearer ${token}`)
 
         expect(res.status).toEqual(200)
 
@@ -382,44 +330,32 @@ describe('ROUTE (PUT): /api/projectManager/:id (Update project manager)', () => 
         expect(updatedManager?.projectManagerId).toEqual(managerId)
         expect(updatedManager?.userId).toEqual(userId)
         expect(updatedManager?.projectId).toEqual(projectId)
-    })  
+    })
 })
 
 // ! DONE
 describe('ROUTE (DELETE): /api/projectManager/:id (Delete project manager)', () => {
-
-    afterEach(clearDatabase);
+    afterEach(clearDatabase)
 
     it('Wrong format managerId', async () => {
-
         const token = await initUser('john.doe')
 
-        const wrongParamList = [
-            null,
-            undefined,
-            "wrongIdFormat",
-        ]
+        const wrongParamList = [null, undefined, 'wrongIdFormat']
 
         for (const wrongParam of wrongParamList) {
-            const res = await request(app)
-                .delete(`/api/projectManager/${wrongParam}`)
-                .set('Authorization', `Bearer ${token}`);
+            const res = await request(app).delete(`/api/projectManager/${wrongParam}`).set('Authorization', `Bearer ${token}`)
             expect(res.status).toEqual(400)
         }
     })
 
     it('Wrong managerId (manager not found)', async () => {
-
         const token = await initUser('john.doe')
 
-        const res = await request(app)
-            .delete(`/api/projectManager/${-10}`)
-            .set('Authorization', `Bearer ${token}`);
+        const res = await request(app).delete(`/api/projectManager/${-10}`).set('Authorization', `Bearer ${token}`)
         expect(res.status).toEqual(404)
     })
 
     it('Good usage', async () => {
-
         const token = await initUser('john.doe')
 
         const managerId = await createProjectManager('AAA', 'johnny.doe', 'jane.doe')
@@ -432,9 +368,7 @@ describe('ROUTE (DELETE): /api/projectManager/:id (Delete project manager)', () 
 
         expect(manager).toBeTruthy()
 
-        const res = await request(app)
-            .delete(`/api/projectManager/${managerId}`)
-            .set('Authorization', `Bearer ${token}`);
+        const res = await request(app).delete(`/api/projectManager/${managerId}`).set('Authorization', `Bearer ${token}`)
 
         expect(res.status).toEqual(200)
 
@@ -446,5 +380,4 @@ describe('ROUTE (DELETE): /api/projectManager/:id (Delete project manager)', () 
 
         expect(deletedManager).not.toBeTruthy()
     })
-
 })

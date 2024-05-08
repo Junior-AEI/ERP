@@ -4,29 +4,34 @@ import type { Event } from '@/types/api'
 import EventsDataTableButton from './EventsDataTableButton.vue'
 import { Button } from '../ui/button'
 import Icon from '../Icon.vue'
-import { CalendarDateTime, parseDateTime, DateFormatter, getLocalTimeZone } from '@internationalized/date'
+import {
+  CalendarDateTime,
+  parseDateTime,
+  DateFormatter,
+  getLocalTimeZone
+} from '@internationalized/date'
 
 const df = new DateFormatter('fr-FR', {
   dateStyle: 'long',
-  timeStyle: 'short',
+  timeStyle: 'short'
 })
 
 function convertToCalendarDate(isoDateString: string): string {
-  const dateObject = new Date(isoDateString);
+  const dateObject = new Date(isoDateString)
 
   // Check if the date object is valid
   if (isNaN(dateObject.getTime())) {
-    throw new Error('Invalid date string');
+    throw new Error('Invalid date string')
   }
 
   // Extract year, month, and day from the date object
-  const year = dateObject.getFullYear();
-  const month = dateObject.getMonth() + 1; // Months are 0-based in JavaScript
-  const day = dateObject.getDate();
-  const hour = dateObject.getHours();
-  const minute = dateObject.getMinutes();
+  const year = dateObject.getFullYear()
+  const month = dateObject.getMonth() + 1 // Months are 0-based in JavaScript
+  const day = dateObject.getDate()
+  const hour = dateObject.getHours()
+  const minute = dateObject.getMinutes()
   // Create and return a new CalendarDate object
-  return new CalendarDateTime(year, month, day, hour, minute).toString();
+  return new CalendarDateTime(year, month, day, hour, minute).toString()
 }
 
 const defaultClasses = 'text-left font-medium'
@@ -138,7 +143,7 @@ export const columns: ColumnDef<Event>[] = [
   {
     accessorKey: 'eventTypeName',
     meta: {
-      label: 'Type d\'événement'
+      label: "Type d'événement"
     },
     header: ({ column }) => {
       return h(
@@ -148,7 +153,7 @@ export const columns: ColumnDef<Event>[] = [
           onClick: () => column.toggleSorting(column.getIsSorted() === 'asc')
         },
         () => [
-          'Type d\'événement',
+          "Type d'événement",
           h(
             h(Icon, {
               name: 'unfold_more'

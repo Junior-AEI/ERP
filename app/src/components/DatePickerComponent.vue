@@ -10,6 +10,10 @@ const df = new DateFormatter('fr-FR', {
   dateStyle: 'long'
 })
 
+defineProps<{
+  disabled?: boolean
+}>()
+
 const value = defineModel<DateValue>()
 </script>
 
@@ -18,6 +22,7 @@ const value = defineModel<DateValue>()
     <PopoverTrigger as-child>
       <Button
         variant="outline"
+        :disabled="disabled"
         :class="cn('justify-start text-left font-normal', !value && 'text-muted-foreground')"
       >
         <Icon name="date_range" class="mr-2 h-4 w-4" />

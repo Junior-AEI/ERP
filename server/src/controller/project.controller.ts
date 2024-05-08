@@ -60,22 +60,22 @@ const getByPk = async (req: Request, res: Response) => {
 async function create(req: Request, res: Response) {
     try {
         const identifier = parseInt(req.body.project.clientId)
-        if (isNaN(identifier)) throw createHttpError(400, 'Please provide a valid client identifier');
+        if (isNaN(identifier)) throw createHttpError(400, 'Please provide a valid client identifier')
 
         // Try to find the linked client
         const client = await Clients.findByPk(identifier)
-        if (!client) throw createHttpError(404, 'Unable to find the linked client.');
+        if (!client) throw createHttpError(404, 'Unable to find the linked client.')
 
         // Test params
         const validator = isValidProject(req.body.project.acronym, req.body.project.startDate, req.body.project.endDate)
-        if (!validator.valid) throw createHttpError(400, validator.message as string);
+        if (!validator.valid) throw createHttpError(400, validator.message as string)
 
         // Insert data
         const project = await Projects.create({
             clientId: identifier,
             acronym: req.body.project.acronym,
             startDate: new Date(req.body.project.startDate),
-            endDate: new Date(req.body.project.endDate),
+            endDate: new Date(req.body.project.endDate)
         })
 
         // Return success
@@ -102,15 +102,15 @@ const update = async (req: Request, res: Response) => {
         if (isNaN(identifier)) throw createHttpError(400, 'Please provide a valid identifier')
 
         const project = await Projects.findByPk(identifier, {})
-        if (!project) throw createHttpError(404, 'Project not found');
+        if (!project) throw createHttpError(404, 'Project not found')
 
         // parse client identifier
         const idClient = parseInt(req.body.project.clientId)
-        if (isNaN(idClient)) throw createHttpError(400, 'Please provide a valid client identifier');
+        if (isNaN(idClient)) throw createHttpError(400, 'Please provide a valid client identifier')
 
         // Try to find the linked client
         const client = await Clients.findByPk(idClient)
-        if (!client) throw createHttpError(404, 'Unable to find the linked client.');
+        if (!client) throw createHttpError(404, 'Unable to find the linked client.')
 
         // Test params
         const validator = isValidProject(req.body.project.acronym, req.body.project.startDate, req.body.project.endDate)
@@ -140,7 +140,7 @@ const del = async (req: Request, res: Response) => {
         if (isNaN(identifier)) throw createHttpError(400, 'Please provide a valid identifier')
 
         const project = await Projects.findByPk(identifier, {})
-        if (!project) throw createHttpError(404, 'Project not found');
+        if (!project) throw createHttpError(404, 'Project not found')
 
         await Projects.destroy({
             where: {

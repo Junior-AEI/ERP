@@ -13,7 +13,7 @@ import Projects from '../models/project.model'
  */
 const getAll = async (req: Request, res: Response) => {
     try {
-        const projectManagers = await ProjectManagers.findAll({ })
+        const projectManagers = await ProjectManagers.findAll({})
 
         return res.status(200).json({
             status: 'success',
@@ -61,19 +61,18 @@ async function create(req: Request, res: Response) {
     try {
         // parse project identifier
         const idProject = parseInt(req.body.projectManager.projectId)
-        if (isNaN(idProject)) throw createHttpError(400, 'Please provide a valid project identifier');
+        if (isNaN(idProject)) throw createHttpError(400, 'Please provide a valid project identifier')
 
         const project = await Projects.findByPk(idProject)
-        if (!project) throw createHttpError(404, 'Link project not found');
+        if (!project) throw createHttpError(404, 'Link project not found')
 
         // parse user identifier
         const idUser = parseInt(req.body.projectManager.userId)
-        if (isNaN(idUser)) throw createHttpError(400, 'Please provide a valid user identifier');
+        if (isNaN(idUser)) throw createHttpError(400, 'Please provide a valid user identifier')
 
         const user = await Users.findByPk(idUser)
         if (!user) throw createHttpError(404, 'Link user not found')
 
-        
         // Insert data
         const projectManager = await ProjectManagers.create({
             userId: idUser,
@@ -106,23 +105,23 @@ const update = async (req: Request, res: Response) => {
 
         const projectManager = await ProjectManagers.findByPk(identifier)
         if (!projectManager) throw createHttpError(404, 'Project manager not found')
-        
+
         // parse project identifier
         const idProject = parseInt(req.body.projectManager.projectId)
-        if (isNaN(idProject)) throw createHttpError(400, 'Please provide a valid project identifier');
+        if (isNaN(idProject)) throw createHttpError(400, 'Please provide a valid project identifier')
 
         const project = await Projects.findByPk(idProject)
-        if (!project) throw createHttpError(404, 'Link project not found');
+        if (!project) throw createHttpError(404, 'Link project not found')
 
         // parse user identifier
         const idUser = parseInt(req.body.projectManager.userId)
-        if (isNaN(idUser)) throw createHttpError(400, 'Please provide a valid user identifier');
+        if (isNaN(idUser)) throw createHttpError(400, 'Please provide a valid user identifier')
 
         const user = await Users.findByPk(idUser)
         if (!user) throw createHttpError(404, 'Link user not found')
 
         await ProjectManagers.update(req.body.projectManager, {
-            where: { 
+            where: {
                 projectManagerId: identifier
             }
         })

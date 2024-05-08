@@ -16,7 +16,6 @@ const getAll = async (req: Request, res: Response) => {
     try {
         const projectNotes = await ProjectNotes.findAll({})
 
-
         return res.status(200).json({
             status: 'success',
             data: {
@@ -63,14 +62,14 @@ async function create(req: Request, res: Response) {
     try {
         // parse project identifier
         const idProject = parseInt(req.body.projectNote.projectId)
-        if (isNaN(idProject)) throw createHttpError(400, 'Please provide a valid project identifier');
+        if (isNaN(idProject)) throw createHttpError(400, 'Please provide a valid project identifier')
 
         const project = await Projects.findByPk(idProject)
-        if (!project) throw createHttpError(404, 'Link project not found');
+        if (!project) throw createHttpError(404, 'Link project not found')
 
         // parse writer (user) identifier
         const idWriter = parseInt(req.body.projectNote.writerId)
-        if (isNaN(idWriter)) throw createHttpError(400, 'Please provide a valid writer identifier');
+        if (isNaN(idWriter)) throw createHttpError(400, 'Please provide a valid writer identifier')
 
         const writer = await Users.findByPk(idWriter)
         if (!writer) throw createHttpError(404, 'Link writer not found')
@@ -109,27 +108,24 @@ const update = async (req: Request, res: Response) => {
     try {
         // parse identifier
         const identifier = parseInt(req.params.projectNoteId)
-        if (isNaN(identifier)) throw createHttpError(400, 'Please provide a valid identifier');
+        if (isNaN(identifier)) throw createHttpError(400, 'Please provide a valid identifier')
 
         const projectNote = await ProjectNotes.findByPk(identifier)
-        if (!projectNote) throw createHttpError(404, 'Project note not found');
-
+        if (!projectNote) throw createHttpError(404, 'Project note not found')
 
         // parse project identifier
         const idProject = parseInt(req.body.projectNote.projectId)
-        if (isNaN(idProject)) throw createHttpError(400, 'Please provide a valid project identifier');
+        if (isNaN(idProject)) throw createHttpError(400, 'Please provide a valid project identifier')
 
         const project = await Projects.findByPk(idProject)
-        if (!project) throw createHttpError(404, 'Link project not found');
-
+        if (!project) throw createHttpError(404, 'Link project not found')
 
         // parse writer (user) identifier
         const idWriter = parseInt(req.body.projectNote.writerId)
-        if (isNaN(idWriter)) throw createHttpError(400, 'Please provide a valid writer identifier');
+        if (isNaN(idWriter)) throw createHttpError(400, 'Please provide a valid writer identifier')
 
         const writer = await Users.findByPk(idWriter)
-        if (!writer) throw createHttpError(404, 'Link writer not found');
-        
+        if (!writer) throw createHttpError(404, 'Link writer not found')
 
         // Test params
         const validator = isValidProjectNote(req.body.projectNote.comment, req.body.projectNote.advancement)
@@ -157,10 +153,10 @@ const del = async (req: Request, res: Response) => {
     try {
         // parse identifier
         const identifier = parseInt(req.params.projectNoteId)
-        if (isNaN(identifier)) throw createHttpError(400, 'Please provide a valid identifier');
+        if (isNaN(identifier)) throw createHttpError(400, 'Please provide a valid identifier')
 
         const projectNote = await ProjectNotes.findByPk(identifier)
-        if (!projectNote) throw createHttpError(404, 'Project note not found');
+        if (!projectNote) throw createHttpError(404, 'Project note not found')
 
         await ProjectNotes.destroy({
             where: {

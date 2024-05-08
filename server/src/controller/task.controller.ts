@@ -7,14 +7,13 @@ import { controllerErrorHandler, isNumber, sendBotMesssage } from './utils.contr
 import sequelize from 'sequelize'
 
 /**
- * Get all users
+ * Get all tasks
  * @param req
  * @param res
  */
 const getAll = async (req: Request, res: Response) => {
     try {
         const tasks = await Tasks.findAll({})
-
         return res.status(200).json({
             status: 'success',
             data: {
@@ -34,8 +33,8 @@ const getAll = async (req: Request, res: Response) => {
  */
 const getByPk = async (req: Request, res: Response) => {
     try {
-        if (req.params.taskId && !isNumber(req.params.taskId)) throw createHttpError(400, 'Please provide a valid identifier')
         const identifier = parseInt(req.params.taskId)
+        if (isNaN(identifier)) throw createHttpError(400, 'Please provide a valid identifier')
 
         const task = await Tasks.findByPk(identifier, {})
         if (!task) throw createHttpError(404, 'Task not found')
@@ -58,10 +57,8 @@ const getByPk = async (req: Request, res: Response) => {
  * @param res
  */
 const getTheUser = async (req: Request, res: Response) => {
-    console.log('getTheUser');
+    console.log('getTheUser')
 }
-
-    
 
 /**
  * Select all tasks for a specific user
@@ -69,9 +66,10 @@ const getTheUser = async (req: Request, res: Response) => {
  * @param res
  */
 const getByUser = async (req: Request, res: Response) => {
+
     try {
-        if (req.params.taskUser && !isNumber(req.params.taskUser)) throw createHttpError(400, 'Please provide a valid identifier')
         const identifier = parseInt(req.params.taskUser)
+        if (isNaN(identifier)) throw createHttpError(400, 'Please provide a valid identifier')
 
         const tasks = await Tasks.findAll({
             where: {
@@ -98,32 +96,26 @@ const getByUser = async (req: Request, res: Response) => {
  */
 async function create(req: Request, res: Response) {
     try {
-        // Generate identifier
-        // const identifier = 
-
-        var dueDateFormat = new Date(req.body.task.dueDate);
         // Test params
-        const validator = isValidTask(dueDateFormat, req.body.task.description, 'A faire')
-        console.log(dueDateFormat)
+        const validator = isValidTask(req.body.task.dueDate, req.body.task.description, 'A faire')
+        if (!validator.valid) throw createHttpError(400, validator.message as string)
 
-        console.log(validator.message)
-
-        if (!validator.valid) return createHttpError(400, validator.message as string)
+        // Send bot message
         sendBotMesssage(881607628, `Valid : ${validator.message} DueDate : ${req.body.task.dueDate}`)
 
         // Insert data
         const task = await Tasks.create({
-            dueDate: req.body.task.dueDate,
+            dueDate: new Date(req.body.task.dueDate),
             description: req.body.task.description,
-            userId : req.body.task.userId,
-            issuerId : req.body.task.issuerId,
+            userId: req.body.task.userId,
+            issuerId: req.body.task.issuerId,
             state: 'A faire'
         })
 
         // Return success
         return res.status(200).json({
             status: 'success',
-            data: { 
+            data: {
                 taskId: task.taskId
             }
         })
@@ -140,17 +132,23 @@ async function create(req: Request, res: Response) {
  */
 const update = async (req: Request, res: Response) => {
     try {
-        if (req.params.taskId && !isNumber(req.params.taskId)) throw createHttpError(400, 'Please provide a valid identifier')
         const identifier = parseInt(req.params.taskId)
+        if (isNaN(identifier)) throw createHttpError(400, 'Please provide a valid identifier')
 
         const task = await Tasks.findByPk(identifier, {})
         if (!task) throw createHttpError(404, 'Task not found')
 
         // Test params
         const validator = isValidTask(req.body.task.dueDate, req.body.task.description, req.body.task.state)
-        if (!validator.valid) return createHttpError(400, validator.message as string)
+        if (!validator.valid) throw createHttpError(400, validator.message as string)
 
-        await Tasks.update(req.body, {
+        await Tasks.update({
+            dueDate: new Date(req.body.task.dueDate),
+            description: req.body.task.description,
+            userId: req.body.task.userId,
+            issuerId: req.body.task.issuerId,
+            state: req.body.task.state
+        }, {
             where: { taskId: identifier }
         })
 
@@ -171,8 +169,8 @@ const update = async (req: Request, res: Response) => {
 const del = async (req: Request, res: Response) => {
     try {
         // Parse identifier
-        if (req.params.taskId && !isNumber(req.params.taskId)) throw createHttpError(400, 'Please provide a valid identifier')
         const identifier = parseInt(req.params.taskId)
+        if (isNaN(identifier)) throw createHttpError(400, 'Please provide a valid identifier')
 
         const task = await Tasks.findByPk(identifier, {})
         if (!task) throw createHttpError(404, 'Task not found')
@@ -181,6 +179,10 @@ const del = async (req: Request, res: Response) => {
             where: {
                 taskId: identifier
             }
+        })
+
+        return res.status(200).json({
+            status: 'success'
         })
     } catch (err) {
         if (err instanceof HttpError) controllerErrorHandler(err, res)

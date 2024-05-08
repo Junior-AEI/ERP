@@ -26,7 +26,7 @@ export default class Permissions extends Model {
 
     @Column({
         type: DataType.STRING,
-        allowNull: false,
+        allowNull: false
     })
     permissionName!: string
 

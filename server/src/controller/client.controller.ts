@@ -61,18 +61,17 @@ async function create(req: Request, res: Response) {
     try {
         // Parse identifier
         const identifier = parseInt(req.body.client.clientId)
-        if (isNaN(identifier)) throw createHttpError(400, 'Please provide a valid identifier');
+        if (isNaN(identifier)) throw createHttpError(400, 'Please provide a valid identifier')
 
         const person = await Persons.findByPk(identifier)
-        if (!person) throw createHttpError(404, 'Linked person not found');
-
+        if (!person) throw createHttpError(404, 'Linked person not found')
 
         const idCompany = parseInt(req.body.client.companyId)
-        if (isNaN(idCompany)) throw createHttpError(400, 'Please provide a valid company identifier.');
+        if (isNaN(idCompany)) throw createHttpError(400, 'Please provide a valid company identifier.')
         // Try to find the company
-        const company = await Companies.findByPk(idCompany);
-        if (!company) throw createHttpError(404, 'Linked company not found.');
-            
+        const company = await Companies.findByPk(idCompany)
+        if (!company) throw createHttpError(404, 'Linked company not found.')
+
         // Test if parameters has been filled
         const validator = isValidClient(req.body.client.function)
 
@@ -115,7 +114,7 @@ const update = async (req: Request, res: Response) => {
 
         // Parse company identifier
         const idCompany = parseInt(req.body.client.companyId)
-        if (isNaN(idCompany)) throw createHttpError(400, 'Please provide a valid company identifier');
+        if (isNaN(idCompany)) throw createHttpError(400, 'Please provide a valid company identifier')
 
         const company = await Companies.findByPk(idCompany)
         if (!company) throw createHttpError(404, 'Company not found')

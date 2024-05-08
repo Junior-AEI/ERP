@@ -1,6 +1,4 @@
-
 export const characters: any = {
-
     // John Doe character
     'john.doe': {
         person: {
@@ -32,7 +30,7 @@ export const characters: any = {
     },
 
     // Jane Doe character
-    "jane.doe": {
+    'jane.doe': {
         person: {
             firstname: 'Jane',
             lastname: 'Doe',
@@ -59,6 +57,5 @@ export const characters: any = {
             membershipNumber: 2
         },
         password: 'mdp'
-    },
-
+    }
 }

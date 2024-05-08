@@ -24,7 +24,7 @@
       </span>
     </Button>
 
-    <div class="flex flex-1 flex-col items-start gap-1 overflow-y-auto overflow-x-hidden pb-6">
+    <ScrollArea class="flex flex-1 flex-col items-start gap-1">
       <Link to="/" icon="dashboard" class="w-full justify-start" :variant="matchRoute('/')">
         Tableau de bord
       </Link>
@@ -57,14 +57,14 @@
               :to="child.path"
               :icon="child.meta?.icon"
               :key="child.path"
-              class="p-1 pl-6"
+              class="p-1 pl-3"
             >
               {{ child.name }}
             </Link>
           </template>
         </CollapsibleMenu>
       </div>
-    </div>
+    </ScrollArea>
 
     <div class="flex flex-col items-start gap-1">
       <Link

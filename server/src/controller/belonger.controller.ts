@@ -6,7 +6,6 @@ import Belongers from '../models/belonger.model'
 import Users from '../models/user.model'
 import Groups from '../models/group.model'
 
-
 /**
  * Get all users
  * @param req
@@ -14,7 +13,7 @@ import Groups from '../models/group.model'
  */
 const getAll = async (req: Request, res: Response) => {
     try {
-        const belongers = await Belongers.findAll({ })
+        const belongers = await Belongers.findAll({})
 
         return res.status(200).json({
             status: 'success',
@@ -38,7 +37,7 @@ const getByPk = async (req: Request, res: Response) => {
         if (req.params.userId && !isNumber(req.params.userId)) throw createHttpError(400, 'Please provide a valid identifier')
         if (req.params.groupId) throw createHttpError(400, 'Please provide a valid identifier')
 
-        const identifier = [parseInt(req.params.userId), req.params.groupId];
+        const identifier = [parseInt(req.params.userId), req.params.groupId]
 
         const belonger = await Belongers.findByPk((identifier[0], identifier[1]), {})
 
@@ -66,7 +65,7 @@ async function create(req: Request, res: Response) {
         if (req.params.userId && !isNumber(req.params.userId)) throw createHttpError(400, 'Please provide a valid identifier')
         if (req.params.groupId) throw createHttpError(400, 'Please provide a valid identifier')
 
-        const identifier = [parseInt(req.params.userId), req.params.groupId];
+        const identifier = [parseInt(req.params.userId), req.params.groupId]
 
         // Try to find the linked user
         const user = await Users.findByPk(identifier[0])
@@ -76,7 +75,6 @@ async function create(req: Request, res: Response) {
         const group = await Groups.findByPk(identifier[1])
         if (!group) return createHttpError(404, 'Unable to find the linked group.')
 
-        
         // Insert data
         const belonger = await Belongers.create({
             userId: identifier[0],
@@ -107,15 +105,13 @@ const update = async (req: Request, res: Response) => {
         if (req.params.userId && !isNumber(req.params.userId)) throw createHttpError(400, 'Please provide a valid identifier')
         if (req.params.groupId) throw createHttpError(400, 'Please provide a valid identifier')
 
-        const identifier = [parseInt(req.params.userId), req.params.groupId];
+        const identifier = [parseInt(req.params.userId), req.params.groupId]
 
         const belonger = await Belongers.findByPk((identifier[0], identifier[1]))
         if (!belonger) throw createHttpError(404, 'Belonger not found')
 
         await Belongers.update(req.body, {
-            where: { userId: identifier[0],
-                     groupId: identifier[1]
-            }
+            where: { userId: identifier[0], groupId: identifier[1] }
         })
 
         return res.status(200).json({
@@ -137,7 +133,7 @@ const del = async (req: Request, res: Response) => {
         if (req.params.userId && !isNumber(req.params.userId)) throw createHttpError(400, 'Please provide a valid identifier')
         if (req.params.groupId) throw createHttpError(400, 'Please provide a valid identifier')
 
-        const identifier = [parseInt(req.params.userId), req.params.groupId];
+        const identifier = [parseInt(req.params.userId), req.params.groupId]
 
         const belonger = await Belongers.findByPk((identifier[0], identifier[1]))
         if (!belonger) throw createHttpError(404, 'Belonger not found')
@@ -163,4 +159,3 @@ const belongerController = {
 }
 
 export default belongerController
-

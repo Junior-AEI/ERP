@@ -15,7 +15,6 @@ const getAll = async (req: Request, res: Response) => {
     try {
         const notifications = await Notifications.findAll({})
 
-
         return res.status(200).json({
             status: 'success',
             data: {
@@ -62,10 +61,10 @@ async function create(req: Request, res: Response) {
     try {
         // parse user identifier
         const idUser = parseInt(req.body.notification.userId)
-        if (isNaN(idUser)) throw createHttpError(400, 'Please provide a valid user identifier');
+        if (isNaN(idUser)) throw createHttpError(400, 'Please provide a valid user identifier')
 
         const user = await Users.findByPk(idUser)
-        if (!user) throw createHttpError(404, 'Link user not found');
+        if (!user) throw createHttpError(404, 'Link user not found')
 
         // Test params
         const validator = isValidNotification(req.body.notification.title, req.body.notification.description, req.body.notification.pathConcerned)
@@ -76,7 +75,7 @@ async function create(req: Request, res: Response) {
             userId: idUser,
             title: req.body.notification.title,
             description: req.body.notification.description,
-            pathConcerned: req.body.notification.pathConcerned,
+            pathConcerned: req.body.notification.pathConcerned
         })
 
         // Return success
@@ -101,17 +100,17 @@ const update = async (req: Request, res: Response) => {
     try {
         // parse identifier
         const identifier = parseInt(req.params.notificationId)
-        if (isNaN(identifier)) throw createHttpError(400, 'Please provide a valid identifier');
+        if (isNaN(identifier)) throw createHttpError(400, 'Please provide a valid identifier')
 
         const notification = await Notifications.findByPk(identifier)
-        if (!notification) throw createHttpError(404, 'Notification not found');
+        if (!notification) throw createHttpError(404, 'Notification not found')
 
         // parse user identifier
         const idUser = parseInt(req.body.notification.userId)
-        if (isNaN(idUser)) throw createHttpError(400, 'Please provide a valid user identifier');
+        if (isNaN(idUser)) throw createHttpError(400, 'Please provide a valid user identifier')
 
         const user = await Users.findByPk(idUser)
-        if (!user) throw createHttpError(404, 'Link user not found');
+        if (!user) throw createHttpError(404, 'Link user not found')
 
         // Test params
         const validator = isValidNotification(req.body.notification.title, req.body.notification.description, req.body.notification.pathConcerned)
@@ -139,10 +138,10 @@ const del = async (req: Request, res: Response) => {
     try {
         // parse identifier
         const identifier = parseInt(req.params.notificationId)
-        if (isNaN(identifier)) throw createHttpError(400, 'Please provide a valid identifier');
+        if (isNaN(identifier)) throw createHttpError(400, 'Please provide a valid identifier')
 
         const notification = await Notifications.findByPk(identifier)
-        if (!notification) throw createHttpError(404, 'Notification not found');
+        if (!notification) throw createHttpError(404, 'Notification not found')
 
         await Notifications.destroy({
             where: {

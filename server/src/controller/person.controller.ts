@@ -55,20 +55,12 @@ const getByPk = async (req: Request, res: Response) => {
  * Create an user
  * @param req
  * @param res
-*/
+ */
 async function create(req: Request, res: Response) {
     try {
         // Test params
-        const validator = isValidPerson(
-            req.body.person.lastname,
-            req.body.person.firstname,
-            req.body.person.gender,
-            req.body.person.mobilePhone,
-            req.body.person.email,
-            req.body.person.landlinePhone
-        )
+        const validator = isValidPerson(req.body.person.lastname, req.body.person.firstname, req.body.person.gender, req.body.person.mobilePhone, req.body.person.email, req.body.person.landlinePhone)
         if (!validator.valid) throw createHttpError(400, validator.message as string)
-            
 
         // Insert data
         const person = await Persons.create({
@@ -97,7 +89,7 @@ async function create(req: Request, res: Response) {
  * Update an user
  * @param req
  * @param res
-*/
+ */
 const update = async (req: Request, res: Response) => {
     try {
         // Parse identifier
@@ -107,16 +99,8 @@ const update = async (req: Request, res: Response) => {
         const person = await Persons.findByPk(identifier)
         if (!person) throw createHttpError(404, 'Person not found')
 
-        const validator = isValidPerson(
-            req.body.person.lastname,
-            req.body.person.firstname,
-            req.body.person.gender,
-            req.body.person.mobilePhone,
-            req.body.person.email,
-            req.body.person.landlinePhone,
-        )
+        const validator = isValidPerson(req.body.person.lastname, req.body.person.firstname, req.body.person.gender, req.body.person.mobilePhone, req.body.person.email, req.body.person.landlinePhone)
         if (validator.valid == 0) throw createHttpError(400, validator.message as string)
-
 
         await Persons.update(req.body.person, {
             where: { personId: identifier }

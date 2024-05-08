@@ -59,8 +59,8 @@ const getByPk = async (req: Request, res: Response) => {
 async function create(req: Request, res: Response) {
     try {
         // Test params
-        console.log("TETETTTETTETTESSSTTSTS")
-        var expenseDateFormat = new Date(req.body.expenseAccount.expenseDate);
+        console.log('TETETTTETTETTESSSTTSTS')
+        const expenseDateFormat = new Date(req.body.expenseAccount.expenseDate)
         const validator = isValidExpenseAccount(req.body.expenseAccount.reason, expenseDateFormat, req.body.expenseAccount.description, 'A traiter')
         console.log(req.body.expenseAccount.expenseDate)
 
@@ -72,7 +72,7 @@ async function create(req: Request, res: Response) {
             expenseDate: req.body.expenseAccount.expenseDate,
             description: req.body.expenseAccount.description,
             userId: req.body.expenseAccount.userId,
-            approbatorId : req.body.expenseAccount.approbatorId,
+            approbatorId: req.body.expenseAccount.approbatorId,
             state: 'A Traiter'
         })
 
@@ -105,24 +105,27 @@ const update = async (req: Request, res: Response) => {
 
         if (!accountExpense) throw createHttpError(404, 'Expense not found')
         // Test params
-        var expenseDateFormat = new Date(req.body.expenseAccount.expenseDate);
+        const expenseDateFormat = new Date(req.body.expenseAccount.expenseDate)
 
         const validator = isValidExpenseAccount(req.body.expenseAccount.reason, expenseDateFormat, req.body.expenseAccount.description, req.body.expenseAccount.state)
-        
+
         console.log(validator.message)
         if (!validator.valid) return createHttpError(400, validator.message as string)
-            console.log(validator.message)
+        console.log(validator.message)
 
-        await AccountExpenses.update({
-            reason: req.body.expenseAccount.reason,
-            expenseDate: req.body.expenseAccount.expenseDate,
-            description: req.body.expenseAccount.description,
-            userId: req.body.expenseAccount.userId,
-            approbatorId : req.body.expenseAccount.approbatorId,
-            state: req.body.expenseAccount.state,
-        }, {
-            where: { expenseId: identifier }
-        })
+        await AccountExpenses.update(
+            {
+                reason: req.body.expenseAccount.reason,
+                expenseDate: req.body.expenseAccount.expenseDate,
+                description: req.body.expenseAccount.description,
+                userId: req.body.expenseAccount.userId,
+                approbatorId: req.body.expenseAccount.approbatorId,
+                state: req.body.expenseAccount.state
+            },
+            {
+                where: { expenseId: identifier }
+            }
+        )
 
         return res.status(200).json({
             status: 'success'

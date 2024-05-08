@@ -22,18 +22,24 @@ async function getData(): Promise<ExpenseAccountInfo[]> {
     }
   })
 
-  const ExpenseAccountsAll = ExpenseAccounts.data.data?.accountExpenses.map((ExpenseAccount: any) => {
-    const aprob = persons.data.data?.persons.find((person: any) => person.personId === ExpenseAccount.approbatorId)
-    const demandeur = persons.data.data?.persons.find((person: any) => person.personId === ExpenseAccount.userId)
+  const ExpenseAccountsAll = ExpenseAccounts.data.data?.accountExpenses.map(
+    (ExpenseAccount: any) => {
+      const aprob = persons.data.data?.persons.find(
+        (person: any) => person.personId === ExpenseAccount.approbatorId
+      )
+      const demandeur = persons.data.data?.persons.find(
+        (person: any) => person.personId === ExpenseAccount.userId
+      )
 
-    return {
-      ...ExpenseAccount,
-      usernameUser: `${demandeur.firstname} ${demandeur.lastname}`,
-      usernameApprobator: `${aprob.firstname} ${aprob.lastname}`
+      return {
+        ...ExpenseAccount,
+        usernameUser: `${demandeur.firstname} ${demandeur.lastname}`,
+        usernameApprobator: `${aprob.firstname} ${aprob.lastname}`
+      }
     }
-  })
+  )
 
-  return ExpenseAccountsAll 
+  return ExpenseAccountsAll
 }
 
 onMounted(async () => {
@@ -46,8 +52,7 @@ const handleClick = (e: any) => {
 </script>
 
 <template>
-  
   <div>
-    <DataTable :columns="columns" :data="data" :onClickFn="handleClick"/>
+    <DataTable :columns="columns" :data="data" :onClickFn="handleClick" />
   </div>
 </template>

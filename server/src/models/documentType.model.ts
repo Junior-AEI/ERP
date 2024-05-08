@@ -26,7 +26,7 @@ export default class DocumentTypes extends Model {
 
     @Column({
         type: DataType.STRING,
-        allowNull: false,
+        allowNull: false
     })
     type!: string
 

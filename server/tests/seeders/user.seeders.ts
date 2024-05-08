@@ -36,4 +36,3 @@ export const createUser = async (username: string) => {
 
     return user.userId
 }
-

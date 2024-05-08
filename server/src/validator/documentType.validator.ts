@@ -6,6 +6,6 @@ export const isValidDocumentType = (type: any, fieldNumber: any, fieldMeaning: a
     if (fieldNumber < 0 || fieldNumber > 15) return { valid: 0, message: 'Your field number is negative or too big.' }
     if (typeof fieldMeaning !== 'string') return { valid: 0, message: 'Your field meaning is not correctly formatted.' }
     if (fieldMeaning.length < 1 || fieldMeaning.length >= 100) return { valid: 0, message: 'Your field meaning size has to be bigger than 2 and smaller than 100.' }
-    
+
     return { valid: 1 }
 }

@@ -1,7 +1,6 @@
 export const documents: any = {
-
     // doc1
-    'doc1': {
+    doc1: {
         path: '../docs/1.pdf',
         version: 1,
         information: 'yes|no|hello',
@@ -9,12 +8,12 @@ export const documents: any = {
         documentType: {
             type: 'affiche',
             fieldNumber: 3,
-            fieldMeaning: 'oui|non|bonjour',
-        },
+            fieldMeaning: 'oui|non|bonjour'
+        }
     },
 
-    // doc2 
-    "doc2": {
+    // doc2
+    doc2: {
         path: '../docs/2.png',
         version: 2,
         information: 'hey|zut',
@@ -23,6 +22,6 @@ export const documents: any = {
             type: 'facture',
             fieldNumber: 2,
             fieldMeaning: 'salut|sapristi'
-        },
+        }
     }
 }

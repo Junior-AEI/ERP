@@ -19,10 +19,44 @@
       </Dialog>
     </div>
     <div>
-      <Button variant="outline">
-        <span class="material-symbols-outlined"> edit </span>
-        <DocumentEdit />
-      </Button>
+      <Dialog>
+        <DialogTrigger as-child>
+          <Button variant="outline" @click="openDialog()">
+            <span class="material-symbols-outlined"> edit </span>
+          </Button>
+        </DialogTrigger>
+        <DialogContent>
+          <DialogHeader>
+            <DialogTitle>Éditer le document</DialogTitle>
+          </DialogHeader>
+          <div gap-2>
+            <Label> Téléverser une nouvelle version (optionel) </Label>
+            <Dropzone v-model="files" />
+          </div>
+          <div class="grid grid-cols-2 gap-2">
+            <Label>Type de document</Label>
+            <Label> Version du document </Label>
+            <Input disabled v-model="thisDocument.type" />
+            <Input type="number" v-model="version" placeholder="2" />
+          </div>
+          <div v-for="(field, index) in thisDocument.fieldMeaning.split('|')" :key="index">
+            <div class="flex-col gap-2">
+              <Label>{{ field }}</Label>
+              <Input v-if="field != 'Date de fin de validité'" v-model="infos[index]" />
+              <Input
+                v-else
+                type="date"
+                v-model="infos[index]"
+                placeholder="Date de fin de validité"
+              />
+            </div>
+          </div>
+          <DialogFooter>
+            <Button variant="destructive">Supprimer le document</Button>
+            <Button>Enregistrer les modifications</Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
     </div>
     <div>
       <Button variant="outline">
@@ -40,6 +74,7 @@ import { Button } from '../ui/button'
 import {
   Dialog,
   DialogContent,
+  DialogFooter,
   DialogHeader,
   DialogTitle,
   DialogTrigger
@@ -49,7 +84,10 @@ const props = defineProps<{
   item: DocumentFull // Document + DocumentType
 }>()
 
+const files = ref<File[]>([])
 const thisDocument = ref<DocumentFull>(props.item)
+const version = ref(thisDocument.value.version + 1)
+const infos = ref(thisDocument.value.information.split('|'))
 const fieldMeaningArray = thisDocument?.value.fieldMeaning.split('|') ?? []
 const informationArray = thisDocument?.value.information.split('|') ?? []
 const combinedArray = fieldMeaningArray.map((title, index) => {

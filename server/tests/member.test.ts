@@ -1,88 +1,70 @@
 const request = require('supertest')
-import app from "../src/app"
+import app from '../src/app'
 import { beforeAllTests, afterAllTests, clearDatabase, showErrorMessage } from './utils'
 import { createToken } from './seeders/token.seeders'
 import { initUser } from './seeders/general'
-import { characters } from "./seeders/data/characters.data"
-import { createPerson } from "./seeders/person.seeders "
-import Persons from "../src/models/person.model"
-import { createMember } from "./seeders/member.seeders"
-import Members from "../src/models/member.model"
+import { characters } from './seeders/data/characters.data'
+import { createPerson } from './seeders/person.seeders '
+import Persons from '../src/models/person.model'
+import { createMember } from './seeders/member.seeders'
+import Members from '../src/models/member.model'
 
 beforeAll(beforeAllTests)
 afterAll(afterAllTests)
 
 // ! DONE
 describe('ROUTE (GET): /api/member (Get all member)', () => {
-
-    afterEach(clearDatabase);
+    afterEach(clearDatabase)
 
     it('Normal usage', async () => {
-
         await initUser('john.doe')
         await createMember('jane.doe')
 
-        const token = await createToken("john.doe");
+        const token = await createToken('john.doe')
 
-        const res = await request(app)
-            .get('/api/member')
-            .set('Authorization', `Bearer ${token}`);
+        const res = await request(app).get('/api/member').set('Authorization', `Bearer ${token}`)
 
         expect(res.status).toEqual(200)
-        expect(res.body.status).toEqual("success")
-        expect(res.body.data.members.length).toEqual(2);
+        expect(res.body.status).toEqual('success')
+        expect(res.body.data.members.length).toEqual(2)
 
         for (let i = 0; i < 2; i++) {
-            expect(res.body.data.members[i].memberId).toBeDefined();
-            expect(res.body.data.members[i].birthDate).toBeDefined();
-            expect(res.body.data.members[i].birthPlace).toBeDefined();
-            expect(res.body.data.members[i].nationality).toBeDefined();
-            expect(res.body.data.members[i].promotion).toBeDefined();
-            expect(res.body.data.members[i].contributionDate).toBeDefined();
-            expect(res.body.data.members[i].paymentMethod).toBeDefined();
-            expect(res.body.data.members[i].department).toBeDefined();
-            expect(res.body.data.members[i].membershipNumber).toBeDefined();
-            expect(res.body.data.members[i].addressId).toBeDefined();
-            expect(res.body.data.members[i].createdAt).toBeDefined();
-            expect(res.body.data.members[i].updatedAt).toBeDefined();
+            expect(res.body.data.members[i].memberId).toBeDefined()
+            expect(res.body.data.members[i].birthDate).toBeDefined()
+            expect(res.body.data.members[i].birthPlace).toBeDefined()
+            expect(res.body.data.members[i].nationality).toBeDefined()
+            expect(res.body.data.members[i].promotion).toBeDefined()
+            expect(res.body.data.members[i].contributionDate).toBeDefined()
+            expect(res.body.data.members[i].paymentMethod).toBeDefined()
+            expect(res.body.data.members[i].department).toBeDefined()
+            expect(res.body.data.members[i].membershipNumber).toBeDefined()
+            expect(res.body.data.members[i].addressId).toBeDefined()
+            expect(res.body.data.members[i].createdAt).toBeDefined()
+            expect(res.body.data.members[i].updatedAt).toBeDefined()
         }
-
     })
-
 })
 
 // ! DONE
 describe('ROUTE (GET): /api/member/:memberId (Get a specific member)', () => {
-
-    afterEach(clearDatabase);
+    afterEach(clearDatabase)
 
     it('Wrong format', async () => {
-
         const token = await initUser('john.doe')
 
-        const wrongParamList = [
-            null,
-            undefined,
-            "wrongParamId"
-        ]
+        const wrongParamList = [null, undefined, 'wrongParamId']
 
         for (const wrongParam of wrongParamList) {
-            const res = await request(app)
-                .get(`/api/member/${wrongParam}`)
-                .set('Authorization', `Bearer ${token}`);
+            const res = await request(app).get(`/api/member/${wrongParam}`).set('Authorization', `Bearer ${token}`)
 
             expect(res.status).toEqual(400)
         }
-
     })
 
     it('Wrong memberId with a good format', async () => {
-
         const token = await initUser('john.doe')
 
-        const res = await request(app)
-            .get(`/api/person/${-10}`)
-            .set('Authorization', `Bearer ${token}`);
+        const res = await request(app).get(`/api/person/${-10}`).set('Authorization', `Bearer ${token}`)
 
         expect(res.status).toEqual(404)
     })
@@ -116,7 +98,6 @@ describe('ROUTE (GET): /api/member/:memberId (Get a specific member)', () => {
     //     expect(res.body.data.member.membershipNumber).toEqual(characters["jane.doe"].member["membershipNumber"])
 
     // })
-
 })
 
 // ! Big problem in database and model with permissions logic
@@ -491,7 +472,6 @@ describe('ROUTE (GET): /api/member/:memberId (Get a specific member)', () => {
 //         expect(updatedPerson?.email).toEqual(goodParams.email)
 //         expect(updatedPerson?.landlinePhone).toEqual(goodParams.landlinePhone)
 //     })
-
 
 // })
 

@@ -19,23 +19,23 @@
         <div class="flex flex-1 flex-col gap-2">
           <Label for="gender">Genre</Label>
           <Select v-model="form.gender">
-    <SelectTrigger>
-      <SelectValue placeholder="Genre" />
-    </SelectTrigger>
-    <SelectContent>
-      <SelectGroup>
-        <SelectItem value="H">
-          Homme
-        </SelectItem>
-        <SelectItem value="F">
-          Femme
-        </SelectItem>
-        <SelectItem value="O">
-          Other
-        </SelectItem>
-      </SelectGroup>
-    </SelectContent>
-  </Select>
+            <SelectTrigger>
+              <SelectValue placeholder="Genre" />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectGroup>
+                <SelectItem value="H">
+                  Homme
+                </SelectItem>
+                <SelectItem value="F">
+                  Femme
+                </SelectItem>
+                <SelectItem value="O">
+                  Other
+                </SelectItem>
+              </SelectGroup>
+            </SelectContent>
+          </Select>
         </div>
         <div class="flex items-end gap-4">
           <div class="flex flex-1 flex-col gap-2">
@@ -44,56 +44,63 @@
           </div>
           <div class="flex flex-1 flex-col gap-2">
             <Label for="landlinePhone">N° de Téléphone</Label>
-            <Input
-              id="landlinePhone"
-              placeholder="Tel Fixe"
-              v-model="form.landlinePhone"
-            />
+            <Input id="landlinePhone" placeholder="Tel Fixe" v-model="form.landlinePhone" />
           </div>
         </div>
         <div class="flex flex-col gap-2">
-          <Label for="application"
-            >Entreprise du Client</Label
-          >
-          <Combobox
-            @input="handleInput"
-            :options="companyList"
-            :comboboxLabel="'Selectionner l\'entreprise'"
-          ></Combobox>
+          <Label for="application">Entreprise du Client</Label>
+          <Combobox @input="handleInputCompany" :options="companyList" :comboboxLabel="'Selectionner l\'entreprise'">
+          </Combobox>
         </div>
-        <div
-              v-if="form.companyId == 0">
-              <div class="flex items-end gap-4">
+        <div v-if="form.companyId == 0">
+          <div class="flex items-end gap-4">
 
-              <div class="flex flex-1 flex-col gap-2">
-            <Label for="name">Nom de l'Entreprise</Label>
-            <Input
-              id="name"
-              placeholder="Tel Fixe"
-              v-model="form.name"
-            />
-          </div>
-          <div class="flex flex-1 flex-col gap-2">
-            <Label for="legalEntity">N° de SIRET de l'entreprise</Label>
-            <Input
-              id="legalEntity"
-              placeholder="Tel Fixe"
-              v-model="form.legalEntity"
-            />
-          </div>
-              </div>
-              <div class="flex flex-col gap-2">
-          <Label for="application"
-            >Adresse de l'Entreprise</Label
-          >
-          <Combobox
-            @input="handleInput"
-            :options="addressList"
-            :comboboxLabel="'Selectionner l\'entreprise'"
-          ></Combobox>
-        </div>
+            <div class="flex flex-1 flex-col gap-2">
+              <Label for="name">Nom de l'Entreprise</Label>
+              <Input id="name" placeholder="Tel Fixe" v-model="form.name" />
             </div>
-            
+            <div class="flex flex-1 flex-col gap-2">
+              <Label for="legalEntity">N° de SIRET de l'entreprise</Label>
+              <Input id="legalEntity" placeholder="Tel Fixe" v-model="form.legalEntity" />
+            </div>
+          </div>
+          <div class="flex flex-col gap-2 mt-2">
+            <Label for="application">Adresse de l'Entreprise</Label>
+            <Combobox @input="handleInputAddress" :options="addressList" :comboboxLabel="'Selectionner l\'adresse'">
+            </Combobox>
+          </div>
+        </div>
+
+        <div v-if="form.addressId == 0">
+          <div class="flex items-end gap-4">
+
+            <div class="flex flex-1 flex-col gap-2">
+              <Label for="name">Adresse de l'Entreprise </Label>
+              <Input id="address" placeholder="Tel Fixe" v-model="form.address" />
+            </div>
+            <div class="flex flex-1 flex-col gap-2">
+              <Label for="legalEntity">Complément d'adresse</Label>
+              <Input id="additionnalAddress" placeholder="Tel Fixe" v-model="form.additionnalAddress" />
+            </div>
+          </div>
+          <div class="flex items-end gap-4">
+
+            <div class="flex flex-1 flex-col gap-2 mt-2">
+              <Label for="name">Code Postal </Label>
+              <Input id="postCode" placeholder="Tel Fixe" v-model="form.postCode" />
+            </div>
+            <div class="flex flex-1 flex-col gap-2">
+              <Label for="legalEntity">Ville</Label>
+              <Input id="city" placeholder="Tel Fixe" v-model="form.city" />
+            </div>
+          </div>
+          <div class="flex flex-1 flex-col gap-2 mt-2">
+            <Label for="legalEntity">Pays</Label>
+            <Input id="country" placeholder="Tel Fixe" v-model="form.country" />
+          </div>
+
+        </div>
+
 
 
 
@@ -113,20 +120,20 @@ const temp = ref('temp')
 import type { ClientInfo } from '@/types/api'
 
 const form = ref<ClientInfo>({
-  personId:NaN,
+  personId: NaN,
   lastname: "",
   firstname: "",
   gender: "",
   mobilePhone: "",
   landlinePhone: "",
-  email:"",
-  createdAt:"",
-  updatedAt:"",
-  name:"",
-  legalEntity:"",
-  addressId:NaN,
-  function:"",
-  companyId:NaN,
+  email: "",
+  createdAt: "",
+  updatedAt: "",
+  name: "",
+  legalEntity: "",
+  addressId: NaN,
+  function: "",
+  companyId: NaN,
   address: "",
   additionnalAddress: "",
   city: "",
@@ -167,7 +174,7 @@ async function getDataAddress(): Promise<{ value: string; label: string }[]> {
   const addressesLists = addresses.data.data?.addresses.map((address: any) => {
     return {
       value: address.addressId.toString(),
-      label: address.name
+      label: address.address
     }
   })
 
@@ -175,10 +182,14 @@ async function getDataAddress(): Promise<{ value: string; label: string }[]> {
   return addressesLists
 }
 
-const handleInput = (value: string) => {
+const handleInputCompany = (value: string) => {
   form.value.companyId = parseInt(value)
 }
 
+
+const handleInputAddress = (value: string) => {
+  form.value.addressId = parseInt(value)
+}
 const companyList = ref([] as { value: string; label: string }[]) // Initialisation d'une liste réactive vide
 const addressList = ref([] as { value: string; label: string }[]) // Initialisation d'une liste réactive vide
 

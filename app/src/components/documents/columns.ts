@@ -1,6 +1,6 @@
 import { h } from 'vue'
 import type { ColumnDef } from '@tanstack/vue-table'
-import type { Document } from '@/types/api'
+import type { DocumentFull } from '@/types/api'
 import { Button } from '../ui/button'
 import DocumentsDataTableButton from './DocumentsDataTableButton.vue'
 import Icon from '../Icon.vue'
@@ -25,37 +25,11 @@ function convertToCalendarDate(isoDateString: string): string {
 
 const defaultClasses = 'text-left font-medium'
 
-export const columns: ColumnDef<Document>[] = [
-  {
-    accessorKey: 'name',
-    meta: {
-      label: 'Document'
-    },
-    header: ({ column }) => {
-      return h(
-        Button,
-        {
-          variant: 'ghost',
-          onClick: () => column.toggleSorting(column.getIsSorted() === 'asc')
-        },
-        () => [
-          'Nom',
-          h(
-            h(Icon, {
-              name: 'unfold_more'
-            }),
-            { class: '' }
-          )
-        ]
-      )
-    },
-    cell: ({ row }) => h('div', { class: 'text-leftbah ' }, row.getValue('path'))
-  },
-
+export const columns: ColumnDef<DocumentFull>[] = [
   {
     accessorKey: 'type',
     meta: {
-      label: 'Type'
+      label: 'Type de document'
     },
     header: ({ column }) => {
       return h(
@@ -65,7 +39,7 @@ export const columns: ColumnDef<Document>[] = [
           onClick: () => column.toggleSorting(column.getIsSorted() === 'asc')
         },
         () => [
-          'Type',
+          'Type de document',
           h(
             h(Icon, {
               name: 'unfold_more'
@@ -75,9 +49,8 @@ export const columns: ColumnDef<Document>[] = [
         ]
       )
     },
-    cell: ({ row }) => h('div', { class: 'text-leftbah ' }, row.getValue('typeId'))
+    cell: ({ row }) => h('div', { class: 'text-leftbah ' }, row.getValue('type'))
   },
-
   {
     accessorKey: 'version',
     meta: {
@@ -101,7 +74,7 @@ export const columns: ColumnDef<Document>[] = [
         ]
       )
     },
-    cell: ({ row }) => h('div', { class: 'text-leftbah ' }, row.getValue('path'))
+    cell: ({ row }) => h('div', { class: 'text-leftbah ' }, row.getValue('version'))
   },
   {
     accessorKey: 'status',
@@ -166,7 +139,6 @@ export const columns: ColumnDef<Document>[] = [
     enableHiding: false,
     cell: ({ row }) => {
       const item = row.original
-
       return h(
         'div',
         { class: 'relative' },

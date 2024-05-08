@@ -135,11 +135,11 @@ onMounted(async () => {
           <Card>
             <CardHeader>
               <Icon name="pin_drop" />
-              <span class="text-accent">Prochains évènements </span>
+              <span class="text-accent">Prochains événements </span>
             </CardHeader>
             <CardContent>
               <div v-if="noEvents">
-                <span class="text-muted-foreground">Aucun évènement à venir</span>
+                <span class="text-muted-foreground">Aucun événement à venir</span>
               </div>
               <div class="flex flex-1 flex-col gap-2" v-else>
                 <div v-for="event in events" :key="event.eventId">

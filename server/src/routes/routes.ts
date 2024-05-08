@@ -22,6 +22,7 @@ import eventGroupConcernedRouter from './eventGroupConcerned.route'
 import taskRouter from './task.route'
 import itTicketRouter from './itTicket.route'
 import expenseAccountRouter from './expenseAccount.route'
+import notificationRouter from './notification.route'
 
 import { getUsername, verifyAuthentication } from '../middlewares/auth.middleware'
 
@@ -50,5 +51,6 @@ router.use('/eventGroupConcerned', getUsername, verifyAuthentication, eventGroup
 router.use('/task', getUsername, verifyAuthentication, taskRouter)
 router.use('/itTicket', getUsername, verifyAuthentication, itTicketRouter)
 router.use('/expenseAccount', getUsername, verifyAuthentication, expenseAccountRouter)
+router.use('/notification', getUsername, verifyAuthentication, notificationRouter)
 
 export default router

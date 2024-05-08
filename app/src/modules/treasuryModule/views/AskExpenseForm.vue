@@ -1,58 +1,60 @@
 <template>
-  <Wrapper>
-    <Card class="w-full">
-      <CardHeader>
-        <Icon name="receipt_long" />
-        <span class="text-accent">Demande de Note de Frais</span>
-      </CardHeader>
-      <CardContent>
-        <div class="flex flex-col gap-2">
-          <Label for="title">Raison </Label>
-          <Input
-            v-model="form.reason"
-            id="title"
-            placeholder="Décrivez briévement la raison de la Note de Frais (ex : Lettre recommandée pour PV d'AG)"
-          />
-        </div>
-        <div class="w-auto">
-          <DatePickerComponent v-model="expenseDateFormat" />
-        </div>
+  <div>
+    <Wrapper>
+      <Card class="w-full">
+        <CardHeader>
+          <Icon name="receipt_long" />
+          <span class="text-accent">Demande de Note de Frais</span>
+        </CardHeader>
+        <CardContent>
+          <div class="flex flex-col gap-2">
+            <Label for="title">Raison </Label>
+            <Input
+              v-model="form.reason"
+              id="title"
+              placeholder="Décrivez briévement la raison de la Note de Frais (ex : Lettre recommandée pour PV d'AG)"
+            />
+          </div>
+          <div class="w-auto">
+            <DatePickerComponent v-model="expenseDateFormat" />
+          </div>
 
-        <div class="flex flex-col gap-2">
-          <Label for="application"
-            >Qui a approuvé la dépense ? (Forcément un membre du CA différent de toi)</Label
-          >
-          <Combobox
-            @input="handleInput"
-            :options="approbatorList"
-            :comboboxLabel="'Selectionner l\'approbateur'"
-          ></Combobox>
-        </div>
-        <div class="flex flex-col gap-2">
-          <Label for="description">Description</Label>
-          <Textarea
-            v-model="form.description"
-            id="description"
-            placeholder="Donnez l'ensemble des informations utiles à l'élaboration de la Note de Frais (Votre RIB, Immatriculation, Raison précise, ...)"
-          />
-        </div>
-        <div class="flex flex-col gap-2">
-          <Label for="file"
-            >Ajouter l'ensemble des justificatifs (Factures au nom de Aquitaine Electronique
-            Informatique, justificatifs de payements ) <br />
-            ATTENTION ces justificatifs si reçu en papier doivent être conservés au format papier et
-            fourni sous ce format au Pole Trésorerie
-          </Label>
-          <Dropzone />
-        </div>
-      </CardContent>
+          <div class="flex flex-col gap-2">
+            <Label for="application"
+              >Qui a approuvé la dépense ? (Forcément un membre du CA différent de toi)</Label
+            >
+            <Combobox
+              @input="handleInput"
+              :options="approbatorList"
+              :comboboxLabel="'Selectionner l\'approbateur'"
+            ></Combobox>
+          </div>
+          <div class="flex flex-col gap-2">
+            <Label for="description">Description</Label>
+            <Textarea
+              v-model="form.description"
+              id="description"
+              placeholder="Donnez l'ensemble des informations utiles à l'élaboration de la Note de Frais (Votre RIB, Immatriculation, Raison précise, ...)"
+            />
+          </div>
+          <div class="flex flex-col gap-2">
+            <Label for="file"
+              >Ajouter l'ensemble des justificatifs (Factures au nom de Aquitaine Electronique
+              Informatique, justificatifs de payements ) <br />
+              ATTENTION ces justificatifs si reçu en papier doivent être conservés au format papier
+              et fourni sous ce format au Pole Trésorerie
+            </Label>
+            <Dropzone v-model="files" :multiple="true" />
+          </div>
+        </CardContent>
 
-      <CardFooter>
-        <Button @click="handleClick">Envoyer ma demande</Button>
-      </CardFooter>
-    </Card>
-  </Wrapper>
-  <Toaster />
+        <CardFooter>
+          <Button @click="handleClick">Envoyer ma demande</Button>
+        </CardFooter>
+      </Card>
+    </Wrapper>
+    <Toaster />
+  </div>
 </template>
 
 <script setup lang="ts">
@@ -96,10 +98,26 @@ async function getData(): Promise<{ value: string; label: string }[]> {
     }
   })
 
+  const groups = await axios.get(`/group`, {
+    headers: {
+      Authorization: `Bearer ${useAuthStore().token}`
+    }
+  })
+
   const belongersData = belongers.data.data?.belongers
   const personsData = persons.data.data?.persons
+  const groupsData = groups.data.data?.groups
 
-  const bureauGroup = belongersData.filter((belonger: any) => belonger.groupName === 'Bureau')
+
+
+  const NumGroupBureau = groupsData.filter((group: any) => group.groupName === 'Bureau')
+
+  const bureauGroup = NumGroupBureau.map((group: any) => {
+    const belonger = belongersData.find((belonger: any) => belonger.groupId === group.groupId)
+    return {
+      ...belonger
+    }
+  })
 
   const bureauPersons = bureauGroup.map((belonger: any) => {
     const person = personsData.find((person: any) => person.personId === belonger.userId)
@@ -117,7 +135,7 @@ const approbatorList = ref([] as { value: string; label: string }[]) // Initiali
 onMounted(async () => {
   approbatorList.value = await getData()
 })
-const file = null
+const files = ref<File[]>([])
 
 const { toast } = useToast()
 

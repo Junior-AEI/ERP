@@ -8,7 +8,7 @@ export const documentsModule: Module = {
             name: 'Documents',
             component: () => import('./views/Documents.vue'),
             meta: {
-                icon: 'folder'
+                icon: 'hard_drive_2'
             }
         }
     ]

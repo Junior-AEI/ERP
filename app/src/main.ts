@@ -22,12 +22,12 @@ import { treasuryModule } from '@/modules/treasuryModule'
 import { adminModule } from '@/modules/adminModule'
 
 registerModule(eventsModule)
-registerModule(adminModule)
 registerModule(treasuryModule)
 registerModule(membersModule)
 registerModule(projectsModule)
 registerModule(documentsModule)
 registerModule(reviewsModule)
+registerModule(adminModule)
 
 /* Définition des stores */
 

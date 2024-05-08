@@ -61,7 +61,7 @@ export default class Documents extends Model {
     @NotEmpty
     @IsIn([STATUS])
     @Column({
-        type: DataType.STRING,
+        type: DataType.ENUM,
         values: STATUS,
         allowNull: false
     })

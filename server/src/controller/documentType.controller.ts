@@ -11,8 +11,8 @@ import { controllerErrorHandler } from './utils.controller'
  * @param res
  */
 const getAll = async (req: Request, res: Response) => {
-    try {  
-        const documentTypes = await DocumentTypes.findAll({ })
+    try {
+        const documentTypes = await DocumentTypes.findAll({})
 
         return res.status(200).json({
             status: 'success',
@@ -66,7 +66,7 @@ async function create(req: Request, res: Response) {
         const documentType = await DocumentTypes.create({
             type: req.body.documentType.type,
             fieldNumber: req.body.documentType.fieldNumber,
-            fieldMeaning: req.body.documentType.fieldMeaning,
+            fieldMeaning: req.body.documentType.fieldMeaning
         })
 
         // Return success

@@ -64,7 +64,6 @@ const getByPk = async (req: Request, res: Response) => {
  */
 const create = async (req: Request, res: Response) => {
     try {
-
         // Test params
         const validator = isValidAddress(req.body.address.address, req.body.address.additionnalAddress, req.body.address.city, req.body.address.postCode, req.body.address.country)
         if (!validator.valid) throw createHttpError(400, validator.message as string)
@@ -108,13 +107,7 @@ async function update(req: Request, res: Response) {
         if (!address) throw createHttpError(404, 'Address not found')
 
         // Test params
-        const validator = isValidAddress(
-            req.body.address.address,
-            req.body.address.additionnalAddress,
-            req.body.address.city,
-            req.body.address.postCode,
-            req.body.address.country
-        )
+        const validator = isValidAddress(req.body.address.address, req.body.address.additionnalAddress, req.body.address.city, req.body.address.postCode, req.body.address.country)
 
         if (!validator.valid) throw createHttpError(400, validator.message as string)
 
@@ -168,7 +161,6 @@ const del = async (req: Request, res: Response) => {
         return res.status(200).json({
             status: 'success'
         })
-
     } catch (err) {
         if (err instanceof HttpError) controllerErrorHandler(err, res)
         else throw err

@@ -10,4 +10,3 @@ router.put('/:projectNoteId', projectNoteController.update)
 router.delete('/:projectNoteId', projectNoteController.del)
 
 export default router
-

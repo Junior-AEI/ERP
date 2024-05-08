@@ -28,7 +28,7 @@ export default class Groups extends Model {
 
     @Column({
         type: DataType.STRING,
-        allowNull: false,
+        allowNull: false
     })
     groupName!: string
 

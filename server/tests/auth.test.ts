@@ -1,6 +1,6 @@
 const request = require('supertest')
 import bcrypt from 'bcrypt'
-import app from "../src/app"
+import app from '../src/app'
 import { createUser } from './seeders/user.seeders'
 import { afterAllTests, beforeAllTests, clearDatabase } from './utils'
 import Tokens from '../src/models/token.model'
@@ -12,111 +12,91 @@ afterAll(afterAllTests)
 
 // ! DONE
 describe('ROUTE (POST): /api/login (Login)', () => {
-
-
-    afterEach(clearDatabase);
+    afterEach(clearDatabase)
 
     it('Wrong informations', async () => {
-
-        await createUser('john.doe');
+        await createUser('john.doe')
 
         const wrongInformationsList = [
             // Void
             {
                 username: null,
-                password: null,
+                password: null
             },
             // Empty
             {
-                username: "",
-                password: "",
+                username: '',
+                password: ''
             },
             // Wrong
             {
-                username: "john",
-                password: "123",
+                username: 'john',
+                password: '123'
             },
             // wrong password
             {
-                username: "john.doe",
-                password: "wrong_mdp",
-            },
+                username: 'john.doe',
+                password: 'wrong_mdp'
+            }
             // ...
         ]
 
-        wrongInformationsList.map(async (wrongInformations) => {
-            const res = await request(app)
-                .post('/api/login')
-                .send({
-                    username: wrongInformations.username,
-                    password: wrongInformations.password
-                })
-            expect(res.status).toEqual(401);
+        wrongInformationsList.map(async wrongInformations => {
+            const res = await request(app).post('/api/login').send({
+                username: wrongInformations.username,
+                password: wrongInformations.password
+            })
+            expect(res.status).toEqual(401)
         })
-
     })
 
     it('Good usage', async () => {
+        await createUser('john.doe')
 
-        await createUser('john.doe');
+        const res = await request(app).post('/api/login').send({
+            username: 'john.doe',
+            password: 'mdp'
+        })
+        expect(res.status).toEqual(200)
 
-        const res = await request(app)
-            .post('/api/login')
-            .send({
-                username: "john.doe",
-                password: 'mdp'
-            })
-        expect(res.status).toEqual(200);
-
-        expect(res.body.data.token).toBeDefined();
-
+        expect(res.body.data.token).toBeDefined()
     })
-
 })
 
 // ! DONE
 describe('ROUTE (POST): /api/forget (Forget password way)', () => {
-
-    afterEach(clearDatabase);
-
+    afterEach(clearDatabase)
 
     it('Wrong username', async () => {
-
         const wrongUsernameList = [
             null, // Void
-            "", // Empty
-            "john.doe", // Filled
+            '', // Empty
+            'john.doe' // Filled
             // ...
         ]
 
-        wrongUsernameList.map(async (wrongUsername) => {
-            const res = await request(app)
-                .post('/api/forget')
-                .send({
-                    username: wrongUsername,
-                })
-            expect(res.status).toEqual(404);
+        wrongUsernameList.map(async wrongUsername => {
+            const res = await request(app).post('/api/forget').send({
+                username: wrongUsername
+            })
+            expect(res.status).toEqual(404)
         })
-
     })
 
     it('Good usage', async () => {
+        await createUser('john.doe')
 
-        await createUser('john.doe');
+        const res = await request(app).post('/api/forget').send({
+            username: 'john.doe'
+        })
 
-        const res = await request(app)
-            .post('/api/forget')
-            .send({
-                username: "john.doe",
-            })
+        expect(res.status).toEqual(200)
 
-        expect(res.status).toEqual(200);
-
-        expect(res.body.data.token).toBeDefined();
+        expect(res.body.data.token).toBeDefined()
 
         const user = await Users.findOne({
             where: {
-                username: "john.doe"
+                username: 'john.doe'
             }
         })
 
@@ -127,68 +107,57 @@ describe('ROUTE (POST): /api/forget (Forget password way)', () => {
         })
 
         // Token has been recorded in the db
-        expect(res.body.data.token).toEqual(tokenDb?.token);
-
+        expect(res.body.data.token).toEqual(tokenDb?.token)
     })
-
 })
 
 // ! DONE
 describe('ROUTE (POST): /api/new-password (Change password)', () => {
-
-    afterEach(clearDatabase);
-
+    afterEach(clearDatabase)
 
     it('Wrong informations', async () => {
-
-        await createUser('john.doe');
+        await createUser('john.doe')
 
         const wrongInformationsList = [
             // Void
             {
                 token: null,
-                newPassword: null,
+                newPassword: null
             },
             // Empty
             {
-                token: "",
-                newPassword: "",
+                token: '',
+                newPassword: ''
             },
             // Wrong token
             {
-                token: "wrongToken",
-                newPassword: "randomPassword",
-            },
+                token: 'wrongToken',
+                newPassword: 'randomPassword'
+            }
             // ...
-            // TODO : Bad new passwords 
+            // TODO : Bad new passwords
         ]
 
-        wrongInformationsList.map(async (wrongInformations) => {
-            const res = await request(app)
-                .post('/api/new-password')
-                .send(wrongInformations)
-            expect(res.status).toEqual(401);
+        wrongInformationsList.map(async wrongInformations => {
+            const res = await request(app).post('/api/new-password').send(wrongInformations)
+            expect(res.status).toEqual(401)
         })
-
     })
 
-
     it('Good usage', async () => {
-
-        await createUser('john.doe');
+        await createUser('john.doe')
 
         const oldUser = await Users.findOne({
-          
             where: {
-                username: "john.doe"
+                username: 'john.doe'
             }
         })
 
-        const oldPasswordHash = oldUser?.password ? oldUser.password : ""
+        const oldPasswordHash = oldUser?.password ? oldUser.password : ''
 
-        expect(await promisify(bcrypt.compare)('mdp', oldPasswordHash)).toBeTruthy();
+        expect(await promisify(bcrypt.compare)('mdp', oldPasswordHash)).toBeTruthy()
 
-        const token = "123456789randomTokenAZERTY"
+        const token = '123456789randomTokenAZERTY'
         const currentDate = new Date()
         const tenMinutesLater = new Date(currentDate.getTime() + 10 * 60000)
 
@@ -198,31 +167,23 @@ describe('ROUTE (POST): /api/new-password (Change password)', () => {
             userId: oldUser?.userId
         })
 
-        const res = await request(app)
-            .post('/api/new-password')
-            .send({
-                token: token,
-                password: "validPassword",
-            })
+        const res = await request(app).post('/api/new-password').send({
+            token: token,
+            password: 'validPassword'
+        })
 
-        expect(res.status).toEqual(200);
+        expect(res.status).toEqual(200)
 
         const newUser = await Users.findOne({
             where: {
-                username: "john.doe"
+                username: 'john.doe'
             }
         })
 
-        const newPasswordHash = newUser?.password ? newUser.password : ""
+        const newPasswordHash = newUser?.password ? newUser.password : ''
 
         expect(newPasswordHash).not.toEqual(oldPasswordHash)
-        expect(await promisify(bcrypt.compare)('mdp', newPasswordHash)).toBeFalsy();
-        expect(await promisify(bcrypt.compare)('validPassword', newPasswordHash)).toBeTruthy();
-
+        expect(await promisify(bcrypt.compare)('mdp', newPasswordHash)).toBeFalsy()
+        expect(await promisify(bcrypt.compare)('validPassword', newPasswordHash)).toBeTruthy()
     })
-
 })
-
-
-
-

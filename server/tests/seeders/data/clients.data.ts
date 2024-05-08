@@ -1,5 +1,4 @@
 export const clients: any = {
-
     // Johnny Doe character
     'johnny.doe': {
         person: {
@@ -19,13 +18,13 @@ export const clients: any = {
         },
         company: {
             name: 'Enseirb',
-            legalEntity: 'Oui',
+            legalEntity: 'Oui'
         },
-        function: "RH",
+        function: 'RH'
     },
 
     // Jane Doe character
-    "jane.doe": {
+    'jane.doe': {
         person: {
             firstname: 'Jane',
             lastname: 'Doe',
@@ -43,8 +42,8 @@ export const clients: any = {
         },
         company: {
             name: 'Matmeca',
-            legalEntity: 'Non',
+            legalEntity: 'Non'
         },
-        function: "Développeur",
+        function: 'Développeur'
     }
 }

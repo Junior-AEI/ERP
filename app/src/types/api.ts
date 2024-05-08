@@ -70,17 +70,15 @@ export interface itTicket {
   applicationConcerned: string
   state: string
   createdAt: DateString
-
 }
 
-export type itTicketInfo = itTicket & User;
+export type itTicketInfo = itTicket & User
 
 export interface Group {
   groupName: string
   createdAt: DateString
   updatedAt: DateString
 }
-
 
 export interface Belonger {
   userId: number
@@ -113,13 +111,13 @@ export interface InfoExpense {
   usernameApprobator: string
 }
 
-export type ExpenseAccountInfo = ExpenseAccount & InfoExpense;
+export type ExpenseAccountInfo = ExpenseAccount & InfoExpense
 
 export interface Company {
   name: string
   legalEntity: string
-  addressId : number
-  companyId : number
+  addressId: number
+  companyId: number
 }
 
 export interface Client {
@@ -147,5 +145,3 @@ export interface DocumentType {
 }
 
 export type DocumentFull = Document & DocumentType // combine Document and DocumentType
-
-

@@ -173,7 +173,7 @@ import { cn } from '@/lib/utils'
 import type { Event } from '@/types/api'
 
 import { type DateRange } from 'radix-vue'
-import { type DateValue, CalendarDate, CalendarDateTime } from '@internationalized/date'
+import { CalendarDate, CalendarDateTime } from '@internationalized/date'
 
 import {
   Command,

@@ -4,39 +4,39 @@ import type { itTicketInfo } from '@/types/api'
 import itTicketsDataTableButton from './itTicketsDataTableButton.vue'
 import { Button } from '../ui/button'
 import Icon from '../Icon.vue'
-import { CalendarDateTime, parseDateTime, DateFormatter, getLocalTimeZone } from '@internationalized/date'
+import {
+  CalendarDateTime,
+  parseDateTime,
+  DateFormatter,
+  getLocalTimeZone
+} from '@internationalized/date'
 import itTicketDataTableDropDown from './itTicketDataTableDropDown.vue'
-
 
 const defaultClasses = 'text-left font-medium'
 
 const df = new DateFormatter('fr-FR', {
   dateStyle: 'long',
   timeStyle: 'short'
-
 })
 function convertToCalendarDate(isoDateString: string): string {
-  const dateObject = new Date(isoDateString);
+  const dateObject = new Date(isoDateString)
 
   // Check if the date object is valid
   if (isNaN(dateObject.getTime())) {
-    throw new Error('Invalid date string');
+    throw new Error('Invalid date string')
   }
 
   // Extract year, month, and day from the date object
-  const year = dateObject.getFullYear();
-  const month = dateObject.getMonth() + 1; // Months are 0-based in JavaScript
-  const day = dateObject.getDate();
-  const hour = dateObject.getHours();
-  const minute = dateObject.getMinutes();
+  const year = dateObject.getFullYear()
+  const month = dateObject.getMonth() + 1 // Months are 0-based in JavaScript
+  const day = dateObject.getDate()
+  const hour = dateObject.getHours()
+  const minute = dateObject.getMinutes()
 
-
-
-  let date = new CalendarDateTime(year, month, day, hour, minute)
+  const date = new CalendarDateTime(year, month, day, hour, minute)
   // Create and return a new CalendarDate object
-  return date.toString();
+  return date.toString()
 }
-
 
 export const columns: ColumnDef<itTicketInfo>[] = [
   {
@@ -47,7 +47,6 @@ export const columns: ColumnDef<itTicketInfo>[] = [
       applyPx0: true
     },
     header: ({ column }) => {
-
       return h(
         Button,
         {
@@ -69,23 +68,27 @@ export const columns: ColumnDef<itTicketInfo>[] = [
     cell: ({ row }) => {
       const item = row.original
 
-      let badgeColorClass = '';
+      let badgeColorClass = ''
       switch (row.getValue('state')) {
         case 'A faire':
-          badgeColorClass = 'bg-red-500';
-          break;
+          badgeColorClass = 'bg-red-500'
+          break
         case 'En cours':
-          badgeColorClass = 'bg-orange-500';
-          break;
+          badgeColorClass = 'bg-orange-500'
+          break
         case 'Clos':
-          badgeColorClass = 'bg-green-500';
-          break;
+          badgeColorClass = 'bg-green-500'
+          break
         default:
-          badgeColorClass = 'bg-gray-500';
+          badgeColorClass = 'bg-gray-500'
       }
 
       return h('div', { class: 'flex items-center' }, [
-        h('div', { class: `text-white p-1 rounded mr-2 ${badgeColorClass}` }, row.getValue('state')),
+        h(
+          'div',
+          { class: `text-white p-1 rounded mr-2 ${badgeColorClass}` },
+          row.getValue('state')
+        ),
         h(itTicketDataTableDropDown, {
           item: {
             ticketId: item.ticketId,
@@ -94,11 +97,10 @@ export const columns: ColumnDef<itTicketInfo>[] = [
             title: item.title,
             description: item.description,
             applicationConcerned: item.applicationConcerned,
-            createdAt: item.createdAt,
-
+            createdAt: item.createdAt
           }
         })
-      ]);
+      ])
     }
   },
   {
@@ -127,27 +129,31 @@ export const columns: ColumnDef<itTicketInfo>[] = [
       )
     },
     cell: ({ row }) => {
-      let badgeColorClass = '';
+      let badgeColorClass = ''
       switch (row.getValue('applicationConcerned')) {
         case 'Passbolt':
-          badgeColorClass = 'bg-blue-500';
-          break;
+          badgeColorClass = 'bg-blue-500'
+          break
         case 'Wiikix':
-          badgeColorClass = 'bg-orange-500';
-          break;
+          badgeColorClass = 'bg-orange-500'
+          break
         case 'ERP':
-          badgeColorClass = 'bg-red-500';
-          break;
+          badgeColorClass = 'bg-red-500'
+          break
         case 'Mail':
-          badgeColorClass = 'bg-green-500';
-          break;
+          badgeColorClass = 'bg-green-500'
+          break
         default:
-          badgeColorClass = 'bg-gray-500';
+          badgeColorClass = 'bg-gray-500'
       }
 
       return h('div', { class: `${defaultClasses} flex items-center` }, [
-        h('div', { class: `text-white p-1 rounded mr-2 ${badgeColorClass}` }, row.getValue('applicationConcerned')),
-      ]);
+        h(
+          'div',
+          { class: `text-white p-1 rounded mr-2 ${badgeColorClass}` },
+          row.getValue('applicationConcerned')
+        )
+      ])
     }
   },
   {
@@ -226,4 +232,4 @@ export const columns: ColumnDef<itTicketInfo>[] = [
       )
     }
   }
-];
+]

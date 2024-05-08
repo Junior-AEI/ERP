@@ -13,7 +13,7 @@ import Groups from '../models/group.model'
  */
 const getAll = async (req: Request, res: Response) => {
     try {
-        const eventGroupConcerned = await EventGroupConcerned.findAll({ })
+        const eventGroupConcerned = await EventGroupConcerned.findAll({})
 
         return res.status(200).json({
             status: 'success',
@@ -37,7 +37,7 @@ const getByPk = async (req: Request, res: Response) => {
         if (req.params.eventId && !isNumber(req.params.eventId)) throw createHttpError(400, 'Please provide a valid identifier')
         if (req.params.groupName) throw createHttpError(400, 'Please provide a valid identifier')
 
-        const identifier = [parseInt(req.params.eventId), req.params.groupName];
+        const identifier = [parseInt(req.params.eventId), req.params.groupName]
         const eventGroupConcerned = await EventGroupConcerned.findByPk((identifier[0], identifier[1]), {})
 
         if (!eventGroupConcerned) throw createHttpError(404, 'event group concerned not found')
@@ -64,8 +64,8 @@ async function create(req: Request, res: Response) {
         if (req.params.eventId && !isNumber(req.params.eventId)) throw createHttpError(400, 'Please provide a valid identifier')
         if (req.params.groupName) throw createHttpError(400, 'Please provide a valid identifier')
 
-        const identifier = [parseInt(req.params.eventId), req.params.groupName];
-        
+        const identifier = [parseInt(req.params.eventId), req.params.groupName]
+
         // Try to find the linked event
         const event = await Events.findByPk(identifier[0])
         if (!event) return createHttpError(404, 'Unable to find the linked event.')
@@ -74,7 +74,6 @@ async function create(req: Request, res: Response) {
         const group = await Groups.findByPk(identifier[1])
         if (!group) return createHttpError(404, 'Unable to find the linked group.')
 
-        
         // Insert data
         const eventGroupConcerned = await EventGroupConcerned.create({
             eventId: identifier[0],
@@ -105,15 +104,13 @@ const update = async (req: Request, res: Response) => {
         if (req.params.eventId && !isNumber(req.params.eventId)) throw createHttpError(400, 'Please provide a valid identifier')
         if (req.params.groupName) throw createHttpError(400, 'Please provide a valid identifier')
 
-        const identifier = [parseInt(req.params.eventId), req.params.groupName];
-        
+        const identifier = [parseInt(req.params.eventId), req.params.groupName]
+
         const eventGroupConcerned = await EventGroupConcerned.findByPk((identifier[0], identifier[1]), {})
         if (!eventGroupConcerned) throw createHttpError(404, 'event group concerned not found')
 
         await eventGroupConcerned.update(req.body, {
-            where: { eventId: identifier[0],
-                     groupName: identifier[1]
-            }
+            where: { eventId: identifier[0], groupName: identifier[1] }
         })
 
         return res.status(200).json({
@@ -135,8 +132,8 @@ const del = async (req: Request, res: Response) => {
         if (req.params.eventId && !isNumber(req.params.eventId)) throw createHttpError(400, 'Please provide a valid identifier')
         if (req.params.groupName) throw createHttpError(400, 'Please provide a valid identifier')
 
-        const identifier = [parseInt(req.params.eventId), req.params.groupName];
-        
+        const identifier = [parseInt(req.params.eventId), req.params.groupName]
+
         const eventGroupConcerned = await EventGroupConcerned.findByPk((identifier[0], identifier[1]), {})
         if (!eventGroupConcerned) throw createHttpError(404, 'event group concerned not found')
 

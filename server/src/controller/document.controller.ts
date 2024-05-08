@@ -7,19 +7,19 @@ import { isValidDocument } from '../validator/document.validator'
 import Users from '../models/user.model'
 import DocumentTypes from '../models/documentType.model'
 
-import multer from 'multer';
+import multer from 'multer'
 
 // Configuration de multer pour spécifier où stocker les fichiers uploadés
 const storage = multer.diskStorage({
     destination: function (req, file, cb) {
-        cb(null, '../uploads/'); // Indiquez le répertoire où les fichiers seront stockés
+        cb(null, '../uploads/') // Indiquez le répertoire où les fichiers seront stockés
     },
     filename: function (req, file, cb) {
-        cb(null, file.originalname); // Utilisez le nom original du fichier pour le stockage
+        cb(null, file.originalname) // Utilisez le nom original du fichier pour le stockage
     }
-});
+})
 
-const upload = multer({ storage: storage }).single('file'); // Utilisez .single('file') pour un seul fichier
+const upload = multer({ storage: storage }).single('file') // Utilisez .single('file') pour un seul fichier
 
 /**
  * Get all documents
@@ -51,10 +51,10 @@ const getByPk = async (req: Request, res: Response) => {
     try {
         // parse identifier
         const identifier = parseInt(req.params.documentId)
-        if (isNaN(identifier)) throw createHttpError(400, 'Please provide a valid identifier');
+        if (isNaN(identifier)) throw createHttpError(400, 'Please provide a valid identifier')
 
         const document = await Documents.findByPk(identifier)
-        if (!document) throw createHttpError(404, 'Document not found');
+        if (!document) throw createHttpError(404, 'Document not found')
 
         return res.status(200).json({
             status: 'success',
@@ -78,26 +78,26 @@ async function create(req: Request, res: Response) {
     try {
         upload(req, res, async (err: any) => {
             if (err) {
-                throw createHttpError(400, 'Error uploading file');
+                throw createHttpError(400, 'Error uploading file')
             }
             try {
                 // parse author (user) identifier
                 const idAuthor = parseInt(req.body.document.authorId)
-                if (isNaN(idAuthor)) throw createHttpError(400, 'Please provide a valid author identifier');
+                if (isNaN(idAuthor)) throw createHttpError(400, 'Please provide a valid author identifier')
 
                 const author = await Users.findByPk(idAuthor)
-                if (!author) throw createHttpError(404, 'Link author not found');
+                if (!author) throw createHttpError(404, 'Link author not found')
 
                 // parse documentType identifier
                 const idType = parseInt(req.body.document.typeId)
-                if (isNaN(idType)) throw createHttpError(400, 'Please provide a valid documentType identifier');
+                if (isNaN(idType)) throw createHttpError(400, 'Please provide a valid documentType identifier')
 
                 const type = await DocumentTypes.findByPk(idType)
-                if (!type) throw createHttpError(404, 'Link document type not found');
+                if (!type) throw createHttpError(404, 'Link document type not found')
 
                 // Test params
                 const validator = isValidDocument(req.body.document.path, req.body.document.version, req.body.document.information, req.body.document.status)
-                if (validator.valid == 0) throw createHttpError(400, validator.message as string);
+                if (validator.valid == 0) throw createHttpError(400, validator.message as string)
 
                 // Insert data
                 const document = await Documents.create({
@@ -106,7 +106,7 @@ async function create(req: Request, res: Response) {
                     path: req.body.document.path,
                     version: req.body.document.version,
                     information: req.body.document.information,
-                    status: req.body.document.status,
+                    status: req.body.document.status
                 })
 
                 // Return success
@@ -115,12 +115,12 @@ async function create(req: Request, res: Response) {
                     data: {
                         documentId: document.documentId
                     }
-                });
+                })
             } catch (err) {
                 if (err instanceof HttpError) controllerErrorHandler(err, res)
                 else throw err
             }
-        });
+        })
     } catch (err) {
         if (err instanceof HttpError) controllerErrorHandler(err, res)
         else throw err
@@ -136,41 +136,38 @@ const update = async (req: Request, res: Response) => {
     try {
         upload(req, res, async (err: any) => {
             if (err) {
-                throw createHttpError(400, 'Error uploading file');
+                throw createHttpError(400, 'Error uploading file')
             }
             try {
-
                 // parse identifier
                 const identifier = parseInt(req.params.documentId)
-                if (isNaN(identifier)) throw createHttpError(400, 'Please provide a valid identifier');
+                if (isNaN(identifier)) throw createHttpError(400, 'Please provide a valid identifier')
 
                 const document = await Documents.findByPk(identifier)
-                if (!document) throw createHttpError(404, 'Document not found');
-
+                if (!document) throw createHttpError(404, 'Document not found')
 
                 // parse author (user) identifier
                 const idAuthor = parseInt(req.body.document.authorId)
-                if (isNaN(idAuthor)) throw createHttpError(400, 'Please provide a valid author identifier');
+                if (isNaN(idAuthor)) throw createHttpError(400, 'Please provide a valid author identifier')
 
                 const author = await Users.findByPk(idAuthor)
-                if (!author) throw createHttpError(404, 'Link author not found');
-
+                if (!author) throw createHttpError(404, 'Link author not found')
 
                 // parse documentType identifier
                 const idType = parseInt(req.body.document.typeId)
-                if (isNaN(idType)) throw createHttpError(400, 'Please provide a valid documentType identifier');
+                if (isNaN(idType)) throw createHttpError(400, 'Please provide a valid documentType identifier')
 
                 const type = await DocumentTypes.findByPk(idType)
-                if (!type) throw createHttpError(404, 'Link document type not found');
-                
+                if (!type) throw createHttpError(404, 'Link document type not found')
+
                 // Test params
                 const validator = isValidDocument(req.body.document.path, req.body.document.version, req.body.document.information, req.body.document.status)
-                if (validator.valid == 0) throw createHttpError(400, validator.message as string);
+                if (validator.valid == 0) throw createHttpError(400, validator.message as string)
 
                 await Documents.update(req.body.document, {
                     where: { documentId: identifier }
                 })
-                
+
                 return res.status(200).json({
                     status: 'success'
                 })

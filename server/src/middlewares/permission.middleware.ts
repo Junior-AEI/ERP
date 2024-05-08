@@ -24,7 +24,7 @@ function verifyPermission(permissionName: string) {
         if (perm) {
             next()
         } else {
-            console.log("\n\npassé\n\n")
+            console.log('\n\npassé\n\n')
             return res.status(401).json({
                 status: 'error',
                 message: 'Unauthorized'

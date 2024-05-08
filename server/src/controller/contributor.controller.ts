@@ -61,19 +61,18 @@ async function create(req: Request, res: Response) {
     try {
         // parse project identifier
         const idProject = parseInt(req.body.contributor.projectId)
-        if (isNaN(idProject)) throw createHttpError(400, 'Please provide a valid project identifier');
+        if (isNaN(idProject)) throw createHttpError(400, 'Please provide a valid project identifier')
 
         const project = await Projects.findByPk(idProject)
-        if (!project) throw createHttpError(404, 'Link project not found');
+        if (!project) throw createHttpError(404, 'Link project not found')
 
         // parse user identifier
         const idMember = parseInt(req.body.contributor.memberId)
-        if (isNaN(idMember)) throw createHttpError(400, 'Please provide a valid member identifier');
+        if (isNaN(idMember)) throw createHttpError(400, 'Please provide a valid member identifier')
 
         const member = await Members.findByPk(idMember)
         if (!member) throw createHttpError(404, 'Link member not found')
 
-        
         // Insert data
         const contributor = await Contributors.create({
             memberId: idMember,
@@ -109,21 +108,20 @@ const update = async (req: Request, res: Response) => {
 
         // parse project identifier
         const idProject = parseInt(req.body.contributor.projectId)
-        if (isNaN(idProject)) throw createHttpError(400, 'Please provide a valid project identifier');
+        if (isNaN(idProject)) throw createHttpError(400, 'Please provide a valid project identifier')
 
         const project = await Projects.findByPk(idProject)
-        if (!project) throw createHttpError(404, 'Link project not found');
+        if (!project) throw createHttpError(404, 'Link project not found')
 
         // parse user identifier
         const idMember = parseInt(req.body.contributor.memberId)
-        if (isNaN(idMember)) throw createHttpError(400, 'Please provide a valid member identifier');
+        if (isNaN(idMember)) throw createHttpError(400, 'Please provide a valid member identifier')
 
         const member = await Members.findByPk(idMember)
         if (!member) throw createHttpError(404, 'Link member not found')
 
-
         await Contributors.update(req.body.contributor, {
-            where: { 
+            where: {
                 contributorId: identifier
             }
         })

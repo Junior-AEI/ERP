@@ -1,8 +1,6 @@
-
 export const companies: any = {
-
     // Enseirb company
-    'Enseirb': {
+    Enseirb: {
         name: 'Enseirb',
         legalEntity: 'Oui',
         address: {
@@ -11,11 +9,11 @@ export const companies: any = {
             city: 'Talence',
             postCode: '33400',
             country: 'FRA'
-        },
+        }
     },
 
     // matmeca company
-    'Matmeca': {
+    Matmeca: {
         name: 'Matmeca',
         legalEntity: 'Non',
         address: {
@@ -24,8 +22,6 @@ export const companies: any = {
             city: 'Bordeaux',
             postCode: '33000',
             country: 'FRA'
-        },
-    },
-
+        }
+    }
 }
-

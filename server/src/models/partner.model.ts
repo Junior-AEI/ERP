@@ -23,7 +23,7 @@ export default class Partners extends Model {
         primaryKey: true,
         autoIncrement: true
     })
-    partnerId!: number    
+    partnerId!: number
 
     @ForeignKey(() => Companies)
     @Column({

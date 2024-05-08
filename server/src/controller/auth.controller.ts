@@ -18,7 +18,6 @@ import Persons from '../models/person.model'
  * @param res
  */
 const login = async (req: Request, res: Response) => {
-
     try {
         // Retrieve username and password from request body
         const username = req.body.username || ''
@@ -40,9 +39,6 @@ const login = async (req: Request, res: Response) => {
             ]
         })
 
-
-
-
         // Return error if user not found
         if (!user) throw createHttpError(401, 'Invalid username or password')
 
@@ -56,13 +52,10 @@ const login = async (req: Request, res: Response) => {
         const token = await new SignJWT({ username }).setProtectedHeader({ alg: 'HS256' }).setAudience(JWT_AUDIENCE).setIssuer(JWT_ISSUER).setExpirationTime(JWT_EXPIRATION).sign(JWT_SECRET_KEY)
 
         // Send email in background
-        sendEmail('mathieu.chaillon@gmail.com', 'User Logged In', `User ${username} has logged in.`)
-            .catch(error => console.error('Error sending email:', error)); // Log any errors, but don't let them propagate
+        sendEmail('mathieu.chaillon@gmail.com', 'User Logged In', `User ${username} has logged in.`).catch(error => console.error('Error sending email:', error)) // Log any errors, but don't let them propagate
 
-        // CHAT ID A CHANGER ICI 
-        sendBotMesssage(881607628, `User ${username} has logged in.`)
-            .catch(error => console.error('Error sending email:', error));
-
+        // CHAT ID A CHANGER ICI
+        sendBotMesssage(881607628, `User ${username} has logged in.`).catch(error => console.error('Error sending email:', error))
 
         // Return success with token and user details
         return res.status(200).json({
@@ -81,7 +74,6 @@ const login = async (req: Request, res: Response) => {
         // Vous pouvez choisir de journaliser l'erreur, de retourner une réponse d'erreur, ou prendre toute autre action appropriée
         // Handle errors
         if (err instanceof HttpError) {
-
             return controllerErrorHandler(err, res)
         }
         throw err
@@ -129,7 +121,7 @@ const forgetPassword = async (req: Request, res: Response) => {
                 userId: user.userId
             })
 
-            // TODO: Send an email with a link 
+            // TODO: Send an email with a link
             // ! (not in test env)
 
             // Return success response

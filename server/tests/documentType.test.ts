@@ -1,5 +1,5 @@
 import request from 'supertest'
-import app from "../src/app"
+import app from '../src/app'
 import { beforeAllTests, afterAllTests, clearDatabase } from './utils'
 import { initUser } from './seeders/general'
 import { createDocumentType } from './seeders/documentType.seeders'
@@ -11,8 +11,7 @@ afterAll(afterAllTests)
 
 // ! DONE
 describe('ROUTE (GET): /api/documentType (Get all document types)', () => {
-
-    afterEach(clearDatabase);
+    afterEach(clearDatabase)
 
     it('Normal usage', async () => {
         // To have authorization
@@ -21,59 +20,45 @@ describe('ROUTE (GET): /api/documentType (Get all document types)', () => {
         await createDocumentType('affiche')
         await createDocumentType('facture')
 
-        const res = await request(app)
-            .get('/api/documentType')
-            .set('Authorization', `Bearer ${token}`);
+        const res = await request(app).get('/api/documentType').set('Authorization', `Bearer ${token}`)
 
         expect(res.status).toEqual(200)
-        expect(res.body.status).toEqual("success")
-        expect(res.body.data.documentTypes.length).toEqual(2);
+        expect(res.body.status).toEqual('success')
+        expect(res.body.data.documentTypes.length).toEqual(2)
 
         for (let i = 0; i < 2; i++) {
-            expect(res.body.data.documentTypes[i].typeId).toBeDefined();
-            expect(res.body.data.documentTypes[i].type).toBeDefined();
-            expect(res.body.data.documentTypes[i].fieldNumber).toBeDefined();
-            expect(res.body.data.documentTypes[i].fieldMeaning).toBeDefined();
+            expect(res.body.data.documentTypes[i].typeId).toBeDefined()
+            expect(res.body.data.documentTypes[i].type).toBeDefined()
+            expect(res.body.data.documentTypes[i].fieldNumber).toBeDefined()
+            expect(res.body.data.documentTypes[i].fieldMeaning).toBeDefined()
         }
     })
 })
 
 // ! DONE
 describe('ROUTE (GET): /api/documentType/:typeId (Get a specific document type)', () => {
-
-    afterEach(clearDatabase);
+    afterEach(clearDatabase)
 
     it('Wrong format type', async () => {
-
         const token = await initUser('john.doe')
 
-        const wrongFormatIdList = [
-            null,
-            undefined,
-            "id",
-        ]
+        const wrongFormatIdList = [null, undefined, 'id']
 
         for (const wrongFormatId of wrongFormatIdList) {
-            const res = await request(app)
-                .get(`/api/documentType/${wrongFormatId}`)
-                .set('Authorization', `Bearer ${token}`);
+            const res = await request(app).get(`/api/documentType/${wrongFormatId}`).set('Authorization', `Bearer ${token}`)
 
             expect(res.status).toEqual(400)
         }
-
     })
 
     it('Wrong type with a good format', async () => {
-        
         const token = await initUser('john.doe')
-        
-        const res = await request(app)
-        .get(`/api/documentType/${-10}`)
-        .set('Authorization', `Bearer ${token}`);
-        
+
+        const res = await request(app).get(`/api/documentType/${-10}`).set('Authorization', `Bearer ${token}`)
+
         expect(res.status).toEqual(404)
     })
-    
+
     it('Normal usage', async () => {
         const typeId = await createDocumentType('affiche')
 
@@ -85,118 +70,95 @@ describe('ROUTE (GET): /api/documentType/:typeId (Get a specific document type)'
             }
         })
 
-        const res = await request(app)
-            .get(`/api/documentType/${documentType?.typeId}`)
-            .set('Authorization', `Bearer ${token}`);
+        const res = await request(app).get(`/api/documentType/${documentType?.typeId}`).set('Authorization', `Bearer ${token}`)
 
         expect(res.status).toEqual(200)
-        expect(res.body.status).toEqual("success")
-        expect(res.body.data.documentType).toBeDefined();
-        expect(res.body.data.documentType.type).toEqual(documentType?.type);
-        expect(res.body.data.documentType.fieldNumber).toEqual(documentType?.fieldNumber);
-        expect(res.body.data.documentType.fieldMeaning).toEqual(documentType?.fieldMeaning);
+        expect(res.body.status).toEqual('success')
+        expect(res.body.data.documentType).toBeDefined()
+        expect(res.body.data.documentType.type).toEqual(documentType?.type)
+        expect(res.body.data.documentType.fieldNumber).toEqual(documentType?.fieldNumber)
+        expect(res.body.data.documentType.fieldMeaning).toEqual(documentType?.fieldMeaning)
     })
 })
 
 // ! DONE
 describe('ROUTE (POST): /api/documentType (Create new project note)', () => {
-
-    afterEach(clearDatabase);
+    afterEach(clearDatabase)
 
     const goodParams = {
         type: 'CE',
         fieldNumber: 3,
-        fieldMeaning: "a|b|c",
+        fieldMeaning: 'a|b|c'
     }
 
     it('Wrong type', async () => {
-        
         const token = await initUser('john.doe')
-        
-        const wrongTypeList = [
-            "",
-            null,
-            undefined,
-            "TypeToooo" + "o".repeat(15) + "oLong",
-        ]
+
+        const wrongTypeList = ['', null, undefined, 'TypeToooo' + 'o'.repeat(15) + 'oLong']
 
         for (const wrongType of wrongTypeList) {
             const res = await request(app)
-                .post("/api/documentType")
+                .post('/api/documentType')
                 .send({
                     documentType: {
                         ...goodParams,
-                        type: wrongType,
+                        type: wrongType
                     }
                 })
-                .set('Authorization', `Bearer ${token}`);
+                .set('Authorization', `Bearer ${token}`)
             expect(res.status).toEqual(400)
         }
     })
 
     it('Wrong field number', async () => {
-        
         const token = await initUser('john.doe')
-        
-        const wrongFieldNumberList = [
-            "",
-            null,
-            undefined,
-            -10,
-            40,
-        ]
+
+        const wrongFieldNumberList = ['', null, undefined, -10, 40]
 
         for (const wrongFieldNumber of wrongFieldNumberList) {
             const res = await request(app)
-                .post("/api/documentType")
+                .post('/api/documentType')
                 .send({
                     documentType: {
                         ...goodParams,
-                        fieldNumber: wrongFieldNumber,
+                        fieldNumber: wrongFieldNumber
                     }
                 })
-                .set('Authorization', `Bearer ${token}`);
+                .set('Authorization', `Bearer ${token}`)
             expect(res.status).toEqual(400)
         }
     })
-    
+
     it('Wrong field meaning', async () => {
-        
         const token = await initUser('john.doe')
-        
-        const wrongFieldMeaningList = [
-            "",
-            null,
-            undefined,
-            "FieldMeaningToooo" + "o".repeat(90) + "oLong",
-        ]
+
+        const wrongFieldMeaningList = ['', null, undefined, 'FieldMeaningToooo' + 'o'.repeat(90) + 'oLong']
 
         for (const wrongFieldMeaning of wrongFieldMeaningList) {
             const res = await request(app)
-                .post("/api/documentType")
+                .post('/api/documentType')
                 .send({
                     documentType: {
                         ...goodParams,
-                        type: wrongFieldMeaning,
+                        type: wrongFieldMeaning
                     }
                 })
-                .set('Authorization', `Bearer ${token}`);
+                .set('Authorization', `Bearer ${token}`)
             expect(res.status).toEqual(400)
         }
     })
-    
-    it('Good usage', async () => {
 
+    it('Good usage', async () => {
         const token = await initUser('john.doe')
 
         const res = await request(app)
-            .post("/api/documentType")
+            .post('/api/documentType')
             .send({
                 documentType: {
-                    ...goodParams,
+                    ...goodParams
                 }
             })
-            .set('Authorization', `Bearer ${token}`);
+            .set('Authorization', `Bearer ${token}`)
 
         expect(res.status).toEqual(200)
         expect(res.body.data.typeId).toBeDefined()
@@ -216,23 +178,18 @@ describe('ROUTE (POST): /api/documentType (Create new project note)', () => {
 
 // ! DONE
 describe('ROUTE (PUT): /api/documentType/:id (Update document type)', () => {
-    afterEach(clearDatabase);
+    afterEach(clearDatabase)
 
     const goodParams = {
-                type: 'CE',
-                fieldNumber: 3,
-                fieldMeaning: "a|b|c",
-            }
+        type: 'CE',
+        fieldNumber: 3,
+        fieldMeaning: 'a|b|c'
+    }
 
     it('Wrong format typeId', async () => {
-
         const token = await initUser('john.doe')
 
-        const wrongParamList = [
-            null,
-            undefined,
-            "wrongIdFormat",
-        ]
+        const wrongParamList = [null, undefined, 'wrongIdFormat']
 
         for (const wrongParam of wrongParamList) {
             const res = await request(app)
@@ -242,13 +199,12 @@ describe('ROUTE (PUT): /api/documentType/:id (Update document type)', () => {
                         ...goodParams
                     }
                 })
-                .set('Authorization', `Bearer ${token}`);
+                .set('Authorization', `Bearer ${token}`)
             expect(res.status).toEqual(400)
         }
     })
 
     it('Wrong typeId', async () => {
-
         const token = await initUser('john.doe')
 
         const res = await request(app)
@@ -258,22 +214,16 @@ describe('ROUTE (PUT): /api/documentType/:id (Update document type)', () => {
                     ...goodParams
                 }
             })
-            .set('Authorization', `Bearer ${token}`);
+            .set('Authorization', `Bearer ${token}`)
         expect(res.status).toEqual(404)
     })
 
     it('Wrong type', async () => {
-        
         const token = await initUser('john.doe')
 
-        const typeId = await createDocumentType("affiche")
+        const typeId = await createDocumentType('affiche')
 
-        const wrongTypeList = [
-            "",
-            null,
-            undefined,
-            "TypeToooo" + "o".repeat(15) + "oLong",
-        ]
+        const wrongTypeList = ['', null, undefined, 'TypeToooo' + 'o'.repeat(15) + 'oLong']
 
         for (const wrongType of wrongTypeList) {
             const res = await request(app)
@@ -284,24 +234,17 @@ describe('ROUTE (PUT): /api/documentType/:id (Update document type)', () => {
                         type: wrongType
                     }
                 })
-                .set('Authorization', `Bearer ${token}`);
+                .set('Authorization', `Bearer ${token}`)
             expect(res.status).toEqual(400)
         }
     })
-    
+
     it('Wrong field number', async () => {
-        
         const token = await initUser('john.doe')
 
-        const typeId = await createDocumentType("affiche")
+        const typeId = await createDocumentType('affiche')
 
-        const wrongFieldNumberList = [
-            "",
-            null,
-            undefined,
-            -10,
-            40
-        ]
+        const wrongFieldNumberList = ['', null, undefined, -10, 40]
 
         for (const wrongFieldNumber of wrongFieldNumberList) {
             const res = await request(app)
@@ -312,23 +255,17 @@ describe('ROUTE (PUT): /api/documentType/:id (Update document type)', () => {
                         fieldNumber: wrongFieldNumber
                     }
                 })
-                .set('Authorization', `Bearer ${token}`);
+                .set('Authorization', `Bearer ${token}`)
             expect(res.status).toEqual(400)
         }
     })
 
     it('Wrong field meaning', async () => {
-        
         const token = await initUser('john.doe')
 
-        const typeId = await createDocumentType("affiche")
+        const typeId = await createDocumentType('affiche')
 
-        const wrongFieldMeaningList = [
-            "",
-            null,
-            undefined,
-            "FieldMeaningToooo" + "o".repeat(90) + "oLong",
-        ]
+        const wrongFieldMeaningList = ['', null, undefined, 'FieldMeaningToooo' + 'o'.repeat(90) + 'oLong']
 
         for (const wrongFieldMeaning of wrongFieldMeaningList) {
             const res = await request(app)
@@ -339,13 +276,12 @@ describe('ROUTE (PUT): /api/documentType/:id (Update document type)', () => {
                         fieldMeaning: wrongFieldMeaning
                     }
                 })
-                .set('Authorization', `Bearer ${token}`);
+                .set('Authorization', `Bearer ${token}`)
             expect(res.status).toEqual(400)
         }
     })
 
     it('Good usage', async () => {
-
         const token = await initUser('john.doe')
 
         const typeId = await createDocumentType('affiche')
@@ -365,10 +301,10 @@ describe('ROUTE (PUT): /api/documentType/:id (Update document type)', () => {
             .put(`/api/documentType/${typeId}`)
             .send({
                 documentType: {
-                    ...goodParams,
+                    ...goodParams
                 }
             })
-            .set('Authorization', `Bearer ${token}`);
+            .set('Authorization', `Bearer ${token}`)
 
         expect(res.status).toEqual(200)
 
@@ -382,28 +318,20 @@ describe('ROUTE (PUT): /api/documentType/:id (Update document type)', () => {
         expect(updatedType?.type).toEqual(goodParams.type)
         expect(updatedType?.fieldNumber).toEqual(goodParams.fieldNumber)
         expect(updatedType?.fieldMeaning).toEqual(goodParams.fieldMeaning)
-    })  
+    })
 })
 
 // ! DONE
 describe('ROUTE (DELETE): /api/documentType/:id (Delete document type)', () => {
-
-    afterEach(clearDatabase);
+    afterEach(clearDatabase)
 
     it('Wrong format typeId', async () => {
-
         const token = await initUser('john.doe')
 
-        const wrongParamList = [
-            null,
-            undefined,
-            "wrongIdFormat",
-        ]
+        const wrongParamList = [null, undefined, 'wrongIdFormat']
 
         for (const wrongParam of wrongParamList) {
-            const res = await request(app)
-                .delete(`/api/documentType/${wrongParam}`)
-                .set('Authorization', `Bearer ${token}`);
+            const res = await request(app).delete(`/api/documentType/${wrongParam}`).set('Authorization', `Bearer ${token}`)
             expect(res.status).toEqual(400)
         }
     })
@@ -411,17 +339,14 @@ describe('ROUTE (DELETE): /api/documentType/:id (Delete document type)', () => {
     it('Wrong typeId (type not found)', async () => {
         const token = await initUser('john.doe')
 
-        const res = await request(app)
-            .delete(`/api/documentType/${-10}`)
-            .set('Authorization', `Bearer ${token}`);
+        const res = await request(app).delete(`/api/documentType/${-10}`).set('Authorization', `Bearer ${token}`)
         expect(res.status).toEqual(404)
     })
 
     it('Good usage', async () => {
-
         const token = await initUser('john.doe')
 
-        const typeId = await createDocumentType("affiche")
+        const typeId = await createDocumentType('affiche')
 
         const type = await DocumentTypes.findOne({
             where: {
@@ -431,9 +356,7 @@ describe('ROUTE (DELETE): /api/documentType/:id (Delete document type)', () => {
 
         expect(type).toBeTruthy()
 
-        const res = await request(app)
-            .delete(`/api/documentType/${typeId}`)
-            .set('Authorization', `Bearer ${token}`);
+        const res = await request(app).delete(`/api/documentType/${typeId}`).set('Authorization', `Bearer ${token}`)
 
         expect(res.status).toEqual(200)
 
@@ -445,5 +368,4 @@ describe('ROUTE (DELETE): /api/documentType/:id (Delete document type)', () => {
 
         expect(deletedType).not.toBeTruthy()
     })
-
 })

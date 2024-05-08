@@ -39,9 +39,7 @@ const getAll = async (req: Request, res: Response) => {
  * @param res
  */
 const getByPk = async (req: Request, res: Response) => {
-
     try {
-
         const identifier = parseInt(req.params.userId)
         if (isNaN(identifier)) throw createHttpError(400, 'Please provide a valid identifier')
 
@@ -91,8 +89,8 @@ async function create(req: Request, res: Response) {
             password: req.body.user.password,
             mandateStart: new Date(req.body.user.mandateStart),
             mandateEnd: new Date(req.body.user.mandateEnd),
-            emailJE: req.body.user.emailJE,
-        });
+            emailJE: req.body.user.emailJE
+        })
 
         // Return success
         return res.status(200).json({

@@ -58,10 +58,8 @@ const getByPk = async (req: Request, res: Response) => {
  * @param res
  */
 const getTheUser = async (req: Request, res: Response) => {
-    console.log('getTheUser');
+    console.log('getTheUser')
 }
-
-    
 
 /**
  * Select all tasks for a specific user
@@ -99,9 +97,9 @@ const getByUser = async (req: Request, res: Response) => {
 async function create(req: Request, res: Response) {
     try {
         // Generate identifier
-        // const identifier = 
+        // const identifier =
 
-        var dueDateFormat = new Date(req.body.task.dueDate);
+        const dueDateFormat = new Date(req.body.task.dueDate)
         // Test params
         const validator = isValidTask(dueDateFormat, req.body.task.description, 'A faire')
         console.log(dueDateFormat)
@@ -115,15 +113,15 @@ async function create(req: Request, res: Response) {
         const task = await Tasks.create({
             dueDate: req.body.task.dueDate,
             description: req.body.task.description,
-            userId : req.body.task.userId,
-            issuerId : req.body.task.issuerId,
+            userId: req.body.task.userId,
+            issuerId: req.body.task.issuerId,
             state: 'A faire'
         })
 
         // Return success
         return res.status(200).json({
             status: 'success',
-            data: { 
+            data: {
                 taskId: task.taskId
             }
         })

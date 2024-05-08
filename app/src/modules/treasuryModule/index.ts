@@ -10,7 +10,7 @@ export const treasuryModule: Module = {
       children: [
         {
           path: '/notes-de-frais',
-          name: "Notes de Frais",
+          name: 'Notes de Frais',
           component: () => import('./views/ExpenseAdmin.vue'),
           meta: {
             icon: 'credit_card'

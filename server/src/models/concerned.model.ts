@@ -25,7 +25,6 @@ export default class Concerned extends Model {
     })
     concernedId!: number
 
-
     @ForeignKey(() => Permissions)
     @Column({
         type: DataType.INTEGER,

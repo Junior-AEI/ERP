@@ -13,11 +13,16 @@
             <Label> Version du document </Label>
             <Popover v-model:open="isOpen">
               <PopoverTrigger as-child>
-                <Button variant="outline" role="combobox" :aria-expanded="isOpen" class="justify-between">
+                <Button
+                  variant="outline"
+                  role="combobox"
+                  :aria-expanded="isOpen"
+                  class="justify-between"
+                >
                   {{
                     documentTypeName
                       ? documentTypes.find((documentType) => documentType.type === documentTypeName)
-                        ?.type
+                          ?.type
                       : 'Sélectionner le type de document'
                   }}
                   <Icon name="unfold_more" class="ml-2 h-4 w-4 shrink-0 opacity-50" />
@@ -27,14 +32,19 @@
                 <Command>
                   <CommandList>
                     <CommandGroup>
-                      <CommandItem v-for="documentType in documentTypes" :key="documentType.typeId"
-                        :value="documentType.type" @select="(ev) => {
+                      <CommandItem
+                        v-for="documentType in documentTypes"
+                        :key="documentType.typeId"
+                        :value="documentType.type"
+                        @select="
+                          (ev) => {
                             if (typeof ev.detail.value === 'string') {
                               documentTypeName = ev.detail.value
                             }
                             isOpen = false
                           }
-                          ">
+                        "
+                      >
                         {{ documentType.type }}
                       </CommandItem>
                     </CommandGroup>
@@ -45,14 +55,22 @@
             <Input type="number" v-model="version" placeholder="1" />
           </div>
           <div v-if="documentTypeName">
-            <div v-for="(field, index) in documentStringParse(
-              documentTypes.find((documentType) => documentType.type === documentTypeName)
-                ?.fieldMeaning ?? ''
-            )" :key="index">
+            <div
+              v-for="(field, index) in documentStringParse(
+                documentTypes.find((documentType) => documentType.type === documentTypeName)
+                  ?.fieldMeaning ?? ''
+              )"
+              :key="index"
+            >
               <div class="flex-col gap-2">
                 <Label>{{ field }}</Label>
                 <Input v-if="field != 'Date de fin de validité'" v-model="documentInfos[index]" />
-                <Input v-else type="date" v-model="documentInfos[index]" placeholder="Date de fin de validité" />
+                <Input
+                  v-else
+                  type="date"
+                  v-model="documentInfos[index]"
+                  placeholder="Date de fin de validité"
+                />
               </div>
             </div>
           </div>

@@ -24,15 +24,9 @@
             </SelectTrigger>
             <SelectContent>
               <SelectGroup>
-                <SelectItem value="H">
-                  Homme
-                </SelectItem>
-                <SelectItem value="F">
-                  Femme
-                </SelectItem>
-                <SelectItem value="O">
-                  Other
-                </SelectItem>
+                <SelectItem value="H"> Homme </SelectItem>
+                <SelectItem value="F"> Femme </SelectItem>
+                <SelectItem value="O"> Other </SelectItem>
               </SelectGroup>
             </SelectContent>
           </Select>
@@ -49,12 +43,15 @@
         </div>
         <div class="flex flex-col gap-2">
           <Label for="application">Entreprise du Client</Label>
-          <Combobox @input="handleInputCompany" :options="companyList" :comboboxLabel="'Selectionner l\'entreprise'">
+          <Combobox
+            @input="handleInputCompany"
+            :options="companyList"
+            :comboboxLabel="'Selectionner l\'entreprise'"
+          >
           </Combobox>
         </div>
         <div v-if="form.companyId == 0">
           <div class="flex items-end gap-4">
-
             <div class="flex flex-1 flex-col gap-2">
               <Label for="name">Nom de l'Entreprise</Label>
               <Input id="name" placeholder="Tel Fixe" v-model="form.name" />
@@ -64,28 +61,34 @@
               <Input id="legalEntity" placeholder="Tel Fixe" v-model="form.legalEntity" />
             </div>
           </div>
-          <div class="flex flex-col gap-2 mt-2">
+          <div class="mt-2 flex flex-col gap-2">
             <Label for="application">Adresse de l'Entreprise</Label>
-            <Combobox @input="handleInputAddress" :options="addressList" :comboboxLabel="'Selectionner l\'adresse'">
+            <Combobox
+              @input="handleInputAddress"
+              :options="addressList"
+              :comboboxLabel="'Selectionner l\'adresse'"
+            >
             </Combobox>
           </div>
         </div>
 
         <div v-if="form.addressId == 0">
           <div class="flex items-end gap-4">
-
             <div class="flex flex-1 flex-col gap-2">
               <Label for="name">Adresse de l'Entreprise </Label>
               <Input id="address" placeholder="Tel Fixe" v-model="form.address" />
             </div>
             <div class="flex flex-1 flex-col gap-2">
               <Label for="legalEntity">Complément d'adresse</Label>
-              <Input id="additionnalAddress" placeholder="Tel Fixe" v-model="form.additionnalAddress" />
+              <Input
+                id="additionnalAddress"
+                placeholder="Tel Fixe"
+                v-model="form.additionnalAddress"
+              />
             </div>
           </div>
           <div class="flex items-end gap-4">
-
-            <div class="flex flex-1 flex-col gap-2 mt-2">
+            <div class="mt-2 flex flex-1 flex-col gap-2">
               <Label for="name">Code Postal </Label>
               <Input id="postCode" placeholder="Tel Fixe" v-model="form.postCode" />
             </div>
@@ -94,16 +97,11 @@
               <Input id="city" placeholder="Tel Fixe" v-model="form.city" />
             </div>
           </div>
-          <div class="flex flex-1 flex-col gap-2 mt-2">
+          <div class="mt-2 flex flex-1 flex-col gap-2">
             <Label for="legalEntity">Pays</Label>
             <Input id="country" placeholder="Tel Fixe" v-model="form.country" />
           </div>
-
         </div>
-
-
-
-
 
         <Button @click="console.log()">Créer un nouveau Client</Button>
       </CardContent>
@@ -121,26 +119,25 @@ import type { ClientInfo } from '@/types/api'
 
 const form = ref<ClientInfo>({
   personId: NaN,
-  lastname: "",
-  firstname: "",
-  gender: "",
-  mobilePhone: "",
-  landlinePhone: "",
-  email: "",
-  createdAt: "",
-  updatedAt: "",
-  name: "",
-  legalEntity: "",
+  lastname: '',
+  firstname: '',
+  gender: '',
+  mobilePhone: '',
+  landlinePhone: '',
+  email: '',
+  createdAt: '',
+  updatedAt: '',
+  name: '',
+  legalEntity: '',
   addressId: NaN,
-  function: "",
+  function: '',
   companyId: NaN,
-  address: "",
-  additionnalAddress: "",
-  city: "",
-  postCode: "",
-  country: ""
+  address: '',
+  additionnalAddress: '',
+  city: '',
+  postCode: '',
+  country: ''
 })
-
 
 async function getDataCompany(): Promise<{ value: string; label: string }[]> {
   // Fetch data from your API here.
@@ -157,7 +154,6 @@ async function getDataCompany(): Promise<{ value: string; label: string }[]> {
       label: company.name
     }
   })
-
 
   return companiesLists
 }
@@ -178,14 +174,12 @@ async function getDataAddress(): Promise<{ value: string; label: string }[]> {
     }
   })
 
-
   return addressesLists
 }
 
 const handleInputCompany = (value: string) => {
   form.value.companyId = parseInt(value)
 }
-
 
 const handleInputAddress = (value: string) => {
   form.value.addressId = parseInt(value)
@@ -198,7 +192,5 @@ onMounted(async () => {
   companyList.value.push({ value: '0', label: 'Entreprise non présente' })
   addressList.value = await getDataAddress()
   addressList.value.push({ value: '0', label: 'Adresse non présente' })
-
 })
-
 </script>

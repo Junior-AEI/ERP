@@ -108,8 +108,6 @@ async function getData(): Promise<{ value: string; label: string }[]> {
   const personsData = persons.data.data?.persons
   const groupsData = groups.data.data?.groups
 
-
-
   const NumGroupBureau = groupsData.filter((group: any) => group.groupName === 'Bureau')
 
   const bureauGroup = NumGroupBureau.map((group: any) => {

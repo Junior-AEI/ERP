@@ -68,7 +68,7 @@ async function create(req: Request, res: Response) {
             req.body.person.landlinePhone
         )
         if (!validator.valid) throw createHttpError(400, validator.message as string)
-
+            
 
         // Insert data
         const person = await Persons.create({

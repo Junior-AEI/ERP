@@ -68,7 +68,7 @@ const create = async (req: Request, res: Response) => {
         // Test params
         const validator = isValidAddress(req.body.address.address, req.body.address.additionnalAddress, req.body.address.city, req.body.address.postCode, req.body.address.country)
         if (!validator.valid) throw createHttpError(400, validator.message as string)
-
+        
         // Insert data
         const address = await Addresses.create({
             address: req.body.address.address,

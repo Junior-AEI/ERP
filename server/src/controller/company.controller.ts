@@ -60,12 +60,13 @@ const getByPk = async (req: Request, res: Response) => {
  */
 async function create(req: Request, res: Response) {
     try {
+        console.log(req.body.company.addressId + "\n")
         // Parse identifier for address link
         const identifier = parseInt(req.body.company.addressId)
         if (isNaN(identifier)) throw createHttpError(400, 'Please provide a valid identifier');
             
         // Try to find the linked address
-        const address = await Addresses.findByPk(identifier)
+        const address = await Addresses.findByPk(req.body.company.addressId)
         if (!address) throw createHttpError(404, 'Unable to find the linked address.');
             
         // Test params
@@ -78,7 +79,7 @@ async function create(req: Request, res: Response) {
         const company = await Companies.create({
             name: req.body.company.name,
             legalEntity: req.body.company.legalEntity,
-            addressId: identifier,
+            addressId: req.body.company.addressId,
         })
 
         // Return success

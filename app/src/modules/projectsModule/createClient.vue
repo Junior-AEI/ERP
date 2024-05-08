@@ -24,14 +24,14 @@
             </SelectTrigger>
             <SelectContent>
               <SelectGroup>
-                <SelectItem value="H">
+                <SelectItem value="M">
                   Homme
                 </SelectItem>
                 <SelectItem value="F">
                   Femme
                 </SelectItem>
                 <SelectItem value="O">
-                  Other
+                  Autre
                 </SelectItem>
               </SelectGroup>
             </SelectContent>
@@ -47,11 +47,23 @@
             <Input id="landlinePhone" placeholder="Tel Fixe" v-model="form.landlinePhone" />
           </div>
         </div>
-        <div class="flex flex-col gap-2">
-          <Label for="application">Entreprise du Client</Label>
-          <Combobox @input="handleInputCompany" :options="companyList" :comboboxLabel="'Selectionner l\'entreprise'">
-          </Combobox>
+        <div class="flex flex-1 flex-col gap-2">
+            <Label for="landlinePhone">Email</Label>
+            <Input id="landlinePhone" placeholder="Tel Fixe" v-model="form.email" />
+          </div>
+        <div class="flex items-end gap-4">
+          <div class="flex flex-col gap-2">
+            <Label for="application">Entreprise du Client</Label>
+            <Combobox @input="handleInputCompany" :options="companyList" :comboboxLabel="'Selectionner l\'entreprise'">
+            </Combobox>
+          </div>
+          <div class="flex flex-1 flex-col gap-2">
+            <Label for="landlinePhone">Poste dans l'entreprise</Label>
+            <Input id="landlinePhone" placeholder="Tel Fixe" v-model="form.function" />
+          </div>
         </div>
+
+
         <div v-if="form.companyId == 0">
           <div class="flex items-end gap-4">
 
@@ -102,12 +114,13 @@
         </div>
 
 
+        <div> Numéro Adresse : {{  form.addressId }}</div>
 
 
-
-        <Button @click="console.log()">Créer un nouveau Client</Button>
+        <Button @click="handleClick">Créer un nouveau Client</Button>
       </CardContent>
     </Card>
+    <Toaster />
   </div>
 </template>
 
@@ -115,7 +128,8 @@
 import { ref, onMounted } from 'vue'
 import { useAuthStore } from '@/stores/authStore'
 import axios from 'axios'
-
+import { useToast } from '@/components/ui/toast/use-toast'
+import { Toaster } from '@/components/ui/toast'
 const temp = ref('temp')
 import type { ClientInfo } from '@/types/api'
 
@@ -200,5 +214,133 @@ onMounted(async () => {
   addressList.value.push({ value: '0', label: 'Adresse non présente' })
 
 })
+
+const { toast } = useToast()
+
+
+async function  newAddress() {
+    await axios
+    .post(
+      `/address/`,
+      {
+        address: {
+          address: form.value.address,
+          additionnalAddress: form.value.additionnalAddress,
+          city: form.value.city,
+          postCode: form.value.postCode,
+          country: form.value.country
+        }
+      },
+      {
+        headers: {
+          Authorization: `Bearer ${useAuthStore().token}`
+        }
+      }
+    )
+    .then((response) => {
+      form.value.addressId = response.data.data.addressId
+      toast({
+        title: 'Adresse renseignée',
+        description: `${form.value.address}`
+      })
+    })
+    .catch((error) => {
+      console.error(error)
+      toast({
+        title: 'Something wrong happened',
+        variant: 'destructive',
+        description: `${error.response.data.message}`
+      })
+    })
+  
+  
+}
+
+async function newCompany(){
+  axios
+    .post(
+      `/company/`,
+      {
+        company: {
+          name: form.value.name,
+          legalEntity: form.value.legalEntity,
+          addressId: form.value.addressId,
+        }
+      },
+      {
+        headers: {
+          Authorization: `Bearer ${useAuthStore().token}`
+        }
+      }
+    )
+    .then((response) => {
+      console.log(response)
+      form.value.companyId = response.data.data.companyId
+      toast({
+        title: 'Entreprise renseignée',
+        description: `${form.value.companyId}`
+      })
+    })
+    .catch((error) => {
+      console.error(error)
+      toast({
+        title: 'Something wrong happened',
+        variant: 'destructive',
+        description: `${error.response.data.message}`
+      })
+    })
+}
+
+async function newPerson(){
+  axios
+    .post(
+      `/person/`,
+      {
+        person: {
+          lastname: form.value.lastname,
+          firstname: form.value.firstname,
+          gender: form.value.gender,
+          mobilePhone: form.value.mobilePhone,
+          landlinePhone: form.value.landlinePhone,
+          email: form.value.email,
+        }
+      },
+      {
+        headers: {
+          Authorization: `Bearer ${useAuthStore().token}`
+        }
+      }
+    )
+    .then((response) => {
+      console.log(response)
+      form.value.personId = response.data.data.personId
+      toast({
+        title: 'PErsonne renseignée',
+        description: `${form.value.personId}`
+      })
+    })
+    .catch((error) => {
+      console.error(error)
+      toast({
+        title: 'Something wrong happened',
+        variant: 'destructive',
+        description: `${error.response.data.message}`
+      })
+    })
+}
+
+async function handleClick () {
+  if ( form.value.addressId == 0) {
+    await newAddress()
+
+  }
+  if ( form.value.companyId == 0) {
+    await newCompany()
+
+  }
+  await newPerson()
+
+  
+}
 
 </script>

@@ -3,6 +3,7 @@ import { ref, onMounted } from 'vue'
 import { columns } from './columns'
 import type { FullMember } from '@/types/api'
 import axios from 'axios'
+import { useRouter } from 'vue-router'
 
 const data = ref<FullMember[]>([])
 import { useAuthStore } from '@/stores/authStore'
@@ -39,13 +40,19 @@ onMounted(async () => {
   data.value = await getData()
 })
 
-const handleClick = (e: any) => {
-  console.log('Clicked on row:', e.target)
+const router = useRouter()
+
+const handleClick = (row: any) => {
+  console.log(row)
+  router.push({
+    path: '/profile',
+    query: { id: row.memberId, fistname: row.firstname, lastname: row.lastname }
+  })
 }
 </script>
 
 <template>
   <div>
-    <DataTable :columns="columns" :data="data" :onClickFn="handleClick" />
+    <DataTable :columns="columns" :data="data" @click:row="handleClick" />
   </div>
 </template>

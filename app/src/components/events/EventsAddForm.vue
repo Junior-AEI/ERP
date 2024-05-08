@@ -14,11 +14,7 @@
             v-model="eventInfo.name"
             placeholder="Formation : Apprendre à utiliser le nouvel ERP"
           />
-          <Input
-            id="location"
-            v-model="eventInfo.location"
-            placeholder="Où est-ce que ca se passe ?"
-          />
+          <Input id="location" v-model="eventInfo.location" placeholder="Grand local" />
         </div>
         <div class="flex items-end gap-4">
           <div class="md:sm-w-72 flex flex-col gap-2">
@@ -140,7 +136,6 @@ import { useAuthStore } from '@/stores/authStore'
 import type { Event } from '@/types/api'
 
 import { ref, type Ref, computed } from 'vue'
-import { Checkbox } from '@/components/ui/checkbox'
 
 import { cn } from '@/lib/utils'
 
@@ -159,10 +154,7 @@ import {
   CommandList
 } from '@/components/ui/command'
 
-import { Card, CardContent, CardFooter, CardHeader } from '@/components/ui/card'
-import { Label } from '@/components/ui/label'
-
-import { Collapsible, CollapsibleContent, CollapsibleTrigger } from '@/components/ui/collapsible'
+const emit = defineEmits(['add:event'])
 
 const isOpen = ref(false)
 const isOpenEventType = ref(false)
@@ -292,7 +284,11 @@ const addEvent = async () => {
     )
     .then((response) => {
       console.log(response)
-      location.reload()
+      emit('add:event', [])
+      toast({
+        title: 'Événement ajouté',
+        description: `L'événement ${eventInfo.value.name} a bien été ajouté.`
+      })
     })
     .catch((error) => {
       console.error(error)

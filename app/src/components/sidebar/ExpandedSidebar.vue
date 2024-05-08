@@ -57,7 +57,7 @@
               :to="child.path"
               :icon="child.meta?.icon"
               :key="child.path"
-              class="p-1 pl-6"
+              class="p-1 pl-3"
             >
               {{ child.name }}
             </Link>

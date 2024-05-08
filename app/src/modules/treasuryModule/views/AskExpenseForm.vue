@@ -59,7 +59,7 @@
 
 <script setup lang="ts">
 import { useAuthStore } from '@/stores/authStore'
-import type { ExpenseAccount, Person } from '@/types/api'
+import type { ExpenseAccount } from '@/types/api'
 import { type DateValue } from '@internationalized/date'
 import { useToast } from '@/components/ui/toast/use-toast'
 import { Toaster } from '@/components/ui/toast'
@@ -98,10 +98,26 @@ async function getData(): Promise<{ value: string; label: string }[]> {
     }
   })
 
+  const groups = await axios.get(`/group`, {
+    headers: {
+      Authorization: `Bearer ${useAuthStore().token}`
+    }
+  })
+
   const belongersData = belongers.data.data?.belongers
   const personsData = persons.data.data?.persons
+  const groupsData = groups.data.data?.groups
 
-  const bureauGroup = belongersData.filter((belonger: any) => belonger.groupName === 'Bureau')
+
+
+  const NumGroupBureau = groupsData.filter((group: any) => group.groupName === 'Bureau')
+
+  const bureauGroup = NumGroupBureau.map((group: any) => {
+    const belonger = belongersData.find((belonger: any) => belonger.groupId === group.groupId)
+    return {
+      ...belonger
+    }
+  })
 
   const bureauPersons = bureauGroup.map((belonger: any) => {
     const person = personsData.find((person: any) => person.personId === belonger.userId)

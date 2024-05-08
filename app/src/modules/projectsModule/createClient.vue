@@ -6,52 +6,104 @@
         <span class="text-accent"> Créer un nouveau client</span>
       </CardHeader>
       <CardContent>
-        <div class="flex flex-1 flex-col gap-2">
-          <Label for="person">Personne</Label>
-          <Input id="person" v-model="memberInfo.personId" />
-        </div>
         <div class="flex items-end gap-4">
           <div class="flex flex-1 flex-col gap-2">
-            <Label for="birthDate">Date de naissance</Label>
-            <Input id="birthDate" v-model="temp" />
+            <Label for="lastname">Nom</Label>
+            <Input id="lastname" v-model="form.lastname" />
           </div>
           <div class="flex flex-1 flex-col gap-2">
-            <Label for="birthPlace">Lieu de naissance</Label>
-            <Input id="birthPlace" v-model="memberInfo.birthPlace" />
+            <Label for="firstname">Prénom</Label>
+            <Input id="firstname" v-model="form.firstname" />
           </div>
         </div>
         <div class="flex flex-1 flex-col gap-2">
-          <Label for="nationality">Nationalité</Label>
-          <Input id="nationality" v-model="memberInfo.nationality" />
+          <Label for="gender">Genre</Label>
+          <Select v-model="form.gender">
+            <SelectTrigger>
+              <SelectValue placeholder="Genre" />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectGroup>
+                <SelectItem value="H">
+                  Homme
+                </SelectItem>
+                <SelectItem value="F">
+                  Femme
+                </SelectItem>
+                <SelectItem value="O">
+                  Other
+                </SelectItem>
+              </SelectGroup>
+            </SelectContent>
+          </Select>
         </div>
         <div class="flex items-end gap-4">
           <div class="flex flex-1 flex-col gap-2">
-            <Label for="department">Fillière</Label>
-            <Input id="department" placeholder="Info" v-model="memberInfo.department" />
+            <Label for="mobilePhone">N° de Téléphone Mobile</Label>
+            <Input id="mobilePhone" placeholder="Info" v-model="form.mobilePhone" />
           </div>
           <div class="flex flex-1 flex-col gap-2">
-            <Label for="promotion">Promo</Label>
-            <Input
-              id="promotion"
-              :placeholder="new Date().getFullYear() + 2"
-              v-model="memberInfo.promotion"
-            />
+            <Label for="landlinePhone">N° de Téléphone</Label>
+            <Input id="landlinePhone" placeholder="Tel Fixe" v-model="form.landlinePhone" />
           </div>
         </div>
-        <div class="flex justify-end gap-4">
-          <div class="flex flex-1 flex-col gap-2">
-            <Label for="membershipNumber">Numéro de cotisation</Label>
-            <Input id="membershipNumber" v-model="memberInfo.membershipNumber" />
+        <div class="flex flex-col gap-2">
+          <Label for="application">Entreprise du Client</Label>
+          <Combobox @input="handleInputCompany" :options="companyList" :comboboxLabel="'Selectionner l\'entreprise'">
+          </Combobox>
+        </div>
+        <div v-if="form.companyId == 0">
+          <div class="flex items-end gap-4">
+
+            <div class="flex flex-1 flex-col gap-2">
+              <Label for="name">Nom de l'Entreprise</Label>
+              <Input id="name" placeholder="Tel Fixe" v-model="form.name" />
+            </div>
+            <div class="flex flex-1 flex-col gap-2">
+              <Label for="legalEntity">N° de SIRET de l'entreprise</Label>
+              <Input id="legalEntity" placeholder="Tel Fixe" v-model="form.legalEntity" />
+            </div>
           </div>
-          <div class="flex flex-1 flex-col gap-2">
-            <Label for="contributionDate">Date de cotisation</Label>
-            <Input id="contributionDate" v-model="temp" />
-          </div>
-          <div class="flex flex-1 flex-col gap-2">
-            <Label for="paymentMethod">Moyen de paiement</Label>
-            <Input id="paymentMethod" v-model="memberInfo.paymentMethod" />
+          <div class="flex flex-col gap-2 mt-2">
+            <Label for="application">Adresse de l'Entreprise</Label>
+            <Combobox @input="handleInputAddress" :options="addressList" :comboboxLabel="'Selectionner l\'adresse'">
+            </Combobox>
           </div>
         </div>
+
+        <div v-if="form.addressId == 0">
+          <div class="flex items-end gap-4">
+
+            <div class="flex flex-1 flex-col gap-2">
+              <Label for="name">Adresse de l'Entreprise </Label>
+              <Input id="address" placeholder="Tel Fixe" v-model="form.address" />
+            </div>
+            <div class="flex flex-1 flex-col gap-2">
+              <Label for="legalEntity">Complément d'adresse</Label>
+              <Input id="additionnalAddress" placeholder="Tel Fixe" v-model="form.additionnalAddress" />
+            </div>
+          </div>
+          <div class="flex items-end gap-4">
+
+            <div class="flex flex-1 flex-col gap-2 mt-2">
+              <Label for="name">Code Postal </Label>
+              <Input id="postCode" placeholder="Tel Fixe" v-model="form.postCode" />
+            </div>
+            <div class="flex flex-1 flex-col gap-2">
+              <Label for="legalEntity">Ville</Label>
+              <Input id="city" placeholder="Tel Fixe" v-model="form.city" />
+            </div>
+          </div>
+          <div class="flex flex-1 flex-col gap-2 mt-2">
+            <Label for="legalEntity">Pays</Label>
+            <Input id="country" placeholder="Tel Fixe" v-model="form.country" />
+          </div>
+
+        </div>
+
+
+
+
 
         <Button @click="console.log()">Créer un nouveau Client</Button>
       </CardContent>
@@ -60,17 +112,93 @@
 </template>
 
 <script setup lang="ts">
-import { ref } from 'vue'
+import { ref, onMounted } from 'vue'
+import { useAuthStore } from '@/stores/authStore'
+import axios from 'axios'
 
 const temp = ref('temp')
+import type { ClientInfo } from '@/types/api'
 
 const form = ref<ClientInfo>({
-  expenseId: NaN,
-  userId: user.userId,
-  approbatorId: NaN,
-  reason: "",
-  expenseDate: "",
-  description: "",
-  state: "",
+  personId: NaN,
+  lastname: "",
+  firstname: "",
+  gender: "",
+  mobilePhone: "",
+  landlinePhone: "",
+  email: "",
+  createdAt: "",
+  updatedAt: "",
+  name: "",
+  legalEntity: "",
+  addressId: NaN,
+  function: "",
+  companyId: NaN,
+  address: "",
+  additionnalAddress: "",
+  city: "",
+  postCode: "",
+  country: ""
 })
+
+
+async function getDataCompany(): Promise<{ value: string; label: string }[]> {
+  // Fetch data from your API here.
+
+  const companies = await axios.get(`/company`, {
+    headers: {
+      Authorization: `Bearer ${useAuthStore().token}`
+    }
+  })
+
+  const companiesLists = companies.data.data?.companies.map((company: any) => {
+    return {
+      value: company.companyId.toString(),
+      label: company.name
+    }
+  })
+
+
+  return companiesLists
+}
+
+async function getDataAddress(): Promise<{ value: string; label: string }[]> {
+  // Fetch data from your API here.
+
+  const addresses = await axios.get(`/address`, {
+    headers: {
+      Authorization: `Bearer ${useAuthStore().token}`
+    }
+  })
+
+  const addressesLists = addresses.data.data?.addresses.map((address: any) => {
+    return {
+      value: address.addressId.toString(),
+      label: address.address
+    }
+  })
+
+
+  return addressesLists
+}
+
+const handleInputCompany = (value: string) => {
+  form.value.companyId = parseInt(value)
+}
+
+
+const handleInputAddress = (value: string) => {
+  form.value.addressId = parseInt(value)
+}
+const companyList = ref([] as { value: string; label: string }[]) // Initialisation d'une liste réactive vide
+const addressList = ref([] as { value: string; label: string }[]) // Initialisation d'une liste réactive vide
+
+onMounted(async () => {
+  companyList.value = await getDataCompany()
+  companyList.value.push({ value: '0', label: 'Entreprise non présente' })
+  addressList.value = await getDataAddress()
+  addressList.value.push({ value: '0', label: 'Adresse non présente' })
+
+})
+
 </script>

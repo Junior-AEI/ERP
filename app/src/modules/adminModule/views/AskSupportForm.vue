@@ -14,32 +14,19 @@
           <div class="flex flex-col gap-2">
             <Label for="application">Outil concerné</Label>
             <div class="flex flex-row gap-2">
-              <Combobox
-                @input="handleInput"
-                :options="appList"
-                :comboboxLabel="'Selectionner l\'outil concernée'"
-              ></Combobox>
-              <Input
-                v-if="form.applicationConcerned === 'Autre (non renseigné)'"
-                v-model="otherApplicationConcerned"
-                id="title"
-                placeholder="Veuillez renseignez l'outil concerné"
-              />
+              <Combobox @input="handleInput" :options="appList" :comboboxLabel="'Selectionner l\'outil concernée'">
+              </Combobox>
+              <Input v-if="form.applicationConcerned === 'Autre (non renseigné)'" v-model="otherApplicationConcerned"
+                id="title" placeholder="Veuillez renseignez l'outil concerné" />
             </div>
           </div>
           <div class="flex flex-col gap-2">
             <Label for="description">Description</Label>
-            <Textarea
-              v-model="form.description"
-              id="description"
-              placeholder="Décrivez précisément le problème"
-            />
+            <Textarea v-model="form.description" id="description" placeholder="Décrivez précisément le problème" />
           </div>
           <div class="flex flex-col gap-2">
-            <Label for="file"
-              >Ajouter une Capture d'Ecran ou tout document permettant de mieux traiter votre ticket
-              <span class="text-secondary-foreground">(facultatif)</span></Label
-            >
+            <Label for="file">Ajouter une Capture d'Ecran ou tout document permettant de mieux traiter votre ticket
+              <span class="text-secondary-foreground">(facultatif)</span></Label>
             <Dropzone v-model="files" :multiple="true" />
           </div>
         </CardContent>

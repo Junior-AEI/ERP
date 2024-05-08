@@ -50,10 +50,6 @@ export interface Address {
   city: string
   postCode: string
   country: string
-  createdAt: DateString
-  updatedAt: DateString
-  member: Member[]
-  company: Array<{}>
 }
 
 export interface Event {
@@ -122,14 +118,15 @@ export type ExpenseAccountInfo = ExpenseAccount & InfoExpense;
 export interface Company {
   name: string
   legalEntity: string
-  addressId: number
+  addressId : number
+  companyId : number
 }
 
 export interface Client {
   function: string
 }
 
-export type ClientInfo = Client & Company & Person
+export type ClientInfo = Client & Company & Person & Address
 
 export interface Document {
   documentId: number

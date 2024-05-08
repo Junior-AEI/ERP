@@ -16,9 +16,8 @@ export const createMember = async (username: string) => {
         birthDate: memberBirthDate,
         contributionDate: ct,
         addressId: address.addressId,
-        ...characters[username].member,
+        ...characters[username].member
     })
 
     return member.memberId
 }
-

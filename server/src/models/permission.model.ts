@@ -17,9 +17,16 @@ import Concerned from './concerned.model'
 export default class Permissions extends Model {
     @PrimaryKey
     @Column({
-        type: DataType.STRING,
+        type: DataType.INTEGER,
         allowNull: false,
-        primaryKey: true
+        primaryKey: true,
+        autoIncrement: true
+    })
+    permissionId!: number
+
+    @Column({
+        type: DataType.STRING,
+        allowNull: false
     })
     permissionName!: string
 

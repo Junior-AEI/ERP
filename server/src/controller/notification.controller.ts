@@ -1,24 +1,24 @@
 import { Request, Response } from 'express'
 import createHttpError from 'http-errors'
+import Notifications from '../models/notification.model'
 import { HttpError } from 'http-errors'
+import { isValidNotification } from '../validator/notification.validator'
 import { controllerErrorHandler } from './utils.controller'
-import ProjectManagers from '../models/projectManager.model'
 import Users from '../models/user.model'
-import Projects from '../models/project.model'
 
 /**
- * Get all users
+ * Get all notifications
  * @param req
  * @param res
  */
 const getAll = async (req: Request, res: Response) => {
     try {
-        const projectManagers = await ProjectManagers.findAll({})
+        const notifications = await Notifications.findAll({})
 
         return res.status(200).json({
             status: 'success',
             data: {
-                projectManagers: projectManagers
+                notifications: notifications
             }
         })
     } catch (err) {
@@ -28,22 +28,22 @@ const getAll = async (req: Request, res: Response) => {
 }
 
 /**
- * Select a specific user
+ * Select a specific notification
  * @param req
  * @param res
  */
 const getByPk = async (req: Request, res: Response) => {
     try {
-        const identifier = parseInt(req.params.projectManagerId)
+        const identifier = parseInt(req.params.notificationId)
         if (isNaN(identifier)) throw createHttpError(400, 'Please provide a valid identifier')
 
-        const projectManager = await ProjectManagers.findByPk(identifier)
-        if (!projectManager) throw createHttpError(404, 'Project manager not found')
+        const notification = await Notifications.findByPk(identifier)
+        if (!notification) throw createHttpError(404, 'Notification not found')
 
         return res.status(200).json({
             status: 'success',
             data: {
-                projectManager: projectManager
+                notification: notification
             }
         })
     } catch (err) {
@@ -53,37 +53,36 @@ const getByPk = async (req: Request, res: Response) => {
 }
 
 /**
- * Create an user
+ * Create a notification
  * @param req
  * @param res
  */
 async function create(req: Request, res: Response) {
     try {
-        // parse project identifier
-        const idProject = parseInt(req.body.projectManager.projectId)
-        if (isNaN(idProject)) throw createHttpError(400, 'Please provide a valid project identifier')
-
-        const project = await Projects.findByPk(idProject)
-        if (!project) throw createHttpError(404, 'Link project not found')
-
         // parse user identifier
-        const idUser = parseInt(req.body.projectManager.userId)
+        const idUser = parseInt(req.body.notification.userId)
         if (isNaN(idUser)) throw createHttpError(400, 'Please provide a valid user identifier')
 
         const user = await Users.findByPk(idUser)
         if (!user) throw createHttpError(404, 'Link user not found')
 
+        // Test params
+        const validator = isValidNotification(req.body.notification.title, req.body.notification.description, req.body.notification.pathConcerned)
+        if (!validator.valid) throw createHttpError(400, validator.message as string)
+
         // Insert data
-        const projectManager = await ProjectManagers.create({
+        const notification = await Notifications.create({
             userId: idUser,
-            projectId: idProject
+            title: req.body.notification.title,
+            description: req.body.notification.description,
+            pathConcerned: req.body.notification.pathConcerned
         })
 
         // Return success
         return res.status(200).json({
             status: 'success',
             data: {
-                projectManagerId: projectManager.projectManagerId
+                notificationId: notification.notificationId
             }
         })
     } catch (err) {
@@ -100,30 +99,25 @@ async function create(req: Request, res: Response) {
 const update = async (req: Request, res: Response) => {
     try {
         // parse identifier
-        const identifier = parseInt(req.params.projectManagerId)
+        const identifier = parseInt(req.params.notificationId)
         if (isNaN(identifier)) throw createHttpError(400, 'Please provide a valid identifier')
 
-        const projectManager = await ProjectManagers.findByPk(identifier)
-        if (!projectManager) throw createHttpError(404, 'Project manager not found')
-
-        // parse project identifier
-        const idProject = parseInt(req.body.projectManager.projectId)
-        if (isNaN(idProject)) throw createHttpError(400, 'Please provide a valid project identifier')
-
-        const project = await Projects.findByPk(idProject)
-        if (!project) throw createHttpError(404, 'Link project not found')
+        const notification = await Notifications.findByPk(identifier)
+        if (!notification) throw createHttpError(404, 'Notification not found')
 
         // parse user identifier
-        const idUser = parseInt(req.body.projectManager.userId)
+        const idUser = parseInt(req.body.notification.userId)
         if (isNaN(idUser)) throw createHttpError(400, 'Please provide a valid user identifier')
 
         const user = await Users.findByPk(idUser)
         if (!user) throw createHttpError(404, 'Link user not found')
 
-        await ProjectManagers.update(req.body.projectManager, {
-            where: {
-                projectManagerId: identifier
-            }
+        // Test params
+        const validator = isValidNotification(req.body.notification.title, req.body.notification.description, req.body.notification.pathConcerned)
+        if (!validator.valid) throw createHttpError(400, validator.message as string)
+
+        await Notifications.update(req.body.notification, {
+            where: { notificationId: identifier }
         })
 
         return res.status(200).json({
@@ -143,15 +137,15 @@ const update = async (req: Request, res: Response) => {
 const del = async (req: Request, res: Response) => {
     try {
         // parse identifier
-        const identifier = parseInt(req.params.projectManagerId)
+        const identifier = parseInt(req.params.notificationId)
         if (isNaN(identifier)) throw createHttpError(400, 'Please provide a valid identifier')
 
-        const projectManager = await ProjectManagers.findByPk(identifier)
-        if (!projectManager) throw createHttpError(404, 'Project manager not found')
+        const notification = await Notifications.findByPk(identifier)
+        if (!notification) throw createHttpError(404, 'Notification not found')
 
-        await ProjectManagers.destroy({
+        await Notifications.destroy({
             where: {
-                projectManagerId: identifier
+                notificationId: identifier
             }
         })
 
@@ -164,7 +158,7 @@ const del = async (req: Request, res: Response) => {
     }
 }
 
-const projectManagerController = {
+const notificationController = {
     getAll,
     getByPk,
     create,
@@ -172,4 +166,4 @@ const projectManagerController = {
     update
 }
 
-export default projectManagerController
+export default notificationController

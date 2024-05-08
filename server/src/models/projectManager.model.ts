@@ -24,7 +24,7 @@ export default class ProjectManagers extends Model {
         autoIncrement: true
     })
     projectManagerId!: number
-    
+
     @ForeignKey(() => Users)
     @Column({
         type: DataType.INTEGER,

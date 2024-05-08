@@ -9,7 +9,6 @@ import Tasks from './models/task.model'
 import Events from './models/event.model'
 import DocumentTypes from './models/documentType.model'
 
-
 const createFakeData = async () => {
     await createUser()
     console.log('--------------------FAKE DATA CREATED--------------------')
@@ -74,7 +73,7 @@ const createUser = async () => {
 
     const belongerBureau = await Belongers.create({
         userId: user.userId,
-        groupName: groupBureau.groupName
+        groupId: groupBureau.groupId
     })
 
     console.log('Belonger created', belongerBureau)
@@ -89,11 +88,10 @@ const createUser = async () => {
 
     const belongerTrezo = await Belongers.create({
         userId: user.userId,
-        groupName: groupTrezo.groupName
+        groupId: groupTrezo.groupId
     })
 
     console.log('Belonger created', belongerTrezo)
-
 
     const task1 = await Tasks.create({
         taskId: 1,
@@ -111,7 +109,7 @@ const createUser = async () => {
         state: 'A faire',
         issuerId: user.userId
     })
-    console.log('Task created', task1, task2);
+    console.log('Task created', task1, task2)
 
     const person2 = await Persons.create({
         firstname: 'Jane',
@@ -213,7 +211,7 @@ const createUser = async () => {
         state: 'A faire',
         issuerId: user.userId
     })
-    console.log('Task created', task3, task4);
+    console.log('Task created', task3, task4)
 
     const task5 = await Tasks.create({
         taskId: 5,
@@ -231,7 +229,7 @@ const createUser = async () => {
         state: 'A faire',
         issuerId: user.userId
     })
-    console.log('Task created', task5, task6);
+    console.log('Task created', task5, task6)
 
     const groupperson = await Groups.create({
         groupName: person.firstname + ' ' + person.lastname,
@@ -240,7 +238,7 @@ const createUser = async () => {
     })
     const belongerperson = await Belongers.create({
         userId: user.userId,
-        groupName: groupperson.groupName
+        groupId: groupperson.groupId
     })
     const groupperson2 = await Groups.create({
         groupName: person2.firstname + ' ' + person2.lastname,
@@ -249,7 +247,7 @@ const createUser = async () => {
     })
     const belongerperson2 = await Belongers.create({
         userId: user2.userId,
-        groupName: groupperson2.groupName
+        groupId: groupperson2.groupId
     })
     const groupperson3 = await Groups.create({
         groupName: person3.firstname + ' ' + person3.lastname,
@@ -258,7 +256,7 @@ const createUser = async () => {
     })
     const belongerperson3 = await Belongers.create({
         userId: user3.userId,
-        groupName: groupperson3.groupName
+        groupId: groupperson3.groupId
     })
 
     const event1 = await Events.create({
@@ -291,20 +289,20 @@ const createUser = async () => {
         eventTypeName: 'Autre'
     })
 
-    console.log("Event created", event1, event2, event3)
+    console.log('Event created', event1, event2, event3)
 
     const documentType1 = await DocumentTypes.create({
         documentTypeId: 1,
-        type: 'Convention d\'Étude',
+        type: "Convention d'Étude",
         fieldNumber: 4,
         fieldMeaning: 'Frais de commande (HT)|Frais de Structure (HT)|JEH (HT)|Date de fin de validité'
     })
 
     const documentType2 = await DocumentTypes.create({
         documentTypeId: 2,
-        type: 'Avenant à la convention d\'Étude',
+        type: "Avenant à la convention d'Étude",
         fieldNumber: 2,
-        fieldMeaning: 'Type d\'Avenant|Date de fin de validité'
+        fieldMeaning: "Type d'Avenant|Date de fin de validité"
     })
 
     const documentType3 = await DocumentTypes.create({
@@ -321,8 +319,7 @@ const createUser = async () => {
         fieldMeaning: 'Numéro de facture|Frais de commande (HT)|Frais de structure (HT)|JEH (HT)|Date de fin de validité'
     })
 
-    console.log("DocumentType created", documentType1, documentType2, documentType3, documentType4)
-
+    console.log('DocumentType created', documentType1, documentType2, documentType3, documentType4)
 }
 
 export default createFakeData

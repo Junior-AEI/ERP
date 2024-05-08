@@ -57,7 +57,7 @@ const getByPk = async (req: Request, res: Response) => {
  * @param res
  */
 const getTheUser = async (req: Request, res: Response) => {
-    console.log('getTheUser');
+    console.log('getTheUser')
 }
 
 /**

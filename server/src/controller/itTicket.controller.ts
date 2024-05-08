@@ -35,7 +35,7 @@ const getAll = async (req: Request, res: Response) => {
 const getByPk = async (req: Request, res: Response) => {
     try {
         const identifier = parseInt(req.params.ticketId)
-        if (isNaN(identifier)) throw createHttpError(400, 'Please provide a valid identifier');
+        if (isNaN(identifier)) throw createHttpError(400, 'Please provide a valid identifier')
 
         const itTicket = await ItTickets.findByPk(identifier, {})
         if (!itTicket) throw createHttpError(404, 'Ticket not found')
@@ -62,7 +62,7 @@ async function create(req: Request, res: Response) {
         sendBotMesssage(881607628, `Add Ticket.`)
         // Parse identifier for user heredity
         const idUser = parseInt(req.body.itTicket.userId)
-        if (isNaN(idUser)) throw createHttpError(400, 'Please provide a valid userID');
+        if (isNaN(idUser)) throw createHttpError(400, 'Please provide a valid userID')
 
         const user = await Users.findByPk(idUser)
         if (!user) throw createHttpError(404, 'Link user not found')
@@ -73,10 +73,9 @@ async function create(req: Request, res: Response) {
 
         if (!validator.valid) return createHttpError(400, validator.message as string)
 
-
         // Insert data
         const itTicket = await ItTickets.create({
-            userId : idUser,
+            userId: idUser,
             title: req.body.itTicket.title,
             description: req.body.itTicket.description,
             applicationConcerned: req.body.itTicket.applicationConcerned,
@@ -109,11 +108,11 @@ const update = async (req: Request, res: Response) => {
         if (isNaN(identifier)) throw createHttpError(400, 'Please provide a valid identifier')
 
         const itTicket = await ItTickets.findByPk(identifier, {})
-        if (!itTicket) throw createHttpError(404, 'Ticket not found');
-        
+        if (!itTicket) throw createHttpError(404, 'Ticket not found')
+
         // Parse identifier for user heredity
         const idUser = parseInt(req.body.itTicket.userId)
-        if (isNaN(idUser)) throw createHttpError(400, 'Please provide a valid userID');
+        if (isNaN(idUser)) throw createHttpError(400, 'Please provide a valid userID')
 
         const user = await Users.findByPk(idUser)
         if (!user) throw createHttpError(404, 'Link user not found')
@@ -122,16 +121,18 @@ const update = async (req: Request, res: Response) => {
         const validator = isValidItTicket(req.body.itTicket.title, req.body.itTicket.description, req.body.itTicket.applicationConcerned, req.body.itTicket.state)
         if (!validator.valid) return createHttpError(400, validator.message as string)
 
-
-        await ItTickets.update({
-            userId : req.body.itTicket.userId,
-            title: req.body.itTicket.title,
-            description: req.body.itTicket.description,
-            applicationConcerned: req.body.itTicket.applicationConcerned,
-            state: req.body.itTicket.state,
-        }, {
-            where: { ticketId: identifier }
-        })
+        await ItTickets.update(
+            {
+                userId: req.body.itTicket.userId,
+                title: req.body.itTicket.title,
+                description: req.body.itTicket.description,
+                applicationConcerned: req.body.itTicket.applicationConcerned,
+                state: req.body.itTicket.state
+            },
+            {
+                where: { ticketId: identifier }
+            }
+        )
 
         return res.status(200).json({
             status: 'success'
@@ -154,7 +155,7 @@ const del = async (req: Request, res: Response) => {
         if (isNaN(identifier)) throw createHttpError(400, 'Please provide a valid identifier')
 
         const itTicket = await ItTickets.findByPk(identifier, {})
-        if (!itTicket) throw createHttpError(404, 'Ticket not found');
+        if (!itTicket) throw createHttpError(404, 'Ticket not found')
 
         await ItTickets.destroy({
             where: {

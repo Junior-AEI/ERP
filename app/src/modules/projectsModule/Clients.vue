@@ -1,6 +1,5 @@
 <template>
   <div>
-
     <div>
       <h1>Liste des Clients</h1>
     </div>

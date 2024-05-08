@@ -36,8 +36,8 @@ const getByPk = async (req: Request, res: Response) => {
         // Parse identifier
         if (req.params.permissionName) throw createHttpError(400, 'Please provide a valid identifier')
         const identifier = parseInt(req.params.permissionName)
-        
-        // Find    
+
+        // Find
         const permission = await Permissions.findByPk(identifier)
         if (!permission) throw createHttpError(404, 'Permission not found')
 
@@ -92,20 +92,18 @@ const update = async (req: Request, res: Response) => {
         // Parse identifier
         if (req.params.permissionName) throw createHttpError(400, 'Please provide a valid identifier')
         const identifier = parseInt(req.params.permissionName)
-        
-        // Find    
+
+        // Find
         const permission = await Permissions.findByPk(identifier)
         if (!permission) throw createHttpError(404, 'Permission not found')
-
 
         // Test params
         const validator = isValidPermission(req.body.permission.permissionName, req.body.permission.permissionType)
         if (validator.valid == 0) throw createHttpError(400, validator.message as string)
 
         await Permissions.update(req.body, {
-                where: { permissionName: identifier }
-            }
-        )
+            where: { permissionName: identifier }
+        })
 
         // Return success
         return res.status(200).json({
@@ -127,8 +125,8 @@ const del = async (req: Request, res: Response) => {
         // Parse identifier
         if (req.params.permissionName) throw createHttpError(400, 'Please provide a valid identifier')
         const identifier = parseInt(req.params.permissionName)
-        
-        // Find    
+
+        // Find
         const permission = await Permissions.findByPk(identifier)
         if (!permission) throw createHttpError(404, 'Permission not found')
 

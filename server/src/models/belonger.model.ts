@@ -25,7 +25,6 @@ export default class Belongers extends Model {
     })
     belongerId!: number
 
-
     @ForeignKey(() => Users)
     @Column({
         type: DataType.INTEGER,
@@ -36,13 +35,12 @@ export default class Belongers extends Model {
     @BelongsTo(() => Users)
     user!: Users
 
-    
     @ForeignKey(() => Groups)
     @Column({
-        type: DataType.STRING,
+        type: DataType.INTEGER,
         allowNull: false
     })
-    groupName!: string
+    groupId!: string
 
     @BelongsTo(() => Groups)
     group!: Groups

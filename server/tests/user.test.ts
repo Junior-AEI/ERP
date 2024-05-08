@@ -1,117 +1,94 @@
 const request = require('supertest')
-import app from "../src/app"
+import app from '../src/app'
 import { beforeAllTests, afterAllTests, clearDatabase, showErrorMessage } from './utils'
 import { createUser } from './seeders/user.seeders'
 import { createToken } from './seeders/token.seeders'
 import bcrypt from 'bcrypt'
 import { initUser } from './seeders/general'
-import Users from "../src/models/user.model"
-import { createMember } from "./seeders/member.seeders"
-import { characters } from "./seeders/data/characters.data"
-import { promisify } from "util"
+import Users from '../src/models/user.model'
+import { createMember } from './seeders/member.seeders'
+import { characters } from './seeders/data/characters.data'
+import { promisify } from 'util'
 
 beforeAll(beforeAllTests)
 afterAll(afterAllTests)
 
 // ! DONE
 describe('ROUTE (GET): /api/user (Get all users)', () => {
-
-    afterEach(clearDatabase);
+    afterEach(clearDatabase)
 
     it('Normal usage', async () => {
-
         await createUser('john.doe')
         await createUser('jane.doe')
 
-        const token = await createToken("john.doe");
+        const token = await createToken('john.doe')
 
-        const res = await request(app)
-            .get('/api/user')
-            .set('Authorization', `Bearer ${token}`);
+        const res = await request(app).get('/api/user').set('Authorization', `Bearer ${token}`)
 
         expect(res.status).toEqual(200)
-        expect(res.body.status).toEqual("success")
-        expect(res.body.data.users.length).toEqual(2);
+        expect(res.body.status).toEqual('success')
+        expect(res.body.data.users.length).toEqual(2)
 
         for (let i = 0; i < 2; i++) {
-            expect(res.body.data.users[i].userId).toBeDefined();
-            expect(res.body.data.users[i].username).toBeDefined();
-            expect(res.body.data.users[i].lastLogin).toBeDefined();
-            expect(res.body.data.users[i].mandateStart).toBeDefined();
-            expect(res.body.data.users[i].mandateEnd).toBeDefined();
-            expect(res.body.data.users[i].emailJE).toBeDefined();
-            expect(res.body.data.users[i].createdAt).toBeDefined();
-            expect(res.body.data.users[i].updatedAt).toBeDefined();
+            expect(res.body.data.users[i].userId).toBeDefined()
+            expect(res.body.data.users[i].username).toBeDefined()
+            expect(res.body.data.users[i].lastLogin).toBeDefined()
+            expect(res.body.data.users[i].mandateStart).toBeDefined()
+            expect(res.body.data.users[i].mandateEnd).toBeDefined()
+            expect(res.body.data.users[i].emailJE).toBeDefined()
+            expect(res.body.data.users[i].createdAt).toBeDefined()
+            expect(res.body.data.users[i].updatedAt).toBeDefined()
         }
-
     })
-
 })
 
 // ! DONE
 describe('ROUTE (GET): /api/user/:userId (Get a specific user)', () => {
-
-    afterEach(clearDatabase);
+    afterEach(clearDatabase)
 
     it('Wrong format', async () => {
-
         const token = await initUser('john.doe')
 
-        const wrongFormatUserIdList = [
-            null,
-            undefined,
-            "wrongUserId"
-        ]
+        const wrongFormatUserIdList = [null, undefined, 'wrongUserId']
 
         for (const wrongFormatUserId of wrongFormatUserIdList) {
-            const res = await request(app)
-                .get(`/api/user/${wrongFormatUserId}`)
-                .set('Authorization', `Bearer ${token}`);
+            const res = await request(app).get(`/api/user/${wrongFormatUserId}`).set('Authorization', `Bearer ${token}`)
 
             expect(res.status).toEqual(400)
         }
-
     })
 
     it('Wrong userId with a good format', async () => {
-
         const token = await initUser('john.doe')
 
-        const res = await request(app)
-            .get(`/api/user/${-10}`)
-            .set('Authorization', `Bearer ${token}`);
+        const res = await request(app).get(`/api/user/${-10}`).set('Authorization', `Bearer ${token}`)
 
         expect(res.status).toEqual(404)
     })
 
     it('Normal usage', async () => {
-
         const token = await initUser('john.doe')
 
         const user = await Users.findOne({
             where: {
-                username: "john.doe"
+                username: 'john.doe'
             }
         })
 
-        const res = await request(app)
-            .get(`/api/user/${user?.userId}`)
-            .set('Authorization', `Bearer ${token}`);
+        const res = await request(app).get(`/api/user/${user?.userId}`).set('Authorization', `Bearer ${token}`)
 
         expect(res.status).toEqual(200)
-        expect(res.body.status).toEqual("success")
-        expect(res.body.data.user).toBeDefined();
-        expect(res.body.data.user.userId).toEqual(user?.userId);
-        expect(res.body.data.user.username).toEqual(user?.username);
-        expect(res.body.data.user.emailJE).toEqual(user?.emailJE);
+        expect(res.body.status).toEqual('success')
+        expect(res.body.data.user).toBeDefined()
+        expect(res.body.data.user.userId).toEqual(user?.userId)
+        expect(res.body.data.user.username).toEqual(user?.username)
+        expect(res.body.data.user.emailJE).toEqual(user?.emailJE)
     })
-
 })
 
 // ! DONE
 describe('ROUTE (POST): /api/user (Create new user)', () => {
-
-    afterEach(clearDatabase);
+    afterEach(clearDatabase)
 
     const goodParams = {
         username: 'jane.doe',
@@ -122,203 +99,163 @@ describe('ROUTE (POST): /api/user (Create new user)', () => {
     }
 
     it('Wrong format memberId', async () => {
-
         const token = await initUser('john.doe')
 
-        const wrongFormatMemberIdList = [
-            null,
-            undefined,
-            "memberId",
-        ]
+        const wrongFormatMemberIdList = [null, undefined, 'memberId']
 
         for (const wrongFormatMemberId of wrongFormatMemberIdList) {
             const res = await request(app)
-                .post("/api/user")
+                .post('/api/user')
                 .send({
                     user: {
                         memberId: wrongFormatMemberId,
                         ...goodParams
                     }
                 })
-                .set('Authorization', `Bearer ${token}`);
+                .set('Authorization', `Bearer ${token}`)
             expect(res.status).toEqual(400)
         }
     })
 
     it('Wrong memberId', async () => {
-
         const token = await initUser('john.doe')
 
         const res = await request(app)
-            .post("/api/user")
+            .post('/api/user')
             .send({
                 user: {
                     memberId: -10,
                     ...goodParams
                 }
             })
-            .set('Authorization', `Bearer ${token}`);
+            .set('Authorization', `Bearer ${token}`)
         expect(res.status).toEqual(404)
     })
 
     it('Wrong username', async () => {
-
         const token = await initUser('john.doe')
 
         const memberId = await createMember('jane.doe')
 
-        const wrongUsernameList = [
-            "",
-            null,
-            undefined,
-            "NameToooooooooooooooooooooooooooooooooLong"
-        ]
+        const wrongUsernameList = ['', null, undefined, 'NameToooooooooooooooooooooooooooooooooLong']
 
         for (const wrongUsername of wrongUsernameList) {
             const res = await request(app)
-                .post("/api/user")
+                .post('/api/user')
                 .send({
                     user: {
                         memberId: memberId,
                         ...goodParams,
-                        username: wrongUsername,
+                        username: wrongUsername
                     }
                 })
-                .set('Authorization', `Bearer ${token}`);
+                .set('Authorization', `Bearer ${token}`)
             expect(res.status).toEqual(400)
         }
     })
 
     it('Wrong password', async () => {
-
         const token = await initUser('john.doe')
 
         const memberId = await createMember('jane.doe')
 
-        const wrongPasswordList = [
-            "short",
-            null,
-            undefined,
-            "passwordToooooooooooooooooooooooooooooooooLong"
-        ]
+        const wrongPasswordList = ['short', null, undefined, 'passwordToooooooooooooooooooooooooooooooooLong']
 
         for (const wrongPassword of wrongPasswordList) {
             const res = await request(app)
-                .post("/api/user")
+                .post('/api/user')
                 .send({
                     user: {
                         memberId: memberId,
                         ...goodParams,
-                        password: wrongPassword,
+                        password: wrongPassword
                     }
                 })
-                .set('Authorization', `Bearer ${token}`);
+                .set('Authorization', `Bearer ${token}`)
             expect(res.status).toEqual(400)
         }
     })
 
     it('Wrong mandateStart', async () => {
-
         const token = await initUser('john.doe')
 
         const memberId = await createMember('jane.doe')
 
-        const wrongMandateStartList = [
-            "",
-            "Wrong Date",
-            null,
-            undefined,
-        ]
+        const wrongMandateStartList = ['', 'Wrong Date', null, undefined]
 
         for (const wrongParam of wrongMandateStartList) {
             const res = await request(app)
-                .post("/api/user")
+                .post('/api/user')
                 .send({
                     user: {
                         memberId: memberId,
                         ...goodParams,
-                        mandateStart: wrongParam,
+                        mandateStart: wrongParam
                     }
                 })
-                .set('Authorization', `Bearer ${token}`);
+                .set('Authorization', `Bearer ${token}`)
             expect(res.status).toEqual(400)
         }
     })
 
     it('Wrong mandateEnd', async () => {
-
         const token = await initUser('john.doe')
 
         const memberId = await createMember('jane.doe')
 
-        const wrongParamList = [
-            "",
-            "Wrong Date",
-            null,
-            undefined,
-        ]
+        const wrongParamList = ['', 'Wrong Date', null, undefined]
 
         for (const wrongParam of wrongParamList) {
             const res = await request(app)
-                .post("/api/user")
+                .post('/api/user')
                 .send({
                     user: {
                         memberId: memberId,
                         ...goodParams,
-                        mandateEnd: wrongParam,
+                        mandateEnd: wrongParam
                     }
                 })
-                .set('Authorization', `Bearer ${token}`);
+                .set('Authorization', `Bearer ${token}`)
             expect(res.status).toEqual(400)
         }
     })
 
     it('Wrong email', async () => {
-
         const token = await initUser('john.doe')
 
         const memberId = await createMember('jane.doe')
 
-        const wrongParamList = [
-            "",
-            100,
-            null,
-            undefined,
-            "email",
-            "jane@doe",
-            "jane.com",
-        ]
+        const wrongParamList = ['', 100, null, undefined, 'email', 'jane@doe', 'jane.com']
 
         for (const wrongParam of wrongParamList) {
             const res = await request(app)
-                .post("/api/user")
+                .post('/api/user')
                 .send({
                     user: {
                         memberId: memberId,
                         ...goodParams,
-                        emailJE: wrongParam,
+                        emailJE: wrongParam
                     }
                 })
-                .set('Authorization', `Bearer ${token}`);
+                .set('Authorization', `Bearer ${token}`)
             expect(res.status).toEqual(400)
         }
     })
 
     it('Good usage', async () => {
-
         const token = await initUser('john.doe')
 
         const memberId = await createMember('jane.doe')
 
         const res = await request(app)
-            .post("/api/user")
+            .post('/api/user')
             .send({
                 user: {
                     memberId: memberId,
-                    ...goodParams,
+                    ...goodParams
                 }
             })
-            .set('Authorization', `Bearer ${token}`);
+            .set('Authorization', `Bearer ${token}`)
 
         expect(res.status).toEqual(200)
         expect(res.body.data.userId).toBeDefined()
@@ -336,14 +273,11 @@ describe('ROUTE (POST): /api/user (Create new user)', () => {
         expect(user?.mandateEnd).toEqual(goodParams.mandateEnd)
         expect(user?.emailJE).toEqual(goodParams.emailJE)
     })
-
-
 })
 
 // ! DONE
 describe('ROUTE (PUT): /api/user/:id (Update user)', () => {
-
-    afterEach(clearDatabase);
+    afterEach(clearDatabase)
 
     const goodParams = {
         username: 'jane.doee',
@@ -354,14 +288,9 @@ describe('ROUTE (PUT): /api/user/:id (Update user)', () => {
     }
 
     it('Wrong format userId', async () => {
-
         const token = await initUser('john.doe')
 
-        const wrongParamList = [
-            null,
-            undefined,
-            "wrongUserIdFormat",
-        ]
+        const wrongParamList = [null, undefined, 'wrongUserIdFormat']
 
         for (const wrongParam of wrongParamList) {
             const res = await request(app)
@@ -371,13 +300,12 @@ describe('ROUTE (PUT): /api/user/:id (Update user)', () => {
                         ...goodParams
                     }
                 })
-                .set('Authorization', `Bearer ${token}`);
+                .set('Authorization', `Bearer ${token}`)
             expect(res.status).toEqual(400)
         }
     })
 
     it('Wrong userId', async () => {
-
         const token = await initUser('john.doe')
 
         const res = await request(app)
@@ -387,23 +315,16 @@ describe('ROUTE (PUT): /api/user/:id (Update user)', () => {
                     ...goodParams
                 }
             })
-            .set('Authorization', `Bearer ${token}`);
+            .set('Authorization', `Bearer ${token}`)
         expect(res.status).toEqual(404)
     })
 
     it('Wrong username', async () => {
-
         const token = await initUser('john.doe')
 
         const userId = await createUser('jane.doe')
 
-        const wrongUsernameList = [
-            "",
-            null,
-            undefined,
-            "NameToooooooooooooooooooooooooooooooooLong",
-            19
-        ]
+        const wrongUsernameList = ['', null, undefined, 'NameToooooooooooooooooooooooooooooooooLong', 19]
 
         for (const wrongUsername of wrongUsernameList) {
             const res = await request(app)
@@ -414,23 +335,17 @@ describe('ROUTE (PUT): /api/user/:id (Update user)', () => {
                         username: wrongUsername
                     }
                 })
-                .set('Authorization', `Bearer ${token}`);
+                .set('Authorization', `Bearer ${token}`)
             expect(res.status).toEqual(400)
         }
     })
 
     it('Wrong password', async () => {
-
         const token = await initUser('john.doe')
 
         const userId = await createUser('jane.doe')
 
-        const wrongPasswordList = [
-            "short",
-            null,
-            undefined,
-            "passwordToooooooooooooooooooooooooooooooooLong"
-        ]
+        const wrongPasswordList = ['short', null, undefined, 'passwordToooooooooooooooooooooooooooooooooLong']
 
         for (const wrongParam of wrongPasswordList) {
             const res = await request(app)
@@ -441,23 +356,17 @@ describe('ROUTE (PUT): /api/user/:id (Update user)', () => {
                         password: wrongParam
                     }
                 })
-                .set('Authorization', `Bearer ${token}`);
+                .set('Authorization', `Bearer ${token}`)
             expect(res.status).toEqual(400)
         }
     })
 
     it('Wrong mandateStart', async () => {
-
         const token = await initUser('john.doe')
 
         const userId = await createUser('jane.doe')
 
-        const wrongParams = [
-            "",
-            "Wrong Date",
-            null,
-            undefined,
-        ]
+        const wrongParams = ['', 'Wrong Date', null, undefined]
 
         for (const wrongParam of wrongParams) {
             const res = await request(app)
@@ -468,23 +377,17 @@ describe('ROUTE (PUT): /api/user/:id (Update user)', () => {
                         mandateStart: wrongParam
                     }
                 })
-                .set('Authorization', `Bearer ${token}`);
+                .set('Authorization', `Bearer ${token}`)
             expect(res.status).toEqual(400)
         }
     })
 
     it('Wrong mandateEnd', async () => {
-
         const token = await initUser('john.doe')
 
         const userId = await createUser('jane.doe')
 
-        const wrongParams = [
-            "",
-            "Wrong Date",
-            null,
-            undefined,
-        ]
+        const wrongParams = ['', 'Wrong Date', null, undefined]
 
         for (const wrongParam of wrongParams) {
             const res = await request(app)
@@ -495,26 +398,17 @@ describe('ROUTE (PUT): /api/user/:id (Update user)', () => {
                         mandateEnd: wrongParam
                     }
                 })
-                .set('Authorization', `Bearer ${token}`);
+                .set('Authorization', `Bearer ${token}`)
             expect(res.status).toEqual(400)
         }
     })
 
     it('Wrong email', async () => {
-
         const token = await initUser('john.doe')
 
         const userId = await createUser('jane.doe')
 
-        const wrongParams = [
-            "",
-            100,
-            null,
-            undefined,
-            "email",
-            "jane@doe",
-            "jane.com",
-        ]
+        const wrongParams = ['', 100, null, undefined, 'email', 'jane@doe', 'jane.com']
 
         for (const wrongParam of wrongParams) {
             const res = await request(app)
@@ -525,13 +419,12 @@ describe('ROUTE (PUT): /api/user/:id (Update user)', () => {
                         emailJE: wrongParam
                     }
                 })
-                .set('Authorization', `Bearer ${token}`);
+                .set('Authorization', `Bearer ${token}`)
             expect(res.status).toEqual(400)
         }
     })
 
     it('Good usage', async () => {
-
         const token = await initUser('john.doe')
 
         const userId = await createUser('jane.doe')
@@ -545,16 +438,16 @@ describe('ROUTE (PUT): /api/user/:id (Update user)', () => {
         expect(user?.userId).toEqual(userId)
         expect(user?.username).toEqual(characters['jane.doe'].person.firstname.toLocaleLowerCase() + '.' + characters['jane.doe'].person.lastname.toLocaleLowerCase())
         expect(user?.emailJE).toEqual(characters['jane.doe'].person.email)
-        expect(await promisify(bcrypt.compare)(characters['jane.doe'].password, user?.password ? user?.password : "")).toBeTruthy();
+        expect(await promisify(bcrypt.compare)(characters['jane.doe'].password, user?.password ? user?.password : '')).toBeTruthy()
 
         const res = await request(app)
             .put(`/api/user/${userId}`)
             .send({
                 user: {
-                    ...goodParams,
+                    ...goodParams
                 }
             })
-            .set('Authorization', `Bearer ${token}`);
+            .set('Authorization', `Bearer ${token}`)
 
         expect(res.status).toEqual(200)
 
@@ -569,47 +462,33 @@ describe('ROUTE (PUT): /api/user/:id (Update user)', () => {
         expect(updatedUser?.emailJE).toEqual(goodParams.emailJE)
         expect(updatedUser?.mandateStart).toEqual(goodParams.mandateStart)
         expect(updatedUser?.mandateEnd).toEqual(goodParams.mandateEnd)
-        expect(await promisify(bcrypt.compare)(goodParams.password, updatedUser?.password ? updatedUser?.password : "")).toBeTruthy();
+        expect(await promisify(bcrypt.compare)(goodParams.password, updatedUser?.password ? updatedUser?.password : '')).toBeTruthy()
     })
-
-
 })
 
 // ! DONE
 describe('ROUTE (DELETE): /api/user/:id (Delete user)', () => {
-
-    afterEach(clearDatabase);
+    afterEach(clearDatabase)
 
     it('Wrong format userId', async () => {
-
         const token = await initUser('john.doe')
 
-        const wrongParamList = [
-            null,
-            undefined,
-            "wrongUserIdFormat",
-        ]
+        const wrongParamList = [null, undefined, 'wrongUserIdFormat']
 
         for (const wrongParam of wrongParamList) {
-            const res = await request(app)
-                .delete(`/api/user/${wrongParam}`)
-                .set('Authorization', `Bearer ${token}`);
+            const res = await request(app).delete(`/api/user/${wrongParam}`).set('Authorization', `Bearer ${token}`)
             expect(res.status).toEqual(400)
         }
     })
 
     it('Wrong userId (user not found)', async () => {
-
         const token = await initUser('john.doe')
 
-        const res = await request(app)
-            .delete(`/api/user/${-10}`)
-            .set('Authorization', `Bearer ${token}`);
+        const res = await request(app).delete(`/api/user/${-10}`).set('Authorization', `Bearer ${token}`)
         expect(res.status).toEqual(404)
     })
 
     it('Good usage', async () => {
-
         const token = await initUser('john.doe')
 
         const userId = await createUser('jane.doe')
@@ -622,9 +501,7 @@ describe('ROUTE (DELETE): /api/user/:id (Delete user)', () => {
 
         expect(user).toBeTruthy()
 
-        const res = await request(app)
-            .delete(`/api/user/${userId}`)
-            .set('Authorization', `Bearer ${token}`);
+        const res = await request(app).delete(`/api/user/${userId}`).set('Authorization', `Bearer ${token}`)
 
         expect(res.status).toEqual(200)
 
@@ -636,5 +513,4 @@ describe('ROUTE (DELETE): /api/user/:id (Delete user)', () => {
 
         expect(deletedUser).not.toBeTruthy()
     })
-
 })

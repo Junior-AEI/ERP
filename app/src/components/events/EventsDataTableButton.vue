@@ -173,7 +173,7 @@ import { cn } from '@/lib/utils'
 import type { Event } from '@/types/api'
 
 import { type DateRange } from 'radix-vue'
-import { type DateValue, CalendarDate, CalendarDateTime } from '@internationalized/date'
+import { CalendarDate, CalendarDateTime } from '@internationalized/date'
 
 import {
   Command,
@@ -198,9 +198,6 @@ const openDialog = (event: Event) => {
 }
 
 const eventInfo = ref<Event>(props.item)
-
-const startDate = ref<DateValue>()
-const endDate = ref<DateValue>()
 
 const today = new Date()
 const calendarDateToday = new CalendarDate(

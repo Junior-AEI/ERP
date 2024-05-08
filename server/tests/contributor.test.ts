@@ -1,5 +1,5 @@
 import request from 'supertest'
-import app from "../src/app"
+import app from '../src/app'
 import { beforeAllTests, afterAllTests, clearDatabase } from './utils'
 import { initUser } from './seeders/general'
 import { createContributor } from './seeders/contributor.seeders'
@@ -12,8 +12,7 @@ afterAll(afterAllTests)
 
 // ! DONE
 describe('ROUTE (GET): /api/contributor (Get all contributors)', () => {
-
-    afterEach(clearDatabase);
+    afterEach(clearDatabase)
 
     it('Normal usage', async () => {
         // To have authorization
@@ -22,58 +21,44 @@ describe('ROUTE (GET): /api/contributor (Get all contributors)', () => {
         await createContributor('AAA', 'johnny.doe', 'jane.doe')
         await createContributor('BBB', 'jane.doe', 'john.doe')
 
-        const res = await request(app)
-            .get('/api/contributor')
-            .set('Authorization', `Bearer ${token}`);
+        const res = await request(app).get('/api/contributor').set('Authorization', `Bearer ${token}`)
 
         expect(res.status).toEqual(200)
-        expect(res.body.status).toEqual("success")
-        expect(res.body.data.contributors.length).toEqual(2);
+        expect(res.body.status).toEqual('success')
+        expect(res.body.data.contributors.length).toEqual(2)
 
         for (let i = 0; i < 2; i++) {
-            expect(res.body.data.contributors[i].contributorId).toBeDefined();
-            expect(res.body.data.contributors[i].projectId).toBeDefined();
-            expect(res.body.data.contributors[i].memberId).toBeDefined();
+            expect(res.body.data.contributors[i].contributorId).toBeDefined()
+            expect(res.body.data.contributors[i].projectId).toBeDefined()
+            expect(res.body.data.contributors[i].memberId).toBeDefined()
         }
     })
 })
 
 // ! DONE
 describe('ROUTE (GET): /api/contributor/:contributorId (Get a specific contributor)', () => {
-
-    afterEach(clearDatabase);
+    afterEach(clearDatabase)
 
     it('Wrong format id', async () => {
-
         const token = await initUser('john.doe')
 
-        const wrongFormatIdList = [
-            null,
-            undefined,
-            "wrongId"
-        ]
+        const wrongFormatIdList = [null, undefined, 'wrongId']
 
         for (const wrongFormatId of wrongFormatIdList) {
-            const res = await request(app)
-                .get(`/api/contributor/${wrongFormatId}`)
-                .set('Authorization', `Bearer ${token}`);
+            const res = await request(app).get(`/api/contributor/${wrongFormatId}`).set('Authorization', `Bearer ${token}`)
 
             expect(res.status).toEqual(400)
         }
-
     })
 
     it('Wrong Id with a good format', async () => {
-        
         const token = await initUser('john.doe')
-        
-        const res = await request(app)
-        .get(`/api/contributor/${-10}`)
-        .set('Authorization', `Bearer ${token}`);
-        
+
+        const res = await request(app).get(`/api/contributor/${-10}`).set('Authorization', `Bearer ${token}`)
+
         expect(res.status).toEqual(404)
     })
-    
+
     it('Normal usage', async () => {
         const contributorId = await createContributor('AAA', 'johnny.doe', 'jane.doe')
 
@@ -85,122 +70,106 @@ describe('ROUTE (GET): /api/contributor/:contributorId (Get a specific contribut
             }
         })
 
-        const res = await request(app)
-            .get(`/api/contributor/${contributor?.contributorId}`)
-            .set('Authorization', `Bearer ${token}`);
+        const res = await request(app).get(`/api/contributor/${contributor?.contributorId}`).set('Authorization', `Bearer ${token}`)
 
         expect(res.status).toEqual(200)
-        expect(res.body.status).toEqual("success")
-        expect(res.body.data.contributor).toBeDefined();
-        expect(res.body.data.contributor.contributorId).toEqual(contributor?.contributorId);
-        expect(res.body.data.contributor.projectId).toEqual(contributor?.projectId);
-        expect(res.body.data.contributor.memberId).toEqual(contributor?.memberId);
+        expect(res.body.status).toEqual('success')
+        expect(res.body.data.contributor).toBeDefined()
+        expect(res.body.data.contributor.contributorId).toEqual(contributor?.contributorId)
+        expect(res.body.data.contributor.projectId).toEqual(contributor?.projectId)
+        expect(res.body.data.contributor.memberId).toEqual(contributor?.memberId)
     })
 })
 
 // ! DONE
 describe('ROUTE (POST): /api/contributor (Create new contributor)', () => {
-
-    afterEach(clearDatabase);
+    afterEach(clearDatabase)
 
     it('Wrong format projectId', async () => {
-
         const token = await initUser('john.doe')
 
-        const wrongFormatIdList = [
-            null,
-            undefined,
-            "Id",
-        ]
+        const wrongFormatIdList = [null, undefined, 'Id']
 
         for (const wrongFormatId of wrongFormatIdList) {
             const res = await request(app)
-                .post("/api/contributor")
+                .post('/api/contributor')
                 .send({
                     contributor: {
-                        projectId: wrongFormatId,
+                        projectId: wrongFormatId
                     }
                 })
-                .set('Authorization', `Bearer ${token}`);
+                .set('Authorization', `Bearer ${token}`)
             expect(res.status).toEqual(400)
         }
     })
-    
-    it('Wrong projectId', async () => {
 
+    it('Wrong projectId', async () => {
         const token = await initUser('john.doe')
-        
+
         const res = await request(app)
-        .post("/api/contributor")
-        .send({
-            contributor: {
-                projectId: -10,
-            }
-        })
-        .set('Authorization', `Bearer ${token}`);
+            .post('/api/contributor')
+            .send({
+                contributor: {
+                    projectId: -10
+                }
+            })
+            .set('Authorization', `Bearer ${token}`)
         expect(res.status).toEqual(404)
     })
 
     it('Wrong format memberId', async () => {
-
         const token = await initUser('john.doe')
 
         const projectId = await createProject('AAA', 'johnny.doe')
 
-        const wrongFormatIdList = [
-            null,
-            undefined,
-            "Id",
-        ]
+        const wrongFormatIdList = [null, undefined, 'Id']
 
         for (const wrongFormatId of wrongFormatIdList) {
             const res = await request(app)
-                .post("/api/contributor")
+                .post('/api/contributor')
                 .send({
                     contributor: {
                         projectId: projectId,
-                        memberId: wrongFormatId,
+                        memberId: wrongFormatId
                     }
                 })
-                .set('Authorization', `Bearer ${token}`);
+                .set('Authorization', `Bearer ${token}`)
             expect(res.status).toEqual(400)
         }
     })
-    
-    it('Wrong memberId', async () => {
 
+    it('Wrong memberId', async () => {
         const token = await initUser('john.doe')
 
         const projectId = await createProject('AAA', 'johnny.doe')
-        
+
         const res = await request(app)
-        .post("/api/contributor")
-        .send({
-            contributor: {
-                projectId: projectId,
-                memberId: -10,
-            }
-        })
-        .set('Authorization', `Bearer ${token}`);
+            .post('/api/contributor')
+            .send({
+                contributor: {
+                    projectId: projectId,
+                    memberId: -10
+                }
+            })
+            .set('Authorization', `Bearer ${token}`)
         expect(res.status).toEqual(404)
     })
-    
-    it('Good usage', async () => {
 
+    it('Good usage', async () => {
         const token = await initUser('john.doe')
 
         const projectId = await createProject('AAA', 'johnny.doe')
         const memberId = await createMember('jane.doe')
 
         const res = await request(app)
-            .post("/api/contributor")
+            .post('/api/contributor')
             .send({
                 contributor: {
                     projectId: projectId,
-                    memberId: memberId,
+                    memberId: memberId
                 }
             })
-            .set('Authorization', `Bearer ${token}`);
+            .set('Authorization', `Bearer ${token}`)
 
         expect(res.status).toEqual(200)
         expect(res.body.data.contributorId).toBeDefined()
@@ -219,71 +188,57 @@ describe('ROUTE (POST): /api/contributor (Create new contributor)', () => {
 
 // ! DONE
 describe('ROUTE (PUT): /api/contributor/:id (Update contributor)', () => {
-    afterEach(clearDatabase);
+    afterEach(clearDatabase)
 
     it('Wrong format contributorId', async () => {
-
         const token = await initUser('john.doe')
 
-        const wrongParamList = [
-            null,
-            undefined,
-            "wrongIdFormat",
-        ]
+        const wrongParamList = [null, undefined, 'wrongIdFormat']
 
         for (const wrongParam of wrongParamList) {
             const res = await request(app)
                 .put(`/api/contributor/${wrongParam}`)
                 .send({
-                    contributor: {
-                    }
+                    contributor: {}
                 })
-                .set('Authorization', `Bearer ${token}`);
+                .set('Authorization', `Bearer ${token}`)
             expect(res.status).toEqual(400)
         }
     })
 
     it('Wrong contributorId', async () => {
-
         const token = await initUser('john.doe')
 
         const res = await request(app)
             .put(`/api/contributor/${-10}`)
             .send({
-                contributor: {
-                }
+                contributor: {}
             })
-            .set('Authorization', `Bearer ${token}`);
+            .set('Authorization', `Bearer ${token}`)
         expect(res.status).toEqual(404)
     })
 
     it('Wrong format projectId', async () => {
-
         const token = await initUser('john.doe')
 
         const contributorId = await createContributor('AAA', 'johnny.doe', 'jane.doe')
 
-        const wrongParamList = [
-            null,
-            undefined,
-            "wrongIdFormat",
-        ]
+        const wrongParamList = [null, undefined, 'wrongIdFormat']
 
         for (const wrongParam of wrongParamList) {
             const res = await request(app)
                 .put(`/api/contributor/${contributorId}}`)
                 .send({
                     contributor: {
-                        projectId: wrongParam,
+                        projectId: wrongParam
                     }
                 })
-                .set('Authorization', `Bearer ${token}`);
+                .set('Authorization', `Bearer ${token}`)
             expect(res.status).toEqual(400)
         }
     })
 
     it('Wrong projectId', async () => {
-
         const token = await initUser('john.doe')
 
         const contributorId = await createContributor('AAA', 'johnny.doe', 'jane.doe')
@@ -292,25 +247,20 @@ describe('ROUTE (PUT): /api/contributor/:id (Update contributor)', () => {
             .put(`/api/contributor/${contributorId}}`)
             .send({
                 contributor: {
-                    projectId: -10,
+                    projectId: -10
                 }
             })
-            .set('Authorization', `Bearer ${token}`);
+            .set('Authorization', `Bearer ${token}`)
         expect(res.status).toEqual(404)
     })
 
     it('Wrong format memberId', async () => {
-
         const token = await initUser('john.doe')
 
         const contributorId = await createContributor('AAA', 'johnny.doe', 'jane.doe')
         const projectId = await createProject('BBB', 'jane.doe')
 
-        const wrongParamList = [
-            null,
-            undefined,
-            "wrongIdFormat",
-        ]
+        const wrongParamList = [null, undefined, 'wrongIdFormat']
 
         for (const wrongParam of wrongParamList) {
             const res = await request(app)
@@ -318,16 +268,15 @@ describe('ROUTE (PUT): /api/contributor/:id (Update contributor)', () => {
                 .send({
                     contributor: {
                         projectId: projectId,
-                        writerId: wrongParam,
+                        writerId: wrongParam
                     }
                 })
-                .set('Authorization', `Bearer ${token}`);
+                .set('Authorization', `Bearer ${token}`)
             expect(res.status).toEqual(400)
         }
     })
 
     it('Wrong memberId', async () => {
-
         const token = await initUser('john.doe')
 
         const contributorId = await createContributor('AAA', 'johnny.doe', 'jane.doe')
@@ -338,15 +287,14 @@ describe('ROUTE (PUT): /api/contributor/:id (Update contributor)', () => {
             .send({
                 contributor: {
                     projectId: projectId,
-                    memberId:  -10,
+                    memberId: -10
                 }
             })
-            .set('Authorization', `Bearer ${token}`);
+            .set('Authorization', `Bearer ${token}`)
         expect(res.status).toEqual(404)
     })
 
     it('Good usage', async () => {
-
         const token = await initUser('john.doe')
 
         const contributorId = await createContributor('AAA', 'johnny.doe', 'jane.doe')
@@ -360,16 +308,16 @@ describe('ROUTE (PUT): /api/contributor/:id (Update contributor)', () => {
         })
 
         expect(contributor?.contributorId).toEqual(contributorId)
-        
+
         const res = await request(app)
             .put(`/api/contributor/${contributorId}`)
             .send({
                 contributor: {
                     projectId: projectId,
-                    memberId: memberId,
+                    memberId: memberId
                 }
             })
-            .set('Authorization', `Bearer ${token}`);
+            .set('Authorization', `Bearer ${token}`)
 
         expect(res.status).toEqual(200)
 
@@ -382,44 +330,32 @@ describe('ROUTE (PUT): /api/contributor/:id (Update contributor)', () => {
         expect(updatedContributor?.contributorId).toEqual(contributorId)
         expect(updatedContributor?.memberId).toEqual(memberId)
         expect(updatedContributor?.projectId).toEqual(projectId)
-    })  
+    })
 })
 
 // ! DONE
 describe('ROUTE (DELETE): /api/contributor/:id (Delete contributor)', () => {
-
-    afterEach(clearDatabase);
+    afterEach(clearDatabase)
 
     it('Wrong format contributorId', async () => {
-
         const token = await initUser('john.doe')
 
-        const wrongParamList = [
-            null,
-            undefined,
-            "wrongIdFormat",
-        ]
+        const wrongParamList = [null, undefined, 'wrongIdFormat']
 
         for (const wrongParam of wrongParamList) {
-            const res = await request(app)
-                .delete(`/api/contributor/${wrongParam}`)
-                .set('Authorization', `Bearer ${token}`);
+            const res = await request(app).delete(`/api/contributor/${wrongParam}`).set('Authorization', `Bearer ${token}`)
             expect(res.status).toEqual(400)
         }
     })
 
     it('Wrong contributorId (contributor not found)', async () => {
-
         const token = await initUser('john.doe')
 
-        const res = await request(app)
-            .delete(`/api/contributor/${-10}`)
-            .set('Authorization', `Bearer ${token}`);
+        const res = await request(app).delete(`/api/contributor/${-10}`).set('Authorization', `Bearer ${token}`)
         expect(res.status).toEqual(404)
     })
 
     it('Good usage', async () => {
-
         const token = await initUser('john.doe')
 
         const contributorId = await createContributor('AAA', 'johnny.doe', 'jane.doe')
@@ -432,9 +368,7 @@ describe('ROUTE (DELETE): /api/contributor/:id (Delete contributor)', () => {
 
         expect(contributor).toBeTruthy()
 
-        const res = await request(app)
-            .delete(`/api/contributor/${contributorId}`)
-            .set('Authorization', `Bearer ${token}`);
+        const res = await request(app).delete(`/api/contributor/${contributorId}`).set('Authorization', `Bearer ${token}`)
 
         expect(res.status).toEqual(200)
 
@@ -446,5 +380,4 @@ describe('ROUTE (DELETE): /api/contributor/:id (Delete contributor)', () => {
 
         expect(deletedContributor).not.toBeTruthy()
     })
-
 })

@@ -26,9 +26,7 @@ async function getData(): Promise<itTicketInfo[]> {
     const user = users.data.data?.users.find((user: any) => user.userId === itTicket.userId)
     return {
       ...user,
-      ...itTicket,
-      
-      
+      ...itTicket
     }
   })
 
@@ -46,6 +44,6 @@ const handleClick = (e: any) => {
 
 <template>
   <div>
-    <DataTable :columns="columns" :data="data" :onClickFn="handleClick"/>
+    <DataTable :columns="columns" :data="data" :onClickFn="handleClick" />
   </div>
 </template>

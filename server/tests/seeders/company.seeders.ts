@@ -8,7 +8,7 @@ export const createCompany = async (name: string) => {
     const company = await Companies.create({
         name: name,
         legalEntity: companies[name].legalEntity,
-        addressId: address.addressId,
+        addressId: address.addressId
     })
 
     return company.companyId

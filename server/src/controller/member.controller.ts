@@ -35,7 +35,6 @@ const getAll = async (req: Request, res: Response) => {
  */
 const getByPk = async (req: Request, res: Response) => {
     try {
-
         const identifier = parseInt(req.params.memberId)
         if (isNaN(identifier)) throw createHttpError(400, 'Please provide a valid identifier')
 
@@ -46,7 +45,7 @@ const getByPk = async (req: Request, res: Response) => {
         return res.status(200).json({
             status: 'success',
             data: {
-                member: member,
+                member: member
             }
         })
     } catch (err) {
@@ -101,7 +100,6 @@ const update = async (req: Request, res: Response) => {
         // Parse identifier
         if (!req.params.memberId && !isNumber(req.params.memberId)) throw createHttpError(400, 'Please provide a valid identifier')
         const identifier = parseInt(req.params.memberId)
-
 
         const member = await Members.findByPk(identifier)
         if (!member) throw createHttpError(404, 'User not found')

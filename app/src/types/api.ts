@@ -50,10 +50,6 @@ export interface Address {
   city: string
   postCode: string
   country: string
-  createdAt: DateString
-  updatedAt: DateString
-  member: Member[]
-  company: Array<{}>
 }
 
 export interface Event {
@@ -74,17 +70,15 @@ export interface itTicket {
   applicationConcerned: string
   state: string
   createdAt: DateString
-
 }
 
-export type itTicketInfo = itTicket & User;
+export type itTicketInfo = itTicket & User
 
 export interface Group {
   groupName: string
   createdAt: DateString
   updatedAt: DateString
 }
-
 
 export interface Belonger {
   userId: number
@@ -113,21 +107,41 @@ export interface ExpenseAccount {
 }
 
 export interface InfoExpense {
-  usernameUser : string
-  usernameApprobator : string
+  usernameUser: string
+  usernameApprobator: string
 }
 
-export type ExpenseAccountInfo = ExpenseAccount & InfoExpense;
+export type ExpenseAccountInfo = ExpenseAccount & InfoExpense
 
 export interface Company {
-  name :string
+  name: string
   legalEntity: string
-  addressId : number
+  addressId: number
+  companyId: number
 }
 
 export interface Client {
-  function : string
+  function: string
 }
 
-export type ClientInfo = Client & Company & Person
+export type ClientInfo = Client & Company & Person & Address
 
+export interface Document {
+  documentId: number
+  path: string
+  version: number
+  typeId: number
+  information: string
+  status: string
+  authorId: number
+  createdAt: DateString
+}
+
+export interface DocumentType {
+  typeId: number
+  type: string
+  fieldNumber: number
+  fieldMeaning: string
+}
+
+export type DocumentFull = Document & DocumentType // combine Document and DocumentType

@@ -1,6 +1,5 @@
-import { isValidDate } from "./utils"
-import { EVENTTYPES } from "../models/event.model";
-
+import { isValidDate } from './utils'
+import { EVENTTYPES } from '../models/event.model'
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 export const isValidEvent = (name: any, startDate: any, endDate: any, location: any, description: any, eventTypeName: any) => {

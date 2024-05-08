@@ -35,7 +35,6 @@ export default class EventGroupConcerned extends Model {
     @BelongsTo(() => Groups)
     group!: Groups
 
-    
     @ForeignKey(() => Events)
     @Column({
         type: DataType.INTEGER,

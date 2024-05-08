@@ -94,13 +94,13 @@ export default class Members extends Model {
 
     @Column({
         type: DataType.STRING,
-        allowNull: true,
+        allowNull: true
     })
     telegramId!: string
 
     @Column({
         type: DataType.STRING,
-        allowNull: true,
+        allowNull: true
     })
     chatBotId!: string
 

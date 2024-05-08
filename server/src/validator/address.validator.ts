@@ -1,7 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 export const isValidAddress = (address: any, additionnalAddress: any, city: any, postCode: any, country: any) => {
-
-    if (address === undefined || additionnalAddress === undefined || city === undefined || postCode === undefined || country === undefined) return { valid: 0, message: "Please fill all the fields." }
+    if (address === undefined || additionnalAddress === undefined || city === undefined || postCode === undefined || country === undefined) return { valid: 0, message: 'Please fill all the fields.' }
 
     if (typeof address != 'string') return { valid: 0, message: 'Your adress is not correctly formatted.' }
     if (address.length === 0 || address.length > 50) return { valid: 0, message: 'Your adress is too long.' }

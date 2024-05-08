@@ -14,7 +14,27 @@ export const treasuryModule: Module = {
           component: () => import('./views/ExpenseAdmin.vue'),
           meta: {
             icon: 'credit_card'
-          }
+          },
+          children: [
+            {
+              path: '/notes-de-frais',
+              name: 'Notes de Frais',
+              component: () => import('./views/ExpenseAdmin.vue'),
+              meta: {
+                icon: 'credit_card'
+              },
+              children: [
+                {
+                  path: '/notes-de-frais',
+                  name: 'Notes de Frais',
+                  component: () => import('./views/ExpenseAdmin.vue'),
+                  meta: {
+                    icon: 'credit_card'
+                  }
+                }
+              ],
+            }
+          ],
         }
       ],
       meta: {

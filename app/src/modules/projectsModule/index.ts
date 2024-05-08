@@ -17,7 +17,7 @@ export const projectsModule: Module = {
           }
         },
         {
-          path: '/clients/new',
+          path: '/new',
           name: 'Ajouter Client',
           component: () => import('./createClient.vue'),
           meta: {

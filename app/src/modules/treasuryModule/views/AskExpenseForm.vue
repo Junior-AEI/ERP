@@ -57,7 +57,7 @@
 
 <script setup lang="ts">
 import { useAuthStore } from '@/stores/authStore'
-import type { ExpenseAccount, Person } from '@/types/api'
+import type { ExpenseAccount } from '@/types/api'
 import { type DateValue } from '@internationalized/date'
 import { useToast } from '@/components/ui/toast/use-toast'
 import { Toaster } from '@/components/ui/toast'

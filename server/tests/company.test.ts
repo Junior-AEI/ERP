@@ -30,6 +30,7 @@ describe('ROUTE (GET): /api/company (Get all companies)', () => {
             expect(res.body.data.companies[i].companyId).toBeDefined()
             expect(res.body.data.companies[i].name).toBeDefined()
             expect(res.body.data.companies[i].legalEntity).toBeDefined()
+            expect(res.body.data.companies[i].companyType).toBeDefined()
             expect(res.body.data.companies[i].createdAt).toBeDefined()
             expect(res.body.data.companies[i].updatedAt).toBeDefined()
         }
@@ -80,6 +81,7 @@ describe('ROUTE (GET): /api/company/:companyId (Get a specific company)', () => 
         expect(res.body.data.company.companyId).toEqual(company?.companyId)
         expect(res.body.data.company.name).toEqual(company?.name)
         expect(res.body.data.company.legalEntity).toEqual(company?.legalEntity)
+        expect(res.body.data.company.companyType).toEqual(company?.companyType)
     })
 })
 
@@ -89,7 +91,8 @@ describe('ROUTE (POST): /api/company (Create new company)', () => {
 
     const goodParams = {
         name: 'Matmeca',
-        legalEntity: 'Non'
+        legalEntity: 'Non',
+        companyType: 'TPE',
     }
 
     it('Wrong format addressId', async () => {
@@ -170,6 +173,28 @@ describe('ROUTE (POST): /api/company (Create new company)', () => {
         }
     })
 
+    it('Wrong company type', async () => {
+        const token = await initUser('john.doe')
+
+        const addressId = await createAddress('Enseirb')
+
+        const wrongTypeList = ['sh', null, undefined, 'TypeTooooooooLong', 'notinlist']
+
+        for (const wrongTypeEntity of wrongTypeList) {
+            const res = await request(app)
+                .post('/api/company')
+                .send({
+                    company: {
+                        addressId: addressId,
+                        ...goodParams,
+                        companyType: wrongTypeEntity,
+                    }
+                })
+                .set('Authorization', `Bearer ${token}`)
+            expect(res.status).toEqual(400)
+        }
+    })
+
     it('Good usage', async () => {
         const token = await initUser('john.doe')
 
@@ -197,6 +222,7 @@ describe('ROUTE (POST): /api/company (Create new company)', () => {
         expect(company?.companyId).toEqual(res.body.data.companyId)
         expect(company?.name).toEqual(goodParams.name)
         expect(company?.legalEntity).toEqual(goodParams.legalEntity)
+        expect(company?.companyType).toEqual(goodParams.companyType)
         expect(company?.addressId).toEqual(addressId)
     })
 })
@@ -207,7 +233,8 @@ describe('ROUTE (PUT): /api/company/:id (Update company)', () => {
 
     const goodParams = {
         name: 'Matmeca',
-        legalEntity: 'Non'
+        legalEntity: 'Non',
+        companyType: 'TPE'
     }
 
     it('Wrong format companyId', async () => {
@@ -315,6 +342,27 @@ describe('ROUTE (PUT): /api/company/:id (Update company)', () => {
                     company: {
                         ...goodParams,
                         legalEntity: wrongParam
+                    }
+                })
+                .set('Authorization', `Bearer ${token}`)
+            expect(res.status).toEqual(400)
+        }
+    })
+
+    it('Wrong legal entity', async () => {
+        const token = await initUser('john.doe')
+
+        const companyId = await createCompany('Enseirb')
+
+        const wrongTypeList = ['sh', null, undefined, 'TypeToooooooooooLong', 'notinlist']
+
+        for (const wrongParam of wrongTypeList) {
+            const res = await request(app)
+                .put(`/api/company/${companyId}`)
+                .send({
+                    company: {
+                        ...goodParams,
+                        companyType: wrongParam
                     }
                 })
                 .set('Authorization', `Bearer ${token}`)

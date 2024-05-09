@@ -1,5 +1,7 @@
+import { COMPANYTYPES } from "../models/company.model"
+
 /* eslint-disable @typescript-eslint/no-explicit-any */
-export const isValidCompany = (name: any, legalEntity: any) => {
+export const isValidCompany = (name: any, legalEntity: any, companyType: any) => {
     if (name === undefined || legalEntity === undefined) return { valid: 0, message: 'Please fill all the fields.' }
 
     if (typeof name !== 'string') return { valid: 0, message: 'Your name is not correctly formatted.' }
@@ -10,6 +12,9 @@ export const isValidCompany = (name: any, legalEntity: any) => {
             valid: 0,
             message: 'Your legal entity size has to be bigger than 3 and smaller than 40'
         }
+    if (typeof companyType !== 'string') return {valid: 0, message: 'Your companyType is not correctly formatted.'}
+    if (companyType.length < 3 ||companyType.length >= 13) return {valid: 0, message: 'Your companyType size is not valid.'}
+    if (!COMPANYTYPES.includes(companyType)) return { valid: 0, message: 'Your company type is not in COMPANYTYPES.' }
 
     return { valid: 1 }
 }

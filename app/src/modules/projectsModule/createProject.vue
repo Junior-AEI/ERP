@@ -8,11 +8,15 @@
       <CardContent>
         <div class="flex items-end gap-4" v-if="form.clientId == -1 ">
           <div class="flex flex-1 flex-col gap-2">
-            <Combobox @input="handleInputClient" :options="clientsList"
-              :comboboxLabel="'Selectionner un client existant'">
+            <Combobox
+              @input="handleInputClient"
+              :options="clientsList"
+              :comboboxLabel="'Selectionner un client existant'"
+            >
             </Combobox>
-            <Button variant="outline" @click="handleClickNewClient">Rentrer un nouveau client</Button>
-
+            <Button variant="outline" @click="handleClickNewClient"
+              >Rentrer un nouveau client</Button
+            >
           </div>
         </div>
         <div class="flex items-end gap-4">
@@ -33,15 +37,9 @@
             </SelectTrigger>
             <SelectContent>
               <SelectGroup>
-                <SelectItem value="M">
-                  Homme
-                </SelectItem>
-                <SelectItem value="F">
-                  Femme
-                </SelectItem>
-                <SelectItem value="O">
-                  Autre
-                </SelectItem>
+                <SelectItem value="M"> Homme </SelectItem>
+                <SelectItem value="F"> Femme </SelectItem>
+                <SelectItem value="O"> Autre </SelectItem>
               </SelectGroup>
             </SelectContent>
           </Select>
@@ -63,18 +61,22 @@
         <div class="flex items-start gap-4">
           <div class="flex flex-col gap-2">
             <Label for="application">Entreprise du Client</Label>
-            <Combobox @input="handleInputCompany" :options="companyList" :comboboxLabel="'Selectionner l\'entreprise'">
+            <Combobox
+              @input="handleInputCompany"
+              :options="companyList"
+              :comboboxLabel="'Selectionner l\'entreprise'"
+            >
             </Combobox>
-            <Button variant="outline" @click="handleClickNewCompany">Renseigner une nouvelle entreprise</Button>
+            <Button variant="outline" @click="handleClickNewCompany"
+              >Renseigner une nouvelle entreprise</Button
+            >
           </div>
-
 
           <div class="flex flex-1 flex-col gap-2">
             <Label for="landlinePhone">Poste dans l'entreprise</Label>
             <Input id="landlinePhone" placeholder="Tel Fixe" v-model="form.function" />
           </div>
         </div>
-
 
         <div v-if="form.companyId == 0">
           <div class="flex items-end gap-4">
@@ -91,17 +93,18 @@
             <div class="flex items-end gap-4">
               <div class="flex flex-1 flex-col gap-2">
                 <Label for="application">Adresse de l'Entreprise</Label>
-                <Combobox @input="handleInputAddress" :options="addressList" :comboboxLabel="'Selectionner l\'adresse'">
+                <Combobox
+                  @input="handleInputAddress"
+                  :options="addressList"
+                  :comboboxLabel="'Selectionner l\'adresse'"
+                >
                 </Combobox>
-                <Button variant="outline" @click="handleClickNewAdress">Renseigner une nouvelle Adresse</Button>
-
+                <Button variant="outline" @click="handleClickNewAdress"
+                  >Renseigner une nouvelle Adresse</Button
+                >
               </div>
-              <div class="flex flex-1 flex-col gap-2">
-
-              </div>
+              <div class="flex flex-1 flex-col gap-2"></div>
             </div>
-
-
           </div>
         </div>
 
@@ -113,7 +116,11 @@
             </div>
             <div class="flex flex-1 flex-col gap-2">
               <Label for="legalEntity">Complément d'adresse</Label>
-              <Input id="additionnalAddress" placeholder="Tel Fixe" v-model="form.additionnalAddress" />
+              <Input
+                id="additionnalAddress"
+                placeholder="Tel Fixe"
+                v-model="form.additionnalAddress"
+              />
             </div>
           </div>
           <div class="flex items-end gap-4">
@@ -131,8 +138,6 @@
             <Input id="country" placeholder="Tel Fixe" v-model="form.country" />
           </div>
         </div>
-
-
 
         <Button @click="handleClick">Créer un nouveau Client</Button>
       </CardContent>
@@ -199,7 +204,9 @@ async function getDataClient(): Promise<{ value: string; label: string }[]> {
   })
 
   const clientsInfo = clients.data.data?.clients.map((client: any) => {
-    const person = persons.data.data?.persons.find((person: any) => person.personId === client.clientId)
+    const person = persons.data.data?.persons.find(
+      (person: any) => person.personId === client.clientId
+    )
     return {
       ...client,
       ...person
@@ -262,7 +269,6 @@ const handleInputClient = (value: string) => {
   form.value.clientId = parseInt(value)
 }
 
-
 const handleInputAddress = (value: string) => {
   form.value.addressId = parseInt(value)
 }
@@ -290,7 +296,6 @@ onMounted(async () => {
 })
 
 const { toast } = useToast()
-
 
 async function newAddress() {
   await axios
@@ -326,8 +331,6 @@ async function newAddress() {
         description: `${error.response.data.message}`
       })
     })
-
-
 }
 
 async function newCompany() {
@@ -338,7 +341,7 @@ async function newCompany() {
         company: {
           name: form.value.name,
           legalEntity: form.value.legalEntity,
-          addressId: form.value.addressId,
+          addressId: form.value.addressId
         }
       },
       {
@@ -348,7 +351,6 @@ async function newCompany() {
       }
     )
     .then((response) => {
-      console.log(response)
       form.value.companyId = response.data.data.companyId
       toast({
         title: 'Entreprise renseignée',
@@ -376,7 +378,7 @@ async function newPerson() {
           gender: form.value.gender,
           mobilePhone: form.value.mobilePhone,
           landlinePhone: form.value.landlinePhone,
-          email: form.value.email,
+          email: form.value.email
         }
       },
       {
@@ -411,7 +413,7 @@ async function newClient() {
         client: {
           clientId: form.value.personId,
           function: form.value.function,
-          companyId: form.value.companyId,
+          companyId: form.value.companyId
         }
       },
       {
@@ -440,18 +442,13 @@ async function newClient() {
 async function handleClick() {
   if (form.value.addressId == 0) {
     await newAddress()
-
   }
   if (form.value.companyId == 0) {
     await newCompany()
-
   }
   console.log(form.value.companyId)
   await newPerson()
   console.log(form.value.personId)
   await newClient()
-
-
 }
-
 </script>

@@ -24,15 +24,9 @@
             </SelectTrigger>
             <SelectContent>
               <SelectGroup>
-                <SelectItem value="M">
-                  Homme
-                </SelectItem>
-                <SelectItem value="F">
-                  Femme
-                </SelectItem>
-                <SelectItem value="O">
-                  Autre
-                </SelectItem>
+                <SelectItem value="M"> Homme </SelectItem>
+                <SelectItem value="F"> Femme </SelectItem>
+                <SelectItem value="O"> Autre </SelectItem>
               </SelectGroup>
             </SelectContent>
           </Select>
@@ -55,32 +49,20 @@
           <div class="flex flex-1 flex-col gap-2">
             <Label for="department">Filière</Label>
             <Select v-model="form.department">
-            <SelectTrigger>
-              <SelectValue placeholder="Filière" />
-            </SelectTrigger>
-            <SelectContent>
-              <SelectGroup>
-                <SelectItem value="Informatique">
-                  Info
-                </SelectItem>
-                <SelectItem value="Telecommunication">
-                  Telecom
-                </SelectItem>
-                <SelectItem value="Matmeca">
-                  Matmeca
-                </SelectItem>
-                <SelectItem value="Electronique">
-                  Elec
-                </SelectItem>
-                <SelectItem value="R&I">
-                  R&I
-                </SelectItem>
-                <SelectItem value="SEE">
-                  SEE
-                </SelectItem>
-              </SelectGroup>
-            </SelectContent>
-          </Select>
+              <SelectTrigger>
+                <SelectValue placeholder="Filière" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectGroup>
+                  <SelectItem value="Informatique"> Info </SelectItem>
+                  <SelectItem value="Telecommunication"> Telecom </SelectItem>
+                  <SelectItem value="Matmeca"> Matmeca </SelectItem>
+                  <SelectItem value="Electronique"> Elec </SelectItem>
+                  <SelectItem value="R&I"> R&I </SelectItem>
+                  <SelectItem value="SEE"> SEE </SelectItem>
+                </SelectGroup>
+              </SelectContent>
+            </Select>
           </div>
           <div class="flex flex-1 flex-col gap-2">
             <Label for="promotion">Promo</Label>
@@ -102,9 +84,9 @@
           </div>
         </div>
         <div class="flex flex-1 flex-col gap-2">
-            <Label for="landlinePhone">Email</Label>
-            <Input id="landlinePhone" placeholder="Tel Fixe" v-model="form.email" />
-          </div>
+          <Label for="landlinePhone">Email</Label>
+          <Input id="landlinePhone" placeholder="Tel Fixe" v-model="form.email" />
+        </div>
         <div class="flex justify-end gap-4">
           <div class="flex flex-1 flex-col gap-2">
             <Label for="membershipNumber">Numéro de cotisation</Label>
@@ -117,27 +99,22 @@
           <div class="flex flex-1 flex-col gap-2">
             <Label for="paymentMethod">Moyen de paiement de la Cotisation</Label>
             <Select v-model="form.paymentMethod">
-            <SelectTrigger>
-              <SelectValue placeholder="Moyen de Payement" />
-            </SelectTrigger>
-            <SelectContent>
-              <SelectGroup>
-                <SelectItem value="HelloAsso">
-                  Hello Asso
-                </SelectItem>
-                <SelectItem value="LydiaPro">
-                  Lydia Pro
-                </SelectItem>
-                <SelectItem value="Vir">
-                  Virement
-                </SelectItem>
-              </SelectGroup>
-            </SelectContent>
-          </Select>
+              <SelectTrigger>
+                <SelectValue placeholder="Moyen de Payement" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectGroup>
+                  <SelectItem value="HelloAsso"> Hello Asso </SelectItem>
+                  <SelectItem value="LydiaPro"> Lydia Pro </SelectItem>
+                  <SelectItem value="Vir"> Virement </SelectItem>
+                </SelectGroup>
+              </SelectContent>
+            </Select>
           </div>
-        </div><div class="flex justify-end gap-4">
+        </div>
+        <div class="flex justify-end gap-4">
           <div class="flex flex-1 flex-col gap-2">
-            <Label for="membershipNumber">@ Telegram</Label>
+            <Label for="membershipNumber">@Telegram</Label>
             <Input id="membershipNumber" v-model="form.telegramId" />
           </div>
           <div class="flex flex-1 flex-col gap-2">
@@ -145,24 +122,21 @@
             <Input id="membershipNumber" v-model="form.chatBotId" />
           </div>
         </div>
-            <div class="flex items-end gap-4">
-            <div class="flex flex-1 flex-col gap-2">
-              <Label for="application">Adresse</Label>
+        <div class="flex items-end gap-4">
+          <div class="flex flex-1 flex-col gap-2">
+            <Label for="application">Adresse</Label>
             <Combobox
               @input="handleInputAddress"
               :options="addressList"
               :comboboxLabel="'Selectionner l\'adresse'"
             >
             </Combobox>
-            <Button variant="outline" @click="handleClickNewAdress">Renseigner une nouvelle Adresse</Button>
-
-            </div>
-            <div class="flex flex-1 flex-col gap-2">
-
-            </div>
+            <Button variant="outline" @click="handleClickNewAdress"
+              >Renseigner une nouvelle Adresse</Button
+            >
           </div>
-            
-
+          <div class="flex flex-1 flex-col gap-2"></div>
+        </div>
 
         <div v-if="form.addressId == 0">
           <div class="flex items-end gap-4">
@@ -210,7 +184,6 @@ const temp = ref('temp')
 import type { FullMemberWithAdress } from '@/types/api'
 import { type DateValue } from '@internationalized/date'
 
-
 const form = ref<FullMemberWithAdress>({
   personId: NaN,
   lastname: '',
@@ -229,8 +202,8 @@ const form = ref<FullMemberWithAdress>({
   paymentMethod: '',
   department: '',
   membershipNumber: NaN,
-  telegramId : '',
-  chatBotId : '',
+  telegramId: '',
+  chatBotId: '',
 
   addressId: NaN,
   address: '',
@@ -239,14 +212,14 @@ const form = ref<FullMemberWithAdress>({
   postCode: '',
   country: '',
   createdAt: '',
-  updatedAt: '',
+  updatedAt: ''
 })
 
 const membershipNumberFormat = ref<string>()
 const contributionDateFormat = ref<DateValue>()
 const birthDateFormat = ref<DateValue>()
 
-  const handleInputAddress = (value: string) => {
+const handleInputAddress = (value: string) => {
   form.value.addressId = parseInt(value)
 }
 
@@ -279,8 +252,8 @@ onMounted(async () => {
 
 const { toast } = useToast()
 
-async function  newAddress() {
-    await axios
+async function newAddress() {
+  await axios
     .post(
       `/address/`,
       {
@@ -313,11 +286,9 @@ async function  newAddress() {
         description: `${error.response.data.message}`
       })
     })
-  
-  
 }
 
-async function newPerson(){
+async function newPerson() {
   await axios
     .post(
       `/person/`,
@@ -328,7 +299,7 @@ async function newPerson(){
           gender: form.value.gender,
           mobilePhone: form.value.mobilePhone,
           landlinePhone: form.value.landlinePhone,
-          email: form.value.email,
+          email: form.value.email
         }
       },
       {
@@ -338,7 +309,6 @@ async function newPerson(){
       }
     )
     .then((response) => {
-      console.log(response)
       form.value.personId = response.data.data.personId
       toast({
         title: 'PErsonne renseignée',
@@ -355,7 +325,7 @@ async function newPerson(){
     })
 }
 
-async function newMember(){
+async function newMember() {
   if (contributionDateFormat.value) {
     form.value.contributionDate = contributionDateFormat.value.toString()
   }
@@ -380,7 +350,6 @@ async function newMember(){
           department: form.value.department,
           membershipNumber: form.value.membershipNumber,
           addressId: form.value.addressId
-
         }
       },
       {
@@ -390,7 +359,6 @@ async function newMember(){
       }
     )
     .then((response) => {
-      console.log(response)
       toast({
         title: 'Personne renseignée',
         description: `${response.data.data.memberId}`
@@ -405,18 +373,14 @@ async function newMember(){
       })
     })
 }
-async function handleClick () {
-  if ( form.value.addressId == 0) {
+async function handleClick() {
+  if (form.value.addressId == 0) {
     await newAddress()
-
   }
   console.log(form.value.addressId)
   await newPerson()
   console.log(form.value.personId)
 
   await newMember()
-
-  
 }
-
 </script>

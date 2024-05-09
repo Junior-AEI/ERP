@@ -316,7 +316,6 @@ const editEvent = () => {
       }
     )
     .then((response) => {
-      console.log(response)
       location.reload()
     })
     .catch((error) => {
@@ -337,7 +336,6 @@ const deleteEvent = () => {
       }
     })
     .then((response) => {
-      console.log(response)
       location.reload()
     })
     .catch((error) => {

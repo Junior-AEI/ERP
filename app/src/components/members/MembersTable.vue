@@ -43,7 +43,6 @@ onMounted(async () => {
 const router = useRouter()
 
 const handleClick = (row: any) => {
-  console.log(row)
   router.push({
     path: '/profile',
     query: { id: row.memberId, fistname: row.firstname, lastname: row.lastname }

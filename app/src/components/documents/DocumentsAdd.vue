@@ -154,7 +154,7 @@ const uploadDocument = () => {
       description: `All the fields must be filled.`
     })
   } else {
-    const response = axios
+    axios
       .post(
         `/document`,
         {
@@ -178,7 +178,6 @@ const uploadDocument = () => {
         }
       )
       .then(() => {
-        console.log(response)
         emit('update:files', [])
         toast({
           title: 'Document envoyé',

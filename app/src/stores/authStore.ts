@@ -21,13 +21,11 @@ export const useAuthStore = defineStore('auth', {
       })
       request
         .then((response) => {
-          console.log(response.data)
           this.token = response.data.data.token
           this.userId = response.data.data.userId
           this.username = response.data.data.username
           this.firstName = response.data.data.firstName
           this.lastName = response.data.data.lastName
-          console.log(this.lastName)
         })
         .catch((error) => {
           console.log(error)

@@ -79,7 +79,6 @@ onMounted(async () => {
     events.value.sort((a, b) => new Date(a.endDate).getTime() - new Date(b.endDate).getTime())
   )
   noEvents.value = events.value.length == 0
-  console.log(events.value)
 })
 </script>
 

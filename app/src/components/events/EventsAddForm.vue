@@ -293,7 +293,6 @@ const addEvent = async () => {
       }
     )
     .then((response) => {
-      console.log(response)
       emit('add:event', [])
       toast({
         title: 'Événement ajouté',

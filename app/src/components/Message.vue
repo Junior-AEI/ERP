@@ -34,8 +34,6 @@ const day = (() => {
     return 'hier'
   }
 
-  console.log(props.date.getTimezoneOffset())
-
   return `Le ${props.date.toLocaleDateString('fr-FR', {
     year: 'numeric',
     month: 'long',

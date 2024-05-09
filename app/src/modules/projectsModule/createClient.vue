@@ -5,7 +5,7 @@
         <Icon name="person_add" class="text-6xl" />
         <span class="text-accent"> Créer un nouveau client</span>
       </CardHeader>
-      <CardContent class="overflow-y-auto">
+      <CardContent>
         <div class="flex items-end gap-4">
           <div class="flex flex-1 flex-col gap-2">
             <Label for="lastname">Nom</Label>
@@ -58,10 +58,33 @@
               >Renseigner une nouvelle entreprise</Button
             >
           </div>
-
-          <div class="flex flex-1 flex-col gap-2">
+          <div class="flex flex-col gap-2">
+            <div class="flex flex-1 flex-col gap-2">
             <Label for="landlinePhone">Poste dans l'entreprise</Label>
             <Input id="landlinePhone" placeholder="Tel Fixe" v-model="form.function" />
+          </div>
+          <div class="flex flex-1 flex-col gap-2">
+            <Label for="landlinePhone">Premier Contact</Label>
+            <Select v-model="form.firstContact">
+            <SelectTrigger>
+              <SelectValue placeholder="Comment AEI a eu le premier contact" />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectGroup>
+                <SelectItem value="Bouche à oreille"> Bouche à oreille </SelectItem>
+                <SelectItem value="Soirée partenaire"> Soirée partenaire </SelectItem>
+                <SelectItem value="Appel téléphonique"> Appel téléphonique </SelectItem>
+                <SelectItem value="Site AEI"> Site AEI</SelectItem>
+                <SelectItem value="Congrès"> Congrès </SelectItem>
+                <SelectItem value="Salon"> Salon </SelectItem>
+                <SelectItem value="RS"> Réseaux Sociaux (LinkedIn, Instagram, ...) </SelectItem>
+                <SelectItem value="Autre"> Autre </SelectItem>
+
+
+              </SelectGroup>
+            </SelectContent>
+          </Select>
+          </div>
           </div>
         </div>
 
@@ -74,6 +97,28 @@
             <div class="flex flex-1 flex-col gap-2">
               <Label for="legalEntity">N° de SIRET de l'entreprise</Label>
               <Input id="legalEntity" placeholder="Tel Fixe" v-model="form.legalEntity" />
+            </div>
+          </div>
+          <div class="flex items-end gap-4">
+            <div class="flex flex-1 flex-col gap-2">
+              <Label for="name">Type d'Entreprise</Label>
+              <Select v-model="form.companyType">
+            <SelectTrigger>
+              <SelectValue placeholder="Type d'entreprise" />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectGroup>
+                <SelectItem value="Particulier"> Particulier </SelectItem>
+                <SelectItem value="Association"> Association </SelectItem>
+                <SelectItem value="TPE"> TPE (- de 20 employés) </SelectItem>
+                <SelectItem value="PME"> PME (+ de 20 employés)</SelectItem>
+                <SelectItem value="Grand Groupe"> Grand Groupe </SelectItem>
+                <SelectItem value="Ecole"> Ecole </SelectItem>
+                <SelectItem value="Administration"> Administration </SelectItem>
+
+              </SelectGroup>
+            </SelectContent>
+          </Select>
             </div>
           </div>
           <div class="mt-2 flex flex-col gap-2">
@@ -152,11 +197,16 @@ const form = ref<ClientInfo>({
   email: '',
   createdAt: '',
   updatedAt: '',
+
   name: '',
   legalEntity: '',
   addressId: NaN,
+  companyType : '',
+
   function: '',
+  firstContact:'',
   companyId: NaN,
+
   address: '',
   additionnalAddress: '',
   city: '',
@@ -272,7 +322,9 @@ async function newCompany() {
         company: {
           name: form.value.name,
           legalEntity: form.value.legalEntity,
-          addressId: form.value.addressId
+          addressId: form.value.addressId,
+          companyType: form.value.companyType
+
         }
       },
       {
@@ -345,7 +397,9 @@ async function newClient() {
         client: {
           clientId: form.value.personId,
           function: form.value.function,
-          companyId: form.value.companyId
+          companyId: form.value.companyId,
+          firstContact: form.value.firstContact
+
         }
       },
       {
@@ -374,15 +428,9 @@ async function handleClick() {
   if (form.value.addressId == 0) {
     await newAddress()
   }
-  console.log("Bef"+ form.value.companyId )
-  if ( form.value.companyId == 0) {
-    console.log("Befo"+ form.value.companyId )
+  if (form.value.companyId == 0) {
     await newCompany()
-    console.log("Aft"+ form.value.companyId )
-
-
   }
-  console.log("After" + form.value.companyId)
   await newPerson()
   console.log(form.value.personId)
   await newClient()

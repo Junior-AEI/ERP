@@ -122,10 +122,12 @@ export interface Company {
   legalEntity: string
   addressId: number
   companyId: number
+  companyType: string
 }
 
 export interface Client {
   function: string
+  firstContact: string
 }
 
 export type ClientInfo = Client & Company & Person & Address

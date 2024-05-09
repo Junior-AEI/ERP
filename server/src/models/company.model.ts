@@ -15,7 +15,7 @@ import Addresses from './address.model'
 import Clients from './client.model'
 import Partners from './partner.model'
 
-export const COMPANYTYPES = ['Particulier', 'Association', 'PME', 'TPE']
+export const COMPANYTYPES = ['Particulier', 'Association', 'PME', 'TPE','Grand Groupe', 'Ecole','Administration']
 
 @Table
 export default class Companies extends Model {

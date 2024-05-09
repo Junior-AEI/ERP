@@ -9,4 +9,7 @@ router.post('/', documentController.create)
 router.put('/:documentId', documentController.update)
 router.delete('/:documentId', documentController.del)
 
+// Nouvelles routes pour le téléchargement
+router.get('/documents/downloadById/:documentId', documentController.downloadById);
+
 export default router

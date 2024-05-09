@@ -1,4 +1,6 @@
+import dotenv from 'dotenv'
 import { Request, Response } from 'express'
+import fs from 'fs';
 import Documents from '../models/document.model'
 import { controllerErrorHandler } from './utils.controller'
 import { HttpError } from 'http-errors'
@@ -9,10 +11,18 @@ import DocumentTypes from '../models/documentType.model'
 
 import multer from 'multer'
 
+dotenv.config()
+
 // Configuration de multer pour spécifier où stocker les fichiers uploadés
 const storage = multer.diskStorage({
     destination: function (req, file, cb) {
-        cb(null, '../uploads/') // Indiquez le répertoire où les fichiers seront stockés
+        if (process.env.NODE_ENV === "test") {
+            if (typeof process.env.DIR_TEST_UPLOAD !== 'string') throw createHttpError(400, 'DIR_TEST_UPLOAD est undefined');
+            else cb(null, process.env.DIR_TEST_UPLOAD) // Indique le répertoire où les fichiers seront stockés pour les tests
+        } else {
+            if (typeof process.env.DIR_UPLOAD !== 'string') throw createHttpError(400, 'DIR_UPLOAD est undefined');
+            else cb(null, process.env.DIR_UPLOAD) // Indique le répertoire où les fichiers seront stockés
+        }
     },
     filename: function (req, file, cb) {
         cb(null, file.originalname) // Utilisez le nom original du fichier pour le stockage
@@ -212,12 +222,45 @@ const del = async (req: Request, res: Response) => {
     }
 }
 
+/**
+ * Télécharger un document par son identifiant
+ * @param req
+ * @param res
+ */
+const downloadById = async (req: Request, res: Response) => {
+    try {
+        const identifier = parseInt(req.params.documentId);
+        if (isNaN(identifier)) {
+            throw createHttpError(400, 'Please provide a valid document identifier');
+        }
+
+        const document = await Documents.findByPk(identifier);
+        if (!document) {
+            throw createHttpError(404, 'Document not found');
+        }
+
+        const filePath = document.path; // Chemin du fichier dans le système de fichiers
+        if (fs.existsSync(filePath)) {
+            res.download(filePath); // Déclenche le téléchargement du fichier
+        } else {
+            throw createHttpError(404, 'File not found');
+        }
+    } catch (err) {
+        if (err instanceof HttpError) {
+            res.status(err.status).json({ error: err.message });
+        } else {
+            res.status(500).json({ error: 'Internal Server Error' });
+        }
+    }
+};
+
 const documentController = {
     create,
     getAll,
     getByPk,
     update,
-    del
+    del,
+    downloadById,
 }
 
 export default documentController

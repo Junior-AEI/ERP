@@ -1,15 +1,18 @@
 import dotenv from 'dotenv'
 import { Request, Response } from 'express'
 import fs from 'fs';
-import Documents from '../models/document.model'
 import { controllerErrorHandler } from './utils.controller'
 import { HttpError } from 'http-errors'
 import createHttpError from 'http-errors'
 import { isValidDocument } from '../validator/document.validator'
 import Users from '../models/user.model'
+import Documents, { Status } from '../models/document.model'
 import DocumentTypes from '../models/documentType.model'
+import { getExtension } from 'mime'
+
 
 import multer from 'multer'
+import { createHash } from 'crypto';
 
 dotenv.config()
 
@@ -25,7 +28,9 @@ const storage = multer.diskStorage({
         }
     },
     filename: function (req, file, cb) {
-        cb(null, file.originalname) // Utilisez le nom original du fichier pour le stockage
+        cb(null, `${createHash('sha256')
+            .update(file.originalname + new Date())
+            .digest('hex')}.${getExtension(file.mimetype)}`)
     }
 })
 
@@ -84,9 +89,9 @@ const getByPk = async (req: Request, res: Response) => {
  * @param res
  *  ------- May have to be adapt to upload document --------
  **/
-async function create(req: Request, res: Response) {
+async function creatte(req: Request, res: Response) {
     try {
-        upload(req, res, async (err: any) => {
+        upload(req, res, async (err: unknown) => {
             if (err) {
                 throw createHttpError(400, 'Error uploading file')
             }
@@ -138,6 +143,61 @@ async function create(req: Request, res: Response) {
     }
 }
 
+async function create(req: Request, res: Response) {
+    try {
+        upload(req, res, async (err: unknown) => {
+            if (err) {
+                return res.status(400).json(err);
+            }
+
+            // parse author (user) identifier
+            const idAuthor = parseInt(req.body.authorId ?? undefined)
+            if (isNaN(idAuthor)) throw createHttpError(400, 'Please provide a valid author identifier')
+
+            const author = await Users.findByPk(idAuthor)
+            if (!author) throw createHttpError(404, 'Link author not found')
+
+            // parse documentType identifier
+            const idType = parseInt(req.body.typeId ?? undefined)
+            if (isNaN(idType)) throw createHttpError(400, 'Please provide a valid documentType identifier')
+
+            const documentName = req.body.name ?? undefined;
+            const documentPath = req.file?.path;
+            const version = parseInt(req.body.version) ?? undefined;
+            const information = req.body.information ?? undefined;
+            const status = req.body.status ?? undefined as Status | undefined;
+
+            const validator = isValidDocument(documentName, documentPath, version, information, status)
+            if (validator.valid == 0) {
+                return res.status(400).json({ error: validator.message });
+            }
+
+            // Insert data
+            const document = await Documents.create({
+                typeId: idType,
+                authorId: idAuthor,
+                name: documentName,
+                path: documentPath,
+                version: version,
+                information: information,
+                status: status
+            })
+
+            // Return success
+            return res.status(200).json({
+                status: 'success',
+                data: {
+                    documentId: document.documentId
+                }
+            })
+
+        })
+    }
+    catch (err) {
+        return res.status(500).json({ error: 'Internal Server Error' });
+    }
+}
+
 /**
  * Update a document
  * @param req
@@ -145,7 +205,7 @@ async function create(req: Request, res: Response) {
  */
 const update = async (req: Request, res: Response) => {
     try {
-        upload(req, res, async (err: any) => {
+        upload(req, res, async (err: unknown) => {
             if (err) {
                 throw createHttpError(400, 'Error uploading file')
             }

@@ -14,7 +14,8 @@ import { Table, Column, Model, DataType, CreatedAt, ForeignKey, BelongsTo, IsDat
 import Users from './user.model'
 import DocumentTypes from './documentType.model'
 
-export const STATUS = ['A relire', 'A corriger', 'Relu']
+export const STATUS = ['A relire', 'A corriger', 'Relu'] as const
+export type Status = typeof STATUS[number]
 
 @Table
 export default class Documents extends Model {
@@ -66,7 +67,7 @@ export default class Documents extends Model {
     information!: string
 
     @NotEmpty
-    @IsIn([STATUS])
+    @IsIn([[...STATUS]])
     @Column({
         type: DataType.ENUM,
         values: STATUS,

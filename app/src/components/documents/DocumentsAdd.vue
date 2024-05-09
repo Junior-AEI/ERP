@@ -76,7 +76,7 @@
           </div>
         </div>
       </CardContent>
-      <CardFooter>
+      <CardFooter v-if="hasDoc">
         <Button class="w-full" @click="uploadDocument()"> Téléverser un document</Button>
       </CardFooter>
     </Card>
@@ -159,6 +159,7 @@ const uploadDocument = () => {
         `/document`,
         {
           document: {
+            name: files.value[0].name,
             path: 'path/to/file', // TODO : put actual path
             version: version.value,
             typeId:

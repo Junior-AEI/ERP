@@ -136,7 +136,9 @@ export const columns: ColumnDef<FullMember>[] = [
         { class: 'relative' },
         h(MembersDataTableDropDown, {
           item: {
-            memberId: item.memberId
+            memberId: item.memberId,
+            firstname: item.firstname,
+            lastname: item.lastname,
           }
         })
       )

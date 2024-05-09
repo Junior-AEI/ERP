@@ -2,7 +2,7 @@
 module.exports = {
   preset: 'ts-jest',
   testEnvironment: 'node',
-  // testMatch: [
-  //   "**/address.test.ts" 
-  // ]
+  testMatch: [
+    "**/permission.test.ts" 
+  ]
 };

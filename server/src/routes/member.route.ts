@@ -9,5 +9,6 @@ router.get('/:memberId', memberController.getByPk)
 router.post('/', verifyPermission('createMember'), memberController.create)
 router.put('/:memberId', memberController.update)
 router.delete('/:memberId', memberController.del)
-
+ 
 export default router
+ 

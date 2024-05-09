@@ -4,32 +4,7 @@ import { ref } from 'vue'
 import { useAuthStore } from '@/stores/authStore'
 import axios from 'axios'
 
-const tasks = ref<Task[]>([
-  {
-    taskId: 1,
-    userId: 1,
-    dueDate: new Date().toISOString(),
-    description: 'Tâche 001',
-    state: 'À faire',
-    issuerId: 1
-  },
-  {
-    taskId: 2,
-    userId: 1,
-    dueDate: new Date().toISOString(),
-    description: 'Tâche 002',
-    state: 'À faire',
-    issuerId: 1
-  },
-  {
-    taskId: 1,
-    userId: 1,
-    dueDate: new Date().toISOString(),
-    description: 'Tâche 003 : une tâche vraiment très longue qui prend beaucoup de plaaaaaace',
-    state: 'À faire',
-    issuerId: 1
-  }
-])
+const tasks = ref<Task[]>([])
 
 const authStore = useAuthStore()
 
@@ -68,55 +43,3 @@ console.log('tasks :', tasks.value)
   </div>
 </template>
 
-<!-- <Tile
-              v-for="link in links"
-              :key="link.name"
-              :icon="link.icon"
-              :name="link.name"
-              :to="link.to"
-            /> 
-
-            type Link = {
-                icon: MaterialSymbol
-                name: string
-                to: string
-              }
-              
-              const links: Link[] = [
-                {
-                  icon: 'mail',
-                  name: 'Webmail',
-                  to: 'https://www.ovhcloud.com/fr/mail/'
-                },
-                {
-                  icon: 'local_library',
-                  name: 'Wiki',
-                  to: 'https://wikix.junior-aei.com/'
-                },
-                {
-                  icon: 'lock',
-                  name: 'Passbolt',
-                  to: 'https://passwords.junior-aei.com/'
-                },
-                {
-                  icon: 'person',
-                  name: 'Kiwi',
-                  to: 'https://kiwix.junior-entreprises.com/'
-                },
-                /*   {
-                  icon: 'cloud_upload',
-                  name: 'Uploader un document',
-                  to: '/upload'
-                }, */
-                {
-                  icon: 'person',
-                  name: 'Mon profil',
-                  to: '/profile'
-                },
-                {
-                  icon: 'cloud_upload',
-                  name: 'Uploader un document',
-                  to: '/'
-                }
-              ]
-               -->

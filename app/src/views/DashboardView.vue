@@ -118,7 +118,7 @@ onMounted(async () => {
         </Card>
       </Wrapper>
 
-      <div class="flex h-fit min-w-72 flex-1 flex-col gap-3">
+      <div class="flex h-fit sm:min-w-72 flex-1 flex-col gap-3">
         <Wrapper class="flex-col">
           <Card>
             <CardHeader>

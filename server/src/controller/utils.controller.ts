@@ -66,3 +66,40 @@ export const sendBotMesssage = async (chatID: number, message: string) => {
         }
     }
 }
+
+
+
+// import { Model, FindOptions } from 'sequelize';
+// import { Constructor } from 'sequelize-typescript/dist/shared/types'
+
+// // interface IGetAllOptions<T> {
+// //   where?: Optional<T, 'createdAt'>;
+// //   include?: any[];
+// //   order?: any[];
+// //   attributes?: any[];
+// // }
+
+
+// class ExtendedModel extends Model {
+//   public static async findAll<T extends Model>(options?: FindOptions<any>) {
+//     return this.findAll(options);
+//   }
+// }
+
+// const getAll = async <T extends Model>(req: Request, res: Response, model: ExtendedModel, options?: FindOptions<any>) => {
+//   try {
+//     const items = await model.findAll(options);
+
+//     return res.status(200).json({
+//       status: 'success',
+//       data: {
+//         items: items
+//       }
+//     });
+//   } catch (err) {
+//     if (err instanceof HttpError) controllerErrorHandler(err, res);
+//     else throw err;
+//   }
+// };
+
+

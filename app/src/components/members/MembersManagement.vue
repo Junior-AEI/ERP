@@ -8,14 +8,12 @@ import Link from '../ui/link/Link.vue';
       </CardHeader>
       <CardContent>
         <div>
-          <div class="flex flex-col gap-3 md:flex-row">
-            <Wrapper class="flex-2 flex-col">
-              <div class="grid grid-cols-3 gap-8">
-                <Link variant="outline" to="/members/new" class=""> Ajouter un membre</Link>
-                <Button variant="outline"> Modifier la liste des postes</Button>
-                <Button variant="outline"> Modifier la liste des pôles</Button>
-              </div>
-            </Wrapper>
+          <div class="flex flex-wrap gap-3">
+            <Link variant="outline" to="/members/new" class="flex-1 text-nowrap">
+              Ajouter un membre</Link
+            >
+            <Button variant="outline" class="flex-1"> Modifier la liste des postes</Button>
+            <Button variant="outline" class="flex-1"> Modifier la liste des pôles</Button>
           </div>
         </div>
       </CardContent>

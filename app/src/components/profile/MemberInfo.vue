@@ -107,7 +107,7 @@
 <script setup lang="ts">
 import axios from 'axios'
 import { useAuthStore } from '@/stores/authStore'
-import { ref } from 'vue'
+import { onMounted, ref } from 'vue'
 
 const props = defineProps<{
   memberId: number
@@ -152,76 +152,89 @@ const addressCountry = ref<string>('')
 const addressCreatedAt = ref<DateValue>()
 const addressUpdatedAt = ref<DateValue>()
 
-// We fetch the member info
-axios
-  .get(`/member/${props.memberId}`, {
-    headers: {
-      Authorization: `Bearer ${useAuthStore().token}`
-    }
-  })
-  .then((response) => {
-    const member = response.data.data.member
+const fetchInfos = () => {
+  // We fetch the member info
+  fetchMembersInfos()
 
-    memberBirthDate.value = parseAbsoluteToLocal(member.birthDate)
-    memberBirthPlace.value = member.birthPlace
-    memberNationality.value = member.nationality
-    memberPromotion.value = member.promotion
-    memberPaymentMethod.value = member.paymentMethod
-    memberDepartment.value = member.department
-    memberMembershipNumber.value = member.membershipNumber
-    memberAddressId.value = member.addressId
-    memberContributionDate.value = parseAbsoluteToLocal(member.contributionDate)
-    memberCreatedAt.value = parseAbsoluteToLocal(member.createdAt)
-    memberUpdatedAt.value = parseAbsoluteToLocal(member.updatedAt)
+  // We fetch the person info
+  fetchPersonInfos()
+}
 
-    // We fetch the address info
-    axios
-      .get(`/address/${member.addressId}`, {
-        headers: {
-          Authorization: `Bearer ${useAuthStore().token}`
-        }
-      })
-      .then((response) => {
-        const address = response.data.data.address
+const fetchAddressInfos = () => {
+  axios
+    .get(`/address/${props.memberId}`, {
+      headers: {
+        Authorization: `Bearer ${useAuthStore().token}`
+      }
+    })
+    .then((response) => {
+      const address = response.data.data.address
 
-        addressAddress.value = address.address
-        addressAdditionnalAddress.value = address.additionnalAddress
-        addressCity.value = address.city
-        addressPostCode.value = address.postCode
-        addressCountry.value = address.country
-        addressCreatedAt.value = parseAbsoluteToLocal(address.createdAt)
-        addressUpdatedAt.value = parseAbsoluteToLocal(address.updatedAt)
-      })
-      .catch((error) => {
-        console.error(error)
-      })
-  })
-  .catch((error) => {
-    console.error(error)
-  })
+      addressAddress.value = address.address
+      addressAdditionnalAddress.value = address.additionnalAddress
+      addressCity.value = address.city
+      addressPostCode.value = address.postCode
+      addressCountry.value = address.country
+      addressCreatedAt.value = parseAbsoluteToLocal(address.createdAt)
+      addressUpdatedAt.value = parseAbsoluteToLocal(address.updatedAt)
+    })
+    .catch((error) => {
+      console.error(error)
+    })
+}
 
-// We fetch the person info
-axios
-  .get(`/person/${props.memberId}`, {
-    headers: {
-      Authorization: `Bearer ${useAuthStore().token}`
-    }
-  })
-  .then((response) => {
-    const person = response.data.data.person
+const fetchMembersInfos = () => {
+  axios
+    .get(`/member/${props.memberId}`, {
+      headers: {
+        Authorization: `Bearer ${useAuthStore().token}`
+      }
+    })
+    .then((response) => {
+      const member = response.data.data.member
 
-    personLastname.value = person.lastname
-    personFirstname.value = person.firstname
-    personGender.value = person.gender
-    personMobilePhone.value = person.mobilePhone
-    personLandlinePhone.value = person.landlinePhone
-    personEmail.value = person.email
-    personCreatedAt.value = parseAbsoluteToLocal(person.createdAt)
-    personUpdatedAt.value = parseAbsoluteToLocal(person.updatedAt)
-  })
-  .catch((error) => {
-    console.error(error)
-  })
+      memberBirthDate.value = parseAbsoluteToLocal(member.birthDate)
+      memberBirthPlace.value = member.birthPlace
+      memberNationality.value = member.nationality
+      memberPromotion.value = member.promotion
+      memberPaymentMethod.value = member.paymentMethod
+      memberDepartment.value = member.department
+      memberMembershipNumber.value = member.membershipNumber
+      memberAddressId.value = member.addressId
+      memberContributionDate.value = parseAbsoluteToLocal(member.contributionDate)
+      memberCreatedAt.value = parseAbsoluteToLocal(member.createdAt)
+      memberUpdatedAt.value = parseAbsoluteToLocal(member.updatedAt)
+
+      fetchAddressInfos()
+    })
+    .catch((error) => {
+      console.error(error)
+    })
+}
+
+const fetchPersonInfos = () => {
+  axios
+    .get(`/person/${props.memberId}`, {
+      headers: {
+        Authorization: `Bearer ${useAuthStore().token}`
+      }
+    })
+    .then((response) => {
+      const person = response.data.data.person
+
+      personLastname.value = person.lastname
+      personFirstname.value = person.firstname
+      personGender.value = person.gender
+      personMobilePhone.value = person.mobilePhone
+      personLandlinePhone.value = person.landlinePhone
+      personEmail.value = person.email
+      personCreatedAt.value = parseAbsoluteToLocal(person.createdAt)
+      personUpdatedAt.value = parseAbsoluteToLocal(person.updatedAt)
+    })
+    .catch((error) => {
+      console.error(error)
+    })
+}
 
 // Function to update the member info
 const editMemberData = () => {
@@ -316,4 +329,8 @@ const editaddressData = () => {
       console.error(error)
     })
 }
+
+onMounted(() => {
+  fetchInfos()
+})
 </script>

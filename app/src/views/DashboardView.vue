@@ -97,7 +97,7 @@ onMounted(async () => {
       </Card>
     </Wrapper>
 
-    <div class="flex flex-col gap-3 md:flex-row">
+    <div class="flex flex-wrap gap-3">
       <Wrapper class="flex-2 flex-col">
         <h1 class="m-3 text-3xl text-accent">
           <RouterLink to="/profile">Bonjour {{ user.firstName }},</RouterLink>
@@ -119,7 +119,7 @@ onMounted(async () => {
         </Card>
       </Wrapper>
 
-      <div class="flex h-fit flex-1 flex-col gap-3">
+      <div class="flex h-fit min-w-72 flex-1 flex-col gap-3">
         <Wrapper class="flex-col">
           <Card>
             <CardHeader>

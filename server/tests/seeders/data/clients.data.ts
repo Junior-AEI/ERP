@@ -19,7 +19,8 @@ export const clients: any = {
         company: {
             name: 'Enseirb',
             legalEntity: 'Oui',
-            companyType: 'Particulier'
+            companyType: 'Particulier',
+            activityField: 'IA'
         },
         function: 'RH',
         firstContact: 'Site AEI',
@@ -45,7 +46,8 @@ export const clients: any = {
         company: {
             name: 'Matmeca',
             legalEntity: 'Non',
-            companyType: 'Association'
+            companyType: 'Association',
+            activityField: 'Fast food'
         },
         function: 'Développeur',
         firstContact: 'Congrès'

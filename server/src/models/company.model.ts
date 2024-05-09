@@ -58,6 +58,12 @@ export default class Companies extends Model {
     })
     companyType!: string
 
+    @Column({
+        type: DataType.STRING,
+        allowNull: false
+    })
+    activityField!: string
+
     @IsDate
     @CreatedAt
     @Column({

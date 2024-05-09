@@ -96,13 +96,14 @@ async function create(req: Request, res: Response) {
                 if (!type) throw createHttpError(404, 'Link document type not found')
 
                 // Test params
-                const validator = isValidDocument(req.body.document.path, req.body.document.version, req.body.document.information, req.body.document.status)
+                const validator = isValidDocument(req.body.document.name, req.body.document.path, req.body.document.version, req.body.document.information, req.body.document.status)
                 if (validator.valid == 0) throw createHttpError(400, validator.message as string)
 
                 // Insert data
                 const document = await Documents.create({
                     typeId: idType,
                     authorId: idAuthor,
+                    name: req.body.document.name,
                     path: req.body.document.path,
                     version: req.body.document.version,
                     information: req.body.document.information,
@@ -161,7 +162,7 @@ const update = async (req: Request, res: Response) => {
                 if (!type) throw createHttpError(404, 'Link document type not found')
 
                 // Test params
-                const validator = isValidDocument(req.body.document.path, req.body.document.version, req.body.document.information, req.body.document.status)
+                const validator = isValidDocument(req.body.document.name, req.body.document.path, req.body.document.version, req.body.document.information, req.body.document.status)
                 if (validator.valid == 0) throw createHttpError(400, validator.message as string)
 
                 await Documents.update(req.body.document, {

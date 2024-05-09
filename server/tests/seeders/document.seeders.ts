@@ -15,6 +15,7 @@ export const createDocument = async (n: number, username: string) => {
     const document = await Documents.create({
         typeId: type.typeId,
         authorId: userId,
+        name: documents[doc].name,
         path: documents[doc].path,
         version: documents[doc].version,
         information: documents[doc].information,

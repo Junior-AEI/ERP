@@ -1,6 +1,7 @@
 export const documents: any = {
     // doc1
     doc1: {
+        name: '1.pdf',
         path: '../docs/1.pdf',
         version: 1,
         information: 'yes|no|hello',
@@ -14,6 +15,7 @@ export const documents: any = {
 
     // doc2
     doc2: {
+        name: '2.png',
         path: '../docs/2.png',
         version: 2,
         information: 'hey|zut',

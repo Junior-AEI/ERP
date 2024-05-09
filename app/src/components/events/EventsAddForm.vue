@@ -5,27 +5,27 @@
         <span class="material-symbols-outlined"> calendar_add_on </span>
         <span class="text-accent">Ajouter un événement</span>
       </CardHeader>
-      <CardContent class="grid gap-4">
-        <div class="grid grid-cols-2 gap-2">
-          <Label>Nom de l'événement</Label>
-          <Label>Emplacement</Label>
-          <Input
-            id="eventName"
-            v-model="eventInfo.name"
-            placeholder="Formation : Apprendre à utiliser le nouvel ERP"
-          />
-          <Input
-            id="location"
-            v-model="eventInfo.location"
-            placeholder="Où est-ce que ca se passe ?"
-          />
+      <CardContent class="flex flex-col gap-4">
+        <div class="flex flex-1 flex-wrap items-end gap-2">
+          <div class="flex flex-1 flex-col gap-2">
+            <Label>Nom de l'événement</Label>
+            <Input
+              id="eventName"
+              v-model="eventInfo.name"
+              placeholder="Formation : Apprendre à utiliser le nouvel ERP"
+            />
+          </div>
+          <div class="flex flex-1 flex-col gap-2">
+            <Label>Emplacement</Label>
+            <Input id="location" v-model="eventInfo.location" placeholder="Grand local" />
+          </div>
         </div>
-        <div class="flex items-end gap-4">
+        <div class="flex flex-wrap items-end gap-4">
           <div class="md:sm-w-72 flex flex-col gap-2">
             <Label>Période</Label>
             <RangeDatePickerComponent v-model="dateRange" />
           </div>
-          <div class="flex gap-4">
+          <div class="flex flex-wrap gap-4">
             <div class="flex flex-col gap-2">
               <Label>Début</Label>
               <TimeSelector v-model="timeStart" />
@@ -45,7 +45,7 @@
           L'heure de fin doit être après l'heure de début
         </p>
 
-        <div class="grid gap-2">
+        <div class="flex flex-col gap-4">
           <Label>Description</Label>
           <Textarea
             id="description"
@@ -53,63 +53,69 @@
             placeholder="Une description très fournie. Elle peut être sur plusieurs lignes."
           />
         </div>
-        <div class="grid grid-cols-2 gap-2">
-          <Label for="document">Ajouter une pièce jointe</Label>
-          <Label for="eventType">Type d'événement</Label>
-          <Input disabled id="document" type="file" />
-          <Popover v-model:open="isOpenEventType">
-            <PopoverTrigger as-child>
-              <Button
-                variant="outline"
-                role="combobox"
-                :aria-expanded="isOpenEventType"
-                class="justify-between"
-              >
-                {{
-                  eventTypeName
-                    ? eventTypes.find((eventType) => eventType.value === eventTypeName)?.label
-                    : "Sélectionner le type d'événement"
-                }}
-                <Icon name="unfold_more" class="ml-2 h-4 w-4 shrink-0 opacity-50" />
-              </Button>
-            </PopoverTrigger>
-            <PopoverContent class="p-0">
-              <Command>
-                <CommandInput class="h-9" placeholder="Rechercher un événement" />
-                <CommandEmpty>Aucun événement trouvé</CommandEmpty>
-                <CommandList>
-                  <CommandGroup>
-                    <CommandItem
-                      v-for="eventType in eventTypes"
-                      :key="eventType.value"
-                      :value="eventType.value"
-                      @select="
-                        (ev) => {
-                          if (typeof ev.detail.value === 'string') {
-                            eventTypeName = ev.detail.value
+        <div class="flex flex-wrap items-end gap-4">
+          <div class="flex flex-1 flex-col gap-2">
+            <Label for="document">Ajouter une pièce jointe</Label>
+            <Input disabled id="document" type="file" />
+          </div>
+          <div class="flex max-w-full flex-1 flex-col gap-2">
+            <Label for="eventType">Type d'événement</Label>
+            <Popover v-model:open="isOpenEventType">
+              <PopoverTrigger as-child>
+                <Button
+                  variant="outline"
+                  role="combobox"
+                  :aria-expanded="isOpenEventType"
+                  class="justify-between text-clip"
+                >
+                  <span class="truncate">
+                    {{
+                      eventTypeName
+                        ? eventTypes.find((eventType) => eventType.value === eventTypeName)?.label
+                        : "Sélectionner le type d'événement"
+                    }}
+                  </span>
+                  <Icon name="unfold_more" class="ml-2 h-4 w-4 shrink-0 opacity-50" />
+                </Button>
+              </PopoverTrigger>
+              <PopoverContent class="p-0">
+                <Command>
+                  <CommandInput class="h-9" placeholder="Rechercher un événement" />
+                  <CommandEmpty>Aucun événement trouvé</CommandEmpty>
+                  <CommandList>
+                    <CommandGroup>
+                      <CommandItem
+                        v-for="eventType in eventTypes"
+                        :key="eventType.value"
+                        :value="eventType.value"
+                        @select="
+                          (ev) => {
+                            if (typeof ev.detail.value === 'string') {
+                              eventTypeName = ev.detail.value
+                            }
+                            isOpenEventType = false
                           }
-                          isOpenEventType = false
-                        }
-                      "
-                    >
-                      {{ eventType.label }}
-                      <Icon
-                        name="check"
-                        :class="
-                          cn(
-                            'ml-auto h-4 w-4',
-                            eventTypeName === eventType.value ? 'opacity-100' : 'opacity-0'
-                          )
                         "
-                      />
-                    </CommandItem>
-                  </CommandGroup>
-                </CommandList>
-              </Command>
-            </PopoverContent>
-          </Popover>
+                      >
+                        {{ eventType.label }}
+                        <Icon
+                          name="check"
+                          :class="
+                            cn(
+                              'ml-auto h-4 w-4',
+                              eventTypeName === eventType.value ? 'opacity-100' : 'opacity-0'
+                            )
+                          "
+                        />
+                      </CommandItem>
+                    </CommandGroup>
+                  </CommandList>
+                </Command>
+              </PopoverContent>
+            </Popover>
+          </div>
         </div>
-        <div class="grid gap-4">
+        <div class="flex items-end gap-4">
           <Collapsible v-model:open="isOpen">
             <CollapsibleTrigger>
               <div class="item-center flex gap-2">
@@ -140,7 +146,6 @@ import { useAuthStore } from '@/stores/authStore'
 import type { Event } from '@/types/api'
 
 import { ref, type Ref, computed } from 'vue'
-import { Checkbox } from '@/components/ui/checkbox'
 
 import { cn } from '@/lib/utils'
 
@@ -159,10 +164,7 @@ import {
   CommandList
 } from '@/components/ui/command'
 
-import { Card, CardContent, CardFooter, CardHeader } from '@/components/ui/card'
-import { Label } from '@/components/ui/label'
-
-import { Collapsible, CollapsibleContent, CollapsibleTrigger } from '@/components/ui/collapsible'
+const emit = defineEmits(['add:event'])
 
 const isOpen = ref(false)
 const isOpenEventType = ref(false)
@@ -291,8 +293,11 @@ const addEvent = async () => {
       }
     )
     .then((response) => {
-      console.log(response)
-      location.reload()
+      emit('add:event', [])
+      toast({
+        title: 'Événement ajouté',
+        description: `L'événement ${eventInfo.value.name} a bien été ajouté.`
+      })
     })
     .catch((error) => {
       console.error(error)

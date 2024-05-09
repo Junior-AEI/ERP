@@ -90,7 +90,8 @@ import { useAuthStore } from '@/stores/authStore'
 import type { DocumentType } from '@/types/api'
 import { computed, ref, onMounted } from 'vue'
 import { useToast } from '@/components/ui/toast/use-toast'
-import { Toaster } from '@/components/ui/toast'
+
+const emit = defineEmits(['update:files'])
 
 const hasDoc = computed(() => files.value.length > 0)
 const isOpen = ref(false)
@@ -125,6 +126,13 @@ const verifyFields = (documentTypeFields: string[], fieldNumber: number): boolea
   return true
 }
 
+const clearFields = () => {
+  version.value = 1
+  documentTypeName.value = ''
+  documentInfos.value = []
+  status.value = 'A relire'
+}
+
 /* axios requests */
 async function getDocumentType(): Promise<DocumentType[]> {
   const response = await axios.get(`/documentType`, {
@@ -146,7 +154,7 @@ const uploadDocument = () => {
       description: `All the fields must be filled.`
     })
   } else {
-    const response = axios
+    axios
       .post(
         `/document`,
         {
@@ -170,8 +178,12 @@ const uploadDocument = () => {
         }
       )
       .then(() => {
-        console.log(response)
-        location.reload()
+        emit('update:files', [])
+        toast({
+          title: 'Document envoyé',
+          description: `Le document a été envoyé avec succès.`
+        })
+        clearFields()
       })
       .catch((error) => {
         console.error(error)

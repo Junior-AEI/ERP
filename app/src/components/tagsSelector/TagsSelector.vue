@@ -20,7 +20,6 @@ const props = defineProps<{
 const modelValue = defineModel<string[]>()
 const open = ref(false)
 const searchTerm = ref('')
-console.log('props :', props)
 
 const filteredfields = computed(() =>
   props.fields.filter((i) => {

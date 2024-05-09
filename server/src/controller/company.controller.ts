@@ -69,7 +69,7 @@ async function create(req: Request, res: Response) {
         if (!address) throw createHttpError(404, 'Unable to find the linked address.')
 
         // Test params
-        const validator = isValidCompany(req.body.company.name, req.body.company.legalEntity)
+        const validator = isValidCompany(req.body.company.name, req.body.company.legalEntity, req.body.company.companyType, req.body.company.activityField)
         if (!validator.valid) {
             throw createHttpError(400, validator.message as string)
         }
@@ -78,6 +78,8 @@ async function create(req: Request, res: Response) {
         const company = await Companies.create({
             name: req.body.company.name,
             legalEntity: req.body.company.legalEntity,
+            companyType: req.body.company.companyType,
+            activityField: req.body.company.activityField,
             addressId: identifier
         })
 
@@ -115,7 +117,7 @@ const update = async (req: Request, res: Response) => {
         const address = await Addresses.findByPk(idAddress)
         if (!address) throw createHttpError(404, 'Address not found')
 
-        const validator = isValidCompany(req.body.company.name, req.body.company.legalEntity)
+        const validator = isValidCompany(req.body.company.name, req.body.company.legalEntity, req.body.company.companyType, req.body.company.activityField)
         if (validator.valid == 0) throw createHttpError(400, validator.message as string)
 
         await Companies.update(req.body.company, {

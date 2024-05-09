@@ -2,20 +2,18 @@
 import { useAuthStore } from '@/stores/authStore'
 import { useRoute } from 'vue-router'
 
-let personId: number | undefined = undefined
 const authStore = useAuthStore()
 
 const route = useRoute()
 
-if (route.params.id) {
-  console.log('ID:', route.params.id)
-
-  if (typeof route.params.id === 'string') {
-    personId = parseInt(route.params.id)
+const personId = (() => {
+  if (route.query.id && typeof route.query.id === 'string') {
+    return parseInt(route.query.id)
   }
-} else {
-  personId = authStore.userId
-}
+  return authStore.userId
+})()
+const fistname = route.query.fistname ?? authStore.firstName
+const lastname = route.query.lastname ?? authStore.lastName
 </script>
 
 <template>
@@ -28,7 +26,7 @@ if (route.params.id) {
       </Card>
       <div>
         <div class="mt-4">
-          <h3 class="text-3xl text-accent">{{ authStore.firstName }} {{ authStore.lastName }}</h3>
+          <h3 class="text-3xl text-accent">{{ fistname }} {{ lastname }}</h3>
           <div class="flex flex-wrap gap-x-3">
             <Elevated class="mt-2 p-2 text-sm">
               <div class="flex items-center justify-between">

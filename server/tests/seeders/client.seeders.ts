@@ -18,7 +18,8 @@ export const createClient = async (username: string) => {
         clientId: person.personId,
         addressId: address.addressId,
         companyId: company.companyId,
-        function: clients[username].function
+        function: clients[username].function,
+        firstContact: clients[username].firstContact,
     })
 
     return client.clientId

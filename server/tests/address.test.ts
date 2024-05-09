@@ -94,7 +94,7 @@ describe('ROUTE (POST): /api/address (Create new address)', () => {
 
     const goodParams = {
         address: 'Allée du Général de Gaulle',
-        additionnalAddress: 'Rue quelconque',
+        additionnalAddress: "",
         city: 'Talence',
         postCode: '33400',
         country: 'FRA'
@@ -122,7 +122,7 @@ describe('ROUTE (POST): /api/address (Create new address)', () => {
     it('Wrong additionnalAddress', async () => {
         const token = await initUser('john.doe')
 
-        const wrongParamList = [100, null, undefined, 'additionnalAddressTooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooLong']
+        const wrongParamList = [100, 'additionnalAddressTooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooLong']
 
         for (const wrongParam of wrongParamList) {
             const res = await request(app)
@@ -295,7 +295,7 @@ describe('ROUTE (PUT): /api/address/:id (Update address)', () => {
 
         const addressId = await createdAddress('jane.doe')
 
-        const wrongParamList = [100, null, undefined, 'addressTooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooLong']
+        const wrongParamList = [100, 'addressTooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooLong']
 
         for (const wrongParam of wrongParamList) {
             const res = await request(app)

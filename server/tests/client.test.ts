@@ -78,6 +78,7 @@ describe('ROUTE (GET): /api/client/:clientId (Get a specific client)', () => {
         expect(res.body.data.client).toBeDefined()
         expect(res.body.data.client.clientId).toEqual(client?.clientId)
         expect(res.body.data.client.function).toEqual(client?.function)
+        expect(res.body.data.client.firstContact).toEqual(client?.firstContact)
         expect(res.body.data.client.companyId).toEqual(client?.companyId)
     })
 })
@@ -87,7 +88,8 @@ describe('ROUTE (POST): /api/client (Create new client)', () => {
     afterEach(clearDatabase)
 
     const goodParams = {
-        function: 'Directeur'
+        function: 'Directeur',
+        firstContact: 'Bouche à oreille'
     }
 
     it('Wrong format personId', async () => {
@@ -191,6 +193,30 @@ describe('ROUTE (POST): /api/client (Create new client)', () => {
         }
     })
 
+    it('Wrong first contact', async () => {
+        const token = await initUser('john.doe')
+
+        const companyId = await createCompany('Matmeca')
+        const clientId = await createClient('johnny.doe')
+
+        const wrongParamList = ['', null, undefined, 'FirstContactToooo' + 'o'.repeat(40) + 'oLong', 'notinlist']
+
+        for (const wrongParam of wrongParamList) {
+            const res = await request(app)
+                .post('/api/client')
+                .send({
+                    client: {
+                        clientId: clientId,
+                        companyId: companyId,
+                        ...goodParams,
+                        firstContact: wrongParam,
+                    }
+                })
+                .set('Authorization', `Bearer ${token}`)
+            expect(res.status).toEqual(400)
+        }
+    })
+
     it('Good usage', async () => {
         const token = await initUser('john.doe')
 
@@ -228,7 +254,8 @@ describe('ROUTE (PUT): /api/client/:id (Update client)', () => {
     afterEach(clearDatabase)
 
     const goodParams = {
-        function: 'Directeur'
+        function: 'Directeur',
+        firstContact: 'Bouche à oreille',
     }
 
     it('Wrong format clientId', async () => {
@@ -322,6 +349,29 @@ describe('ROUTE (PUT): /api/client/:id (Update client)', () => {
                     client: {
                         companyId: companyId,
                         function: wrongFunction
+                    }
+                })
+                .set('Authorization', `Bearer ${token}`)
+            expect(res.status).toEqual(400)
+        }
+    })
+
+    it('Wrong first contact', async () => {
+        const token = await initUser('john.doe')
+
+        const companyId = await createCompany('Matmeca')
+        const clientId = await createClient('johnny.doe')
+
+        const wrongParamList = ['', null, undefined, 'FirstContactToooo' + 'o'.repeat(40) + 'oLong', 19, 'notinlist']
+
+        for (const wrongParam of wrongParamList) {
+            const res = await request(app)
+                .put(`/api/client/${clientId}`)
+                .send({
+                    client: {
+                        companyId: companyId,
+                        ...goodParams,
+                        firstContact: wrongParam
                     }
                 })
                 .set('Authorization', `Bearer ${token}`)

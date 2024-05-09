@@ -1,10 +1,16 @@
 <template>
-  <div class="flex w-full flex-col gap-3 px-6 py-5 sm:w-80">
+  <div class="flex w-full flex-col gap-3 px-4 py-3 sm:w-72">
     <div class="flex w-full justify-between">
       <Link to="/profile" icon="person" :variant="matchRoute('/profile')"
         >{{ user.firstName }} {{ user.lastName }}
       </Link>
-      <Button icon="chevron_left" size="icon" variant="link" @click="$emit('reduce')"></Button>
+      <Button
+        icon="chevron_left"
+        size="icon"
+        class="p-0"
+        variant="link"
+        @click="$emit('reduce')"
+      ></Button>
     </div>
 
     <Button
@@ -57,7 +63,7 @@
               :to="child.path"
               :icon="child.meta?.icon"
               :key="child.path"
-              class="p-1 pl-6"
+              class="p-1 pl-3"
             >
               {{ child.name }}
             </Link>

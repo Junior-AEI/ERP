@@ -22,50 +22,11 @@
       <div class="flex items-end gap-4">
         <div class="flex flex-1 flex-col gap-2">
           <Label for="mandateStart">Date de début de mandat</Label>
-          <Popover>
-            <PopoverTrigger :disabled="!canEdit" as-child>
-              <Button
-                variant="outline"
-                :class="
-                  cn(
-                    'justify-start text-left font-normal',
-                    !mandateStart && 'text-muted-foreground'
-                  )
-                "
-              >
-                <Icon name="date_range" class="mr-2 h-4 w-4" />
-                {{
-                  mandateStart
-                    ? df.format(mandateStart.toDate(getLocalTimeZone()))
-                    : 'Choisir une date'
-                }}
-              </Button>
-            </PopoverTrigger>
-            <PopoverContent class="w-auto p-0">
-              <Calendar v-model="mandateStart" initial-focus />
-            </PopoverContent>
-          </Popover>
+          <DatePickerComponent :disabled="!canEdit" v-model="mandateStart" />
         </div>
         <div class="flex flex-1 flex-col gap-2">
           <Label for="lastname">Date de fin de mandat</Label>
-          <Popover>
-            <PopoverTrigger :disabled="!canEdit" as-child>
-              <Button
-                variant="outline"
-                :class="
-                  cn('justify-start text-left font-normal', !mandateEnd && 'text-muted-foreground')
-                "
-              >
-                <Icon name="date_range" class="mr-2 h-4 w-4" />
-                {{
-                  mandateEnd ? df.format(mandateEnd.toDate(getLocalTimeZone())) : 'Choisir une date'
-                }}
-              </Button>
-            </PopoverTrigger>
-            <PopoverContent class="w-auto p-0">
-              <Calendar v-model="mandateEnd" initial-focus />
-            </PopoverContent>
-          </Popover>
+          <DatePickerComponent :disabled="!canEdit" v-model="mandateEnd" />
         </div>
       </div>
       <Button v-if="canEdit" @click="editUserData()">Modifier</Button>

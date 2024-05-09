@@ -14,7 +14,7 @@ export const isValidEvent = (name: any, startDate: any, endDate: any, location: 
     if (location.length < 1 || location.length >= 30) return { valid: 0, message: 'Your location size has to be bigger than 1 and smaller than 30.' }
     if (typeof description !== 'string') return { valid: 0, message: 'Your description is not correctly formatted.' }
     if (!eventTypeName) return { valid: 0, message: 'Your event type has to be defined.' }
-    if (!EVENTTYPES.includes(eventTypeName)) return { valid: 0, message: 'Your event type is not correctly formatted.' }
+    if (!EVENTTYPES.includes(eventTypeName)) return { valid: 0, message: 'Your event type is not in EVENTTYPES.' }
     if (description.length < 1 || description.length >= 512) return { valid: 0, message: 'Your description size has to be bigger than 1 and smaller than 512.' }
 
     return { valid: 1 }

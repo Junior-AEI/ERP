@@ -5,7 +5,7 @@ import { createUser } from './user.seeders'
 
 export const createProjectNote = async (n: number) => {
     const note = 'note' + n
-    const projectId = await createProject(projectNotes[note].project.acronym, projectNotes[note].project.username)
+    const projectId = await createProject(projectNotes[note].project.name, projectNotes[note].project.acronym, projectNotes[note].project.username)
 
     const userId = await createUser('john.doe')
 

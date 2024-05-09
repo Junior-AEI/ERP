@@ -18,8 +18,8 @@ describe('ROUTE (GET): /api/projectManager (Get all projectManagers)', () => {
         // To have authorization
         const token = await initUser('john.doe')
 
-        await createProjectManager('AAA', 'johnny.doe', 'jane.doe')
-        await createProjectManager('BBB', 'jane.doe', 'john.doe')
+        await createProjectManager('Site internet', 'AAA', 'johnny.doe', 'jane.doe')
+        await createProjectManager('Carte graphique', 'BBB', 'jane.doe', 'john.doe')
 
         const res = await request(app).get('/api/projectManager').set('Authorization', `Bearer ${token}`)
 
@@ -60,7 +60,7 @@ describe('ROUTE (GET): /api/projectManager/:projectManagerId (Get a specific pro
     })
 
     it('Normal usage', async () => {
-        const managerId = await createProjectManager('AAA', 'johnny.doe', 'jane.doe')
+        const managerId = await createProjectManager('Site internet', 'AAA', 'johnny.doe', 'jane.doe')
 
         const token = await initUser('john.doe')
 
@@ -120,7 +120,7 @@ describe('ROUTE (POST): /api/projectManager (Create new project manager)', () =>
     it('Wrong format userId', async () => {
         const token = await initUser('john.doe')
 
-        const projectId = await createProject('AAA', 'johnny.doe')
+        const projectId = await createProject('Site internet', 'AAA', 'johnny.doe')
 
         const wrongFormatIdList = [null, undefined, 'Id']
 
@@ -141,7 +141,7 @@ describe('ROUTE (POST): /api/projectManager (Create new project manager)', () =>
     it('Wrong userId', async () => {
         const token = await initUser('john.doe')
 
-        const projectId = await createProject('AAA', 'johnny.doe')
+        const projectId = await createProject('Site internet', 'AAA', 'johnny.doe')
 
         const res = await request(app)
             .post('/api/projectManager')
@@ -158,7 +158,7 @@ describe('ROUTE (POST): /api/projectManager (Create new project manager)', () =>
     it('Good usage', async () => {
         const token = await initUser('john.doe')
 
-        const projectId = await createProject('AAA', 'johnny.doe')
+        const projectId = await createProject('Site internet', 'AAA', 'johnny.doe')
         const userId = await createUser('jane.doe')
 
         const res = await request(app)
@@ -221,7 +221,7 @@ describe('ROUTE (PUT): /api/projectManager/:id (Update project manager)', () => 
     it('Wrong format projectId', async () => {
         const token = await initUser('john.doe')
 
-        const managerId = await createProjectManager('AAA', 'johnny.doe', 'jane.doe')
+        const managerId = await createProjectManager('Site internet', 'AAA', 'johnny.doe', 'jane.doe')
 
         const wrongParamList = [null, undefined, 'wrongIdFormat']
 
@@ -241,7 +241,7 @@ describe('ROUTE (PUT): /api/projectManager/:id (Update project manager)', () => 
     it('Wrong projectId', async () => {
         const token = await initUser('john.doe')
 
-        const managerId = await createProjectManager('AAA', 'johnny.doe', 'jane.doe')
+        const managerId = await createProjectManager('Site internet', 'AAA', 'johnny.doe', 'jane.doe')
 
         const res = await request(app)
             .put(`/api/projectManager/${managerId}}`)
@@ -257,8 +257,8 @@ describe('ROUTE (PUT): /api/projectManager/:id (Update project manager)', () => 
     it('Wrong format userId', async () => {
         const token = await initUser('john.doe')
 
-        const managerId = await createProjectManager('AAA', 'johnny.doe', 'jane.doe')
-        const projectId = await createProject('BBB', 'jane.doe')
+        const managerId = await createProjectManager('Site internet', 'AAA', 'johnny.doe', 'jane.doe')
+        const projectId = await createProject('Carte graphique', 'BBB', 'jane.doe')
 
         const wrongParamList = [null, undefined, 'wrongIdFormat']
 
@@ -279,8 +279,8 @@ describe('ROUTE (PUT): /api/projectManager/:id (Update project manager)', () => 
     it('Wrong userId', async () => {
         const token = await initUser('john.doe')
 
-        const managerId = await createProjectManager('AAA', 'johnny.doe', 'jane.doe')
-        const projectId = await createProject('BBB', 'jane.doe')
+        const managerId = await createProjectManager('Site internet', 'AAA', 'johnny.doe', 'jane.doe')
+        const projectId = await createProject('Carte graphique', 'BBB', 'jane.doe')
 
         const res = await request(app)
             .put(`/api/projectManager/${managerId}}`)
@@ -297,8 +297,8 @@ describe('ROUTE (PUT): /api/projectManager/:id (Update project manager)', () => 
     it('Good usage', async () => {
         const token = await initUser('john.doe')
 
-        const managerId = await createProjectManager('AAA', 'johnny.doe', 'jane.doe')
-        const projectId = await createProject('BBB', 'jane.doe')
+        const managerId = await createProjectManager('Site internet', 'AAA', 'johnny.doe', 'jane.doe')
+        const projectId = await createProject('Carte graphique', 'BBB', 'jane.doe')
         const userId = await createUser('john.doe')
 
         const manager = await ProjectManagers.findOne({
@@ -358,7 +358,7 @@ describe('ROUTE (DELETE): /api/projectManager/:id (Delete project manager)', () 
     it('Good usage', async () => {
         const token = await initUser('john.doe')
 
-        const managerId = await createProjectManager('AAA', 'johnny.doe', 'jane.doe')
+        const managerId = await createProjectManager('Site internet', 'AAA', 'johnny.doe', 'jane.doe')
 
         const manager = await ProjectManagers.findOne({
             where: {

@@ -1,6 +1,6 @@
 import { Request, Response } from 'express'
 import Adresses from '../models/address.model'
-import { controllerErrorHandler, isNumber } from './utils.controller'
+import { controllerErrorHandler } from './utils.controller'
 import createHttpError, { HttpError } from 'http-errors'
 import { isValidAddress } from '../validator/address.validator'
 import Addresses from '../models/address.model'
@@ -67,7 +67,7 @@ const create = async (req: Request, res: Response) => {
         // Test params
         const validator = isValidAddress(req.body.address.address, req.body.address.additionnalAddress, req.body.address.city, req.body.address.postCode, req.body.address.country)
         if (!validator.valid) throw createHttpError(400, validator.message as string)
-
+        
         // Insert data
         const address = await Addresses.create({
             address: req.body.address.address,
@@ -104,7 +104,7 @@ async function update(req: Request, res: Response) {
         if (isNaN(identifier)) throw createHttpError(400, 'Please provide a valid identifier')
 
         const address = await Addresses.findByPk(identifier)
-        if (!address) throw createHttpError(404, 'Address not found')
+        if (!address) throw createHttpError(404, 'Address not found');
 
         // Test params
         const validator = isValidAddress(req.body.address.address, req.body.address.additionnalAddress, req.body.address.city, req.body.address.postCode, req.body.address.country)

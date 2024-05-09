@@ -124,7 +124,7 @@ describe('ROUTE (POST): /api/user (Create new user)', () => {
             .post('/api/user')
             .send({
                 user: {
-                    memberId: -10,
+                    userId: -10,
                     ...goodParams
                 }
             })
@@ -251,7 +251,7 @@ describe('ROUTE (POST): /api/user (Create new user)', () => {
             .post('/api/user')
             .send({
                 user: {
-                    memberId: memberId,
+                    userId: memberId,
                     ...goodParams
                 }
             })

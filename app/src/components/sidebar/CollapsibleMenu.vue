@@ -12,7 +12,7 @@
         ></Button>
       </CollapsibleTrigger>
     </div>
-    <CollapsibleContent class="gap-2 pb-1 pl-3 text-sm">
+    <CollapsibleContent class="gap-2 pb-1 pl-3">
       <slot name="children"></slot>
     </CollapsibleContent>
   </Collapsible>

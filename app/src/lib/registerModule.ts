@@ -1,6 +1,18 @@
-import type { Module } from '@/types'
+import type { Module, Route } from '@/types'
 import router from '@/router'
 import { modules } from '@/router'
+
+const appendRouteRecursive = (route: Route, parentRoute?: Route) => {
+  if (parentRoute) {
+    route.path = `${parentRoute.path}${route.path}`
+  }
+  router.addRoute(route)
+  if (route.children) {
+    route.children.forEach((childRoute: Route) => {
+      appendRouteRecursive(childRoute, route)
+    })
+  }
+}
 
 export function registerModule(module: Module) {
   const routes = module.routes
@@ -8,14 +20,7 @@ export function registerModule(module: Module) {
   /* On ajoute les routes du module dans les routes du router */
   modules.push(...routes)
   routes.forEach((route) => {
-    router.addRoute(route)
+    appendRouteRecursive(route)
   })
-  /* On ajoute les sous-routes du modules du type '/module/sous-route' dans le router */
-  module.routes.forEach((route) => {
-    if (route.children) {
-      route.children.forEach((childRoute) => {
-        router.addRoute(childRoute)
-      })
-    }
-  })
+
 }

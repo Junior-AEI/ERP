@@ -3,7 +3,7 @@ import createHttpError from 'http-errors'
 import Projects from '../models/project.model'
 import { HttpError } from 'http-errors'
 import { isValidProject } from '../validator/project.validator'
-import { controllerErrorHandler, isNumber } from './utils.controller'
+import { controllerErrorHandler } from './utils.controller'
 import Clients from '../models/client.model'
 
 /**
@@ -67,12 +67,13 @@ async function create(req: Request, res: Response) {
         if (!client) throw createHttpError(404, 'Unable to find the linked client.')
 
         // Test params
-        const validator = isValidProject(req.body.project.acronym, req.body.project.startDate, req.body.project.endDate)
+        const validator = isValidProject(req.body.project.name, req.body.project.acronym, req.body.project.startDate, req.body.project.endDate)
         if (!validator.valid) throw createHttpError(400, validator.message as string)
 
         // Insert data
         const project = await Projects.create({
             clientId: identifier,
+            name: req.body.project.name,
             acronym: req.body.project.acronym,
             startDate: new Date(req.body.project.startDate),
             endDate: new Date(req.body.project.endDate)
@@ -113,7 +114,7 @@ const update = async (req: Request, res: Response) => {
         if (!client) throw createHttpError(404, 'Unable to find the linked client.')
 
         // Test params
-        const validator = isValidProject(req.body.project.acronym, req.body.project.startDate, req.body.project.endDate)
+        const validator = isValidProject(req.body.project.name, req.body.project.acronym, req.body.project.startDate, req.body.project.endDate)
         if (!validator.valid) throw createHttpError(400, validator.message as string)
 
         await Projects.update(req.body.project, {

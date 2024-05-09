@@ -17,8 +17,8 @@ describe('ROUTE (GET): /api/project (Get all projects)', () => {
         // To have authorization
         const token = await initUser('john.doe')
 
-        await createProject('EMA', 'johnny.doe')
-        await createProject('THALES', 'jane.doe')
+        await createProject('Site internet','EMA', 'johnny.doe')
+        await createProject('Carte graphique', 'THALES', 'jane.doe')
 
         const res = await request(app).get('/api/project').set('Authorization', `Bearer ${token}`)
 
@@ -28,6 +28,7 @@ describe('ROUTE (GET): /api/project (Get all projects)', () => {
 
         for (let i = 0; i < 2; i++) {
             expect(res.body.data.projects[i].projectId).toBeDefined()
+            expect(res.body.data.projects[i].name).toBeDefined()
             expect(res.body.data.projects[i].acronym).toBeDefined()
             expect(res.body.data.projects[i].clientId).toBeDefined()
             expect(res.body.data.projects[i].startDate).toBeDefined()
@@ -61,14 +62,14 @@ describe('ROUTE (GET): /api/project/:projectId (Get a specific project)', () => 
     })
 
     it('Normal usage', async () => {
-        await createProject('Ens', 'johnny.doe')
-        await createProject('Mat', 'jane.doe')
+        await createProject('Site internet','EMA', 'johnny.doe')
+        await createProject('Carte graphique', 'THALES', 'jane.doe')
 
         const token = await initUser('john.doe')
 
         const project = await Projects.findOne({
             where: {
-                acronym: 'Ens'
+                acronym: 'EMA'
             }
         })
 
@@ -78,6 +79,7 @@ describe('ROUTE (GET): /api/project/:projectId (Get a specific project)', () => 
         expect(res.body.status).toEqual('success')
         expect(res.body.data.project).toBeDefined()
         expect(res.body.data.project.projectId).toEqual(project?.projectId)
+        expect(res.body.data.project.name).toEqual(project?.name)
         expect(res.body.data.project.acronym).toEqual(project?.acronym)
         expect(res.body.data.project.clientId).toEqual(project?.clientId)
     })
@@ -88,6 +90,7 @@ describe('ROUTE (POST): /api/project (Create new project)', () => {
     afterEach(clearDatabase)
 
     const goodParams = {
+        name: 'Réaliser un ERP',
         acronym: 'Matmeca',
         startDate: new Date(),
         endDate: new Date()
@@ -125,6 +128,28 @@ describe('ROUTE (POST): /api/project (Create new project)', () => {
             })
             .set('Authorization', `Bearer ${token}`)
         expect(res.status).toEqual(404)
+    })
+
+    it('Wrong name', async () => {
+        const token = await initUser('john.doe')
+
+        const clientId = await createClient('johnny.doe')
+
+        const wrongNameList = ['', null, undefined, 'NameTooo'+'o'.repeat(100)+'ooLong']
+
+        for (const wrongName of wrongNameList) {
+            const res = await request(app)
+                .post('/api/project')
+                .send({
+                    project: {
+                        clientId: clientId,
+                        ...goodParams,
+                        name: wrongName,
+                    }
+                })
+                .set('Authorization', `Bearer ${token}`)
+            expect(res.status).toEqual(400)
+        }
     })
 
     it('Wrong acronym', async () => {
@@ -230,6 +255,7 @@ describe('ROUTE (PUT): /api/project/:id (Update project)', () => {
     afterEach(clearDatabase)
 
     const goodParams = {
+        name: 'Création carte graphique',
         acronym: 'Matmeca',
         startDate: new Date(),
         endDate: new Date()
@@ -270,7 +296,7 @@ describe('ROUTE (PUT): /api/project/:id (Update project)', () => {
     it('Wrong format clientId', async () => {
         const token = await initUser('john.doe')
 
-        const projectId = await createProject('Ens', 'johnny.doe')
+        const projectId = await createProject('Site internet','EMA', 'johnny.doe')
 
         const wrongParamList = [null, undefined, 'wrongIdFormat']
 
@@ -291,7 +317,7 @@ describe('ROUTE (PUT): /api/project/:id (Update project)', () => {
     it('Wrong clientId', async () => {
         const token = await initUser('john.doe')
 
-        const projectId = await createProject('AAA', 'johnny.doe')
+        const projectId = await createProject('Site internet','EMA', 'johnny.doe')
 
         const res = await request(app)
             .put(`/api/project/${projectId}}`)
@@ -305,10 +331,31 @@ describe('ROUTE (PUT): /api/project/:id (Update project)', () => {
         expect(res.status).toEqual(404)
     })
 
+    it('Wrong name', async () => {
+        const token = await initUser('john.doe')
+
+        const projectId = await createProject('Site internet','EMA', 'johnny.doe')
+
+        const wrongNameList = ['', null, undefined, 'AcronymToooooLong', 19]
+
+        for (const wrongName of wrongNameList) {
+            const res = await request(app)
+                .put(`/api/project/${projectId}`)
+                .send({
+                    project: {
+                        ...goodParams,
+                        name: wrongName
+                    }
+                })
+                .set('Authorization', `Bearer ${token}`)
+            expect(res.status).toEqual(400)
+        }
+    })
+
     it('Wrong acronym', async () => {
         const token = await initUser('john.doe')
 
-        const projectId = await createProject('Ens', 'johnny.doe')
+        const projectId = await createProject('Site internet','EMA', 'johnny.doe')
 
         const wrongAcronymList = ['', null, undefined, 'AcronymToooooLong', 19]
 
@@ -329,7 +376,7 @@ describe('ROUTE (PUT): /api/project/:id (Update project)', () => {
     it('Wrong start date', async () => {
         const token = await initUser('john.doe')
 
-        const projectId = await createProject('Ens', 'johnny.doe')
+        const projectId = await createProject('Site internet','EMA', 'johnny.doe')
 
         const wrongDateList = ['', 'Wrong Date', null, undefined]
 
@@ -350,7 +397,7 @@ describe('ROUTE (PUT): /api/project/:id (Update project)', () => {
     it('Wrong end date', async () => {
         const token = await initUser('john.doe')
 
-        const projectId = await createProject('Ens', 'johnny.doe')
+        const projectId = await createProject('Site internet','EMA', 'johnny.doe')
 
         const wrongDateList = ['', 'Wrong Date', null, undefined]
 
@@ -372,7 +419,7 @@ describe('ROUTE (PUT): /api/project/:id (Update project)', () => {
         const token = await initUser('john.doe')
 
         const clientId = await createClient('jane.doe')
-        const projectId = await createProject('Ens', 'johnny.doe')
+        const projectId = await createProject('Site internet','EMA', 'johnny.doe')
 
         const project = await Projects.findOne({
             where: {
@@ -381,7 +428,8 @@ describe('ROUTE (PUT): /api/project/:id (Update project)', () => {
         })
 
         expect(project?.projectId).toEqual(projectId)
-        expect(project?.acronym).toEqual('Ens')
+        expect(project?.name).toEqual('Site internet')
+        expect(project?.acronym).toEqual('EMA')
 
         const res = await request(app)
             .put(`/api/project/${projectId}`)
@@ -403,6 +451,7 @@ describe('ROUTE (PUT): /api/project/:id (Update project)', () => {
 
         expect(updatedProject?.projectId).toEqual(projectId)
         expect(updatedProject?.acronym).toEqual(goodParams.acronym)
+        expect(updatedProject?.name).toEqual(goodParams.name)
         expect(updatedProject?.startDate).toEqual(goodParams.startDate)
         expect(updatedProject?.endDate).toEqual(goodParams.endDate)
         expect(updatedProject?.clientId).toEqual(clientId)
@@ -434,7 +483,7 @@ describe('ROUTE (DELETE): /api/project/:id (Delete project)', () => {
     it('Good usage', async () => {
         const token = await initUser('john.doe')
 
-        const projectId = await createProject('ENS', 'johnny.doe')
+        const projectId = await createProject('Site internet','EMA', 'johnny.doe')
 
         const project = await Projects.findOne({
             where: {

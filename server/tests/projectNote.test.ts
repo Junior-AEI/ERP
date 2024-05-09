@@ -133,7 +133,7 @@ describe('ROUTE (POST): /api/projectNote (Create new project note)', () => {
     it('Wrong format writerId', async () => {
         const token = await initUser('john.doe')
 
-        const projectId = await createProject('AAA', 'johnny.doe')
+        const projectId = await createProject('Site internet', 'AAA', 'johnny.doe')
 
         const wrongFormatIdList = [null, undefined, 'Id']
 
@@ -155,7 +155,7 @@ describe('ROUTE (POST): /api/projectNote (Create new project note)', () => {
     it('Wrong writerId', async () => {
         const token = await initUser('john.doe')
 
-        const projectId = await createProject('AAA', 'johnny.doe')
+        const projectId = await createProject('Site internet', 'AAA', 'johnny.doe')
 
         const res = await request(app)
             .post('/api/projectNote')
@@ -173,7 +173,7 @@ describe('ROUTE (POST): /api/projectNote (Create new project note)', () => {
     it('Wrong comment', async () => {
         const token = await initUser('john.doe')
 
-        const projectId = await createProject('AAA', 'johnny.doe')
+        const projectId = await createProject('Site internet', 'AAA', 'johnny.doe')
         const userId = await createUser('jane.doe')
 
         const wrongCommentList = ['', null, undefined, 'CommentToooo' + 'o'.repeat(1000) + 'oLong']
@@ -197,7 +197,7 @@ describe('ROUTE (POST): /api/projectNote (Create new project note)', () => {
     it('Wrong advancement', async () => {
         const token = await initUser('john.doe')
 
-        const projectId = await createProject('AAA', 'johnny.doe')
+        const projectId = await createProject('Site internet', 'AAA', 'johnny.doe')
         const userId = await createUser('jane.doe')
 
         const wrongAdvancementList = ['sh', null, undefined, 'AdvancementToooo' + 'o'.repeat(10) + 'oLong', 'not in list']
@@ -221,7 +221,7 @@ describe('ROUTE (POST): /api/projectNote (Create new project note)', () => {
     it('Good usage', async () => {
         const token = await initUser('john.doe')
 
-        const projectId = await createProject('AAA', 'johnny.doe')
+        const projectId = await createProject('Site internet', 'AAA', 'johnny.doe')
         const userId = await createUser('jane.doe')
 
         const res = await request(app)
@@ -335,7 +335,7 @@ describe('ROUTE (PUT): /api/projectNote/:id (Update project note)', () => {
         const token = await initUser('john.doe')
 
         const noteId = await createProjectNote(1)
-        const projectId = await createProject('AAA', 'johnny.doe')
+        const projectId = await createProject('Site internet', 'AAA', 'johnny.doe')
 
         const wrongParamList = [null, undefined, 'wrongIdFormat']
 
@@ -358,7 +358,7 @@ describe('ROUTE (PUT): /api/projectNote/:id (Update project note)', () => {
         const token = await initUser('john.doe')
 
         const noteId = await createProjectNote(1)
-        const projectId = await createProject('AAA', 'johnny.doe')
+        const projectId = await createProject('Site internet', 'AAA', 'johnny.doe')
 
         const res = await request(app)
             .put(`/api/projectNote/${noteId}}`)
@@ -377,7 +377,7 @@ describe('ROUTE (PUT): /api/projectNote/:id (Update project note)', () => {
         const token = await initUser('john.doe')
 
         const noteId = await createProjectNote(1)
-        const projectId = await createProject('AAA', 'johnny.doe')
+        const projectId = await createProject('Site internet', 'AAA', 'johnny.doe')
         const writerId = await createUser('jane.doe')
 
         const wrongCommentList = ['', null, undefined, 'CommentToooo' + 'o'.repeat(1000) + 'oLong']
@@ -402,7 +402,7 @@ describe('ROUTE (PUT): /api/projectNote/:id (Update project note)', () => {
         const token = await initUser('john.doe')
 
         const noteId = await createProjectNote(1)
-        const projectId = await createProject('AAA', 'johnny.doe')
+        const projectId = await createProject('Site internet','AAA', 'johnny.doe')
         const writerId = await createUser('jane.doe')
 
         const wrongAdvancementList = ['sh', null, undefined, 'AdvancementToooo' + 'o'.repeat(10) + 'oLong', 'not in list']
@@ -427,7 +427,7 @@ describe('ROUTE (PUT): /api/projectNote/:id (Update project note)', () => {
         const token = await initUser('john.doe')
 
         const noteId = await createProjectNote(1)
-        const projectId = await createProject('AAA', 'johnny.doe')
+        const projectId = await createProject('Site internet', 'AAA', 'johnny.doe')
         const writerId = await createUser('jane.doe')
 
         const note = await ProjectNotes.findOne({

@@ -18,8 +18,8 @@ describe('ROUTE (GET): /api/contributor (Get all contributors)', () => {
         // To have authorization
         const token = await initUser('john.doe')
 
-        await createContributor('AAA', 'johnny.doe', 'jane.doe')
-        await createContributor('BBB', 'jane.doe', 'john.doe')
+        await createContributor('Site internet', 'AAA', 'johnny.doe', 'jane.doe')
+        await createContributor('Carte graphique', 'BBB', 'jane.doe', 'john.doe')
 
         const res = await request(app).get('/api/contributor').set('Authorization', `Bearer ${token}`)
 
@@ -60,7 +60,7 @@ describe('ROUTE (GET): /api/contributor/:contributorId (Get a specific contribut
     })
 
     it('Normal usage', async () => {
-        const contributorId = await createContributor('AAA', 'johnny.doe', 'jane.doe')
+        const contributorId = await createContributor('Site internet', 'AAA', 'johnny.doe', 'jane.doe')
 
         const token = await initUser('john.doe')
 
@@ -120,7 +120,7 @@ describe('ROUTE (POST): /api/contributor (Create new contributor)', () => {
     it('Wrong format memberId', async () => {
         const token = await initUser('john.doe')
 
-        const projectId = await createProject('AAA', 'johnny.doe')
+        const projectId = await createProject('Site internet', 'AAA', 'johnny.doe')
 
         const wrongFormatIdList = [null, undefined, 'Id']
 
@@ -141,7 +141,7 @@ describe('ROUTE (POST): /api/contributor (Create new contributor)', () => {
     it('Wrong memberId', async () => {
         const token = await initUser('john.doe')
 
-        const projectId = await createProject('AAA', 'johnny.doe')
+        const projectId = await createProject('Site internet', 'AAA', 'johnny.doe')
 
         const res = await request(app)
             .post('/api/contributor')
@@ -158,7 +158,7 @@ describe('ROUTE (POST): /api/contributor (Create new contributor)', () => {
     it('Good usage', async () => {
         const token = await initUser('john.doe')
 
-        const projectId = await createProject('AAA', 'johnny.doe')
+        const projectId = await createProject('Site internet', 'AAA', 'johnny.doe')
         const memberId = await createMember('jane.doe')
 
         const res = await request(app)
@@ -221,7 +221,7 @@ describe('ROUTE (PUT): /api/contributor/:id (Update contributor)', () => {
     it('Wrong format projectId', async () => {
         const token = await initUser('john.doe')
 
-        const contributorId = await createContributor('AAA', 'johnny.doe', 'jane.doe')
+        const contributorId = await createContributor('Site internet', 'AAA', 'johnny.doe', 'jane.doe')
 
         const wrongParamList = [null, undefined, 'wrongIdFormat']
 
@@ -241,7 +241,7 @@ describe('ROUTE (PUT): /api/contributor/:id (Update contributor)', () => {
     it('Wrong projectId', async () => {
         const token = await initUser('john.doe')
 
-        const contributorId = await createContributor('AAA', 'johnny.doe', 'jane.doe')
+        const contributorId = await createContributor('Site internet', 'AAA', 'johnny.doe', 'jane.doe')
 
         const res = await request(app)
             .put(`/api/contributor/${contributorId}}`)
@@ -257,8 +257,8 @@ describe('ROUTE (PUT): /api/contributor/:id (Update contributor)', () => {
     it('Wrong format memberId', async () => {
         const token = await initUser('john.doe')
 
-        const contributorId = await createContributor('AAA', 'johnny.doe', 'jane.doe')
-        const projectId = await createProject('BBB', 'jane.doe')
+        const contributorId = await createContributor('Site internet', 'AAA', 'johnny.doe', 'jane.doe')
+        const projectId = await createProject('Carte graphique', 'BBB', 'jane.doe')
 
         const wrongParamList = [null, undefined, 'wrongIdFormat']
 
@@ -279,8 +279,8 @@ describe('ROUTE (PUT): /api/contributor/:id (Update contributor)', () => {
     it('Wrong memberId', async () => {
         const token = await initUser('john.doe')
 
-        const contributorId = await createContributor('AAA', 'johnny.doe', 'jane.doe')
-        const projectId = await createProject('BBB', 'jane.doe')
+        const contributorId = await createContributor('Site internet', 'AAA', 'johnny.doe', 'jane.doe')
+        const projectId = await createProject('Cartge graphique', 'BBB', 'jane.doe')
 
         const res = await request(app)
             .put(`/api/contributor/${contributorId}}`)
@@ -297,8 +297,8 @@ describe('ROUTE (PUT): /api/contributor/:id (Update contributor)', () => {
     it('Good usage', async () => {
         const token = await initUser('john.doe')
 
-        const contributorId = await createContributor('AAA', 'johnny.doe', 'jane.doe')
-        const projectId = await createProject('BBB', 'jane.doe')
+        const contributorId = await createContributor('Site internet', 'AAA', 'johnny.doe', 'jane.doe')
+        const projectId = await createProject('Carte graphique', 'BBB', 'jane.doe')
         const memberId = await createMember('john.doe')
 
         const contributor = await Contributors.findOne({
@@ -358,7 +358,7 @@ describe('ROUTE (DELETE): /api/contributor/:id (Delete contributor)', () => {
     it('Good usage', async () => {
         const token = await initUser('john.doe')
 
-        const contributorId = await createContributor('AAA', 'johnny.doe', 'jane.doe')
+        const contributorId = await createContributor('Site internet', 'AAA', 'johnny.doe', 'jane.doe')
 
         const contributor = await Contributors.findOne({
             where: {

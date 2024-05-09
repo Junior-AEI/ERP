@@ -4,6 +4,7 @@ export const companies: any = {
         name: 'Enseirb',
         legalEntity: 'Oui',
         companyType: 'PME',
+        activityField: 'IA',
         address: {
             address: 'Allée du Général de Gaulle',
             additionalAddress: '',
@@ -18,6 +19,7 @@ export const companies: any = {
         name: 'Matmeca',
         legalEntity: 'Non',
         companyType: 'Association',
+        activityField: 'Agriculture',
         address: {
             address: 'Rue de la Victoire',
             additionalAddress: '',

@@ -31,8 +31,8 @@ export interface Member {
   addressId: number
   createdAt: DateString
   updatedAt: DateString
-  telegramId : string
-  chatBotId : string
+  telegramId: string
+  chatBotId: string
 }
 
 export type FullMember = Member & Person
@@ -154,11 +154,25 @@ export type DocumentFull = Document & DocumentType // combine Document and Docum
 
 
 
-export interface Project {
-  clientId : number
-  acronym : number
-  startDate : DateString
-  endDate : DateString
-}
 
 export type ProjectInfo = Project & ClientInfo
+
+export interface Project {
+  projectId: number
+  acronym: string
+  startDate: DateString
+  endDate: DateString
+  clientId: number
+
+}
+
+export interface ProjectNotes {
+  noteId: number
+  projectId: number
+  writerId: number
+  comment: string
+  advancement: string
+  createdAt: DateString
+}
+
+

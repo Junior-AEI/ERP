@@ -9,6 +9,7 @@ export const createCompany = async (name: string) => {
         name: name,
         legalEntity: companies[name].legalEntity,
         companyType: companies[name].companyType,
+        activityField: companies[name].activityField,
         addressId: address.addressId
     })
 

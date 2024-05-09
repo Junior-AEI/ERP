@@ -3,10 +3,10 @@ import groupController from '../controller/group.controller'
 
 const router = express.Router()
 
-router.get('/:groupName', groupController.getByPk)
 router.get('/', groupController.getAll)
+router.get('/:groupId', groupController.getByPk)
 router.post('/', groupController.create)
-router.post('/', groupController.update)
-router.delete('/:groupName', groupController.del)
+router.put('/:groupId', groupController.update)
+router.delete('/:groupId', groupController.del)
 
 export default router

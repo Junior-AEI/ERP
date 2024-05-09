@@ -219,6 +219,7 @@ const handleInputAddress = (value: string) => {
 
 const handleClickNewCompany = () => {
   form.value.companyId = 0
+  console.log("Click"+ form.value.companyId )
 }
 
 const handleClickNewAdress = () => {
@@ -293,6 +294,8 @@ async function newCompany(){
     .then((response) => {
       console.log(response)
       form.value.companyId = response.data.data.companyId
+      console.log("Before" + form.value.companyId)
+
       toast({
         title: 'Entreprise renseignée',
         description: `${form.value.companyId}`
@@ -385,11 +388,15 @@ async function handleClick () {
     await newAddress()
 
   }
+  console.log("Bef"+ form.value.companyId )
   if ( form.value.companyId == 0) {
+    console.log("Befo"+ form.value.companyId )
     await newCompany()
+    console.log("Aft"+ form.value.companyId )
+
 
   }
-  console.log(form.value.companyId)
+  console.log("After" + form.value.companyId)
   await newPerson()
   console.log( form.value.personId)
   await newClient()

@@ -152,9 +152,11 @@ export type DocumentFull = Document & DocumentType // combine Document and Docum
 
 
 
-export interface Projects {
+export interface Project {
   clientId : number
   acronym : number
   startDate : DateString
   endDate : DateString
 }
+
+export type ProjectInfo = Project & ClientInfo

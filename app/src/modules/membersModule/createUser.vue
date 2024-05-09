@@ -6,7 +6,7 @@
         <span class="text-accent"> Ajouter un utlisateur</span>
       </CardHeader>
       <CardContent>
-        <div class="flex items-end gap-4">
+        <div class="flex items-end gap-4" v-if="form.memberId == -1 ">
             <div class="flex flex-1 flex-col gap-2">
             <Combobox
               @input="handleInputMember"
@@ -211,9 +211,8 @@
         </div>
         <Button @click="handleClickMember" class="mt-4">Créer le nouveau Membre</Button>
       </div>
-      <div v-else>
-      <div class="flex items-end gap-4">
-          <div> {{ }} </div>
+      <div v-if="form.memberId != 0 && form.memberId != -1 ">
+      <div class="flex items-end gap-4">          <div> {{ }} </div>
           <div class="flex flex-1 flex-col gap-2">
             <Label for="mandateStart">Debut de Mandat</Label>
             <Input id="mandateStart" v-model="form.mandateStart" />
@@ -261,7 +260,7 @@ const form = ref<FullUserWithAdress>({
   landlinePhone: '',
   email: '',
 
-  memberId: NaN,
+  memberId: -1,
   birthDate: '',
   birthPlace: '',
   nationality: '',

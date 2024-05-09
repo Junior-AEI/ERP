@@ -6,7 +6,8 @@ const router = express.Router()
 
 router.get('/', memberController.getAll)
 router.get('/:memberId', memberController.getByPk)
-router.post('/', verifyPermission('createMember'), memberController.create)
+// router.post('/', verifyPermission('createMember'), memberController.create)
+router.post('/', memberController.create)
 router.put('/:memberId', memberController.update)
 router.delete('/:memberId', memberController.del)
 

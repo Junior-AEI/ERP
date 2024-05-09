@@ -1,13 +1,13 @@
 import { h } from 'vue'
 import type { ColumnDef } from '@tanstack/vue-table'
-import type { FullMember } from '@/types/api'
-import ClientsDataTableDropDown from './ClientsDataTableDropDown.vue'
+import type { ClientInfo } from '@/types/api'
 import { Button } from '../ui/button'
 import Icon from '../Icon.vue'
 
 const defaultClasses = 'text-left font-medium'
 
-export const columns: ColumnDef<FullMember>[] = [
+export const columns: ColumnDef<ClientInfo>[] = [
+  
   {
     accessorKey: 'lastname',
     accessorFn: (row) => row.lastname,
@@ -35,112 +35,57 @@ export const columns: ColumnDef<FullMember>[] = [
     }
   },
   {
-    accessorKey: 'mobilePhoneNumber',
-    accessorFn: (row) => row.mobilePhone,
+    accessorKey: 'name',
+    accessorFn: (row) => row.name,
     meta: {
-      label: 'Téléphone'
+      label: 'Entreprise'
     },
-    header: () => h('div', { class: defaultClasses }, 'Téléphone'),
+    header: () => h('div', { class: defaultClasses }, 'Entreprise'),
     cell: ({ row }) => {
-      const mobilePhoneNumber = row.getValue('mobilePhoneNumber') as string
+      const name = row.getValue('name') as string
 
-      return h('div', { class: defaultClasses }, mobilePhoneNumber)
+      return h('div', { class: defaultClasses }, name)
     }
   },
   {
-    accessorKey: 'email',
+    accessorKey: 'domain',
+    accessorFn: (row) => row.function,
+    meta: {
+      label: 'Domaine'
+    },
+    header: () => h('div', { class: defaultClasses }, 'Domaine'),
+    cell: ({ row }) => {
+      const fonction = row.getValue('function') as string
+
+      return h('div', { class: defaultClasses }, fonction)
+    }
+  },
+  {
+    accessorKey: 'etude',
     accessorFn: (row) => row.email,
     meta: {
-      label: 'Email'
+      label: 'Etudes avec AEI'
     },
-    header: ({ column }) => {
-      return h(
-        Button,
-        {
-          variant: 'ghost',
-          onClick: () => column.toggleSorting(column.getIsSorted() === 'asc'),
-          class: 'p-0'
-        },
-        () => [
-          'Email',
-          h(
-            h(Icon, {
-              name: 'unfold_more'
-            }),
-            { class: defaultClasses }
-          )
-        ]
-      )
-    },
+    header: () => h('div', { class: defaultClasses }, 'Etudes avec AEI'),
+
     cell: ({ row }) => h('div', { class: `lowercase ${defaultClasses}` }, row.getValue('email'))
   },
   {
-    accessorKey: 'department',
+    accessorKey: 'premier contact',
     meta: {
-      label: 'Filière'
+      label: 'Premier Contact'
     },
-    header: ({ column }) => {
-      return h(
-        Button,
-        {
-          variant: 'ghost',
-          onClick: () => column.toggleSorting(column.getIsSorted() === 'asc'),
-          class: 'p-0'
-        },
-        () => [
-          'Filière',
-          h(
-            h(Icon, {
-              name: 'unfold_more'
-            }),
-            { class: defaultClasses }
-          )
-        ]
-      )
-    },
+    header: () => h('div', { class: defaultClasses }, 'Premier Contact'),
+
     cell: ({ row }) => h('div', { class: defaultClasses }, row.getValue('department'))
   },
   {
-    accessorKey: 'promotion',
+    accessorKey: 'last_contact',
     meta: {
-      label: 'Promo'
+      label: 'Dernier Contact'
     },
-    header: ({ column }) => {
-      return h(
-        Button,
-        {
-          variant: 'ghost',
-          onClick: () => column.toggleSorting(column.getIsSorted() === 'asc'),
-          class: 'p-0'
-        },
-        () => [
-          'Promo',
-          h(
-            h(Icon, {
-              name: 'unfold_more'
-            }),
-            { class: '' }
-          )
-        ]
-      )
-    },
-    cell: ({ row }) => h('div', { class: defaultClasses }, row.getValue('promotion'))
-  },
-  {
-    id: 'actions',
-    enableHiding: false,
-    cell: ({ row }) => {
-      const item = row.original
+    header: () => h('div', { class: defaultClasses }, 'Dernier Contact'),
 
-      return h(
-        'div',
-        { class: 'relative' },
-        h(ClientsDataTableDropDown, {
-          item: {
-            memberId: item.memberId
-          }
-        })
-      )
-    }
-  }
+    cell: ({ row }) => h('div', { class: defaultClasses }, row.getValue('department'))
+  },
 ]

@@ -3,9 +3,22 @@
     <Card class="max-w-2xl flex-1">
       <CardHeader>
         <Icon name="person_add" class="text-6xl" />
-        <span class="text-accent"> Créer un nouveau membre</span>
+        <span class="text-accent"> Ajouter un utlisateur</span>
       </CardHeader>
       <CardContent>
+        <div class="flex items-end gap-4">
+            <div class="flex flex-1 flex-col gap-2">
+            <Combobox
+              @input="handleInputMember"
+              :options="membersList"
+              :comboboxLabel="'Selectionner un membre existant'"
+            >
+            </Combobox>
+            <Button variant="outline" @click="handleClickNewMember">Rentrer un nouveau membre</Button>
+
+            </div>
+          </div>
+        <div v-if="form.memberId == 0">
         <div class="flex items-end gap-4">
           <div class="flex flex-1 flex-col gap-2">
             <Label for="lastname">Nom</Label>
@@ -135,7 +148,9 @@
             </SelectContent>
           </Select>
           </div>
-        </div><div class="flex justify-end gap-4">
+          
+        </div>
+        <div class="flex justify-end gap-4">
           <div class="flex flex-1 flex-col gap-2">
             <Label for="membershipNumber">@ Telegram</Label>
             <Input id="membershipNumber" v-model="form.telegramId" />
@@ -155,7 +170,7 @@
             >
             </Combobox>
             <Button variant="outline" @click="handleClickNewAdress">Renseigner une nouvelle Adresse</Button>
-
+        
             </div>
             <div class="flex flex-1 flex-col gap-2">
 
@@ -194,7 +209,33 @@
             <Input id="country" placeholder="Tel Fixe" v-model="form.country" />
           </div>
         </div>
-        <Button @click="handleClick" class="mt-3">Créer un nouveau Membre</Button>
+        <Button @click="handleClickMember" class="mt-4">Créer le nouveau Membre</Button>
+      </div>
+      <div v-else>
+      <div class="flex items-end gap-4">
+          <div> {{ }} </div>
+          <div class="flex flex-1 flex-col gap-2">
+            <Label for="mandateStart">Debut de Mandat</Label>
+            <Input id="mandateStart" v-model="form.mandateStart" />
+          </div>
+          <div class="flex flex-1 flex-col gap-2">
+            <Label for="firstname">Fin de Mandat</Label>
+            <Input id="firstname" v-model="form.mandateEnd" />
+          </div>
+        </div>
+        <div class="flex items-end gap-4">
+          <div class="flex flex-1 flex-col gap-2">
+            <Label for="lastname">Nom d'utilisateur </Label>
+            <Input id="lastname" v-model="form.username" />
+          </div>
+          <div class="flex flex-1 flex-col gap-2">
+            <Label for="firstname">Email à AEI </Label>
+            <Input id="firstname" v-model="form.emailJE" />
+          </div>
+        </div>
+        <Button @click="handleClickUser" class="mt-4">Créer un nouvel Utilisateur</Button>
+      </div>
+
       </CardContent>
     </Card>
   </div>
@@ -207,11 +248,11 @@ import axios from 'axios'
 import { useToast } from '@/components/ui/toast/use-toast'
 import { Toaster } from '@/components/ui/toast'
 const temp = ref('temp')
-import type { FullMemberWithAdress } from '@/types/api'
+import type { FullUserWithAdress } from '@/types/api'
 import { type DateValue } from '@internationalized/date'
 
 
-const form = ref<FullMemberWithAdress>({
+const form = ref<FullUserWithAdress>({
   personId: NaN,
   lastname: '',
   firstname: '',
@@ -240,6 +281,13 @@ const form = ref<FullMemberWithAdress>({
   country: '',
   createdAt: '',
   updatedAt: '',
+
+  userId: NaN,
+  username: '',
+  mandateStart: '',
+  mandateEnd: '',
+  emailJE: '',
+
 })
 
 const membershipNumberFormat = ref<string>()
@@ -248,6 +296,54 @@ const birthDateFormat = ref<DateValue>()
 
   const handleInputAddress = (value: string) => {
   form.value.addressId = parseInt(value)
+}
+
+const handleInputMember = (value: string) => {
+  form.value.memberId = parseInt(value)
+  getDataMemberSelected(form.value.memberId)
+}
+
+async function getDataMemberSelected(memberId : number) {
+  // Fetch data from your API here.
+
+  const person = await axios.get(`/person/${memberId}`, {
+    headers: {
+      Authorization: `Bearer ${useAuthStore().token}`
+    }
+  })
+
+  form.value.username = `${person.data.data?.person.firstname.toLowerCase()}.${person.data.data?.person.lastname.toLowerCase()}`
+  form.value.emailJE = `${person.data.data?.person.firstname.toLowerCase()}.${person.data.data?.person.lastname.toLowerCase()}@junior-aei.com`
+
+  
+
+
+}
+async function getDataMembers(): Promise<{ value: string; label: string }[]> {
+  // Fetch data from your API here.
+
+  const members = await axios.get(`/member/`, {
+    headers: {
+      Authorization: `Bearer ${useAuthStore().token}`
+    }
+  })
+
+  const persons = await axios.get(`/person`, {
+    headers: {
+      Authorization: `Bearer ${useAuthStore().token}`
+    }
+  })
+
+  const membersLists = members.data.data?.members.map((member: any) => {
+    const person = persons.data.data?.persons.find((person: any) => person.personId === member.memberId)
+
+    return {
+      value: member.memberId.toString(),
+      label: `${person.firstname} ${person.lastname}`
+    }
+  })
+
+  return membersLists
 }
 
 async function getDataAddress(): Promise<{ value: string; label: string }[]> {
@@ -270,11 +366,22 @@ async function getDataAddress(): Promise<{ value: string; label: string }[]> {
 }
 
 const addressList = ref([] as { value: string; label: string }[]) // Initialisation d'une liste réactive vide
+const membersList = ref([] as { value: string; label: string }[]) // Initialisation d'une liste réactive vide
+
+
+
 const handleClickNewAdress = () => {
   form.value.addressId = 0
 }
+
+const handleClickNewMember = () => {
+  form.value.memberId = 0
+}
+
 onMounted(async () => {
   addressList.value = await getDataAddress()
+  membersList.value = await getDataMembers()
+
 })
 
 const { toast } = useToast()
@@ -391,6 +498,8 @@ async function newMember(){
     )
     .then((response) => {
       console.log(response)
+      form.value.memberId = response.data.data.memberId
+
       toast({
         title: 'Personne renseignée',
         description: `${response.data.data.memberId}`
@@ -405,17 +514,62 @@ async function newMember(){
       })
     })
 }
-async function handleClick () {
+
+
+async function newUser(){
+
+  birthDateFormat
+  await axios
+    .post(
+      `/user/`,
+      {
+        user: {
+          userId: form.value.personId,
+          username: form.value.username,
+          mandateStart: form.value.mandateStart,
+          mandateEnd: form.value.mandateEnd,
+          emailJE: form.value.emailJE,
+
+        }
+      },
+      {
+        headers: {
+          Authorization: `Bearer ${useAuthStore().token}`
+        }
+      }
+    )
+    .then((response) => {
+      console.log(response)
+      toast({
+        title: 'Utilisateur renseigné',
+        description: `${response.data.data.userId}`
+      })
+    })
+    .catch((error) => {
+      console.error(error)
+      toast({
+        title: 'Something wrong happened',
+        variant: 'destructive',
+        description: `${error.response.data.message}`
+      })
+    })
+}
+async function handleClickMember () {
   if ( form.value.addressId == 0) {
     await newAddress()
 
   }
-  console.log(form.value.addressId)
-  await newPerson()
-  console.log(form.value.personId)
+  if  ( form.value.memberId == 0) {
+    await newPerson()
 
-  await newMember()
+    await newMember()
+  }
+  handleInputMember(form.value.memberId.toString())
 
+  
+}
+async function handleClickUser () {
+  await newUser()
   
 }
 

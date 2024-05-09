@@ -62,18 +62,25 @@ const getByPk = async (req: Request, res: Response) => {
 const create = async (req: Request, res: Response) => {
     try {
         // Test params
-        const validator = isValidMember(req.body.member.birthDate, req.body.member.birthPlace, req.body.member.nationality, req.body.member.promotion, req.body.member.contributionDate, req.body.member.department, req.body.member.membershipNumber)
+        const birthDateFormat = new Date(req.body.member.birthDate)
+        const contributionDateFormat = new Date(req.body.member.contributionDate)
+
+        const validator = isValidMember(birthDateFormat, req.body.member.birthPlace, req.body.member.nationality, req.body.member.promotion, contributionDateFormat, req.body.member.department, req.body.member.membershipNumber)
         if (!validator.valid) throw createHttpError(400, validator.message as string)
 
         // Insert data
         const member = await Members.create({
+            memberId: req.body.member.memberId,
             birthDate: req.body.member.birthDate,
             birthPlace: req.body.member.birthPlace,
             nationality: req.body.member.nationality,
             promotion: req.body.member.promotion,
             contributionDate: req.body.member.contributionDate,
             department: req.body.member.department,
-            membershipNumber: req.body.member.membershipNumber
+            membershipNumber: req.body.member.membershipNumber,
+            addressId: req.body.member.addressId,
+            telegramId: req.body.member.telegramId,
+            chatBotId: req.body.member.chatBotId,
         })
 
         // Return success

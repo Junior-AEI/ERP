@@ -1,11 +1,11 @@
 <template>
-  <div>
-    <Card class="max-w-2xl flex-1">
+  <div >
+    <Card class="max-w-2xl flex-1 ">
       <CardHeader>
         <Icon name="person_add" class="text-6xl" />
         <span class="text-accent"> Créer un nouveau client</span>
       </CardHeader>
-      <CardContent>
+      <CardContent class="overflow-y-auto">
         <div class="flex items-end gap-4">
           <div class="flex flex-1 flex-col gap-2">
             <Label for="lastname">Nom</Label>
@@ -51,12 +51,15 @@
             <Label for="landlinePhone">Email</Label>
             <Input id="landlinePhone" placeholder="Tel Fixe" v-model="form.email" />
           </div>
-        <div class="flex items-end gap-4">
+        <div class="flex items-start gap-4">
           <div class="flex flex-col gap-2">
             <Label for="application">Entreprise du Client</Label>
             <Combobox @input="handleInputCompany" :options="companyList" :comboboxLabel="'Selectionner l\'entreprise'">
             </Combobox>
+            <Button variant = "outline" @click="handleClickNewCompany">Renseigner une nouvelle entreprise</Button>
           </div>
+          
+
           <div class="flex flex-1 flex-col gap-2">
             <Label for="landlinePhone">Poste dans l'entreprise</Label>
             <Input id="landlinePhone" placeholder="Tel Fixe" v-model="form.function" />
@@ -76,20 +79,31 @@
             </div>
           </div>
           <div class="mt-2 flex flex-col gap-2">
-            <Label for="application">Adresse de l'Entreprise</Label>
+            <div class="flex items-end gap-4">
+            <div class="flex flex-1 flex-col gap-2">
+              <Label for="application">Adresse de l'Entreprise</Label>
             <Combobox
               @input="handleInputAddress"
               :options="addressList"
               :comboboxLabel="'Selectionner l\'adresse'"
             >
             </Combobox>
+            <Button variant="outline" @click="handleClickNewAdress">Renseigner une nouvelle Adresse</Button>
+
+            </div>
+            <div class="flex flex-1 flex-col gap-2">
+
+            </div>
+          </div>
+            
+
           </div>
         </div>
 
         <div v-if="form.addressId == 0">
           <div class="flex items-end gap-4">
             <div class="flex flex-1 flex-col gap-2">
-              <Label for="name">Adresse de l'Entreprise </Label>
+              <Label for="name">Adresse </Label>
               <Input id="address" placeholder="Tel Fixe" v-model="form.address" />
             </div>
             <div class="flex flex-1 flex-col gap-2">
@@ -202,14 +216,20 @@ const handleInputCompany = (value: string) => {
 const handleInputAddress = (value: string) => {
   form.value.addressId = parseInt(value)
 }
+
+const handleClickNewCompany = () => {
+  form.value.companyId = 0
+}
+
+const handleClickNewAdress = () => {
+  form.value.addressId = 0
+}
 const companyList = ref([] as { value: string; label: string }[]) // Initialisation d'une liste réactive vide
 const addressList = ref([] as { value: string; label: string }[]) // Initialisation d'une liste réactive vide
 
 onMounted(async () => {
   companyList.value = await getDataCompany()
-  companyList.value.push({ value: '0', label: 'Entreprise non présente' })
   addressList.value = await getDataAddress()
-  addressList.value.push({ value: '0', label: 'Adresse non présente' })
 })
 
 const { toast } = useToast()
@@ -254,7 +274,7 @@ async function  newAddress() {
 }
 
 async function newCompany(){
-  axios
+  await axios
     .post(
       `/company/`,
       {
@@ -289,7 +309,7 @@ async function newCompany(){
 }
 
 async function newPerson(){
-  axios
+  await axios
     .post(
       `/person/`,
       {
@@ -326,6 +346,40 @@ async function newPerson(){
     })
 }
 
+async function newClient(){
+  await axios
+    .post(
+      `/client/`,
+      {
+        client: {
+          clientId: form.value.personId,
+          function: form.value.function,
+          companyId: form.value.companyId,
+        }
+      },
+      {
+        headers: {
+          Authorization: `Bearer ${useAuthStore().token}`
+        }
+      }
+    )
+    .then((response) => {
+      console.log(response)
+      toast({
+        title: 'Personne renseignée',
+        description: `${response.data.data.clientId}`
+      })
+    })
+    .catch((error) => {
+      console.error(error)
+      toast({
+        title: 'Something wrong happened',
+        variant: 'destructive',
+        description: `${error.response.data.message}`
+      })
+    })
+}
+
 async function handleClick () {
   if ( form.value.addressId == 0) {
     await newAddress()
@@ -335,7 +389,10 @@ async function handleClick () {
     await newCompany()
 
   }
+  console.log(form.value.companyId)
   await newPerson()
+  console.log( form.value.personId)
+  await newClient()
 
   
 }

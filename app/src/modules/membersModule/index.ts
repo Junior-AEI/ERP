@@ -18,6 +18,15 @@ export const membersModule: Module = {
           meta: {
             icon: 'person_add'
           }
+        },
+    
+        {
+          path: '/users/new',
+          name: 'Nouvel utilisateur',
+          component: () => import('./createUser.vue'),
+          meta: {
+            icon: 'person_add'
+          }
         }
       ]
     }

@@ -64,13 +64,13 @@ export default class Persons extends Model {
     @Column({
         type: DataType.STRING,
         allowNull: true,
-        validate: {
-            checkPhone(str: string) {
-                if (!validator.isMobilePhone(str)) {
-                    throw new Error('Invalid phone number')
-                }
-            }
-        }
+        // validate: {
+        //     checkPhone(str: string) {
+        //         if (!validator.isMobilePhone(str)) {
+        //             throw new Error('Invalid phone number')
+        //         }
+        //     }
+        // }
     })
     landlinePhone!: string
 

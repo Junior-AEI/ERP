@@ -1,7 +1,7 @@
 import { h } from 'vue'
 import type { ColumnDef } from '@tanstack/vue-table'
 import type { FullMember } from '@/types/api'
-import MembersDataTableDropDown from './MembersDataTableDropDown.vue'
+import MembersDataTableDropDown from './MembersDataTableButton.vue'
 import { Button } from '../ui/button'
 import Icon from '../Icon.vue'
 

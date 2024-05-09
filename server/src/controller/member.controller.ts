@@ -61,6 +61,14 @@ const getByPk = async (req: Request, res: Response) => {
  */
 const create = async (req: Request, res: Response) => {
     try {
+        // Parse identifier
+        const identifier = parseInt(req.body.member.memberId);
+        if (isNaN(identifier)) throw createHttpError(400, 'Please provide a valid identifier')
+        
+        const person = await Persons.findByPk(identifier)
+        if (!person) throw createHttpError(404, 'Person not found')
+    
+        
         // Test params
         const birthDateFormat = new Date(req.body.member.birthDate)
         const contributionDateFormat = new Date(req.body.member.contributionDate)
@@ -105,11 +113,11 @@ const create = async (req: Request, res: Response) => {
 const update = async (req: Request, res: Response) => {
     try {
         // Parse identifier
-        if (!req.params.memberId && !isNumber(req.params.memberId)) throw createHttpError(400, 'Please provide a valid identifier')
         const identifier = parseInt(req.params.memberId)
+        if (isNaN(identifier)) throw createHttpError(400, 'Please provide a valid identifier')
 
         const member = await Members.findByPk(identifier)
-        if (!member) throw createHttpError(404, 'User not found')
+        if (!member) throw createHttpError(404, 'Member not found')
 
         const validator = isValidMember(req.body.member.birthDate, req.body.member.birthPlace, req.body.member.nationality, req.body.member.promotion, req.body.member.contributionDate, req.body.member.department, req.body.member.membershipNumber)
 

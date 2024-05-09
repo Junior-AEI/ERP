@@ -4,9 +4,8 @@ import createHttpError from 'http-errors'
 import Users from '../models/user.model'
 import { HttpError } from 'http-errors'
 import { isValidUser } from '../validator/user.validator'
-import { controllerErrorHandler, isNumber } from './utils.controller'
+import { controllerErrorHandler } from './utils.controller'
 import Members from '../models/member.model'
-import { isStringObject } from 'util/types'
 
 /**
  * Get all users

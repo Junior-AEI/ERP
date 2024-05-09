@@ -5,7 +5,8 @@ export const projectNotes: any = {
         advancement: 'FI émise',
         project: {
             username: 'johnny.doe',
-            acronym: 'AAA'
+            name: 'Création d\'un site web',
+            acronym: 'AAA',
         }
     },
 
@@ -15,6 +16,7 @@ export const projectNotes: any = {
         advancement: 'RM signé',
         project: {
             username: 'jane.doe',
+            name: 'Création d\'un arrosoir automatique',
             acronym: 'BBB'
         }
     }

@@ -23,7 +23,15 @@ export const projectsModule: Module = {
           meta: {
             icon: 'domain_add'
           }
-        }
+        },
+        // {
+        //   path: '/projects/new',
+        //   name: 'Ajouter Etude',
+        //   component: () => import('./createProject.vue'),
+        //   meta: {
+        //     icon: 'domain_add'
+        //   }
+        // }
       ],
       meta: {
         icon: 'work'

@@ -1,0 +1,448 @@
+<template>
+  <div class="flex flex-row gap-4">
+    <Card class="max-w-2xl flex-1">
+      <CardHeader>
+        <Icon name="person_add" class="text-6xl" />
+        <span class="text-accent"> Ajouter une nouvelle étude</span>
+      </CardHeader>
+      <CardContent>
+        <div class="flex items-end gap-4">
+          <div class="flex flex-1 flex-col gap-2">
+            <Combobox @input="handleInputClient" :options="clientsList"
+              :comboboxLabel="'Selectionner un client existant'">
+            </Combobox>
+            <Button variant="outline" @click="handleClickNewClient">Rentrer un nouveau client</Button>
+
+          </div>
+        </div>
+        <div class="flex items-end gap-4">
+          <div class="flex flex-1 flex-col gap-2">
+            <Label for="lastname">Nom</Label>
+            <Input id="lastname" v-model="form.lastname" />
+          </div>
+          <div class="flex flex-1 flex-col gap-2">
+            <Label for="firstname">Prénom</Label>
+            <Input id="firstname" v-model="form.firstname" />
+          </div>
+        </div>
+        <div class="flex flex-1 flex-col gap-2">
+          <Label for="gender">Genre</Label>
+          <Select v-model="form.gender">
+            <SelectTrigger>
+              <SelectValue placeholder="Genre" />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectGroup>
+                <SelectItem value="M">
+                  Homme
+                </SelectItem>
+                <SelectItem value="F">
+                  Femme
+                </SelectItem>
+                <SelectItem value="O">
+                  Autre
+                </SelectItem>
+              </SelectGroup>
+            </SelectContent>
+          </Select>
+        </div>
+        <div class="flex items-end gap-4">
+          <div class="flex flex-1 flex-col gap-2">
+            <Label for="mobilePhone">N° de Téléphone Mobile</Label>
+            <Input id="mobilePhone" placeholder="Info" v-model="form.mobilePhone" />
+          </div>
+          <div class="flex flex-1 flex-col gap-2">
+            <Label for="landlinePhone">N° de Téléphone</Label>
+            <Input id="landlinePhone" placeholder="Tel Fixe" v-model="form.landlinePhone" />
+          </div>
+        </div>
+        <div class="flex flex-1 flex-col gap-2">
+          <Label for="landlinePhone">Email</Label>
+          <Input id="landlinePhone" placeholder="Tel Fixe" v-model="form.email" />
+        </div>
+        <div class="flex items-start gap-4">
+          <div class="flex flex-col gap-2">
+            <Label for="application">Entreprise du Client</Label>
+            <Combobox @input="handleInputCompany" :options="companyList" :comboboxLabel="'Selectionner l\'entreprise'">
+            </Combobox>
+            <Button variant="outline" @click="handleClickNewCompany">Renseigner une nouvelle entreprise</Button>
+          </div>
+
+
+          <div class="flex flex-1 flex-col gap-2">
+            <Label for="landlinePhone">Poste dans l'entreprise</Label>
+            <Input id="landlinePhone" placeholder="Tel Fixe" v-model="form.function" />
+          </div>
+        </div>
+
+
+        <div v-if="form.companyId == 0">
+          <div class="flex items-end gap-4">
+            <div class="flex flex-1 flex-col gap-2">
+              <Label for="name">Nom de l'Entreprise</Label>
+              <Input id="name" placeholder="Tel Fixe" v-model="form.name" />
+            </div>
+            <div class="flex flex-1 flex-col gap-2">
+              <Label for="legalEntity">N° de SIRET de l'entreprise</Label>
+              <Input id="legalEntity" placeholder="Tel Fixe" v-model="form.legalEntity" />
+            </div>
+          </div>
+          <div class="mt-2 flex flex-col gap-2">
+            <div class="flex items-end gap-4">
+              <div class="flex flex-1 flex-col gap-2">
+                <Label for="application">Adresse de l'Entreprise</Label>
+                <Combobox @input="handleInputAddress" :options="addressList" :comboboxLabel="'Selectionner l\'adresse'">
+                </Combobox>
+                <Button variant="outline" @click="handleClickNewAdress">Renseigner une nouvelle Adresse</Button>
+
+              </div>
+              <div class="flex flex-1 flex-col gap-2">
+
+              </div>
+            </div>
+
+
+          </div>
+        </div>
+
+        <div v-if="form.addressId == 0">
+          <div class="flex items-end gap-4">
+            <div class="flex flex-1 flex-col gap-2">
+              <Label for="name">Adresse </Label>
+              <Input id="address" placeholder="Tel Fixe" v-model="form.address" />
+            </div>
+            <div class="flex flex-1 flex-col gap-2">
+              <Label for="legalEntity">Complément d'adresse</Label>
+              <Input id="additionnalAddress" placeholder="Tel Fixe" v-model="form.additionnalAddress" />
+            </div>
+          </div>
+          <div class="flex items-end gap-4">
+            <div class="mt-2 flex flex-1 flex-col gap-2">
+              <Label for="name">Code Postal </Label>
+              <Input id="postCode" placeholder="Tel Fixe" v-model="form.postCode" />
+            </div>
+            <div class="flex flex-1 flex-col gap-2">
+              <Label for="legalEntity">Ville</Label>
+              <Input id="city" placeholder="Tel Fixe" v-model="form.city" />
+            </div>
+          </div>
+          <div class="mt-2 flex flex-1 flex-col gap-2">
+            <Label for="legalEntity">Pays</Label>
+            <Input id="country" placeholder="Tel Fixe" v-model="form.country" />
+          </div>
+        </div>
+
+
+
+        <Button @click="handleClick">Créer un nouveau Client</Button>
+      </CardContent>
+    </Card>
+    <Toaster />
+  </div>
+</template>
+
+<script setup lang="ts">
+import { ref, onMounted } from 'vue'
+import { useAuthStore } from '@/stores/authStore'
+import axios from 'axios'
+import { useToast } from '@/components/ui/toast/use-toast'
+import { Toaster } from '@/components/ui/toast'
+const temp = ref('temp')
+import type { ClientInfo } from '@/types/api'
+
+const form = ref<ClientInfo>({
+  personId: NaN,
+  lastname: '',
+  firstname: '',
+  gender: '',
+  mobilePhone: '',
+  landlinePhone: '',
+  email: '',
+  createdAt: '',
+  updatedAt: '',
+  name: '',
+  legalEntity: '',
+  addressId: NaN,
+  function: '',
+  companyId: NaN,
+  address: '',
+  additionnalAddress: '',
+  city: '',
+  postCode: '',
+  country: ''
+})
+
+const NeedAddNewClient = true
+
+async function getDataClient(): Promise<{ value: string; label: string }[]> {
+  // Fetch data from your API here.
+
+  const clients = await axios.get(`/client`, {
+    headers: {
+      Authorization: `Bearer ${useAuthStore().token}`
+    }
+  })
+
+  const persons = await axios.get(`/person`, {
+    headers: {
+      Authorization: `Bearer ${useAuthStore().token}`
+    }
+  })
+
+  const clientsInfo = clients.data.data?.clients.map((client: any) => {
+    const person = persons.data.data?.persons.find((person: any) => person.personId === client.clientId)
+    return {
+      ...client,
+      ...person
+    }
+  })
+
+  const clientLists = clientsInfo.map((client: any) => {
+    return {
+      value: client.clientId.toString(),
+      label: `${client.firstname} ${client.lastname}`
+    }
+  })
+
+  return clientLists
+}
+
+async function getDataCompany(): Promise<{ value: string; label: string }[]> {
+  // Fetch data from your API here.
+
+  const companies = await axios.get(`/company`, {
+    headers: {
+      Authorization: `Bearer ${useAuthStore().token}`
+    }
+  })
+
+  const companiesLists = companies.data.data?.companies.map((company: any) => {
+    return {
+      value: company.companyId.toString(),
+      label: company.name
+    }
+  })
+
+  return companiesLists
+}
+
+async function getDataAddress(): Promise<{ value: string; label: string }[]> {
+  // Fetch data from your API here.
+
+  const addresses = await axios.get(`/address`, {
+    headers: {
+      Authorization: `Bearer ${useAuthStore().token}`
+    }
+  })
+
+  const addressesLists = addresses.data.data?.addresses.map((address: any) => {
+    return {
+      value: address.addressId.toString(),
+      label: address.address
+    }
+  })
+
+  return addressesLists
+}
+
+const handleInputCompany = (value: string) => {
+  form.value.companyId = parseInt(value)
+}
+
+const handleInputClient = (value: string) => {
+  form.value.clientId = parseInt(value)
+}
+
+
+const handleInputAddress = (value: string) => {
+  form.value.addressId = parseInt(value)
+}
+
+const handleClickNewCompany = () => {
+  form.value.companyId = 0
+}
+
+const handleClickNewClient = () => {
+  form.value.clientId = 0
+}
+
+const handleClickNewAdress = () => {
+  form.value.addressId = 0
+}
+const companyList = ref([] as { value: string; label: string }[]) // Initialisation d'une liste réactive vide
+
+const clientsList = ref([] as { value: string; label: string }[]) // Initialisation d'une liste réactive vide
+const addressList = ref([] as { value: string; label: string }[]) // Initialisation d'une liste réactive vide
+
+onMounted(async () => {
+  companyList.value = await getDataCompany()
+  clientsList.value = await getDataClient()
+  addressList.value = await getDataAddress()
+})
+
+const { toast } = useToast()
+
+
+async function newAddress() {
+  await axios
+    .post(
+      `/address/`,
+      {
+        address: {
+          address: form.value.address,
+          additionnalAddress: form.value.additionnalAddress,
+          city: form.value.city,
+          postCode: form.value.postCode,
+          country: form.value.country
+        }
+      },
+      {
+        headers: {
+          Authorization: `Bearer ${useAuthStore().token}`
+        }
+      }
+    )
+    .then((response) => {
+      form.value.addressId = response.data.data.addressId
+      toast({
+        title: 'Adresse renseignée',
+        description: `${form.value.address}`
+      })
+    })
+    .catch((error) => {
+      console.error(error)
+      toast({
+        title: 'Something wrong happened',
+        variant: 'destructive',
+        description: `${error.response.data.message}`
+      })
+    })
+
+
+}
+
+async function newCompany() {
+  await axios
+    .post(
+      `/company/`,
+      {
+        company: {
+          name: form.value.name,
+          legalEntity: form.value.legalEntity,
+          addressId: form.value.addressId,
+        }
+      },
+      {
+        headers: {
+          Authorization: `Bearer ${useAuthStore().token}`
+        }
+      }
+    )
+    .then((response) => {
+      console.log(response)
+      form.value.companyId = response.data.data.companyId
+      toast({
+        title: 'Entreprise renseignée',
+        description: `${form.value.companyId}`
+      })
+    })
+    .catch((error) => {
+      console.error(error)
+      toast({
+        title: 'Something wrong happened',
+        variant: 'destructive',
+        description: `${error.response.data.message}`
+      })
+    })
+}
+
+async function newPerson() {
+  await axios
+    .post(
+      `/person/`,
+      {
+        person: {
+          lastname: form.value.lastname,
+          firstname: form.value.firstname,
+          gender: form.value.gender,
+          mobilePhone: form.value.mobilePhone,
+          landlinePhone: form.value.landlinePhone,
+          email: form.value.email,
+        }
+      },
+      {
+        headers: {
+          Authorization: `Bearer ${useAuthStore().token}`
+        }
+      }
+    )
+    .then((response) => {
+      console.log(response)
+      form.value.personId = response.data.data.personId
+      toast({
+        title: 'PErsonne renseignée',
+        description: `${form.value.personId}`
+      })
+    })
+    .catch((error) => {
+      console.error(error)
+      toast({
+        title: 'Something wrong happened',
+        variant: 'destructive',
+        description: `${error.response.data.message}`
+      })
+    })
+}
+
+async function newClient() {
+  await axios
+    .post(
+      `/client/`,
+      {
+        client: {
+          clientId: form.value.personId,
+          function: form.value.function,
+          companyId: form.value.companyId,
+        }
+      },
+      {
+        headers: {
+          Authorization: `Bearer ${useAuthStore().token}`
+        }
+      }
+    )
+    .then((response) => {
+      console.log(response)
+      toast({
+        title: 'Personne renseignée',
+        description: `${response.data.data.clientId}`
+      })
+    })
+    .catch((error) => {
+      console.error(error)
+      toast({
+        title: 'Something wrong happened',
+        variant: 'destructive',
+        description: `${error.response.data.message}`
+      })
+    })
+}
+
+async function handleClick() {
+  if (form.value.addressId == 0) {
+    await newAddress()
+
+  }
+  if (form.value.companyId == 0) {
+    await newCompany()
+
+  }
+  console.log(form.value.companyId)
+  await newPerson()
+  console.log(form.value.personId)
+  await newClient()
+
+
+}
+
+</script>

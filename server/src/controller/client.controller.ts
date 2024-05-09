@@ -66,6 +66,7 @@ async function create(req: Request, res: Response) {
         const person = await Persons.findByPk(identifier)
         if (!person) throw createHttpError(404, 'Linked person not found')
 
+        // Parse company identifier
         const idCompany = parseInt(req.body.client.companyId)
         if (isNaN(idCompany)) throw createHttpError(400, 'Please provide a valid company identifier.')
         // Try to find the company
@@ -73,7 +74,7 @@ async function create(req: Request, res: Response) {
         if (!company) throw createHttpError(404, 'Linked company not found.')
 
         // Test if parameters has been filled
-        const validator = isValidClient(req.body.client.function)
+        const validator = isValidClient(req.body.client.function, req.body.client.firstContact)
 
         // Test values
         if (!validator.valid) throw createHttpError(400, validator.message as string)
@@ -82,6 +83,7 @@ async function create(req: Request, res: Response) {
         const client = await Clients.create({
             clientId: identifier,
             function: req.body.client.function,
+            firstContact: req.body.client.firstContact,
             companyId: idCompany
         })
 
@@ -120,7 +122,7 @@ const update = async (req: Request, res: Response) => {
         if (!company) throw createHttpError(404, 'Company not found')
 
         // Check parameters
-        const validator = isValidClient(req.body.client.function)
+        const validator = isValidClient(req.body.client.function, req.body.client.firstContact)
         if (validator.valid == 0) throw createHttpError(400, validator.message as string)
 
         await Clients.update(req.body.client, {

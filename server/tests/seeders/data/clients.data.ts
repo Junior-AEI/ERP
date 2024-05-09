@@ -18,9 +18,11 @@ export const clients: any = {
         },
         company: {
             name: 'Enseirb',
-            legalEntity: 'Oui'
+            legalEntity: 'Oui',
+            companyType: 'Particulier'
         },
-        function: 'RH'
+        function: 'RH',
+        firstContact: 'Site AEI',
     },
 
     // Jane Doe character
@@ -42,8 +44,10 @@ export const clients: any = {
         },
         company: {
             name: 'Matmeca',
-            legalEntity: 'Non'
+            legalEntity: 'Non',
+            companyType: 'Association'
         },
-        function: 'Développeur'
+        function: 'Développeur',
+        firstContact: 'Congrès'
     }
 }

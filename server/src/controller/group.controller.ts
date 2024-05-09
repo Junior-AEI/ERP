@@ -33,12 +33,10 @@ const getAll = async (req: Request, res: Response) => {
  */
 const getByPk = async (req: Request, res: Response) => {
     try {
-        if (req.params.groupName) throw createHttpError(400, 'Please provide a valid identifier')
-
-        const identifier = parseInt(req.params.groupName)
+        const identifier = parseInt(req.params.groupId)
+        if (isNaN(identifier)) throw createHttpError(400, 'Please provide a valid identifier')
 
         const group = await Groups.findByPk(identifier)
-
         if (!group) throw createHttpError(404, 'Group not found')
 
         return res.status(200).json({
@@ -62,7 +60,7 @@ async function create(req: Request, res: Response) {
     try {
         // Test params
         const validator = isValidGroup(req.body.group.groupName)
-        if (!validator.valid) return createHttpError(400, validator.message as string)
+        if (!validator.valid) throw createHttpError(400, validator.message as string)
 
         // Insert data
         const group = await Groups.create({
@@ -73,7 +71,7 @@ async function create(req: Request, res: Response) {
         return res.status(200).json({
             status: 'success',
             data: {
-                groupName: group.groupName
+                groupId: group.groupId
             }
         })
     } catch (err) {
@@ -89,9 +87,8 @@ async function create(req: Request, res: Response) {
  */
 const update = async (req: Request, res: Response) => {
     try {
-        // Parse identifier
-        if (req.params.groupName) throw createHttpError(400, 'Please provide a valid group name')
-        const identifier = parseInt(req.params.groupName)
+        const identifier = parseInt(req.params.groupId)
+        if (isNaN(identifier)) throw createHttpError(400, 'Please provide a valid identifier')
 
         // Find
         const group = await Groups.findByPk(identifier)
@@ -106,7 +103,7 @@ const update = async (req: Request, res: Response) => {
                 groupName: req.body.group.groupName
             },
             {
-                where: { groupName: identifier }
+                where: { groupId: identifier }
             }
         )
 
@@ -127,9 +124,9 @@ const update = async (req: Request, res: Response) => {
  */
 const del = async (req: Request, res: Response) => {
     try {
-        // Parse identifier
-        if (req.params.groupName) throw createHttpError(400, 'Please provide a valid identifier')
-        const identifier = req.params.groupName
+        // Parse identifier for member heredity
+        const identifier = parseInt(req.params.groupId)
+        if (isNaN(identifier)) throw createHttpError(400, 'Please provide a valid identifier')
 
         // Find
         const group = await Groups.findByPk(identifier)
@@ -138,8 +135,13 @@ const del = async (req: Request, res: Response) => {
         // Destroy
         await Groups.destroy({
             where: {
-                groupName: req.body.group.groupName
+                groupId: req.params.groupId
             }
+        })
+
+        // Return success
+        return res.status(200).json({
+            status: 'success'
         })
     } catch (err) {
         if (err instanceof HttpError) controllerErrorHandler(err, res)

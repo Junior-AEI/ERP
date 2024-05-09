@@ -32,6 +32,13 @@ export default class Documents extends Model {
         type: DataType.STRING,
         allowNull: false
     })
+    name!: string
+
+    @NotEmpty
+    @Column({
+        type: DataType.STRING,
+        allowNull: false
+    })
     path!: string
 
     @NotEmpty

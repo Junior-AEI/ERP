@@ -12,7 +12,7 @@ export const membersModule: Module = {
       },
       children: [
         {
-          path: '/members/new',
+          path: '/new',
           name: 'Nouveau membre',
           component: () => import('./createMember.vue'),
           meta: {

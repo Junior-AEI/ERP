@@ -17,21 +17,21 @@ export const projectsModule: Module = {
           }
         },
         {
-          path: '/new',
+          path: '/clients/new',
           name: 'Ajouter Client',
           component: () => import('./createClient.vue'),
           meta: {
             icon: 'domain_add'
           }
         },
-        // {
-        //   path: '/projects/new',
-        //   name: 'Ajouter Etude',
-        //   component: () => import('./createProject.vue'),
-        //   meta: {
-        //     icon: 'domain_add'
-        //   }
-        // }
+        {
+          path: '/projects/new',
+          name: 'Ajouter Etude',
+          component: () => import('./createProject.vue'),
+          meta: {
+            icon: 'domain_add'
+          }
+        }
       ],
       meta: {
         icon: 'work'

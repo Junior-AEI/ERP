@@ -6,8 +6,8 @@
         <span class="text-accent"> Ajouter un utlisateur</span>
       </CardHeader>
       <CardContent>
-        <div class="flex items-end gap-4">
-          <div class="flex flex-1 flex-col gap-2">
+        <div class="flex items-end gap-4" v-if="form.memberId == -1 ">
+            <div class="flex flex-1 flex-col gap-2">
             <Combobox
               @input="handleInputMember"
               :options="membersList"
@@ -97,6 +97,15 @@
               <Input id="landlinePhone" placeholder="Tel Fixe" v-model="form.landlinePhone" />
             </div>
           </div>
+          <div class="mt-2 flex flex-1 flex-col gap-2">
+            <Label for="legalEntity">Pays</Label>
+            <Input id="country" placeholder="Tel Fixe" v-model="form.country" />
+          </div>
+        </div>
+        <Button @click="handleClickMember" class="mt-4">Créer le nouveau Membre</Button>
+      </div>
+      <div v-if="form.memberId != 0 && form.memberId != -1 ">
+      <div class="flex items-end gap-4">          <div> {{ }} </div>
           <div class="flex flex-1 flex-col gap-2">
             <Label for="landlinePhone">Email</Label>
             <Input id="landlinePhone" placeholder="Tel Fixe" v-model="form.email" />
@@ -232,7 +241,7 @@ const form = ref<FullUserWithAdress>({
   landlinePhone: '',
   email: '',
 
-  memberId: NaN,
+  memberId: -1,
   birthDate: '',
   birthPlace: '',
   nationality: '',

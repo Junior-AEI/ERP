@@ -1,6 +1,6 @@
 <template>
   <Wrapper>
-    <div class="flex flex-1 flex-col gap-2">
+    <div class="flex flex-1 flex-col gap-2 sm:min-w-72">
       <h2>Avancement des Etudes</h2>
       <ProjectCard v-for="projectNotes in notesActiveProjects" :acronym="projectNotes.acronym"
         :advancement="projectNotes.projectNotes.advancement" :comment="projectNotes.projectNotes.comment" :key="projectNotes.projectNotes.createdAt" > </ProjectCard>
@@ -34,17 +34,7 @@ interface ProjectNotesWithAcronym {
   projectNotes : ProjectNotes
 }
 
-const notesActiveProjects = ref<ProjectNotesWithAcronym[]>([
-   {projectNotes: {
-    noteId: 1,
-    projectId: 0,
-    writerId: 2,
-    comment: "L'etude commence bien",
-    advancement: "CE signé",
-    createdAt: new Date().toISOString(),
-  },
-  acronym: 'ACR'}
-])
+const notesActiveProjects = ref<ProjectNotesWithAcronym[]>([])
 
 
 axios.get('/project/active', {
@@ -55,7 +45,7 @@ axios.get('/project/active', {
   activeProjects.value.push(...response.data.data.projects)
   
 activeProjects.value.forEach(element => {
-  axios.get(`/projectNotes/${element.projectId}/lastNote`, {
+  axios.get(`/projectNote/${element.projectId}/lastNote`, {
     headers: {
       Authorization: `Bearer ${useAuthStore().token}`
     }

@@ -345,12 +345,14 @@ const createUser = async () => {
         postCode: '99999',
         country: 'FRA'
     })
-    /* 
+    
         const company1 = await Companies.create({
             companyId: 1,
             name: 'Company1',
             legalEntity: 'SAS',
             addressId: addressCompany1.addressId,
+            companyType: 'PME',
+            activityField: 'Informatique',
             createdAt: ct,
             updatedAt: ct
         })
@@ -358,11 +360,14 @@ const createUser = async () => {
         const client1 = await Clients.create({
             clientId: personClient1.personId,
             function: 'PDG',
-            companyId: company1.companyId
+            companyId: company1.companyId,
+            firstContact: 'Soirée partenaire'
+
         })
     
         const project1 = await Projects.create({
             projectId: 1,
+            name: 'Project1',
             acronym: 'PRO1',
             clientId: client1.clientId,
             startDate: new Date('2023-07-26T12:00:00'),
@@ -371,6 +376,7 @@ const createUser = async () => {
     
         const project2 = await Projects.create({
             projectId: 2,
+            name: 'Project2',
             acronym: 'PRO2',
             clientId: client1.clientId,
             startDate: new Date('2022-07-26T12:00:00'),
@@ -407,7 +413,7 @@ const createUser = async () => {
             comment: 'Ca avance plutot bien',
             advancement: 'CE signé'
         })
-        console.log('Project created', project1, project2, note1Project1, note2Project1, note1Project2, note2Project2) */
+        console.log('Project created', project1, project2, note1Project1, note2Project1, note1Project2, note2Project2) 
 }
 
 export default createFakeData

@@ -15,7 +15,7 @@ import Companies from './company.model'
 import Persons from './person.model'
 import Projects from './project.model'
 
-export const FIRSTCONTACTS = ['Bouche à oreille', 'Soirée partenaire', 'Appel téléphonique', 'Site AEI', 'Congrès']
+export const FIRSTCONTACTS = ['Bouche à oreille', 'Soirée partenaire', 'Appel téléphonique', 'Site AEI', 'Congrès','Salon', 'RS', 'Autre']
 
 @Table
 export default class Clients extends Model {

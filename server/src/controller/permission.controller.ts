@@ -26,128 +26,128 @@ const getAll = async (req: Request, res: Response) => {
     }
 }
 
-/**
- * Get a specific group
- * @param req
- * @param res
- */
-const getByPk = async (req: Request, res: Response) => {
-    try {
-        // Parse identifier
-        if (req.params.permissionName) throw createHttpError(400, 'Please provide a valid identifier')
-        const identifier = parseInt(req.params.permissionName)
+// /**
+//  * Get a specific group
+//  * @param req
+//  * @param res
+//  */
+// const getByPk = async (req: Request, res: Response) => {
+//     try {
+//         // Parse identifier
+//         if (req.params.permissionName) throw createHttpError(400, 'Please provide a valid identifier')
+//         const identifier = parseInt(req.params.permissionName)
 
-        // Find
-        const permission = await Permissions.findByPk(identifier)
-        if (!permission) throw createHttpError(404, 'Permission not found')
+//         // Find
+//         const permission = await Permissions.findByPk(identifier)
+//         if (!permission) throw createHttpError(404, 'Permission not found')
 
-        return res.status(200).json({
-            status: 'success',
-            data: {
-                permission: permission
-            }
-        })
-    } catch (err) {
-        if (err instanceof HttpError) controllerErrorHandler(err, res)
-        else throw err
-    }
-}
+//         return res.status(200).json({
+//             status: 'success',
+//             data: {
+//                 permission: permission
+//             }
+//         })
+//     } catch (err) {
+//         if (err instanceof HttpError) controllerErrorHandler(err, res)
+//         else throw err
+//     }
+// }
 
-/**
- * Create a group
- * @param req
- * @param res
- */
-async function create(req: Request, res: Response) {
-    try {
-        // Test params
-        const validator = isValidPermission(req.body.permission.permissionName, req.body.permission.permissionType)
-        if (!validator.valid) return createHttpError(400, validator.message as string)
+// /**
+//  * Create a group
+//  * @param req
+//  * @param res
+//  */
+// async function create(req: Request, res: Response) {
+//     try {
+//         // Test params
+//         const validator = isValidPermission(req.body.permission.permissionName, req.body.permission.permissionType)
+//         if (!validator.valid) return createHttpError(400, validator.message as string)
 
-        // Insert data
-        const permission = await Permissions.create({
-            groupName: req.body.group.groupName
-        })
+//         // Insert data
+//         const permission = await Permissions.create({
+//             groupName: req.body.group.groupName
+//         })
 
-        // Return success
-        return res.status(200).json({
-            status: 'success',
-            data: {
-                permissionName: permission.permissionName
-            }
-        })
-    } catch (err) {
-        if (err instanceof HttpError) controllerErrorHandler(err, res)
-        else throw err
-    }
-}
+//         // Return success
+//         return res.status(200).json({
+//             status: 'success',
+//             data: {
+//                 permissionName: permission.permissionName
+//             }
+//         })
+//     } catch (err) {
+//         if (err instanceof HttpError) controllerErrorHandler(err, res)
+//         else throw err
+//     }
+// }
 
-/**
- * Update a group
- * @param req
- * @param res
- */
-const update = async (req: Request, res: Response) => {
-    try {
-        // Parse identifier
-        if (req.params.permissionName) throw createHttpError(400, 'Please provide a valid identifier')
-        const identifier = parseInt(req.params.permissionName)
+// /**
+//  * Update a group
+//  * @param req
+//  * @param res
+//  */
+// const update = async (req: Request, res: Response) => {
+//     try {
+//         // Parse identifier
+//         if (req.params.permissionName) throw createHttpError(400, 'Please provide a valid identifier')
+//         const identifier = parseInt(req.params.permissionName)
 
-        // Find
-        const permission = await Permissions.findByPk(identifier)
-        if (!permission) throw createHttpError(404, 'Permission not found')
+//         // Find
+//         const permission = await Permissions.findByPk(identifier)
+//         if (!permission) throw createHttpError(404, 'Permission not found')
 
-        // Test params
-        const validator = isValidPermission(req.body.permission.permissionName, req.body.permission.permissionType)
-        if (validator.valid == 0) throw createHttpError(400, validator.message as string)
+//         // Test params
+//         const validator = isValidPermission(req.body.permission.permissionName, req.body.permission.permissionType)
+//         if (validator.valid == 0) throw createHttpError(400, validator.message as string)
 
-        await Permissions.update(req.body, {
-            where: { permissionName: identifier }
-        })
+//         await Permissions.update(req.body, {
+//             where: { permissionName: identifier }
+//         })
 
-        // Return success
-        return res.status(200).json({
-            status: 'success'
-        })
-    } catch (err) {
-        if (err instanceof HttpError) controllerErrorHandler(err, res)
-        else throw err
-    }
-}
+//         // Return success
+//         return res.status(200).json({
+//             status: 'success'
+//         })
+//     } catch (err) {
+//         if (err instanceof HttpError) controllerErrorHandler(err, res)
+//         else throw err
+//     }
+// }
 
-/**
- * Delete a group
- * @param req
- * @param res
- */
-const del = async (req: Request, res: Response) => {
-    try {
-        // Parse identifier
-        if (req.params.permissionName) throw createHttpError(400, 'Please provide a valid identifier')
-        const identifier = parseInt(req.params.permissionName)
+// /**
+//  * Delete a group
+//  * @param req
+//  * @param res
+//  */
+// const del = async (req: Request, res: Response) => {
+//     try {
+//         // Parse identifier
+//         if (req.params.permissionName) throw createHttpError(400, 'Please provide a valid identifier')
+//         const identifier = parseInt(req.params.permissionName)
 
-        // Find
-        const permission = await Permissions.findByPk(identifier)
-        if (!permission) throw createHttpError(404, 'Permission not found')
+//         // Find
+//         const permission = await Permissions.findByPk(identifier)
+//         if (!permission) throw createHttpError(404, 'Permission not found')
 
-        // Destroy
-        await Permissions.destroy({
-            where: {
-                permissionName: req.body.permission.permissionName
-            }
-        })
-    } catch (err) {
-        if (err instanceof HttpError) controllerErrorHandler(err, res)
-        else throw err
-    }
-}
+//         // Destroy
+//         await Permissions.destroy({
+//             where: {
+//                 permissionName: req.body.permission.permissionName
+//             }
+//         })
+//     } catch (err) {
+//         if (err instanceof HttpError) controllerErrorHandler(err, res)
+//         else throw err
+//     }
+// }
 
 const permissionController = {
     getAll,
-    getByPk,
-    create,
-    del,
-    update
+    // getByPk,
+    // create,
+    // del,
+    // update
 }
 
 export default permissionController

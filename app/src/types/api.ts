@@ -122,10 +122,12 @@ export interface Company {
   legalEntity: string
   addressId: number
   companyId: number
+  companyType: string
 }
 
 export interface Client {
   function: string
+  firstContact: string
 }
 
 export type ClientInfo = Client & Company & Person & Address
@@ -150,18 +152,18 @@ export interface DocumentType {
 
 export type DocumentFull = Document & DocumentType // combine Document and DocumentType
 
-export interface Projects {
-  clientId: number
-  acronym: number
-  startDate: DateString
-  endDate: DateString
-}
+
+
+
+export type ProjectInfo = Project & ClientInfo
+
 export interface Project {
   projectId: number
   acronym: string
-  clientId: number
   startDate: DateString
   endDate: DateString
+  clientId: number
+
 }
 
 export interface ProjectNotes {

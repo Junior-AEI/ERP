@@ -3,7 +3,7 @@
     <Card class="max-w-2xl flex-1">
       <CardHeader>
         <Icon name="person_add" class="text-6xl" />
-        <span class="text-accent"> Ajouter un utlisateur</span>
+        <span class="text-accent"> Ajouter un utilisateur</span>
       </CardHeader>
       <CardContent>
         <div class="flex items-end gap-4" v-if="form.memberId == -1 ">
@@ -19,6 +19,10 @@
             >
           </div>
         </div>
+
+
+
+
         <div v-if="form.memberId == 0">
           <div class="flex items-end gap-4">
             <div class="flex flex-1 flex-col gap-2">
@@ -97,105 +101,99 @@
               <Input id="landlinePhone" placeholder="Tel Fixe" v-model="form.landlinePhone" />
             </div>
           </div>
-          <div class="mt-2 flex flex-1 flex-col gap-2">
-            <Label for="legalEntity">Pays</Label>
-            <Input id="country" placeholder="Tel Fixe" v-model="form.country" />
-          </div>
-        </div>
-        <Button @click="handleClickMember" class="mt-4">Créer le nouveau Membre</Button>
-      </div>
-      <div v-if="form.memberId != 0 && form.memberId != -1 ">
-      <div class="flex items-end gap-4">          <div> {{ }} </div>
           <div class="flex flex-1 flex-col gap-2">
-            <Label for="landlinePhone">Email</Label>
-            <Input id="landlinePhone" placeholder="Tel Fixe" v-model="form.email" />
-          </div>
-          <div class="flex justify-end gap-4">
-            <div class="flex flex-1 flex-col gap-2">
-              <Label for="membershipNumber">Numéro de cotisation</Label>
-              <Input id="membershipNumber" v-model="membershipNumberFormat" />
+              <Label for="landlinePhone">Email</Label>
+              <Input id="landlinePhone" placeholder="Tel Fixe" v-model="form.email" />
             </div>
-            <div class="flex flex-1 flex-col gap-2">
-              <Label for="contributionDate">Date de cotisation</Label>
-              <DatePickerComponent v-model="contributionDateFormat" />
+          <div class="flex items-end gap-4">          
+            <div class="flex justify-end gap-4">
+              <div class="flex flex-1 flex-col gap-2">
+                <Label for="membershipNumber">Numéro de cotisation</Label>
+                <Input id="membershipNumber" v-model="membershipNumberFormat" />
+              </div>
+              <div class="flex flex-1 flex-col gap-2">
+                <Label for="contributionDate">Date de cotisation</Label>
+                <DatePickerComponent v-model="contributionDateFormat" />
+              </div>
+              <div class="flex flex-1 flex-col gap-2">
+                <Label for="paymentMethod">Moyen de paiement de la Cotisation</Label>
+                <Select v-model="form.paymentMethod">
+                  <SelectTrigger>
+                    <SelectValue placeholder="Moyen de Payement" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectGroup>
+                      <SelectItem value="HelloAsso"> Hello Asso </SelectItem>
+                      <SelectItem value="LydiaPro"> Lydia Pro </SelectItem>
+                      <SelectItem value="Vir"> Virement </SelectItem>
+                    </SelectGroup>
+                  </SelectContent>
+                </Select>
+              </div>
             </div>
-            <div class="flex flex-1 flex-col gap-2">
-              <Label for="paymentMethod">Moyen de paiement de la Cotisation</Label>
-              <Select v-model="form.paymentMethod">
-                <SelectTrigger>
-                  <SelectValue placeholder="Moyen de Payement" />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectGroup>
-                    <SelectItem value="HelloAsso"> Hello Asso </SelectItem>
-                    <SelectItem value="LydiaPro"> Lydia Pro </SelectItem>
-                    <SelectItem value="Vir"> Virement </SelectItem>
-                  </SelectGroup>
-                </SelectContent>
-              </Select>
             </div>
-          </div>
-          <div class="flex justify-end gap-4">
-            <div class="flex flex-1 flex-col gap-2">
-              <Label for="membershipNumber">@Telegram</Label>
-              <Input id="membershipNumber" v-model="form.telegramId" />
+            <div class="flex justify-end gap-4">
+              <div class="flex flex-1 flex-col gap-2">
+                <Label for="membershipNumber">@Telegram</Label>
+                <Input id="membershipNumber" v-model="form.telegramId" />
+              </div>
+              <div class="flex flex-1 flex-col gap-2">
+                <Label for="contributionDate">Chat ID (Pour connexion Bot Telegram)</Label>
+                <Input id="membershipNumber" v-model="form.chatBotId" />
+              </div>
             </div>
-            <div class="flex flex-1 flex-col gap-2">
-              <Label for="contributionDate">Chat ID (Pour connexion Bot Telegram)</Label>
-              <Input id="membershipNumber" v-model="form.chatBotId" />
+            <div class="flex items-end gap-4">
+              <div class="flex flex-1 flex-col gap-2">
+                <Label for="application">Adresse</Label>
+                <Combobox
+                  @input="handleInputAddress"
+                  :options="addressList"
+                  :comboboxLabel="'Selectionner l\'adresse'"
+                >
+                </Combobox>
+                <Button variant="outline" @click="handleClickNewAdress"
+                  >Renseigner une nouvelle Adresse</Button
+                >
+              </div>
             </div>
-          </div>
-          <div class="flex items-end gap-4">
-            <div class="flex flex-1 flex-col gap-2">
-              <Label for="application">Adresse</Label>
-              <Combobox
-                @input="handleInputAddress"
-                :options="addressList"
-                :comboboxLabel="'Selectionner l\'adresse'"
-              >
-              </Combobox>
-              <Button variant="outline" @click="handleClickNewAdress"
-                >Renseigner une nouvelle Adresse</Button
-              >
-            </div>
-            <div class="flex flex-1 flex-col gap-2"></div>
-          </div>
 
-          <div v-if="form.addressId == 0">
-            <div class="flex items-end gap-4">
-              <div class="flex flex-1 flex-col gap-2">
-                <Label for="name">Adresse </Label>
-                <Input id="address" placeholder="Tel Fixe" v-model="form.address" />
+            <div v-if="form.addressId == 0">
+              <div class="flex items-end gap-4">
+                <div class="flex flex-1 flex-col gap-2">
+                  <Label for="name">Adresse </Label>
+                  <Input id="address" placeholder="Tel Fixe" v-model="form.address" />
+                </div>
+                <div class="flex flex-1 flex-col gap-2">
+                  <Label for="legalEntity">Complément d'adresse</Label>
+                  <Input
+                    id="additionnalAddress"
+                    placeholder="Tel Fixe"
+                    v-model="form.additionnalAddress"
+                  />
+                </div>
               </div>
-              <div class="flex flex-1 flex-col gap-2">
-                <Label for="legalEntity">Complément d'adresse</Label>
-                <Input
-                  id="additionnalAddress"
-                  placeholder="Tel Fixe"
-                  v-model="form.additionnalAddress"
-                />
+              <div class="flex items-end gap-4">
+                <div class="mt-2 flex flex-1 flex-col gap-2">
+                  <Label for="name">Code Postal </Label>
+                  <Input id="postCode" placeholder="Tel Fixe" v-model="form.postCode" />
+                </div>
+                <div class="flex flex-1 flex-col gap-2">
+                  <Label for="legalEntity">Ville</Label>
+                  <Input id="city" placeholder="Tel Fixe" v-model="form.city" />
+                </div>
               </div>
-            </div>
-            <div class="flex items-end gap-4">
               <div class="mt-2 flex flex-1 flex-col gap-2">
-                <Label for="name">Code Postal </Label>
-                <Input id="postCode" placeholder="Tel Fixe" v-model="form.postCode" />
-              </div>
-              <div class="flex flex-1 flex-col gap-2">
-                <Label for="legalEntity">Ville</Label>
-                <Input id="city" placeholder="Tel Fixe" v-model="form.city" />
+                <Label for="legalEntity">Pays</Label>
+                <Input id="country" placeholder="Tel Fixe" v-model="form.country" />
               </div>
             </div>
-            <div class="mt-2 flex flex-1 flex-col gap-2">
-              <Label for="legalEntity">Pays</Label>
-              <Input id="country" placeholder="Tel Fixe" v-model="form.country" />
-            </div>
-          </div>
-          <Button @click="handleClickMember" class="mt-4">Créer le nouveau Membre</Button>
+            <Button @click="handleClickMember" class="mt-4">Créer le nouveau Membre</Button>
+
         </div>
-        <div v-else>
+
+
+        <div v-if="form.memberId != 0 && form.memberId != -1">
           <div class="flex items-end gap-4">
-            <div>{{}}</div>
             <div class="flex flex-1 flex-col gap-2">
               <Label for="mandateStart">Debut de Mandat</Label>
               <Input id="mandateStart" v-model="form.mandateStart" />
@@ -217,6 +215,7 @@
           </div>
           <Button @click="handleClickUser" class="mt-4">Créer un nouvel Utilisateur</Button>
         </div>
+
       </CardContent>
     </Card>
   </div>
@@ -231,6 +230,7 @@ import { Toaster } from '@/components/ui/toast'
 const temp = ref('temp')
 import type { FullUserWithAdress } from '@/types/api'
 import { type DateValue } from '@internationalized/date'
+import CardContent from '@/components/ui/card/CardContent.vue'
 
 const form = ref<FullUserWithAdress>({
   personId: NaN,

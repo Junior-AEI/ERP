@@ -6,8 +6,8 @@
         <span class="text-accent"> Ajouter un utilisateur</span>
       </CardHeader>
       <CardContent>
-        <div class="flex items-end gap-4" v-if="form.memberId == -1 ">
-            <div class="flex flex-1 flex-col gap-2">
+        <div class="flex items-end gap-4" v-if="form.memberId == -1">
+          <div class="flex flex-1 flex-col gap-2">
             <Combobox
               @input="handleInputMember"
               :options="membersList"
@@ -19,9 +19,6 @@
             >
           </div>
         </div>
-
-
-
 
         <div v-if="form.memberId == 0">
           <div class="flex items-end gap-4">
@@ -102,10 +99,10 @@
             </div>
           </div>
           <div class="flex flex-1 flex-col gap-2">
-              <Label for="landlinePhone">Email</Label>
-              <Input id="landlinePhone" placeholder="Tel Fixe" v-model="form.email" />
-            </div>
-          <div class="flex items-end gap-4">          
+            <Label for="landlinePhone">Email</Label>
+            <Input id="landlinePhone" placeholder="Tel Fixe" v-model="form.email" />
+          </div>
+          <div class="flex items-end gap-4">
             <div class="flex justify-end gap-4">
               <div class="flex flex-1 flex-col gap-2">
                 <Label for="membershipNumber">Numéro de cotisation</Label>
@@ -131,66 +128,64 @@
                 </Select>
               </div>
             </div>
+          </div>
+          <div class="flex justify-end gap-4">
+            <div class="flex flex-1 flex-col gap-2">
+              <Label for="membershipNumber">@Telegram</Label>
+              <Input id="membershipNumber" v-model="form.telegramId" />
             </div>
-            <div class="flex justify-end gap-4">
+            <div class="flex flex-1 flex-col gap-2">
+              <Label for="contributionDate">Chat ID (Pour connexion Bot Telegram)</Label>
+              <Input id="membershipNumber" v-model="form.chatBotId" />
+            </div>
+          </div>
+          <div class="flex items-end gap-4">
+            <div class="flex flex-1 flex-col gap-2">
+              <Label for="application">Adresse</Label>
+              <Combobox
+                @input="handleInputAddress"
+                :options="addressList"
+                :comboboxLabel="'Selectionner l\'adresse'"
+              >
+              </Combobox>
+              <Button variant="outline" @click="handleClickNewAdress"
+                >Renseigner une nouvelle Adresse</Button
+              >
+            </div>
+          </div>
+
+          <div v-if="form.addressId == 0">
+            <div class="flex items-end gap-4">
               <div class="flex flex-1 flex-col gap-2">
-                <Label for="membershipNumber">@Telegram</Label>
-                <Input id="membershipNumber" v-model="form.telegramId" />
+                <Label for="name">Adresse </Label>
+                <Input id="address" placeholder="Tel Fixe" v-model="form.address" />
               </div>
               <div class="flex flex-1 flex-col gap-2">
-                <Label for="contributionDate">Chat ID (Pour connexion Bot Telegram)</Label>
-                <Input id="membershipNumber" v-model="form.chatBotId" />
+                <Label for="legalEntity">Complément d'adresse</Label>
+                <Input
+                  id="additionnalAddress"
+                  placeholder="Tel Fixe"
+                  v-model="form.additionnalAddress"
+                />
               </div>
             </div>
             <div class="flex items-end gap-4">
-              <div class="flex flex-1 flex-col gap-2">
-                <Label for="application">Adresse</Label>
-                <Combobox
-                  @input="handleInputAddress"
-                  :options="addressList"
-                  :comboboxLabel="'Selectionner l\'adresse'"
-                >
-                </Combobox>
-                <Button variant="outline" @click="handleClickNewAdress"
-                  >Renseigner une nouvelle Adresse</Button
-                >
-              </div>
-            </div>
-
-            <div v-if="form.addressId == 0">
-              <div class="flex items-end gap-4">
-                <div class="flex flex-1 flex-col gap-2">
-                  <Label for="name">Adresse </Label>
-                  <Input id="address" placeholder="Tel Fixe" v-model="form.address" />
-                </div>
-                <div class="flex flex-1 flex-col gap-2">
-                  <Label for="legalEntity">Complément d'adresse</Label>
-                  <Input
-                    id="additionnalAddress"
-                    placeholder="Tel Fixe"
-                    v-model="form.additionnalAddress"
-                  />
-                </div>
-              </div>
-              <div class="flex items-end gap-4">
-                <div class="mt-2 flex flex-1 flex-col gap-2">
-                  <Label for="name">Code Postal </Label>
-                  <Input id="postCode" placeholder="Tel Fixe" v-model="form.postCode" />
-                </div>
-                <div class="flex flex-1 flex-col gap-2">
-                  <Label for="legalEntity">Ville</Label>
-                  <Input id="city" placeholder="Tel Fixe" v-model="form.city" />
-                </div>
-              </div>
               <div class="mt-2 flex flex-1 flex-col gap-2">
-                <Label for="legalEntity">Pays</Label>
-                <Input id="country" placeholder="Tel Fixe" v-model="form.country" />
+                <Label for="name">Code Postal </Label>
+                <Input id="postCode" placeholder="Tel Fixe" v-model="form.postCode" />
+              </div>
+              <div class="flex flex-1 flex-col gap-2">
+                <Label for="legalEntity">Ville</Label>
+                <Input id="city" placeholder="Tel Fixe" v-model="form.city" />
               </div>
             </div>
-            <Button @click="handleClickMember" class="mt-4">Créer le nouveau Membre</Button>
-
+            <div class="mt-2 flex flex-1 flex-col gap-2">
+              <Label for="legalEntity">Pays</Label>
+              <Input id="country" placeholder="Tel Fixe" v-model="form.country" />
+            </div>
+          </div>
+          <Button @click="handleClickMember" class="mt-4">Créer le nouveau Membre</Button>
         </div>
-
 
         <div v-if="form.memberId != 0 && form.memberId != -1">
           <div class="flex items-end gap-4">
@@ -215,7 +210,6 @@
           </div>
           <Button @click="handleClickUser" class="mt-4">Créer un nouvel Utilisateur</Button>
         </div>
-
       </CardContent>
     </Card>
   </div>
@@ -226,7 +220,6 @@ import { ref, onMounted } from 'vue'
 import { useAuthStore } from '@/stores/authStore'
 import axios from 'axios'
 import { useToast } from '@/components/ui/toast/use-toast'
-import { Toaster } from '@/components/ui/toast'
 const temp = ref('temp')
 import type { FullUserWithAdress } from '@/types/api'
 import { type DateValue } from '@internationalized/date'

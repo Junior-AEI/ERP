@@ -76,7 +76,6 @@
       </CardFooter>
     </Card>
   </Wrapper>
-  <Toaster />
 </template>
 
 <script setup lang="ts">

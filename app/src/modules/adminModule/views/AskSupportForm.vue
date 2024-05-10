@@ -50,7 +50,6 @@
         </CardFooter>
       </Card>
     </Wrapper>
-    <Toaster />
   </div>
 </template>
 
@@ -60,7 +59,6 @@ import type { itTicket } from '@/types/api'
 import { ref } from 'vue'
 import axios from 'axios'
 import { useToast } from '@/components/ui/toast/use-toast'
-import { Toaster } from '@/components/ui/toast'
 
 const appList = ref([
   { value: 'ERP', label: 'ERP' },

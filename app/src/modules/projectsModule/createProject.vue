@@ -6,7 +6,7 @@
         <span class="text-accent"> Ajouter une nouvelle étude</span>
       </CardHeader>
       <CardContent>
-        <div class="flex items-end gap-4" v-if="form.clientId == -1 ">
+        <div class="flex items-end gap-4" v-if="form.clientId == -1">
           <div class="flex flex-1 flex-col gap-2">
             <Combobox
               @input="handleInputClient"
@@ -142,7 +142,6 @@
         <Button @click="handleClick">Créer un nouveau Client</Button>
       </CardContent>
     </Card>
-    <Toaster />
   </div>
 </template>
 
@@ -151,7 +150,6 @@ import { ref, onMounted } from 'vue'
 import { useAuthStore } from '@/stores/authStore'
 import axios from 'axios'
 import { useToast } from '@/components/ui/toast/use-toast'
-import { Toaster } from '@/components/ui/toast'
 const temp = ref('temp')
 import type { ProjectInfo } from '@/types/api'
 
@@ -179,11 +177,10 @@ const form = ref<ProjectInfo>({
   postCode: '',
   country: '',
 
-  clientId : -1,
-  acronym : NaN,
-  startDate : '',
-  endDate : ''
-
+  clientId: -1,
+  acronym: NaN,
+  startDate: '',
+  endDate: ''
 })
 
 const NeedAddNewClient = true

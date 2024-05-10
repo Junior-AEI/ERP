@@ -133,5 +133,4 @@ const uploadFile = (event: any) => {
       />
     </Elevated>
   </div>
-  <Toaster />
 </template>

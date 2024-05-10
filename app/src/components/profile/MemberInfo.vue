@@ -103,7 +103,6 @@
         <Button @click="editaddressData()">Modifier l'addresse de l'utilisateur</Button>
       </CardContent>
     </Card>
-    <Toaster />
   </div>
 </template>
 

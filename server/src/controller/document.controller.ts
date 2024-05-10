@@ -42,7 +42,8 @@ const upload = multer({
 }).single('file') // Utilisez .single('file') pour un seul fichier
 
 /**
- * Get all documents
+ * Get list of all documents
+ * <!> Files not included
  * @param req
  * @param res
  */
@@ -75,6 +76,13 @@ const getByPk = async (req: Request, res: Response) => {
 
         const document = await Documents.findByPk(identifier)
         if (!document) throw createHttpError(404, 'Document not found')
+
+        const file = fs.readFileSync(document.path)
+        const base64 = Buffer.from(file).toString('base64')
+
+        res.setHeader('Content-Type', 'application/pdf')
+        res.setHeader('Content-Disposition', `attachment; filename=${document.name}`)
+        res.send(base64)
 
         return res.status(200).json({
             status: 'success',

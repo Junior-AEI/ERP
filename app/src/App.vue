@@ -7,6 +7,7 @@
     <Titlebar v-if="logedMode" />
     <RouterView class="flex flex-col gap-3 p-6" v-auto-animate />
   </ScrollArea>
+  <Toaster />
 </template>
 
 <script setup lang="ts">

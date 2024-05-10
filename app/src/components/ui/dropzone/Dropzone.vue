@@ -1,7 +1,8 @@
-// Work in progress
-
 <script setup lang="ts">
 import { computed } from 'vue'
+import { useToast } from '../toast'
+
+const { toast } = useToast()
 
 const props = defineProps({
   accept: {
@@ -45,11 +46,20 @@ const isImageList = computed(() => {
 const uploadFile = (event: any) => {
   const file = event.target.files[0]
   if (!file) {
-    alert('Erreur Aucun fichier sélectionné')
+    console.log('No file selected')
+    toast({
+      title: 'Erreur',
+      variant: 'destructive',
+      description: 'Aucun fichier sélectionné'
+    })
     return
   }
   if (file.size > props.maxFileSize * 10 ** 6) {
-    alert('Erreur Le fichier est trop volumineux')
+    toast({
+      title: 'Erreur',
+      variant: 'destructive',
+      description: 'Le fichier est trop volumineux'
+    })
     return
   }
   if (!props.multiple) {
@@ -123,4 +133,5 @@ const uploadFile = (event: any) => {
       />
     </Elevated>
   </div>
+  <Toaster />
 </template>

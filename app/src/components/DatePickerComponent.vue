@@ -10,8 +10,9 @@ const df = new DateFormatter('fr-FR', {
   dateStyle: 'long'
 })
 
-defineProps<{
+const props = defineProps<{
   disabled?: boolean
+  class?: string
 }>()
 
 const value = defineModel<DateValue>()
@@ -23,7 +24,9 @@ const value = defineModel<DateValue>()
       <Button
         variant="outline"
         :disabled="disabled"
-        :class="cn('justify-start text-left font-normal', !value && 'text-muted-foreground')"
+        :class="
+          cn('justify-start text-left font-normal', props.class, !value && 'text-muted-foreground')
+        "
       >
         <Icon name="date_range" class="mr-2 h-4 w-4" />
         {{ value ? df.format(value.toDate(getLocalTimeZone())) : 'Choisir une date' }}

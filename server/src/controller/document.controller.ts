@@ -34,7 +34,12 @@ const storage = multer.diskStorage({
     }
 })
 
-const upload = multer({ storage: storage }).single('file') // Utilisez .single('file') pour un seul fichier
+const upload = multer({
+    storage: storage,
+    limits: {
+        fileSize: 20 * 10 ** 6 // Limite la taille des fichiers à 20 Mo
+    },
+}).single('file') // Utilisez .single('file') pour un seul fichier
 
 /**
  * Get all documents

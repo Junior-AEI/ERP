@@ -59,9 +59,8 @@
       </Dialog>
     </div>
     <div>
-      <Button variant="outline">
+      <Button variant="outline" @click="downloadDocument()">
         <span class="material-symbols-outlined"> download </span>
-        <DocumentDownload />
       </Button>
     </div>
   </div>
@@ -151,6 +150,10 @@ const deleteDocument = () => {
   //   .catch((error) => {
   //     console.error(error)
   //   })
+}
+
+const downloadDocument = () => {
+  console.log('TODO')
 }
 
 const openDialog = () => {

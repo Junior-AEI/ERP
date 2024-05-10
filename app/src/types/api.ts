@@ -134,6 +134,7 @@ export type ClientInfo = Client & Company & Person & Address
 
 export interface Document {
   documentId: number
+  name: string
   path: string
   version: number
   typeId: number
@@ -151,8 +152,6 @@ export interface DocumentType {
 }
 
 export type DocumentFull = Document & DocumentType // combine Document and DocumentType
-
-
 
 
 export type ProjectInfo = Project & ClientInfo

@@ -6,140 +6,177 @@
         <span class="text-accent"> Ajouter une nouvelle étude</span>
       </CardHeader>
       <CardContent>
-        <div class="flex items-end gap-4" v-if="form.clientId == -1 ">
-          <div class="flex flex-1 flex-col gap-2">
-            <Combobox
-              @input="handleInputClient"
-              :options="clientsList"
-              :comboboxLabel="'Selectionner un client existant'"
-            >
-            </Combobox>
-            <Button variant="outline" @click="handleClickNewClient"
-              >Rentrer un nouveau client</Button
-            >
-          </div>
-        </div>
         <div class="flex items-end gap-4">
           <div class="flex flex-1 flex-col gap-2">
-            <Label for="lastname">Nom</Label>
-            <Input id="lastname" v-model="form.lastname" />
-          </div>
-          <div class="flex flex-1 flex-col gap-2">
-            <Label for="firstname">Prénom</Label>
-            <Input id="firstname" v-model="form.firstname" />
-          </div>
-        </div>
-        <div class="flex flex-1 flex-col gap-2">
-          <Label for="gender">Genre</Label>
-          <Select v-model="form.gender">
-            <SelectTrigger>
-              <SelectValue placeholder="Genre" />
-            </SelectTrigger>
-            <SelectContent>
-              <SelectGroup>
-                <SelectItem value="M"> Homme </SelectItem>
-                <SelectItem value="F"> Femme </SelectItem>
-                <SelectItem value="O"> Autre </SelectItem>
-              </SelectGroup>
-            </SelectContent>
-          </Select>
-        </div>
-        <div class="flex items-end gap-4">
-          <div class="flex flex-1 flex-col gap-2">
-            <Label for="mobilePhone">N° de Téléphone Mobile</Label>
-            <Input id="mobilePhone" placeholder="Info" v-model="form.mobilePhone" />
-          </div>
-          <div class="flex flex-1 flex-col gap-2">
-            <Label for="landlinePhone">N° de Téléphone</Label>
-            <Input id="landlinePhone" placeholder="Tel Fixe" v-model="form.landlinePhone" />
-          </div>
-        </div>
-        <div class="flex flex-1 flex-col gap-2">
-          <Label for="landlinePhone">Email</Label>
-          <Input id="landlinePhone" placeholder="Tel Fixe" v-model="form.email" />
-        </div>
-        <div class="flex items-start gap-4">
-          <div class="flex flex-col gap-2">
-            <Label for="application">Entreprise du Client</Label>
-            <Combobox
-              @input="handleInputCompany"
-              :options="companyList"
-              :comboboxLabel="'Selectionner l\'entreprise'"
-            >
+            <Label for="client">Client</Label>
+            <Combobox @input="handleInputClient" :options="clientsList"
+              :comboboxLabel="'Selectionner un client existant'">
             </Combobox>
-            <Button variant="outline" @click="handleClickNewCompany"
-              >Renseigner une nouvelle entreprise</Button
-            >
+            <Button variant="outline" @click="handleClickNewClient">Rentrer un nouveau client</Button>
           </div>
+        </div>
 
+
+        <div v-if="form.clientId == 0">
+          <div class="flex items-end gap-4">
+            <div class="flex flex-1 flex-col gap-2">
+              <Label for="lastname">Nom</Label>
+              <Input id="lastname" v-model="form.lastname" />
+            </div>
+            <div class="flex flex-1 flex-col gap-2">
+              <Label for="firstname">Prénom</Label>
+              <Input id="firstname" v-model="form.firstname" />
+            </div>
+          </div>
           <div class="flex flex-1 flex-col gap-2">
+            <Label for="gender">Genre</Label>
+            <Select v-model="form.gender">
+              <SelectTrigger>
+                <SelectValue placeholder="Genre" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectGroup>
+                  <SelectItem value="M"> Homme </SelectItem>
+                  <SelectItem value="F"> Femme </SelectItem>
+                  <SelectItem value="O"> Autre </SelectItem>
+                </SelectGroup>
+              </SelectContent>
+            </Select>
+          </div>
+          <div class="flex items-end gap-4">
+            <div class="flex flex-1 flex-col gap-2">
+              <Label for="mobilePhone">N° de Téléphone Mobile</Label>
+              <Input id="mobilePhone" placeholder="Info" v-model="form.mobilePhone" />
+            </div>
+            <div class="flex flex-1 flex-col gap-2">
+              <Label for="landlinePhone">N° de Téléphone</Label>
+              <Input id="landlinePhone" placeholder="Tel Fixe" v-model="form.landlinePhone" />
+            </div>
+          </div>
+          <div class="flex flex-1 flex-col gap-2">
+            <Label for="landlinePhone">Email</Label>
+            <Input id="landlinePhone" placeholder="Tel Fixe" v-model="form.email" />
+          </div>
+          <div class="flex items-start gap-4">
+            <div class="flex flex-col gap-2">
+              <Label for="application">Entreprise du Client</Label>
+              <Combobox @input="handleInputCompany" :options="companyList"
+                :comboboxLabel="'Selectionner l\'entreprise'">
+              </Combobox>
+              <Button variant="outline" @click="handleClickNewCompany">Renseigner une nouvelle entreprise</Button>
+            </div>
+            <div class="flex flex-col gap-2">
+            <div class="flex flex-1 flex-col gap-2">
             <Label for="landlinePhone">Poste dans l'entreprise</Label>
             <Input id="landlinePhone" placeholder="Tel Fixe" v-model="form.function" />
           </div>
-        </div>
+          <div class="flex flex-1 flex-col gap-2">
+            <Label for="landlinePhone">Premier Contact</Label>
+            <Select v-model="form.firstContact">
+            <SelectTrigger>
+              <SelectValue placeholder="Comment AEI a eu le premier contact" />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectGroup>
+                <SelectItem value="Bouche à oreille"> Bouche à oreille </SelectItem>
+                <SelectItem value="Soirée partenaire"> Soirée partenaire </SelectItem>
+                <SelectItem value="Appel téléphonique"> Appel téléphonique </SelectItem>
+                <SelectItem value="Site AEI"> Site AEI</SelectItem>
+                <SelectItem value="Congrès"> Congrès </SelectItem>
+                <SelectItem value="Salon"> Salon </SelectItem>
+                <SelectItem value="RS"> Réseaux Sociaux (LinkedIn, Instagram, ...) </SelectItem>
+                <SelectItem value="Autre"> Autre </SelectItem>
 
-        <div v-if="form.companyId == 0">
-          <div class="flex items-end gap-4">
-            <div class="flex flex-1 flex-col gap-2">
-              <Label for="name">Nom de l'Entreprise</Label>
-              <Input id="name" placeholder="Tel Fixe" v-model="form.name" />
-            </div>
-            <div class="flex flex-1 flex-col gap-2">
-              <Label for="legalEntity">N° de SIRET de l'entreprise</Label>
-              <Input id="legalEntity" placeholder="Tel Fixe" v-model="form.legalEntity" />
-            </div>
+
+              </SelectGroup>
+            </SelectContent>
+          </Select>
           </div>
-          <div class="mt-2 flex flex-col gap-2">
+          </div>
+          </div>
+
+          <div v-if="form.companyId == 0">
             <div class="flex items-end gap-4">
               <div class="flex flex-1 flex-col gap-2">
-                <Label for="application">Adresse de l'Entreprise</Label>
-                <Combobox
-                  @input="handleInputAddress"
-                  :options="addressList"
-                  :comboboxLabel="'Selectionner l\'adresse'"
-                >
-                </Combobox>
-                <Button variant="outline" @click="handleClickNewAdress"
-                  >Renseigner une nouvelle Adresse</Button
-                >
+                <Label for="name">Nom de l'Entreprise</Label>
+                <Input id="name" placeholder="Tel Fixe" v-model="form.name" />
               </div>
-              <div class="flex flex-1 flex-col gap-2"></div>
+              <div class="flex flex-1 flex-col gap-2">
+                <Label for="legalEntity">N° de SIRET de l'entreprise</Label>
+                <Input id="legalEntity" placeholder="Tel Fixe" v-model="form.legalEntity" />
+              </div>
+            </div>
+            <div class="mt-2 flex flex-col gap-2">
+              <div class="flex items-end gap-4">
+                <div class="flex flex-1 flex-col gap-2">
+                  <Label for="application">Adresse de l'Entreprise</Label>
+                  <Combobox @input="handleInputAddress" :options="addressList"
+                    :comboboxLabel="'Selectionner l\'adresse'">
+                  </Combobox>
+                  <Button variant="outline" @click="handleClickNewAdress">Renseigner une nouvelle Adresse</Button>
+                </div>
+                <div class="flex flex-1 flex-col gap-2"></div>
+              </div>
             </div>
           </div>
-        </div>
 
-        <div v-if="form.addressId == 0">
-          <div class="flex items-end gap-4">
-            <div class="flex flex-1 flex-col gap-2">
-              <Label for="name">Adresse </Label>
-              <Input id="address" placeholder="Tel Fixe" v-model="form.address" />
+          <div v-if="form.addressId == 0">
+            <div class="flex items-end gap-4">
+              <div class="flex flex-1 flex-col gap-2">
+                <Label for="name">Adresse </Label>
+                <Input id="address" placeholder="Tel Fixe" v-model="form.address" />
+              </div>
+              <div class="flex flex-1 flex-col gap-2">
+                <Label for="legalEntity">Complément d'adresse</Label>
+                <Input id="additionnalAddress" placeholder="Tel Fixe" v-model="form.additionnalAddress" />
+              </div>
             </div>
-            <div class="flex flex-1 flex-col gap-2">
-              <Label for="legalEntity">Complément d'adresse</Label>
-              <Input
-                id="additionnalAddress"
-                placeholder="Tel Fixe"
-                v-model="form.additionnalAddress"
-              />
+            <div class="flex items-end gap-4">
+              <div class="mt-2 flex flex-1 flex-col gap-2">
+                <Label for="name">Code Postal </Label>
+                <Input id="postCode" placeholder="Tel Fixe" v-model="form.postCode" />
+              </div>
+              <div class="flex flex-1 flex-col gap-2">
+                <Label for="legalEntity">Ville</Label>
+                <Input id="city" placeholder="Tel Fixe" v-model="form.city" />
+              </div>
+            </div>
+            <div class="mt-2 flex flex-1 flex-col gap-2">
+              <Label for="legalEntity">Pays</Label>
+              <Input id="country" placeholder="Tel Fixe" v-model="form.country" />
             </div>
           </div>
+
+          <Button @click="handleClickClient" class="mt-3">Créer un nouveau Client</Button>
+        </div>
+        <div v-if="form.clientId > 0">
           <div class="flex items-end gap-4">
             <div class="mt-2 flex flex-1 flex-col gap-2">
-              <Label for="name">Code Postal </Label>
-              <Input id="postCode" placeholder="Tel Fixe" v-model="form.postCode" />
+            <Label for="name">Nom de l'étude</Label>
+            <Input id="postCode" placeholder="Tel Fixe" v-model="form.nameProject" />
+          </div>
+            <div class="mt-2 flex flex-1 flex-col gap-2">
+            <Label for="name">Acronyme de l'étude</Label>
+            <Input id="postCode" placeholder="Tel Fixe" v-model="form.acronym" />
+          </div>
+          </div>
+          
+          <div class="flex items-end gap-4">
+            <div class="flex flex-1 flex-col gap-2">
+              <Label for="legalEntity">Date de Debut (Présent sur la CE)</Label>
+              <DatePickerComponent v-model="startDateFormat" />
             </div>
             <div class="flex flex-1 flex-col gap-2">
-              <Label for="legalEntity">Ville</Label>
-              <Input id="city" placeholder="Tel Fixe" v-model="form.city" />
+              <Label for="legalEntity">Date de Fin (Présent sur la CE (à modifier en cas d'ACE))</Label>
+              <DatePickerComponent v-model="endDateFormat" />
             </div>
           </div>
-          <div class="mt-2 flex flex-1 flex-col gap-2">
-            <Label for="legalEntity">Pays</Label>
-            <Input id="country" placeholder="Tel Fixe" v-model="form.country" />
-          </div>
+          <Button @click="handleClickProject" class="mt-3">Créer un nouveau Client</Button>
+
+
         </div>
 
-        <Button @click="handleClick">Créer un nouveau Client</Button>
+
       </CardContent>
     </Card>
     <Toaster />
@@ -154,6 +191,8 @@ import { useToast } from '@/components/ui/toast/use-toast'
 import { Toaster } from '@/components/ui/toast'
 const temp = ref('temp')
 import type { ProjectInfo } from '@/types/api'
+import { type DateValue } from '@internationalized/date'
+
 
 const form = ref<ProjectInfo>({
   personId: NaN,
@@ -171,6 +210,7 @@ const form = ref<ProjectInfo>({
   addressId: NaN,
 
   function: '',
+  firstContact:'',
   companyId: NaN,
 
   address: '',
@@ -179,14 +219,17 @@ const form = ref<ProjectInfo>({
   postCode: '',
   country: '',
 
-  clientId : -1,
-  acronym : NaN,
-  startDate : '',
-  endDate : ''
-
+  clientId: -1,
+  acronym: '',
+  startDate: '',
+  endDate: '',
+  projectId: 0,
+  companyType: '',
+  nameProject : ''
 })
 
-const NeedAddNewClient = true
+const endDateFormat = ref<DateValue>()
+const startDateFormat = ref<DateValue>()
 
 async function getDataClient(): Promise<{ value: string; label: string }[]> {
   // Fetch data from your API here.
@@ -413,7 +456,9 @@ async function newClient() {
         client: {
           clientId: form.value.personId,
           function: form.value.function,
-          companyId: form.value.companyId
+          companyId: form.value.companyId,
+          firstContact: form.value.firstContact
+
         }
       },
       {
@@ -424,6 +469,7 @@ async function newClient() {
     )
     .then((response) => {
       console.log(response)
+      form.value.clientId = response.data.data.clientId
       toast({
         title: 'Personne renseignée',
         description: `${response.data.data.clientId}`
@@ -439,16 +485,64 @@ async function newClient() {
     })
 }
 
-async function handleClick() {
+
+async function newProject() {
+  if (startDateFormat.value) {
+    form.value.startDate = startDateFormat.value.toString()
+  }
+  if (endDateFormat.value) {
+    form.value.endDate = endDateFormat.value.toString()
+  }
+  console.log (form.value.nameProject)
+  await axios
+    .post(
+      `/project/`,
+      {
+        project: {
+          clientId: form.value.clientId,
+          startDate: form.value.startDate,
+          endDate: form.value.endDate,
+          acronym: form.value.acronym,
+          name: form.value.nameProject
+
+        }
+      },
+      {
+        headers: {
+          Authorization: `Bearer ${useAuthStore().token}`
+        }
+      }
+    )
+    .then((response) => {
+      console.log(response)
+      toast({
+        title: 'Etude ajoutée',
+        description: `${response.data.data.project}`
+      })
+    })
+    .catch((error) => {
+      console.error(error)
+      toast({
+        title: 'Something wrong happened',
+        variant: 'destructive',
+        description: `${error.response.data.message}`
+      })
+    })
+}
+
+async function handleClickClient() {
   if (form.value.addressId == 0) {
     await newAddress()
   }
   if (form.value.companyId == 0) {
     await newCompany()
   }
-  console.log(form.value.companyId)
   await newPerson()
-  console.log(form.value.personId)
   await newClient()
+  handleInputClient(form.value.clientId.toString())
+
+}
+async function handleClickProject() {
+  await newProject()
 }
 </script>

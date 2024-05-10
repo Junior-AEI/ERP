@@ -159,6 +159,7 @@ export type ProjectInfo = Project & ClientInfo
 export interface Project {
   projectId: number
   acronym: string
+  nameProject: string
   startDate: DateString
   endDate: DateString
   clientId: number

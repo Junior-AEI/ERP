@@ -67,7 +67,7 @@ async function create(req: Request, res: Response) {
         // Try to find the linked address
         const address = await Addresses.findByPk(identifier)
         if (!address) throw createHttpError(404, 'Unable to find the linked address.')
-
+            
         // Test params
         const validator = isValidCompany(req.body.company.name, req.body.company.legalEntity, req.body.company.companyType, req.body.company.activityField)
         if (!validator.valid) {

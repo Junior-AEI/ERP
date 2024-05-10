@@ -170,11 +170,13 @@ const uploadDocument = () => {
             status: status.value,
             authorId: authorId.value,
             createdAt: new Date()
-          }
+          },
+          file: files.value[0]
         },
         {
           headers: {
-            Authorization: `Bearer ${useAuthStore().token}`
+            Authorization: `Bearer ${useAuthStore().token}`,
+            'Content-Type': 'multipart/form-data'
           }
         }
       )

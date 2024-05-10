@@ -83,65 +83,6 @@ const getByPk = async (req: Request, res: Response) => {
     }
 }
 
-/**
- * Create a document
- * @param req
- * @param res
- *  ------- May have to be adapt to upload document --------
- **/
-async function creatte(req: Request, res: Response) {
-    try {
-        upload(req, res, async (err: unknown) => {
-            if (err) {
-                throw createHttpError(400, 'Error uploading file')
-            }
-            try {
-                // parse author (user) identifier
-                const idAuthor = parseInt(req.body.document.authorId)
-                if (isNaN(idAuthor)) throw createHttpError(400, 'Please provide a valid author identifier')
-
-                const author = await Users.findByPk(idAuthor)
-                if (!author) throw createHttpError(404, 'Link author not found')
-
-                // parse documentType identifier
-                const idType = parseInt(req.body.document.typeId)
-                if (isNaN(idType)) throw createHttpError(400, 'Please provide a valid documentType identifier')
-
-                const type = await DocumentTypes.findByPk(idType)
-                if (!type) throw createHttpError(404, 'Link document type not found')
-
-                // Test params
-                const validator = isValidDocument(req.body.document.name, req.body.document.path, req.body.document.version, req.body.document.information, req.body.document.status)
-                if (validator.valid == 0) throw createHttpError(400, validator.message as string)
-
-                // Insert data
-                const document = await Documents.create({
-                    typeId: idType,
-                    authorId: idAuthor,
-                    name: req.body.document.name,
-                    path: req.body.document.path,
-                    version: req.body.document.version,
-                    information: req.body.document.information,
-                    status: req.body.document.status
-                })
-
-                // Return success
-                return res.status(200).json({
-                    status: 'success',
-                    data: {
-                        documentId: document.documentId
-                    }
-                })
-            } catch (err) {
-                if (err instanceof HttpError) controllerErrorHandler(err, res)
-                else throw err
-            }
-        })
-    } catch (err) {
-        if (err instanceof HttpError) controllerErrorHandler(err, res)
-        else throw err
-    }
-}
 
 async function create(req: Request, res: Response) {
     try {
@@ -150,22 +91,30 @@ async function create(req: Request, res: Response) {
                 return res.status(400).json(err);
             }
 
+            if (req.body.document === undefined) {
+                return res.status(400).json({ error: 'Document information is missing' });
+            }
+
+            if (req.file === undefined) {
+                return res.status(400).json({ error: 'File is missing' });
+            }
+
             // parse author (user) identifier
-            const idAuthor = parseInt(req.body.authorId ?? undefined)
+            const idAuthor = parseInt(req.body.document.authorId ?? undefined)
             if (isNaN(idAuthor)) throw createHttpError(400, 'Please provide a valid author identifier')
 
             const author = await Users.findByPk(idAuthor)
             if (!author) throw createHttpError(404, 'Link author not found')
 
             // parse documentType identifier
-            const idType = parseInt(req.body.typeId ?? undefined)
+            const idType = parseInt(req.body.document.typeId ?? undefined)
             if (isNaN(idType)) throw createHttpError(400, 'Please provide a valid documentType identifier')
 
-            const documentName = req.body.name ?? undefined;
-            const documentPath = req.file?.path;
-            const version = parseInt(req.body.version) ?? undefined;
-            const information = req.body.information ?? undefined;
-            const status = req.body.status ?? undefined as Status | undefined;
+            const documentName = req.body.document.name ?? undefined;
+            const documentPath = req.file.path;
+            const version = parseInt(req.body.document.version) ?? undefined;
+            const information = req.body.document.information ?? undefined;
+            const status = req.body.document.status ?? undefined as Status | undefined;
 
             const validator = isValidDocument(documentName, documentPath, version, information, status)
             if (validator.valid == 0) {

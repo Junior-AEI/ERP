@@ -3,7 +3,7 @@ import { isValidDate } from './utils'
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 export const isValidProject = (name: any, acronym: any, startDate: any, endDate: any) => {
     if (!name || !acronym || !startDate || !endDate) return { valid: 0, message: 'Please fill all the fields.' }
-
+    
     if (typeof name !== 'string') return { valid: 0, message: 'Your name is not correctly formatted.' }
     if (name.length < 2 || name.length >= 100) return { valid: 0, message: 'The size of your name is not valid' }
 

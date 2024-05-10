@@ -10,6 +10,7 @@ import {
   DateFormatter,
   getLocalTimeZone
 } from '@internationalized/date'
+import axios from 'axios'
 
 const df = new DateFormatter('fr-FR', {
   dateStyle: 'long',

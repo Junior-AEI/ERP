@@ -4,6 +4,7 @@ import express from 'express'
 
 const router = express.Router()
 router.get('/', documentController.getAll)
+router.get('/downloadById/:documentId', documentController.downloadById)
 router.get('/:documentId', documentController.getByPk)
 router.post('/', documentController.create)
 router.put('/:documentId', documentController.update)

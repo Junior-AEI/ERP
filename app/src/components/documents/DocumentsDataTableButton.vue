@@ -59,7 +59,7 @@
       </Dialog>
     </div>
     <div>
-      <Button variant="outline" @click="downloadDocument()">
+      <Button variant="outline" @click="downloadDocument(item.documentId)">
         <span class="material-symbols-outlined"> download </span>
       </Button>
     </div>
@@ -68,18 +68,8 @@
 
 <script setup lang="ts">
 import axios from 'axios'
-import { useAuthStore } from '@/stores/authStore'
 import { ref } from 'vue'
 import type { DocumentFull } from '@/types/api'
-import { Button } from '../ui/button'
-import {
-  Dialog,
-  DialogContent,
-  DialogFooter,
-  DialogHeader,
-  DialogTitle,
-  DialogTrigger
-} from '@/components/ui/dialog'
 
 const props = defineProps<{
   item: DocumentFull // Document + DocumentType
@@ -152,10 +142,20 @@ const deleteDocument = () => {
   //   })
 }
 
-const downloadDocument = () => {
-  console.log('TODO')
+const downloadDocument = (id: number) => {
+  axios
+    .get('/document/downloadById/' + id, {
+      responseType: 'blob',
+      headers: {
+        Authorization: 'Bearer ' + localStorage.getItem('token')
+      }
+    })
+    .then((response) => {
+      const file = new Blob([response.data], { type: response.headers['content-type'] })
+      window.open(URL.createObjectURL(file))
+      return URL.createObjectURL(file)
+    })
 }
-
 const openDialog = () => {
   console.log(thisDocument.value)
 }

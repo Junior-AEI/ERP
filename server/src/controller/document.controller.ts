@@ -8,7 +8,7 @@ import { isValidDocument } from '../validator/document.validator'
 import Users from '../models/user.model'
 import Documents, { Status } from '../models/document.model'
 import DocumentTypes from '../models/documentType.model'
-import { getExtension } from 'mime'
+import { getExtension, getType } from 'mime'
 
 
 import multer from 'multer'
@@ -76,13 +76,6 @@ const getByPk = async (req: Request, res: Response) => {
 
         const document = await Documents.findByPk(identifier)
         if (!document) throw createHttpError(404, 'Document not found')
-
-        const file = fs.readFileSync(document.path)
-        const base64 = Buffer.from(file).toString('base64')
-
-        res.setHeader('Content-Type', 'application/pdf')
-        res.setHeader('Content-Disposition', `attachment; filename=${document.name}`)
-        res.send(base64)
 
         return res.status(200).json({
             status: 'success',
@@ -263,6 +256,9 @@ const downloadById = async (req: Request, res: Response) => {
 
         const filePath = document.path; // Chemin du fichier dans le système de fichiers
         if (fs.existsSync(filePath)) {
+            const fileName = document.name; // Nom du fichier
+            res.setHeader('Content-Disposition', `attachment; filename=${fileName}`);
+            res.type(getType(filePath) ?? 'application/octet-stream');
             res.download(filePath); // Déclenche le téléchargement du fichier
         } else {
             throw createHttpError(404, 'File not found');

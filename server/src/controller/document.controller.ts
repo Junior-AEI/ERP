@@ -258,6 +258,8 @@ const del = async (req: Request, res: Response) => {
             }
         })
 
+        fs.unlinkSync(document.path) // Supprime le fichier du système de fichiers
+
         return res.status(200).json({
             status: 'success'
         })

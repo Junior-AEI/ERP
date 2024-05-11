@@ -1,12 +1,7 @@
 <template>
   <div class="flex gap-1">
     <div>
-      <Button
-        variant="outline"
-        size="sm"
-        class="text-xs"
-        @click="downloadDocument(item.documentId)"
-      >
+      <Button variant="outline" size="sm" class="text-xs" @click="previewDocument(item.documentId)">
         Visualiser
         <Icon name="open_in_new" class="ml-1" />
       </Button>
@@ -15,6 +10,27 @@
       <SelectTrigger class="h-9 w-fit gap-1 rounded-md"> </SelectTrigger>
       <SelectContent>
         <div class="flex flex-col">
+          <Dialog>
+            <DialogTrigger as-child>
+              <Button variant="ghost" size="sm" class="w-full justify-start text-xs">
+                <Icon name="description" class="mr-1" />
+                Détails
+              </Button>
+            </DialogTrigger>
+            <DialogContent>
+              <DialogHeader>
+                <DialogTitle>Détails sur le document</DialogTitle>
+              </DialogHeader>
+              <div
+                class="grid-col-1 grid gap-2"
+                v-for="(item, index) in combinedArray"
+                :key="index"
+              >
+                <h3>{{ item.title }}</h3>
+                <h4>{{ item.subtitle }}</h4>
+              </div>
+            </DialogContent>
+          </Dialog>
           <Dialog>
             <DialogTrigger as-child>
               <Button variant="ghost" size="sm" class="w-full justify-start text-xs">
@@ -49,34 +65,46 @@
                 </div>
               </div>
               <DialogFooter>
-                <Button variant="destructive" @click="deleteDocument()"
-                  >Supprimer le document</Button
+                <AlertDialogComponent
+                  :deleteDocument="deleteDocument"
+                  dialogDescription="Cette action est irréversible. Le document sera supprimé de façon permanente."
+                  dialogTitle="Vous allez supprimer ce document"
                 >
+                  <Button
+                    variant="destructive"
+                    class="w-full justify-start text-xs text-destructive hover:bg-destructive hover:text-destructive-foreground"
+                  >
+                    <Icon name="delete" class="mr-1" />
+                    Supprimer
+                  </Button>
+                </AlertDialogComponent>
                 <Button @click="editDocument()">Enregistrer les modifications</Button>
               </DialogFooter>
             </DialogContent>
           </Dialog>
-          <Dialog>
-            <DialogTrigger as-child>
-              <Button variant="ghost" size="sm" class="w-full justify-start text-xs">
-                <Icon name="description" class="mr-1" />
-                Détails sur document
-              </Button>
-            </DialogTrigger>
-            <DialogContent>
-              <DialogHeader>
-                <DialogTitle>Détails sur le document</DialogTitle>
-              </DialogHeader>
-              <div
-                class="grid-col-1 grid gap-2"
-                v-for="(item, index) in combinedArray"
-                :key="index"
-              >
-                <h3>{{ item.title }}</h3>
-                <h4>{{ item.subtitle }}</h4>
-              </div>
-            </DialogContent>
-          </Dialog>
+          <Button
+            variant="ghost"
+            size="sm"
+            class="w-full justify-start text-xs"
+            @click="downloadDocument(item.documentId)"
+          >
+            <Icon name="download" class="mr-1" />
+            Télécharger
+          </Button>
+          <AlertDialogComponent
+            :deleteDocument="deleteDocument"
+            dialogDescription="Cette action est irréversible. Le document sera supprimé de façon permanente."
+            dialogTitle="Vous allez supprimer ce document"
+          >
+            <Button
+              variant="ghost"
+              size="sm"
+              class="w-full justify-start text-xs text-destructive hover:bg-destructive hover:text-destructive-foreground"
+            >
+              <Icon name="delete" class="mr-1" />
+              Supprimer
+            </Button>
+          </AlertDialogComponent>
         </div>
       </SelectContent>
     </Select>
@@ -88,10 +116,13 @@ import axios from 'axios'
 import { ref } from 'vue'
 import type { DocumentFull } from '@/types/api'
 import { useAuthStore } from '@/stores/authStore'
+import { useToast } from '../ui/toast'
 
 const props = defineProps<{
   item: DocumentFull // Document + DocumentType
 }>()
+
+const { toast } = useToast()
 
 const files = ref<File[]>([])
 const thisDocument = ref<DocumentFull>(props.item)
@@ -145,21 +176,37 @@ const editDocument = () => {
     })
 }
 
-// to be fixed : must delete the associated file
 const deleteDocument = () => {
-  // axios
-  //   .delete(`/document/${thisDocument.value.documentId}`, {
-  //     headers: {
-  //       Authorization: `Bearer ${useAuthStore().token}`
-  //     }
-  //   })
-  //   .then((response) => {
-  //     console.log(response)
-  //     location.reload()
-  //   })
-  //   .catch((error) => {
-  //     console.error(error)
-  //   })
+  axios
+    .delete(`/document/${thisDocument.value.documentId}`, {
+      headers: {
+        Authorization: `Bearer ${useAuthStore().token}`
+      }
+    })
+    .then((response) => {
+      console.log(response)
+      location.reload()
+    })
+    .catch((error) => {
+      toast({
+        title: 'Erreur lors de la suppression',
+        variant: 'destructive',
+        description: error
+      })
+    })
+}
+
+const getExtensionByMime = (mime: string) => {
+  const mimeTypes: Record<string, string> = {
+    'application/pdf': 'pdf',
+    'image/jpeg': 'jpeg',
+    'image/png': 'png',
+    'image/gif': 'gif',
+    'image/bmp': 'bmp',
+    'image/webp': 'webp',
+    'image/svg+xml': 'svg'
+  }
+  return mimeTypes[mime] || ''
 }
 
 const downloadDocument = (id: number) => {
@@ -172,11 +219,49 @@ const downloadDocument = (id: number) => {
     })
     .then((response) => {
       const file = new Blob([response.data], { type: response.headers['content-type'] })
+      const url = window.URL.createObjectURL(file)
+      const a = document.createElement('a')
+      a.href = url
+      a.download = `${thisDocument.value.name}_v${thisDocument.value.version}.${getExtensionByMime(
+        response.headers['content-type']
+      )}`
+      a.click()
+      window.URL.revokeObjectURL(url)
+    })
+    .catch((error) => {
+      toast({
+        title: 'Erreur lors du téléchargement',
+        variant: 'destructive',
+        description: error
+      })
+    })
+}
+
+const previewDocument = (id: number) => {
+  axios
+    .get('/document/downloadById/' + id, {
+      responseType: 'blob',
+      headers: {
+        Authorization: 'Bearer ' + localStorage.getItem('token')
+      }
+    })
+    .then((response) => {
+      const file = new File(
+        [response.data],
+        `${thisDocument.value.name}_v${thisDocument.value.version}.${getExtensionByMime(
+          response.headers['content-type']
+        )}`,
+        { type: response.headers['content-type'] }
+      )
       window.open(URL.createObjectURL(file))
       return URL.createObjectURL(file)
     })
-}
-const openDialog = () => {
-  console.log(thisDocument.value)
+    .catch((error) => {
+      toast({
+        title: 'Erreur lors du téléchargement',
+        variant: 'destructive',
+        description: error
+      })
+    })
 }
 </script>

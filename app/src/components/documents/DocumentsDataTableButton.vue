@@ -17,9 +17,9 @@
         <div class="flex flex-col">
           <Dialog>
             <DialogTrigger as-child>
-              <Button variant="ghost" size="sm" class="w-full justify-end text-xs">
+              <Button variant="ghost" size="sm" class="w-full justify-start text-xs">
+                <Icon name="edit" class="mr-1" />
                 Modifier
-                <Icon name="edit" class="ml-1" />
               </Button>
             </DialogTrigger>
             <DialogContent>
@@ -58,9 +58,9 @@
           </Dialog>
           <Dialog>
             <DialogTrigger as-child>
-              <Button variant="ghost" size="sm" class="w-full justify-end text-xs">
+              <Button variant="ghost" size="sm" class="w-full justify-start text-xs">
+                <Icon name="description" class="mr-1" />
                 Détails sur document
-                <Icon name="description" class="ml-1" />
               </Button>
             </DialogTrigger>
             <DialogContent>

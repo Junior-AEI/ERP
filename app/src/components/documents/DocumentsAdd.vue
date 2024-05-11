@@ -175,7 +175,6 @@ const uploadDocument = () => {
         {
           document: {
             name: files.value[0].name,
-            path: 'path/to/file', // TODO : put actual path
             version: version.value,
             typeId:
               documentTypes.value.find(

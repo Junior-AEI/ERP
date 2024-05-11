@@ -55,7 +55,7 @@ export const columns: ColumnDef<DocumentFull>[] = [
         ]
       )
     },
-    cell: ({ row }) => h('div', { class: 'text-leftbah ' }, row.original.name)
+    cell: ({ row }) => h('div', { class: 'text-left ' }, row.original.name)
   },
   {
     accessorKey: 'type',
@@ -80,7 +80,7 @@ export const columns: ColumnDef<DocumentFull>[] = [
         ]
       )
     },
-    cell: ({ row }) => h('div', { class: 'text-leftbah ' }, row.getValue('type'))
+    cell: ({ row }) => h('div', { class: 'text-left ' }, row.getValue('type'))
   },
   {
     accessorKey: 'version',
@@ -105,7 +105,7 @@ export const columns: ColumnDef<DocumentFull>[] = [
         ]
       )
     },
-    cell: ({ row }) => h('div', { class: 'text-leftbah ' }, row.getValue('version'))
+    cell: ({ row }) => h('div', { class: 'text-left ' }, row.getValue('version'))
   },
   {
     accessorKey: 'status',
@@ -130,7 +130,7 @@ export const columns: ColumnDef<DocumentFull>[] = [
         ]
       )
     },
-    cell: ({ row }) => h('div', { class: 'text-leftbah ' }, row.getValue('status'))
+    cell: ({ row }) => h('div', { class: 'text-left ' }, row.getValue('status'))
   },
   {
     accessorKey: 'createdAt',

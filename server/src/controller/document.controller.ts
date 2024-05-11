@@ -165,6 +165,11 @@ const update = async (req: Request, res: Response) => {
                 throw createHttpError(400, 'Error uploading file')
             }
             try {
+
+                if (req.body.document === undefined) {
+                    return res.status(400).json({ error: 'Document information is missing' });
+                }
+
                 // parse identifier
                 const identifier = parseInt(req.params.documentId)
                 if (isNaN(identifier)) throw createHttpError(400, 'Please provide a valid identifier')
@@ -173,29 +178,54 @@ const update = async (req: Request, res: Response) => {
                 if (!document) throw createHttpError(404, 'Document not found')
 
                 // parse author (user) identifier
-                const idAuthor = parseInt(req.body.document.authorId)
+                const idAuthor = parseInt(req.body.document.authorId ?? undefined)
                 if (isNaN(idAuthor)) throw createHttpError(400, 'Please provide a valid author identifier')
 
                 const author = await Users.findByPk(idAuthor)
                 if (!author) throw createHttpError(404, 'Link author not found')
 
                 // parse documentType identifier
-                const idType = parseInt(req.body.document.typeId)
+                const idType = parseInt(req.body.document.typeId ?? undefined)
                 if (isNaN(idType)) throw createHttpError(400, 'Please provide a valid documentType identifier')
 
-                const type = await DocumentTypes.findByPk(idType)
-                if (!type) throw createHttpError(404, 'Link document type not found')
+                const documentName = req.body.document.name ?? document.name;
 
-                // Test params
-                const validator = isValidDocument(req.body.document.name, req.body.document.path, req.body.document.version, req.body.document.information, req.body.document.status)
-                if (validator.valid == 0) throw createHttpError(400, validator.message as string)
+                const documentPath = req.file ? req.file.path : document.path;
+                const version = parseInt(req.body.document.version) ?? document.version + 1;
+                const information = req.body.document.information ?? document.information;
+                const status = req.body.document.status ?? document.status as Status;
 
-                await Documents.update(req.body.document, {
+                const validator = isValidDocument(documentName, documentPath, version, information, status)
+                if (validator.valid == 0) {
+                    return res.status(400).json({ error: validator.message });
+                }
+
+                await Documents.update({
+                    typeId: idType,
+                    authorId: idAuthor,
+                    name: documentName,
+                    path: documentPath,
+                    version: version,
+                    information: information,
+                    status: status
+                }, {
                     where: { documentId: identifier }
                 })
 
                 return res.status(200).json({
-                    status: 'success'
+                    status: 'success',
+                    data: {
+                        documentId: identifier,
+                        document: {
+                            typeId: idType,
+                            authorId: idAuthor,
+                            name: documentName,
+                            path: documentPath,
+                            version: version,
+                            information: information,
+                            status: status
+                        }
+                    }
                 })
             } catch (err) {
                 if (err instanceof HttpError) controllerErrorHandler(err, res)

@@ -137,7 +137,6 @@
       </CardFooter>
     </Card>
   </Wrapper>
-  <Toaster />
 </template>
 
 <script setup lang="ts">
@@ -153,7 +152,6 @@ import { CalendarDate, CalendarDateTime } from '@internationalized/date'
 import { type DateRange } from 'radix-vue'
 
 import { useToast } from '@/components/ui/toast/use-toast'
-import { Toaster } from '@/components/ui/toast'
 
 import {
   Command,

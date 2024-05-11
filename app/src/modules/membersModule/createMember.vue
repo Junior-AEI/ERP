@@ -179,7 +179,6 @@ import { ref, onMounted } from 'vue'
 import { useAuthStore } from '@/stores/authStore'
 import axios from 'axios'
 import { useToast } from '@/components/ui/toast/use-toast'
-import { Toaster } from '@/components/ui/toast'
 const temp = ref('temp')
 import type { FullMemberWithAdress } from '@/types/api'
 import { type DateValue } from '@internationalized/date'

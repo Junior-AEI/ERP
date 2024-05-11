@@ -1,9 +1,9 @@
 import { h } from 'vue'
 import type { ColumnDef } from '@tanstack/vue-table'
 import type { DocumentFull } from '@/types/api'
-import { Button } from '../ui/button'
+import { Button } from '@/components/ui/button'
 import DocumentsDataTableButton from './DocumentsDataTableButton.vue'
-import Icon from '../Icon.vue'
+import Icon from '@/components/Icon.vue'
 import {
   CalendarDateTime,
   parseDateTime,
@@ -30,7 +30,33 @@ function convertToCalendarDate(isoDateString: string): string {
 
 const defaultClasses = 'text-left font-medium'
 
+
 export const columns: ColumnDef<DocumentFull>[] = [
+  {
+    accessorKey: 'type',
+    meta: {
+      label: 'Nom du document'
+    },
+    header: ({ column }) => {
+      return h(
+        Button,
+        {
+          variant: 'ghost',
+          onClick: () => column.toggleSorting(column.getIsSorted() === 'asc')
+        },
+        () => [
+          'Nom du document',
+          h(
+            h(Icon, {
+              name: 'unfold_more'
+            }),
+            { class: '' }
+          )
+        ]
+      )
+    },
+    cell: ({ row }) => h('div', { class: 'text-left ' }, row.original.name)
+  },
   {
     accessorKey: 'type',
     meta: {
@@ -54,7 +80,7 @@ export const columns: ColumnDef<DocumentFull>[] = [
         ]
       )
     },
-    cell: ({ row }) => h('div', { class: 'text-leftbah ' }, row.getValue('type'))
+    cell: ({ row }) => h('div', { class: 'text-left ' }, row.getValue('type'))
   },
   {
     accessorKey: 'version',
@@ -79,7 +105,7 @@ export const columns: ColumnDef<DocumentFull>[] = [
         ]
       )
     },
-    cell: ({ row }) => h('div', { class: 'text-leftbah ' }, row.getValue('version'))
+    cell: ({ row }) => h('div', { class: 'text-left ' }, row.getValue('version'))
   },
   {
     accessorKey: 'status',
@@ -104,7 +130,7 @@ export const columns: ColumnDef<DocumentFull>[] = [
         ]
       )
     },
-    cell: ({ row }) => h('div', { class: 'text-leftbah ' }, row.getValue('status'))
+    cell: ({ row }) => h('div', { class: 'text-left ' }, row.getValue('status'))
   },
   {
     accessorKey: 'createdAt',

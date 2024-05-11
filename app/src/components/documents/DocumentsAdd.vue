@@ -65,12 +65,7 @@
               <div class="flex-col gap-2">
                 <Label>{{ field }}</Label>
                 <Input v-if="field != 'Date de fin de validité'" v-model="documentInfos[index]" />
-                <Input
-                  v-else
-                  type="date"
-                  v-model="documentInfos[index]"
-                  placeholder="Date de fin de validité"
-                />
+                <DatePickerComponent v-else v-model="dateFinValidite" class="w-full" />
               </div>
             </div>
           </div>
@@ -81,15 +76,15 @@
       </CardFooter>
     </Card>
   </Wrapper>
-  <Toaster />
 </template>
 
 <script setup lang="ts">
 import axios from 'axios'
 import { useAuthStore } from '@/stores/authStore'
 import type { DocumentType } from '@/types/api'
-import { computed, ref, onMounted } from 'vue'
+import { computed, ref, onMounted, watch } from 'vue'
 import { useToast } from '@/components/ui/toast/use-toast'
+import { type DateValue } from '@internationalized/date'
 
 const emit = defineEmits(['update:files'])
 
@@ -103,6 +98,7 @@ const documentTypes = ref<DocumentType[]>([])
 const version = ref(1)
 const documentTypeName = ref('')
 const documentInfos = ref<string[]>([])
+const dateFinValidite = ref<DateValue>()
 const status = ref('A relire')
 const authorId = ref(useAuthStore().userId)
 
@@ -126,9 +122,28 @@ const verifyFields = (documentTypeFields: string[], fieldNumber: number): boolea
   return true
 }
 
+const getIndexOfField = (field: string): number => {
+  console.log(documentTypes.value)
+  return (
+    documentTypes.value
+      .find((documentType) => documentType.type === documentTypeName.value)
+      ?.fieldMeaning.split('|')
+      .indexOf(field) ?? -1
+  )
+}
+
+watch(dateFinValidite, (value) => {
+  const index = getIndexOfField('Date de fin de validité')
+  console.log(index)
+  if (value && index !== -1) {
+    documentInfos.value[index] = value.toString()
+  }
+})
+
 const clearFields = () => {
   version.value = 1
   documentTypeName.value = ''
+  dateFinValidite.value = undefined
   documentInfos.value = []
   status.value = 'A relire'
 }
@@ -149,9 +164,9 @@ const uploadDocument = () => {
       ?.fieldNumber ?? 0 // should not be equal to 0
   if (!documentTypeName.value || !verifyFields(documentInfos.value, fieldNumber)) {
     toast({
-      title: 'Something wrong happened',
+      title: 'La création du document a échoué',
       variant: 'destructive',
-      description: `All the fields must be filled.`
+      description: `Veuillez remplir tous les champs.`
     })
   } else {
     axios
@@ -160,7 +175,6 @@ const uploadDocument = () => {
         {
           document: {
             name: files.value[0].name,
-            path: 'path/to/file', // TODO : put actual path
             version: version.value,
             typeId:
               documentTypes.value.find(

@@ -9,13 +9,17 @@
         <div class="flex items-end gap-4">
           <div class="flex flex-1 flex-col gap-2">
             <Label for="client">Client</Label>
-            <Combobox @input="handleInputClient" :options="clientsList"
-              :comboboxLabel="'Selectionner un client existant'">
+            <Combobox
+              @input="handleInputClient"
+              :options="clientsList"
+              :comboboxLabel="'Selectionner un client existant'"
+            >
             </Combobox>
-            <Button variant="outline" @click="handleClickNewClient">Rentrer un nouveau client</Button>
+            <Button variant="outline" @click="handleClickNewClient"
+              >Rentrer un nouveau client</Button
+            >
           </div>
         </div>
-
 
         <div v-if="form.clientId == 0">
           <div class="flex items-end gap-4">
@@ -60,39 +64,44 @@
           <div class="flex items-start gap-4">
             <div class="flex flex-col gap-2">
               <Label for="application">Entreprise du Client</Label>
-              <Combobox @input="handleInputCompany" :options="companyList"
-                :comboboxLabel="'Selectionner l\'entreprise'">
+              <Combobox
+                @input="handleInputCompany"
+                :options="companyList"
+                :comboboxLabel="'Selectionner l\'entreprise'"
+              >
               </Combobox>
-              <Button variant="outline" @click="handleClickNewCompany">Renseigner une nouvelle entreprise</Button>
+              <Button variant="outline" @click="handleClickNewCompany"
+                >Renseigner une nouvelle entreprise</Button
+              >
             </div>
             <div class="flex flex-col gap-2">
-            <div class="flex flex-1 flex-col gap-2">
-            <Label for="landlinePhone">Poste dans l'entreprise</Label>
-            <Input id="landlinePhone" placeholder="Tel Fixe" v-model="form.function" />
-          </div>
-          <div class="flex flex-1 flex-col gap-2">
-            <Label for="landlinePhone">Premier Contact</Label>
-            <Select v-model="form.firstContact">
-            <SelectTrigger>
-              <SelectValue placeholder="Comment AEI a eu le premier contact" />
-            </SelectTrigger>
-            <SelectContent>
-              <SelectGroup>
-                <SelectItem value="Bouche à oreille"> Bouche à oreille </SelectItem>
-                <SelectItem value="Soirée partenaire"> Soirée partenaire </SelectItem>
-                <SelectItem value="Appel téléphonique"> Appel téléphonique </SelectItem>
-                <SelectItem value="Site AEI"> Site AEI</SelectItem>
-                <SelectItem value="Congrès"> Congrès </SelectItem>
-                <SelectItem value="Salon"> Salon </SelectItem>
-                <SelectItem value="RS"> Réseaux Sociaux (LinkedIn, Instagram, ...) </SelectItem>
-                <SelectItem value="Autre"> Autre </SelectItem>
-
-
-              </SelectGroup>
-            </SelectContent>
-          </Select>
-          </div>
-          </div>
+              <div class="flex flex-1 flex-col gap-2">
+                <Label for="landlinePhone">Poste dans l'entreprise</Label>
+                <Input id="landlinePhone" placeholder="Tel Fixe" v-model="form.function" />
+              </div>
+              <div class="flex flex-1 flex-col gap-2">
+                <Label for="landlinePhone">Premier Contact</Label>
+                <Select v-model="form.firstContact">
+                  <SelectTrigger>
+                    <SelectValue placeholder="Comment AEI a eu le premier contact" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectGroup>
+                      <SelectItem value="Bouche à oreille"> Bouche à oreille </SelectItem>
+                      <SelectItem value="Soirée partenaire"> Soirée partenaire </SelectItem>
+                      <SelectItem value="Appel téléphonique"> Appel téléphonique </SelectItem>
+                      <SelectItem value="Site AEI"> Site AEI</SelectItem>
+                      <SelectItem value="Congrès"> Congrès </SelectItem>
+                      <SelectItem value="Salon"> Salon </SelectItem>
+                      <SelectItem value="RS">
+                        Réseaux Sociaux (LinkedIn, Instagram, ...)
+                      </SelectItem>
+                      <SelectItem value="Autre"> Autre </SelectItem>
+                    </SelectGroup>
+                  </SelectContent>
+                </Select>
+              </div>
+            </div>
           </div>
 
           <div v-if="form.companyId == 0">
@@ -187,34 +196,31 @@
         <div v-if="form.clientId > 0">
           <div class="flex items-end gap-4">
             <div class="mt-2 flex flex-1 flex-col gap-2">
-            <Label for="name">Nom de l'étude</Label>
-            <Input id="postCode" placeholder="Tel Fixe" v-model="form.nameProject" />
-          </div>
+              <Label for="name">Nom de l'étude</Label>
+              <Input id="postCode" placeholder="Tel Fixe" v-model="form.nameProject" />
+            </div>
             <div class="mt-2 flex flex-1 flex-col gap-2">
-            <Label for="name">Acronyme de l'étude</Label>
-            <Input id="postCode" placeholder="Tel Fixe" v-model="form.acronym" />
+              <Label for="name">Acronyme de l'étude</Label>
+              <Input id="postCode" placeholder="Tel Fixe" v-model="form.acronym" />
+            </div>
           </div>
-          </div>
-          
+
           <div class="flex items-end gap-4">
             <div class="flex flex-1 flex-col gap-2">
               <Label for="legalEntity">Date de Debut (Présent sur la CE)</Label>
               <DatePickerComponent v-model="startDateFormat" />
             </div>
             <div class="flex flex-1 flex-col gap-2">
-              <Label for="legalEntity">Date de Fin (Présent sur la CE (à modifier en cas d'ACE))</Label>
+              <Label for="legalEntity"
+                >Date de Fin (Présent sur la CE (à modifier en cas d'ACE))</Label
+              >
               <DatePickerComponent v-model="endDateFormat" />
             </div>
           </div>
           <Button @click="handleClickProject" class="mt-3">Créer un nouveau Client</Button>
-
-
         </div>
-
-
       </CardContent>
     </Card>
-    <Toaster />
   </div>
 </template>
 
@@ -223,11 +229,9 @@ import { ref, onMounted } from 'vue'
 import { useAuthStore } from '@/stores/authStore'
 import axios from 'axios'
 import { useToast } from '@/components/ui/toast/use-toast'
-import { Toaster } from '@/components/ui/toast'
 const temp = ref('temp')
 import type { ProjectInfo } from '@/types/api'
 import { type DateValue } from '@internationalized/date'
-
 
 const form = ref<ProjectInfo>({
   personId: NaN,
@@ -247,7 +251,7 @@ const form = ref<ProjectInfo>({
 
 
   function: '',
-  firstContact:'',
+  firstContact: '',
   companyId: NaN,
 
   address: '',
@@ -262,7 +266,7 @@ const form = ref<ProjectInfo>({
   endDate: '',
   projectId: 0,
   companyType: '',
-  nameProject : ''
+  nameProject: ''
 })
 
 const endDateFormat = ref<DateValue>()
@@ -495,7 +499,6 @@ async function newClient() {
           function: form.value.function,
           companyId: form.value.companyId,
           firstContact: form.value.firstContact
-
         }
       },
       {
@@ -522,7 +525,6 @@ async function newClient() {
     })
 }
 
-
 async function newProject() {
   if (startDateFormat.value) {
     form.value.startDate = startDateFormat.value.toString()
@@ -530,7 +532,7 @@ async function newProject() {
   if (endDateFormat.value) {
     form.value.endDate = endDateFormat.value.toString()
   }
-  console.log (form.value.nameProject)
+  console.log(form.value.nameProject)
   await axios
     .post(
       `/project/`,
@@ -541,7 +543,6 @@ async function newProject() {
           endDate: form.value.endDate,
           acronym: form.value.acronym,
           name: form.value.nameProject
-
         }
       },
       {
@@ -577,7 +578,6 @@ async function handleClickClient() {
   await newPerson()
   await newClient()
   handleInputClient(form.value.clientId.toString())
-
 }
 async function handleClickProject() {
   await newProject()

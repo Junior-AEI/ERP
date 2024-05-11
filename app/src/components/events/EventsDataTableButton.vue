@@ -152,7 +152,6 @@
       </DialogContent>
     </Dialog>
   </div>
-  <Toaster />
 </template>
 
 <script setup lang="ts">
@@ -185,7 +184,6 @@ import {
 } from '@/components/ui/command'
 
 import { useToast } from '@/components/ui/toast/use-toast'
-import { Toaster } from '@/components/ui/toast'
 
 const selectedEvent = ref<Event>()
 

@@ -5,7 +5,7 @@
     </div>
     <Link variant="outline" to="/clients/new" class="w-60"> Ajouter un client</Link>
     <div>
-      <ClientsTable />
+      <ProjectTable />
     </div>
   </div>
 </template>

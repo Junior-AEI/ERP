@@ -1,13 +1,14 @@
 <script setup lang="ts">
 import { ref, onMounted } from 'vue'
 import { columns } from './columns'
-import type { ClientInfo } from '@/types/api'
+import type { ClientInfoForTable } from '@/types/api'
 import axios from 'axios'
+import { useRouter } from 'vue-router'
 
-const data = ref<ClientInfo[]>([])
+const data = ref<ClientInfoForTable[]>([])
 import { useAuthStore } from '@/stores/authStore'
 
-async function getData(): Promise<ClientInfo[]> {
+async function getData(): Promise<ClientInfoForTable[]> {
   // Fetch data from your API here.
 
   const clients = await axios.get(`/client`, {
@@ -15,6 +16,7 @@ async function getData(): Promise<ClientInfo[]> {
       Authorization: `Bearer ${useAuthStore().token}`
     }
   })
+
 
   const persons = await axios.get(`/person`, {
     headers: {
@@ -54,6 +56,8 @@ async function getData(): Promise<ClientInfo[]> {
     }
   })
 
+  
+
   const fullClients = ClientPerson.map((client: any) => {
     const company = CompanyWithAddress.find(
       (company: any) => company.companyId === client.companyId
@@ -65,21 +69,39 @@ async function getData(): Promise<ClientInfo[]> {
   })
 
 
+  const projects = await axios.get(`/project`, {
+    headers: {
+      Authorization: `Bearer ${useAuthStore().token}`
+    }
+  })
 
-  return fullClients
+
+  const ClientsWithProjects = fullClients.map((client: any) => {
+      const clientProjects = projects.data.data?.projects.filter((project: any) => project.clientId === client.clientId);
+      const Projectsname = clientProjects.map((project: any) => project.acronym);
+      return { ...client, Projectsname : Projectsname, firstContact: client.firstContact };
+    });
+
+
+  return ClientsWithProjects
 }
 
 onMounted(async () => {
   data.value = await getData()
 })
 
-const handleClick = (e: any) => {
-  console.log('Clicked on row:', e.target)
+const router = useRouter()
+
+const handleClick = (row: any) => {
+  router.push({
+    path: '/client/profil',
+    query: { id: row.clientId, name : `${row.firstname} ${row.lastname} de ${row.name}`}
+  })
 }
 </script>
 
 <template>
   <div>
-    <DataTable :columns="columns" :data="data" :onClickFn="handleClick" />
+    <DataTable :columns="columns" :data="data" @click:row="handleClick" />
   </div>
 </template>

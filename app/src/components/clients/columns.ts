@@ -1,12 +1,12 @@
 import { h } from 'vue'
 import type { ColumnDef } from '@tanstack/vue-table'
-import type { ClientInfo } from '@/types/api'
+import type { ClientInfoForTable } from '@/types/api'
 import { Button } from '../ui/button'
 import Icon from '../Icon.vue'
 
 const defaultClasses = 'text-left font-medium'
 
-export const columns: ColumnDef<ClientInfo>[] = [
+export const columns: ColumnDef<ClientInfoForTable>[] = [
   
   {
     accessorKey: 'lastname',
@@ -48,44 +48,48 @@ export const columns: ColumnDef<ClientInfo>[] = [
     }
   },
   {
-    accessorKey: 'domain',
-    accessorFn: (row) => row.function,
+    accessorKey: 'activityField',
+    accessorFn: (row) => row.activityField,
     meta: {
       label: 'Domaine'
     },
     header: () => h('div', { class: defaultClasses }, 'Domaine'),
     cell: ({ row }) => {
-      const fonction = row.getValue('function') as string
+      const fonction = row.getValue('activityField') as string
 
       return h('div', { class: defaultClasses }, fonction)
     }
   },
   {
     accessorKey: 'etude',
-    accessorFn: (row) => row.email,
+    accessorFn: (row) => row.Projectsname,
     meta: {
       label: 'Etudes avec AEI'
     },
     header: () => h('div', { class: defaultClasses }, 'Etudes avec AEI'),
 
-    cell: ({ row }) => h('div', { class: `lowercase ${defaultClasses}` }, row.getValue('email'))
+    cell: ({ row }) => {
+      const item = row.original
+      let badgeColorClass = 'bg-gray-100'
+      return h('div', { class: `lowercase ${defaultClasses}` }, 
+      item.Projectsname.map((projectName) => {
+          return h('div', { class: `text-black text-center p-1 rounded m-2 w-20 ${badgeColorClass}` }, projectName);
+        })
+      );
+    }
   },
   {
-    accessorKey: 'premier contact',
+    accessorKey: 'firstContact',
+    accessorFn: (row) => row.firstContact,
     meta: {
       label: 'Premier Contact'
     },
-    header: () => h('div', { class: defaultClasses }, 'Premier Contact'),
+    header: () => h('div', { class: defaultClasses }, 'Domaine'),
+    cell: ({ row }) => {
+      
+      const firstContact = row.getValue('firstContact') as string
 
-    cell: ({ row }) => h('div', { class: defaultClasses }, row.getValue('department'))
-  },
-  {
-    accessorKey: 'last_contact',
-    meta: {
-      label: 'Dernier Contact'
-    },
-    header: () => h('div', { class: defaultClasses }, 'Dernier Contact'),
-
-    cell: ({ row }) => h('div', { class: defaultClasses }, row.getValue('department'))
+      return h('div', { class: defaultClasses }, firstContact)
+    }
   },
 ]

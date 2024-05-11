@@ -1,24 +1,36 @@
 <template>
-  <div>
-    <Card class="max-w-2xl flex-1">
+  <div class="flex flex-col gap-4">
+    <Card class="flex-1">
       <CardHeader>
-        <Icon name="person_add" class="text-6xl" />
-        <span class="text-accent"> Créer un nouveau client</span>
+        <Icon name="badge" class="text-6xl" />
+        <span class="text-accent"> Informations du Membre </span>
+        <Button  class="ml-10" v-if="!canEdit" @click="handleClick">Valider les modifications</Button>
+
       </CardHeader>
       <CardContent>
         <div class="flex items-end gap-4">
           <div class="flex flex-1 flex-col gap-2">
             <Label for="lastname">Nom</Label>
-            <Input id="lastname" v-model="form.lastname" />
+            <Input :disabled="!canEdit" id="lastname" v-model="form.lastname" />
           </div>
           <div class="flex flex-1 flex-col gap-2">
             <Label for="firstname">Prénom</Label>
-            <Input id="firstname" v-model="form.firstname" />
+            <Input :disabled="!canEdit" id="firstname" v-model="form.firstname" />
           </div>
         </div>
-        <div class="flex flex-1 flex-col gap-2">
+        
+
+
+
+
+        <div class="flex items-start gap-4">
+          <div class="flex flex-1 flex-col gap-2">
           <Label for="gender">Genre</Label>
-          <Select v-model="form.gender">
+          <div class="flex flex-1 flex-row gap-2">
+
+          <Input :disabled="!canEdit" v-if="ModifyGender == false" id="firstname" v-model="form.gender" />
+          <Button  v-if="ModifyGender == false" @click="handleModifyGender"><Icon name="edit" /></Button>
+          <Select v-model="form.gender"  v-if="ModifyGender == true">
             <SelectTrigger>
               <SelectValue placeholder="Genre" />
             </SelectTrigger>
@@ -30,8 +42,10 @@
               </SelectGroup>
             </SelectContent>
           </Select>
+          </div>
+          
         </div>
-        <div class="flex items-end gap-4">
+
           <div class="flex flex-1 flex-col gap-2">
             <Label for="mobilePhone">N° de Téléphone Mobile</Label>
             <Input id="mobilePhone" placeholder="Info" v-model="form.mobilePhone" />
@@ -41,31 +55,18 @@
             <Input id="landlinePhone" placeholder="Tel Fixe" v-model="form.landlinePhone" />
           </div>
         </div>
+        <div class="flex items-start gap-4">
+
         <div class="flex flex-1 flex-col gap-2">
           <Label for="landlinePhone">Email</Label>
           <Input id="landlinePhone" placeholder="Tel Fixe" v-model="form.email" />
         </div>
-        <div class="flex items-start gap-4">
-          <div class="flex flex-col gap-2">
-            <Label for="application">Entreprise du Client</Label>
-            <Combobox
-              @input="handleInputCompany"
-              :options="companyList"
-              :comboboxLabel="'Selectionner l\'entreprise'"
-            >
-            </Combobox>
-            <Button variant="outline" @click="handleClickNewCompany"
-              >Renseigner une nouvelle entreprise</Button
-            >
-          </div>
-          <div class="flex flex-col gap-2">
-            <div class="flex flex-1 flex-col gap-2">
-            <Label for="landlinePhone">Poste dans l'entreprise</Label>
-            <Input id="landlinePhone" placeholder="Tel Fixe" v-model="form.function" />
-          </div>
-          <div class="flex flex-1 flex-col gap-2">
+        <div class="flex flex-1 flex-col gap-2">
             <Label for="landlinePhone">Premier Contact</Label>
-            <Select v-model="form.firstContact">
+            <div class="flex flex-1 flex-row gap-2">
+            <Input :disabled="!canEdit" v-if="!ModifyFirstContact" id="firstname" v-model="form.firstContact" />
+          <Button  v-if="ModifyFirstContact == false" @click="handleModifyFirstContact"><Icon name="edit" /></Button>
+            <Select v-model="form.firstContact" v-if="ModifyFirstContact ">
             <SelectTrigger>
               <SelectValue placeholder="Comment AEI a eu le premier contact" />
             </SelectTrigger>
@@ -84,25 +85,31 @@
               </SelectGroup>
             </SelectContent>
           </Select>
-          </div>
-          </div>
         </div>
+          </div>
+          </div>
 
-        <div v-if="form.companyId == 0">
-          <div class="flex items-end gap-4">
-            <div class="flex flex-1 flex-col gap-2">
+        <div class="flex items-start gap-4">
+          <div class="flex flex-col gap-2">
               <Label for="name">Nom de l'Entreprise</Label>
               <Input id="name" placeholder="Tel Fixe" v-model="form.name" />
-            </div>
-            <div class="flex flex-1 flex-col gap-2">
+          </div>
+          <div class="flex flex-col gap-2">
+            <Label for="landlinePhone">Poste dans l'entreprise</Label>
+            <Input id="landlinePhone" placeholder="Tel Fixe" v-model="form.function" />
+          </div>
+          <div class="flex flex-1 flex-col gap-2">
               <Label for="legalEntity">N° de SIRET de l'entreprise</Label>
               <Input id="legalEntity" placeholder="Tel Fixe" v-model="form.legalEntity" />
             </div>
-          </div>
+        </div>
           <div class="flex items-end gap-4">
             <div class="flex flex-1 flex-col gap-2">
               <Label for="name">Type d'Entreprise</Label>
-              <Select v-model="form.companyType">
+              <div class="flex flex-1 flex-row gap-2">
+            <Input :disabled="!canEdit" v-if="!ModifyCompanyType" id="firstname" v-model="form.companyType" />
+          <Button  v-if="ModifyCompanyType == false" @click="handleModifyCompanyType"><Icon name="edit" /></Button>
+              <Select v-model="form.companyType" v-if="ModifyCompanyType">
             <SelectTrigger>
               <SelectValue placeholder="Type d'entreprise" />
             </SelectTrigger>
@@ -119,32 +126,16 @@
               </SelectGroup>
             </SelectContent>
           </Select>
+          </div>
             </div>
             <div class="flex flex-1 flex-col gap-2">
               <Label for="Ac">Domaine</Label>
               <Input id="legalEntity" placeholder="Tel Fixe" v-model="form.activityField" />
             </div>
           </div>
-          <div class="mt-2 flex flex-col gap-2">
-            <div class="flex items-end gap-4">
-              <div class="flex flex-1 flex-col gap-2">
-                <Label for="application">Adresse de l'Entreprise</Label>
-                <Combobox
-                  @input="handleInputAddress"
-                  :options="addressList"
-                  :comboboxLabel="'Selectionner l\'adresse'"
-                >
-                </Combobox>
-                <Button variant="outline" @click="handleClickNewAdress"
-                  >Renseigner une nouvelle Adresse</Button
-                >
-              </div>
-              <div class="flex flex-1 flex-col gap-2"></div>
-            </div>
-          </div>
-        </div>
+         
 
-        <div v-if="form.addressId == 0">
+
           <div class="flex items-end gap-4">
             <div class="flex flex-1 flex-col gap-2">
               <Label for="name">Adresse </Label>
@@ -173,9 +164,7 @@
             <Label for="legalEntity">Pays</Label>
             <Input id="country" placeholder="Tel Fixe" v-model="form.country" />
           </div>
-        </div>
 
-        <Button @click="handleClick">Créer un nouveau Client</Button>
       </CardContent>
     </Card>
     <Toaster />
@@ -183,13 +172,42 @@
 </template>
 
 <script setup lang="ts">
-import { ref, onMounted } from 'vue'
-import { useAuthStore } from '@/stores/authStore'
 import axios from 'axios'
+import { useAuthStore } from '@/stores/authStore'
+import { onMounted, ref } from 'vue'
 import { useToast } from '@/components/ui/toast/use-toast'
-import { Toaster } from '@/components/ui/toast'
-const temp = ref('temp')
 import type { ClientInfo } from '@/types/api'
+
+const props = defineProps<{
+  clientId: number
+}>()
+
+const { toast } = useToast()
+
+
+import { type DateValue } from '@internationalized/date'
+
+const canEdit = ref(false) // to be modified when permissions are added
+const ModifyGender = ref(false);
+const ModifyFirstContact = ref(false);
+const ModifyCompanyType = ref(false);
+
+
+const handleModifyGender = () => {
+  ModifyGender.value = true;
+}
+
+
+const handleModifyFirstContact = () => {
+  ModifyFirstContact.value = true;
+}
+
+const handleModifyCompanyType = () => {
+  ModifyCompanyType.value = true;
+}
+
+
+// We define the data for the member
 
 const form = ref<ClientInfo>({
   personId: NaN,
@@ -219,74 +237,125 @@ const form = ref<ClientInfo>({
   country: ''
 })
 
-async function getDataCompany(): Promise<{ value: string; label: string }[]> {
-  // Fetch data from your API here.
+async function fetchInfos  () {
 
-  const companies = await axios.get(`/company`, {
-    headers: {
-      Authorization: `Bearer ${useAuthStore().token}`
-    }
-  })
 
-  const companiesLists = companies.data.data?.companies.map((company: any) => {
-    return {
-      value: company.companyId.toString(),
-      label: company.name
-    }
-  })
+  // We fetch the person info
+  await fetchPersonInfos()
 
-  return companiesLists
+  // We fetch the client info
+  await fetchClientInfos()
+
+  // We fetch the company info
+  await fetchCompanyInfos()
+
+    // We fetch the adress info
+    await fetchAddressInfos()
 }
 
-async function getDataAddress(): Promise<{ value: string; label: string }[]> {
-  // Fetch data from your API here.
-
-  const addresses = await axios.get(`/address`, {
-    headers: {
-      Authorization: `Bearer ${useAuthStore().token}`
-    }
-  })
-
-  const addressesLists = addresses.data.data?.addresses.map((address: any) => {
-    return {
-      value: address.addressId.toString(),
-      label: address.address
-    }
-  })
-
-  return addressesLists
+async function  fetchAddressInfos(){
+  await axios
+    .get(`/address/${form.value.addressId}`, {
+      headers: {
+        Authorization: `Bearer ${useAuthStore().token}`
+      }
+    })
+    .then((response) => {
+      const address = response.data.data.address
+      form.value.address= address.address
+      form.value.additionnalAddress = address.additionnalAddress
+      form.value.city= address.city
+      form.value.postCode = address.postCode
+      form.value.country = address.country
+    })
+    .catch((error) => {
+      console.error(error)
+    })
 }
 
-const handleInputCompany = (value: string) => {
-  form.value.companyId = parseInt(value)
+
+
+async function  fetchPersonInfos () {
+  await axios
+    .get(`/person/${props.clientId}`, {
+      headers: {
+        Authorization: `Bearer ${useAuthStore().token}`
+      }
+    })
+    .then((response) => {
+      const person = response.data.data.person
+      form.value.personId = person.personId
+      form.value.lastname = person.lastname
+      form.value.firstname = person.firstname
+      form.value.gender = person.gender
+      form.value.mobilePhone = person.mobilePhone
+      form.value.landlinePhone = person.landlinePhone
+      form.value.email = person.email
+      form.value.createdAt = person.createdAt.toString()
+      form.value.updatedAt = person.updatedAt.toString()
+    })
+    .catch((error) => {
+      console.error(error)
+    })
 }
 
-const handleInputAddress = (value: string) => {
-  form.value.addressId = parseInt(value)
+async function  fetchClientInfos ()  {
+  await axios
+    .get(`/client/${props.clientId}`, {
+      headers: {
+        Authorization: `Bearer ${useAuthStore().token}`
+      }
+    })
+    .then((response) => {
+      const client = response.data.data.client
+
+      form.value.function = client.function
+      form.value.companyId = client.companyId
+      form.value.firstContact = client.firstContact
+      
+    })
+    .catch((error) => {
+      console.error(error)
+    })
 }
 
-const handleClickNewCompany = () => {
-  form.value.companyId = 0
-  console.log("Click"+ form.value.companyId )
+
+async function  fetchCompanyInfos () {
+  await axios
+    .get(`/company/${form.value.companyId}`, {
+      headers: {
+        Authorization: `Bearer ${useAuthStore().token}`
+      }
+    })
+    .then((response) => {
+      const company = response.data.data.company
+
+      form.value.name = company.name
+      form.value.legalEntity = company.legalEntity
+      form.value.addressId = company.addressId
+      form.value.companyType = company.companyType
+      form.value.activityField = company.activityField
+      
+    })
+    .catch((error) => {
+      console.error(error)
+    })
 }
 
-const handleClickNewAdress = () => {
-  form.value.addressId = 0
-}
-const companyList = ref([] as { value: string; label: string }[]) // Initialisation d'une liste réactive vide
-const addressList = ref([] as { value: string; label: string }[]) // Initialisation d'une liste réactive vide
 
-onMounted(async () => {
-  companyList.value = await getDataCompany()
-  addressList.value = await getDataAddress()
+
+onMounted(() => {
+  fetchInfos()
 })
 
-const { toast } = useToast()
 
-async function newAddress() {
+async function updateAddress() {
+  if (!form.value.additionnalAddress){
+    form.value.additionnalAddress=""
+  }
   await axios
-    .post(
-      `/address/`,
+    .put(
+      `/address/${form.value.addressId}`,
       {
         address: {
           address: form.value.address,
@@ -303,7 +372,6 @@ async function newAddress() {
       }
     )
     .then((response) => {
-      form.value.addressId = response.data.data.addressId
       toast({
         title: 'Adresse renseignée',
         description: `${form.value.address}`
@@ -318,11 +386,10 @@ async function newAddress() {
       })
     })
 }
-
-async function newCompany() {
+async function updateCompany() {
   await axios
-    .post(
-      `/company/`,
+    .put(
+      `/company/${form.value.companyId}`,
       {
         company: {
           name: form.value.name,
@@ -340,7 +407,6 @@ async function newCompany() {
       }
     )
     .then((response) => {
-      form.value.companyId = response.data.data.companyId
       console.log("Before" + form.value.companyId)
 
       toast({
@@ -358,10 +424,11 @@ async function newCompany() {
     })
 }
 
-async function newPerson() {
+
+async function updatePerson() {
   await axios
-    .post(
-      `/person/`,
+    .put(
+      `/person/${form.value.personId}`,
       {
         person: {
           lastname: form.value.lastname,
@@ -379,7 +446,6 @@ async function newPerson() {
       }
     )
     .then((response) => {
-      form.value.personId = response.data.data.personId
       toast({
         title: 'PErsonne renseignée',
         description: `${form.value.personId}`
@@ -395,10 +461,12 @@ async function newPerson() {
     })
 }
 
-async function newClient() {
+
+async function updateClient() {
+  console.log(form.value.personId)
   await axios
-    .post(
-      `/client/`,
+    .put(
+      `/client/${form.value.personId}`,
       {
         client: {
           clientId: form.value.personId,
@@ -414,10 +482,9 @@ async function newClient() {
         }
       }
     )
-    .then((response) => {
+    .then(() => {
       toast({
-        title: 'Personne renseignée',
-        description: `${response.data.data.clientId}`
+        title: 'Modification effectué',
       })
     })
     .catch((error) => {
@@ -430,15 +497,11 @@ async function newClient() {
     })
 }
 
-async function handleClick() {
-  if (form.value.addressId == 0) {
-    await newAddress()
-  }
-  if (form.value.companyId == 0) {
-    await newCompany()
-  }
-  await newPerson()
-  console.log(form.value.personId)
-  await newClient()
+const handleClick = () =>{
+  updateAddress()
+  updateCompany()
+  updatePerson()
+  updateClient()
+
 }
 </script>

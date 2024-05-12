@@ -5,6 +5,7 @@ import { HttpError } from 'http-errors'
 import createHttpError from 'http-errors'
 import { isValidMember } from '../validator/member.validator'
 import Persons from '../models/person.model'
+import { log } from 'console'
 
 /**
  * Get all members
@@ -42,6 +43,8 @@ const getByPk = async (req: Request, res: Response) => {
 
         if (!member) throw createHttpError(404, 'Member not found')
 
+        console.log(member);
+        
         return res.status(200).json({
             status: 'success',
             data: {

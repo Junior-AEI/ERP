@@ -36,7 +36,8 @@ const getByProject = async (req: Request, res: Response) => {
         const projectNotes = await ProjectNotes.findAll({
             where: {
                 projectId: identifier
-            }
+            },
+            order: [['createdAt', 'DESC']],
         })
 
         return res.status(200).json({

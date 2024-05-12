@@ -5,6 +5,7 @@ const router = express.Router()
 
 router.get('/', contributorController.getAll)
 router.get('/:contributorId', contributorController.getByPk)
+router.get('/byProject/:projectId', contributorController.getByProject)
 router.post('/', contributorController.create)
 router.put('/:contributorId', contributorController.update)
 router.delete('/:contributorId', contributorController.del)

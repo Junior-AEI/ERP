@@ -6,6 +6,7 @@ import { HttpError } from 'http-errors'
 import { isValidClient } from '../validator/client.validator'
 import Companies from '../models/company.model'
 import Persons from '../models/person.model'
+import { Order } from 'sequelize/types'
 
 /**
  * Get all clients
@@ -14,8 +15,13 @@ import Persons from '../models/person.model'
  */
 const getAll = async (req: Request, res: Response) => {
     try {
-        const clients = await Clients.findAll({})
+        const sort = req.query.sort as string | undefined // récupérer l'option sort dans la requête
 
+    const clients = await Clients.findAll({
+        order: [
+            [sort ?? 'createdAt', 'DESC'],
+        ],
+    });
         return res.status(200).json({
             status: 'success',
             data: {

@@ -5,6 +5,7 @@ import { controllerErrorHandler } from './utils.controller'
 import ProjectManagers from '../models/projectManager.model'
 import Users from '../models/user.model'
 import Projects from '../models/project.model'
+import { get } from 'http'
 
 /**
  * Get all users
@@ -44,6 +45,29 @@ const getByPk = async (req: Request, res: Response) => {
             status: 'success',
             data: {
                 projectManager: projectManager
+            }
+        })
+    } catch (err) {
+        if (err instanceof HttpError) controllerErrorHandler(err, res)
+        else throw err
+    }
+}
+
+async function getByProject(req: Request, res: Response) {
+    try {
+        const identifier = parseInt(req.params.projectId)
+        if (isNaN(identifier)) throw createHttpError(400, 'Please provide a valid identifier')
+
+        const projectManagers = await ProjectManagers.findAll({
+            where: {
+                projectId: identifier
+            }
+        })
+
+        return res.status(200).json({
+            status: 'success',
+            data: {
+                projectManagers: projectManagers
             }
         })
     } catch (err) {
@@ -167,6 +191,7 @@ const del = async (req: Request, res: Response) => {
 const projectManagerController = {
     getAll,
     getByPk,
+    getByProject,
     create,
     del,
     update

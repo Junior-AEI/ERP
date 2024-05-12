@@ -41,6 +41,7 @@ app.use(pinia)
 import router from './router'
 app.use(router)
 
+
 /* Import des plugin vue */
 
 import { autoAnimatePlugin } from '@formkit/auto-animate/vue'

@@ -175,4 +175,17 @@ export interface ProjectNotes {
   createdAt: DateString
 }
 
+export type ExtendedProject = ProjectInfo & { delta: string } & { contributors: Person[], projectManagers: Person[] }
+
+export interface Contributor {
+  contributorId: number
+  projectId: number
+  personId: number
+}
+
+export interface ProjectManager {
+  projectManagerId: number
+  projectId: number
+  personId: number
+}
 

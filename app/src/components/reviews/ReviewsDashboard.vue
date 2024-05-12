@@ -71,7 +71,7 @@
 <script setup lang="ts">
 import { ref, onMounted, watch } from 'vue'
 import { columns } from './columns'
-import type { Document, DocumentType, DocumentFull } from '@/types/api'
+import type { Document, DocumentType, ExtendedDocument } from '@/types/api'
 import axios from 'axios'
 import { useAuthStore } from '@/stores/authStore'
 import { Card, CardContent, CardHeader } from '@/components/ui/card'
@@ -85,9 +85,10 @@ const props = defineProps<{
 
 const documents = ref<Document[]>([])
 const documentTypes = ref<DocumentType[]>([])
-const data = ref<DocumentFull[]>([])
+const data = ref<ExtendedDocument[]>([])
+const lastData = ref<ExtendedDocument[]>([])
 
-const dataLength = ref(data.value.length)
+const dataLength = ref(NaN)
 
 async function getData(): Promise<Document[]> {
   // Fetch data from your API here.
@@ -108,17 +109,23 @@ async function getDocumentType(): Promise<DocumentType[]> {
   return response.data.data.documentTypes
 }
 
-function createDocumentFull(document: Document, documentTypes: DocumentType[]): DocumentFull {
+function createExtendedDocument(
+  document: Document,
+  documentTypes: DocumentType[]
+): ExtendedDocument {
   const documentType = documentTypes.find((dt) => dt.typeId === document.typeId)
   const type = documentType?.type ?? ''
   const fieldNumber = documentType?.fieldNumber ?? 0
   const fieldMeaning = documentType?.fieldMeaning ?? ''
+  const index = fieldMeaning.split('|').indexOf('Étude (Acronyme)')
+  const acronym = index !== -1 ? document.information.split('|')[index] : 'N/C'
 
   return {
     ...document,
     type,
     fieldNumber,
-    fieldMeaning
+    fieldMeaning,
+    acronym
   }
 }
 
@@ -126,8 +133,12 @@ const loadData = async () => {
   documents.value = await getData()
   documentTypes.value = await getDocumentType()
   data.value = documents.value
-    .map((document: Document) => createDocumentFull(document, documentTypes.value))
-    .filter((documentFull) => documentFull.status === 'A relire')
+    .map((document: Document) => createExtendedDocument(document, documentTypes.value))
+    .filter((ExtendedDocument) => ExtendedDocument.status === 'A relire')
+  dataLength.value = data.value.length
+  lastData.value = data.value
+    .sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime())
+    .slice(0, 3)
 }
 
 onMounted(async () => {

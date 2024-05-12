@@ -123,7 +123,7 @@ export interface Company {
   addressId: number
   companyId: number
   companyType: string
-  activityField : string
+  activityField: string
 }
 
 export interface Client {
@@ -137,13 +137,13 @@ export type ClientInfo = Client & Company & Person & Address
 //WAITING This interface is created with element of ClientInfo,Event and Project 
 //so if you change one of them change this too
 export interface ClientInfoForTable {
-  lastname : string
-  firstname : string
-  Projectsname : string[]
-  clientId : number
-  name : string
-  activityField : string
-  firstContact : string
+  lastname: string
+  firstname: string
+  Projectsname: string[]
+  clientId: number
+  name: string
+  activityField: string
+  firstContact: string
 }
 
 export interface Document {
@@ -165,7 +165,7 @@ export interface DocumentType {
   fieldMeaning: string
 }
 
-export type DocumentFull = Document & DocumentType // combine Document and DocumentType
+export type ExtendedDocument = Document & DocumentType & { acronym: string }// combine Document and DocumentType
 
 
 export type ProjectInfo = Project & ClientInfo

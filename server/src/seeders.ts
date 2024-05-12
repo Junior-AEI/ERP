@@ -305,21 +305,21 @@ const createUser = async () => {
         documentTypeId: 1,
         type: "Convention d'Étude",
         fieldNumber: 4,
-        fieldMeaning: 'Frais de commande (HT)|Frais de Structure (HT)|JEH (HT)|Date de fin de validité'
+        fieldMeaning: 'Étude (Acronyme)|Frais de commande (HT)|Frais de Structure (HT)|JEH (HT)|Date de fin de validité'
     })
 
     const documentType2 = await DocumentTypes.create({
         documentTypeId: 2,
         type: "Avenant à la convention d'Étude",
         fieldNumber: 2,
-        fieldMeaning: "Type d'Avenant|Date de fin de validité"
+        fieldMeaning: "Étude (Acronyme)|Type d'Avenant|Date de fin de validité"
     })
 
     const documentType3 = await DocumentTypes.create({
         documentTypeId: 3,
         type: 'Récapitulatif de mission',
         fieldNumber: 3,
-        fieldMeaning: 'Intervenant concerné|Rétribution brute|Date de fin de validité'
+        fieldMeaning: 'Étude (Acronyme)|Intervenant concerné|Rétribution brute|Date de fin de validité'
     })
 
     const documentType4 = await DocumentTypes.create({
@@ -348,221 +348,221 @@ const createUser = async () => {
         postCode: '99999',
         country: 'FRA'
     })
-    
-        const company1 = await Companies.create({
-            companyId: 1,
-            name: 'Company1',
-            legalEntity: 'SAS',
-            addressId: addressCompany1.addressId,
-            companyType: 'PME',
-            activityField: 'Informatique',
-            createdAt: ct,
-            updatedAt: ct
-        })
-    
-        const client1 = await Clients.create({
-            clientId: personClient1.personId,
-            function: 'PDG',
-            companyId: company1.companyId,
-            firstContact: 'Soirée partenaire'
 
-        })
-        
-        const personClient2 = await Persons.create({
-            firstname: 'Jacques',
-            lastname: 'Client2',
+    const company1 = await Companies.create({
+        companyId: 1,
+        name: 'Company1',
+        legalEntity: 'SAS',
+        addressId: addressCompany1.addressId,
+        companyType: 'PME',
+        activityField: 'Informatique',
+        createdAt: ct,
+        updatedAt: ct
+    })
+
+    const client1 = await Clients.create({
+        clientId: personClient1.personId,
+        function: 'PDG',
+        companyId: company1.companyId,
+        firstContact: 'Soirée partenaire'
+
+    })
+
+    const personClient2 = await Persons.create({
+        firstname: 'Jacques',
+        lastname: 'Client2',
+        gender: 'M',
+        mobilePhone: '+33678657890',
+        email: 'jacques2@client.fr',
+        landlinePhone: '+33687996621'
+    })
+
+    const client2 = await Clients.create({
+        clientId: personClient2.personId,
+        function: 'vice-PDG',
+        companyId: company1.companyId,
+        firstContact: 'Soirée partenaire',
+        createdAt: new Date('2023-07-26T12:00:00')
+    })
+
+    const personClient3 = await Persons.create({
+        firstname: 'Jacques',
+        lastname: 'Client3',
+        gender: 'M',
+        mobilePhone: '+33678657890',
+        email: 'jacques3@client.fr',
+        landlinePhone: '+33687996621'
+    })
+
+    const client3 = await Clients.create({
+        clientId: personClient3.personId,
+        function: 'vice-vice-PDG',
+        companyId: company1.companyId,
+        firstContact: 'Soirée partenaire',
+        createdAt: new Date('2024-03-26T12:00:00')
+    })
+
+    const project1 = await Projects.create({
+        projectId: 1,
+        name: 'Project1',
+        acronym: 'PRO1',
+        clientId: client1.clientId,
+        startDate: new Date('2023-07-26T12:00:00'),
+        endDate: new Date('2024-07-27T12:00:00')
+    })
+
+    const contributor1 = await Contributors.create({
+        projectId: 1,
+        memberId: user2.userId
+    })
+
+    const project2 = await Projects.create({
+        projectId: 2,
+        name: 'Project2',
+        acronym: 'PRO2',
+        clientId: client1.clientId,
+        startDate: new Date('2022-07-26T12:00:00'),
+        endDate: new Date('2023-07-27T12:00:00')
+    })
+
+    const note1Project1 = await ProjectNotes.create({
+        noteId: 1,
+        writerId: 2,
+        projectId: 1,
+        comment: 'Ca avance bien',
+        advancement: 'CE signé'
+    })
+
+    const note2Project1 = await ProjectNotes.create({
+        noteId: 2,
+        writerId: 2,
+        projectId: 1,
+        comment: 'Ca avance toujours bien',
+        advancement: 'FA émise'
+    })
+
+    const note1Project2 = await ProjectNotes.create({
+        noteId: 3,
+        writerId: 2,
+        projectId: 2,
+        comment: 'Ca avance plutot bien',
+        advancement: 'Prospection'
+    })
+    const note2Project2 = await ProjectNotes.create({
+        noteId: 4,
+        writerId: 2,
+        projectId: 2,
+        comment: 'Ca avance plutot bien',
+        advancement: 'CE signé'
+    })
+    console.log('Project created', project1, project2, note1Project1, note2Project1, note1Project2, note2Project2)
+
+    const persons = [
+        {
+            personId: 7,
+            lastname: 'Brown',
+            firstname: 'Emily',
+            gender: 'F',
+            mobilePhone: '5555555555',
+            landlinePhone: '6666666666',
+            email: 'emilybrown@example.com',
+            createdAt: '2022-01-01',
+            updatedAt: '2022-01-01',
+            memberId: 7,
+            birthDate: '1992-01-01',
+            birthPlace: 'London',
+            nationality: 'GBR',
+            promotion: '2019',
+            contributionDate: '2022-01-01',
+            paymentMethod: 'CB',
+            department: 'Informatique',
+            membershipNumber: 987654,
+            addressId: 1,
+            telegramId: 'emilybrown',
+            chatBotId: 'emilybrown'
+        },
+        {
+            personId: 8,
+            lastname: 'Garcia',
+            firstname: 'Carlos',
             gender: 'M',
-            mobilePhone: '+33678657890',
-            email: 'jacques2@client.fr',
-            landlinePhone: '+33687996621'
-        })
-
-        const client2 = await Clients.create({
-            clientId: personClient2.personId,
-            function: 'vice-PDG',
-            companyId: company1.companyId,
-            firstContact: 'Soirée partenaire',
-            createdAt: new Date('2023-07-26T12:00:00')
-        })
-
-        const personClient3 = await Persons.create({
-            firstname: 'Jacques',
-            lastname: 'Client3',
-            gender: 'M',
-            mobilePhone: '+33678657890',
-            email: 'jacques3@client.fr',
-            landlinePhone: '+33687996621'
-        })
-
-        const client3 = await Clients.create({
-            clientId: personClient3.personId,
-            function: 'vice-vice-PDG',
-            companyId: company1.companyId,
-            firstContact: 'Soirée partenaire',
-            createdAt: new Date('2024-03-26T12:00:00')
-        })
-    
-        const project1 = await Projects.create({
-            projectId: 1,
-            name: 'Project1',
-            acronym: 'PRO1',
-            clientId: client1.clientId,
-            startDate: new Date('2023-07-26T12:00:00'),
-            endDate: new Date('2024-07-27T12:00:00')
-        })
-
-        const contributor1 = await Contributors.create({
-            projectId: 1,
-            memberId: user2.userId
-        })
-    
-        const project2 = await Projects.create({
-            projectId: 2,
-            name: 'Project2',
-            acronym: 'PRO2',
-            clientId: client1.clientId,
-            startDate: new Date('2022-07-26T12:00:00'),
-            endDate: new Date('2023-07-27T12:00:00')
-        })
-    
-        const note1Project1 = await ProjectNotes.create({
-            noteId: 1,
-            writerId: 2,
-            projectId: 1,
-            comment: 'Ca avance bien',
-            advancement: 'CE signé'
-        })
-    
-        const note2Project1 = await ProjectNotes.create({
-            noteId: 2,
-            writerId: 2,
-            projectId: 1,
-            comment: 'Ca avance toujours bien',
-            advancement: 'FA émise'
-        })
-    
-        const note1Project2 = await ProjectNotes.create({
-            noteId: 3,
-            writerId: 2,
-            projectId: 2,
-            comment: 'Ca avance plutot bien',
-            advancement: 'Prospection'
-        })
-        const note2Project2 = await ProjectNotes.create({
-            noteId: 4,
-            writerId: 2,
-            projectId: 2,
-            comment: 'Ca avance plutot bien',
-            advancement: 'CE signé'
-        })
-        console.log('Project created', project1, project2, note1Project1, note2Project1, note1Project2, note2Project2) 
-
-        const persons = [
-            {
-                personId: 7,
-                lastname: 'Brown',
-                firstname: 'Emily',
-                gender: 'F',
-                mobilePhone: '5555555555',
-                landlinePhone: '6666666666',
-                email: 'emilybrown@example.com',
-                createdAt: '2022-01-01',
-                updatedAt: '2022-01-01',
-                memberId: 7,
-                birthDate: '1992-01-01',
-                birthPlace: 'London',
-                nationality: 'GBR',
-                promotion: '2019',
-                contributionDate: '2022-01-01',
-                paymentMethod: 'CB',
-                department: 'Informatique',
-                membershipNumber: 987654,
-                addressId: 1,
-                telegramId: 'emilybrown',
-                chatBotId: 'emilybrown'
-            },
-            {
-                personId: 8,
-                lastname: 'Garcia',
-                firstname: 'Carlos',
-                gender: 'M',
-                mobilePhone: '1234567890',
-                landlinePhone: '0987654321',
-                email: 'carlosgarcia@example.com',
-                createdAt: '2022-01-01',
-                updatedAt: '2022-01-01',
-                memberId: 8,
-                birthDate: '1988-01-01',
-                birthPlace: 'Madrid',
-                nationality: 'ESP',
-                promotion: '2017',
-                contributionDate: '2022-01-01',
-                paymentMethod: 'CB',
-                department: 'Matmeca',
-                membershipNumber: 543210,
-                addressId: 1,
-                telegramId: 'carlosgarcia',
-                chatBotId: 'carlosgarcia'
-            },
-            {
-                personId: 9,
-                lastname: 'Lee',
-                firstname: 'Soo-Min',
-                gender: 'F',
-                mobilePhone: '9876543210',
-                landlinePhone: '0123456789',
-                email: 'soominlee@example.com',
-                createdAt: '2022-01-01',
-                updatedAt: '2022-01-01',
-                memberId: 9,
-                birthDate: '1993-01-01',
-                birthPlace: 'Seoul',
-                nationality: 'KOR',
-                promotion: '2016',
-                contributionDate: '2022-01-01',
-                paymentMethod: 'CB',
-                department: 'R&I',
-                membershipNumber: 876543,
-                addressId: 1,
-                telegramId: 'soominlee',
-                chatBotId: 'soominlee'
-            }
-        ];
-
-        for (const person of persons) {
-            const newPerson = await Persons.create(person);
-            const newMember = await Members.create(person);
-            const newContributor = await Contributors.create({
-                projectId: 1,
-                memberId: newMember.memberId
-            });
-            console.log('Person created', newPerson);
-            console.log('Member created', newMember);
-            console.log('Contributor created', newContributor);
+            mobilePhone: '1234567890',
+            landlinePhone: '0987654321',
+            email: 'carlosgarcia@example.com',
+            createdAt: '2022-01-01',
+            updatedAt: '2022-01-01',
+            memberId: 8,
+            birthDate: '1988-01-01',
+            birthPlace: 'Madrid',
+            nationality: 'ESP',
+            promotion: '2017',
+            contributionDate: '2022-01-01',
+            paymentMethod: 'CB',
+            department: 'Matmeca',
+            membershipNumber: 543210,
+            addressId: 1,
+            telegramId: 'carlosgarcia',
+            chatBotId: 'carlosgarcia'
+        },
+        {
+            personId: 9,
+            lastname: 'Lee',
+            firstname: 'Soo-Min',
+            gender: 'F',
+            mobilePhone: '9876543210',
+            landlinePhone: '0123456789',
+            email: 'soominlee@example.com',
+            createdAt: '2022-01-01',
+            updatedAt: '2022-01-01',
+            memberId: 9,
+            birthDate: '1993-01-01',
+            birthPlace: 'Seoul',
+            nationality: 'KOR',
+            promotion: '2016',
+            contributionDate: '2022-01-01',
+            paymentMethod: 'CB',
+            department: 'R&I',
+            membershipNumber: 876543,
+            addressId: 1,
+            telegramId: 'soominlee',
+            chatBotId: 'soominlee'
         }
+    ];
 
-        const contributor2 = await Contributors.create({
-            projectId: 2,
-            memberId: 9
-        })
-
-        const projectManager = await ProjectManagers.create({
+    for (const person of persons) {
+        const newPerson = await Persons.create(person);
+        const newMember = await Members.create(person);
+        const newContributor = await Contributors.create({
             projectId: 1,
-            userId: user.userId
-        })
-
-        const projectManager2 = await ProjectManagers.create({
-            projectId: 2,
-            userId: user.userId
-        })
-
-        const projectManager3 = await ProjectManagers.create({
-            projectId: 1,
-            userId: user2.userId
-        })
-
-
-
+            memberId: newMember.memberId
+        });
+        console.log('Person created', newPerson);
+        console.log('Member created', newMember);
+        console.log('Contributor created', newContributor);
     }
+
+    const contributor2 = await Contributors.create({
+        projectId: 2,
+        memberId: 9
+    })
+
+    const projectManager = await ProjectManagers.create({
+        projectId: 1,
+        userId: user.userId
+    })
+
+    const projectManager2 = await ProjectManagers.create({
+        projectId: 2,
+        userId: user.userId
+    })
+
+    const projectManager3 = await ProjectManagers.create({
+        projectId: 1,
+        userId: user2.userId
+    })
+
+
+
+}
 
 export default createFakeData

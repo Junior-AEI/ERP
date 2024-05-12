@@ -1,6 +1,6 @@
 import { h } from 'vue'
 import type { ColumnDef } from '@tanstack/vue-table'
-import type { DocumentFull } from '@/types/api'
+import type { ExtendedDocument } from '@/types/api'
 import { Button } from '../ui/button'
 import DocumentsDataTableButton from './ReviewsDataTableButton.vue'
 import Icon from '../Icon.vue'
@@ -30,7 +30,7 @@ function convertToCalendarDate(isoDateString: string): string {
 
 const defaultClasses = 'text-left font-medium'
 
-export const columns: ColumnDef<DocumentFull>[] = [
+export const columns: ColumnDef<ExtendedDocument>[] = [
     {
         accessorKey: 'type',
         meta: {

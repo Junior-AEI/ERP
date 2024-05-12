@@ -21,9 +21,9 @@
         </div>
       </div>
       <div class="mx-4 w-px bg-gray-300"></div>
-      <div class="h-44 w-1/2">
+      <div class="h-36 w-1/2">
         <h2 class="mb-2">Dernières relectures</h2>
-        <ScrollArea class="h-44 gap-4 rounded border bg-white">
+        <ScrollArea class="h-36 gap-4 rounded border bg-white">
           <div v-for="(item, index) in data" :key="index">
             <Card>
               <div class="m-4 ml-4 mr-4 flex flex-1 flex-row-reverse items-center gap-4">

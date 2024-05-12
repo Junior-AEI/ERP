@@ -57,6 +57,31 @@ export const columns: ColumnDef<ExtendedDocument>[] = [
         cell: ({ row }) => h('div', { class: 'text-leftbah ' }, row.getValue('type'))
     },
     {
+        accessorKey: 'acronym',
+        meta: {
+            label: 'Étude'
+        },
+        header: ({ column }) => {
+            return h(
+                Button,
+                {
+                    variant: 'ghost',
+                    onClick: () => column.toggleSorting(column.getIsSorted() === 'asc')
+                },
+                () => [
+                    'Étude',
+                    h(
+                        h(Icon, {
+                            name: 'unfold_more'
+                        }),
+                        { class: '' }
+                    )
+                ]
+            )
+        },
+        cell: ({ row }) => h('div', { class: 'text-leftbah ' }, row.getValue('acronym'))
+    },
+    {
         accessorKey: 'createdAt',
         meta: {
             label: 'Créé le'

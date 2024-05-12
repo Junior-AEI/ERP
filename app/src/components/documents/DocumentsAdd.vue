@@ -148,6 +148,10 @@ const clearFields = () => {
   status.value = 'A relire'
 }
 
+const removeExtension = (filename: string): string => {
+  return filename.split('.').slice(0, -1).join('.')
+}
+
 /* axios requests */
 async function getDocumentType(): Promise<DocumentType[]> {
   const response = await axios.get(`/documentType`, {
@@ -174,8 +178,7 @@ const uploadDocument = () => {
         `/document`,
         {
           document: {
-            name: files.value[0].name,
-            path: 'path/to/file', // TODO : put actual path
+            name: removeExtension(files.value[0].name),
             version: version.value,
             typeId:
               documentTypes.value.find(

@@ -122,7 +122,9 @@ const update = async (req: Request, res: Response) => {
         const member = await Members.findByPk(identifier)
         if (!member) throw createHttpError(404, 'Member not found')
 
-        const validator = isValidMember(req.body.member.birthDate, req.body.member.birthPlace, req.body.member.nationality, req.body.member.promotion, req.body.member.contributionDate, req.body.member.department, req.body.member.membershipNumber)
+            const birthDateFormat = new Date(req.body.member.birthDate)
+        const contributionDateFormat = new Date(req.body.member.contributionDate)
+        const validator = isValidMember(birthDateFormat, req.body.member.birthPlace, req.body.member.nationality, req.body.member.promotion, contributionDateFormat, req.body.member.department, req.body.member.membershipNumber)
 
         if (validator.valid == 0) throw createHttpError(400, validator.message as string)
 

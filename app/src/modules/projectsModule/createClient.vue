@@ -117,6 +117,10 @@
                 </SelectContent>
               </Select>
             </div>
+            <div class="flex flex-1 flex-col gap-2">
+              <Label for="Ac">Domaine</Label>
+              <Input id="legalEntity" placeholder="Tel Fixe" v-model="form.activityField" />
+            </div>
           </div>
           <div class="mt-2 flex flex-col gap-2">
             <div class="flex items-end gap-4">
@@ -196,7 +200,8 @@ const form = ref<ClientInfo>({
   name: '',
   legalEntity: '',
   addressId: NaN,
-  companyType: '',
+  companyType : '',
+  activityField : '',
 
   function: '',
   firstContact: '',
@@ -318,7 +323,9 @@ async function newCompany() {
           name: form.value.name,
           legalEntity: form.value.legalEntity,
           addressId: form.value.addressId,
-          companyType: form.value.companyType
+          companyType: form.value.companyType,
+          activityField: form.value.activityField
+
         }
       },
       {

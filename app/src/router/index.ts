@@ -23,6 +23,14 @@ const baseRoutes = [
     }
   },
   {
+    path: '/client/profil',
+    name: 'Profil du client',
+    component: () => import('@/modules/projectsModule/ClientProfilView.vue'),
+    meta: {
+      icon: 'person'
+    }
+  },
+  {
     path: '/login',
     name: 'Se connecter',
     component: () => import('../views/LoginView.vue'),

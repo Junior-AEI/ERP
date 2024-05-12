@@ -105,65 +105,91 @@
           </div>
 
           <div v-if="form.companyId == 0">
-            <div class="flex items-end gap-4">
-              <div class="flex flex-1 flex-col gap-2">
-                <Label for="name">Nom de l'Entreprise</Label>
-                <Input id="name" placeholder="Tel Fixe" v-model="form.name" />
-              </div>
-              <div class="flex flex-1 flex-col gap-2">
-                <Label for="legalEntity">N° de SIRET de l'entreprise</Label>
-                <Input id="legalEntity" placeholder="Tel Fixe" v-model="form.legalEntity" />
-              </div>
+          <div class="flex items-end gap-4">
+            <div class="flex flex-1 flex-col gap-2">
+              <Label for="name">Nom de l'Entreprise</Label>
+              <Input id="name" placeholder="Tel Fixe" v-model="form.name" />
             </div>
-            <div class="mt-2 flex flex-col gap-2">
-              <div class="flex items-end gap-4">
-                <div class="flex flex-1 flex-col gap-2">
-                  <Label for="application">Adresse de l'Entreprise</Label>
-                  <Combobox
-                    @input="handleInputAddress"
-                    :options="addressList"
-                    :comboboxLabel="'Selectionner l\'adresse'"
-                  >
-                  </Combobox>
-                  <Button variant="outline" @click="handleClickNewAdress"
-                    >Renseigner une nouvelle Adresse</Button
-                  >
-                </div>
-                <div class="flex flex-1 flex-col gap-2"></div>
-              </div>
+            <div class="flex flex-1 flex-col gap-2">
+              <Label for="legalEntity">N° de SIRET de l'entreprise</Label>
+              <Input id="legalEntity" placeholder="Tel Fixe" v-model="form.legalEntity" />
             </div>
           </div>
+          <div class="flex items-end gap-4">
+            <div class="flex flex-1 flex-col gap-2">
+              <Label for="name">Type d'Entreprise</Label>
+              <Select v-model="form.companyType">
+            <SelectTrigger>
+              <SelectValue placeholder="Type d'entreprise" />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectGroup>
+                <SelectItem value="Particulier"> Particulier </SelectItem>
+                <SelectItem value="Association"> Association </SelectItem>
+                <SelectItem value="TPE"> TPE (- de 20 employés) </SelectItem>
+                <SelectItem value="PME"> PME (+ de 20 employés)</SelectItem>
+                <SelectItem value="Grand Groupe"> Grand Groupe </SelectItem>
+                <SelectItem value="Ecole"> Ecole </SelectItem>
+                <SelectItem value="Administration"> Administration </SelectItem>
 
-          <div v-if="form.addressId == 0">
-            <div class="flex items-end gap-4">
-              <div class="flex flex-1 flex-col gap-2">
-                <Label for="name">Adresse </Label>
-                <Input id="address" placeholder="Tel Fixe" v-model="form.address" />
-              </div>
-              <div class="flex flex-1 flex-col gap-2">
-                <Label for="legalEntity">Complément d'adresse</Label>
-                <Input
-                  id="additionnalAddress"
-                  placeholder="Tel Fixe"
-                  v-model="form.additionnalAddress"
-                />
-              </div>
+              </SelectGroup>
+            </SelectContent>
+          </Select>
             </div>
-            <div class="flex items-end gap-4">
-              <div class="mt-2 flex flex-1 flex-col gap-2">
-                <Label for="name">Code Postal </Label>
-                <Input id="postCode" placeholder="Tel Fixe" v-model="form.postCode" />
-              </div>
-              <div class="flex flex-1 flex-col gap-2">
-                <Label for="legalEntity">Ville</Label>
-                <Input id="city" placeholder="Tel Fixe" v-model="form.city" />
-              </div>
-            </div>
-            <div class="mt-2 flex flex-1 flex-col gap-2">
-              <Label for="legalEntity">Pays</Label>
-              <Input id="country" placeholder="Tel Fixe" v-model="form.country" />
+            <div class="flex flex-1 flex-col gap-2">
+              <Label for="Ac">Domaine</Label>
+              <Input id="legalEntity" placeholder="Tel Fixe" v-model="form.activityField" />
             </div>
           </div>
+          <div class="mt-2 flex flex-col gap-2">
+            <div class="flex items-end gap-4">
+              <div class="flex flex-1 flex-col gap-2">
+                <Label for="application">Adresse de l'Entreprise</Label>
+                <Combobox
+                  @input="handleInputAddress"
+                  :options="addressList"
+                  :comboboxLabel="'Selectionner l\'adresse'"
+                >
+                </Combobox>
+                <Button variant="outline" @click="handleClickNewAdress"
+                  >Renseigner une nouvelle Adresse</Button
+                >
+              </div>
+              <div class="flex flex-1 flex-col gap-2"></div>
+            </div>
+          </div>
+        </div>
+
+        <div v-if="form.addressId == 0">
+          <div class="flex items-end gap-4">
+            <div class="flex flex-1 flex-col gap-2">
+              <Label for="name">Adresse </Label>
+              <Input id="address" placeholder="Tel Fixe" v-model="form.address" />
+            </div>
+            <div class="flex flex-1 flex-col gap-2">
+              <Label for="legalEntity">Complément d'adresse</Label>
+              <Input
+                id="additionnalAddress"
+                placeholder="Tel Fixe"
+                v-model="form.additionnalAddress"
+              />
+            </div>
+          </div>
+          <div class="flex items-end gap-4">
+            <div class="mt-2 flex flex-1 flex-col gap-2">
+              <Label for="name">Code Postal </Label>
+              <Input id="postCode" placeholder="Tel Fixe" v-model="form.postCode" />
+            </div>
+            <div class="flex flex-1 flex-col gap-2">
+              <Label for="legalEntity">Ville</Label>
+              <Input id="city" placeholder="Tel Fixe" v-model="form.city" />
+            </div>
+          </div>
+          <div class="mt-2 flex flex-1 flex-col gap-2">
+            <Label for="legalEntity">Pays</Label>
+            <Input id="country" placeholder="Tel Fixe" v-model="form.country" />
+          </div>
+        </div>
 
           <Button @click="handleClickClient" class="mt-3">Créer un nouveau Client</Button>
         </div>
@@ -221,6 +247,8 @@ const form = ref<ProjectInfo>({
   name: '',
   legalEntity: '',
   addressId: NaN,
+  activityField : '',
+
 
   function: '',
   firstContact: '',

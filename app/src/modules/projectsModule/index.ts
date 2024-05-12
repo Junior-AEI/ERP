@@ -44,7 +44,9 @@ export const projectsModule: Module = {
       ],
       meta: {
         icon: 'work'
-      }
-    }
+      },
+      
+    },
+    
   ]
 }

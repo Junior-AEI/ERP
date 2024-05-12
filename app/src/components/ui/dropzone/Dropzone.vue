@@ -28,7 +28,8 @@ const props = defineProps({
 })
 
 const files = defineModel<File[]>({
-  required: true
+  required: true,
+  default: () => []
 })
 
 const generatePreview = (file: File) => {

@@ -1,109 +1,170 @@
 <template>
-  <div class="flex flex-col gap-4">
-    <Card class="flex-1">
-      <CardHeader>
-        <Icon name="badge" class="text-6xl" />
-        <span class="text-accent"> Informations du Membre </span>
-      </CardHeader>
-      <CardContent>
-        <div class="flex items-end gap-4">
-          <div class="flex flex-1 flex-col gap-2">
-            <Label for="gender">Genre</Label>
-            <Input id="gender" v-model="personGender" />
-          </div>
-          <div class="flex-3 flex flex-col gap-2">
-            <Label for="username">Prénom</Label>
-            <Input id="username" v-model="personFirstname" />
-          </div>
-          <div class="flex-3 flex flex-col gap-2">
-            <Label for="userId">Nom</Label>
-            <Input id="userId" v-model="personLastname" />
-          </div>
+
+  <Card class="flex-1">
+    <CardHeader>
+      <Icon name="badge" class="text-6xl" />
+      <span class="text-accent"> Informations du Membre </span>
+      <Button class="ml-5" v-if="!canEdit" @click="handleClick">Valider les modifications</Button>
+    </CardHeader>
+    <CardContent>
+      <div class="flex items-end gap-4">
+        <div class="flex flex-1 flex-col gap-2">
+          <Label for="lastname">Nom</Label>
+          <Input id="lastname" v-model="form.lastname" />
         </div>
-        <div class="flex items-end gap-4">
-          <div class="flex flex-1 flex-col gap-2">
-            <Label for="email">addresse Email</Label>
-            <Input type="email" id="email" v-model="personEmail" />
-          </div>
-          <div class="flex-3 flex flex-col gap-2">
-            <Label for="phone">Numéro de téléphone</Label>
-            <Input type="tel" id="phone" v-model="personMobilePhone" />
-          </div>
+        <div class="flex flex-1 flex-col gap-2">
+          <Label for="firstname">Prénom</Label>
+          <Input id="firstname" v-model="form.firstname" />
         </div>
 
-        <div class="flex items-end gap-4">
-          <div class="flex flex-1 flex-col gap-2">
-            <Label for="birthDate">Date de Naissance</Label>
-            <DatePickerComponent v-model="memberBirthDate" />
+      </div>
+      <div class="flex items-end gap-4">
+        <div class="flex flex-1 flex-col gap-2">
+          <Label for="gender">Genre</Label>
+          <div class="flex flex-1 flex-row gap-2">
+
+            <Input :disabled="!canEdit" v-if="ModifyGender == false" id="firstname" v-model="form.gender" />
+            <Button v-if="ModifyGender == false" @click="handleModifyGender">
+              <Icon name="edit" />
+            </Button>
+            <Select v-model="form.gender" v-if="ModifyGender == true">
+              <SelectTrigger>
+                <SelectValue placeholder="Genre" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectGroup>
+                  <SelectItem value="M"> Homme </SelectItem>
+                  <SelectItem value="F"> Femme </SelectItem>
+                  <SelectItem value="O"> Autre </SelectItem>
+                </SelectGroup>
+              </SelectContent>
+            </Select>
           </div>
-          <div class="flex flex-1 flex-col gap-2">
-            <Label for="birthPlace">Lieu de naissance</Label>
-            <Input id="birthPlace" v-model="memberBirthPlace" />
+
+        </div>
+        <div class="flex flex-1 flex-col gap-2">
+          <Label for="birthDate">Date de naissance</Label>
+          <div class="flex flex-1 flex-row gap-2">
+            <Input :disabled="1" v-if="!ModifyBirthDate" id="firstname" v-model="birthDateString" />
+            <Button v-if="!ModifyBirthDate" @click="handleModifyBirthDate">
+              <Icon name="edit" />
+            </Button>
+            <DatePickerComponent v-if="ModifyBirthDate" v-model="birthDateFormat" />
           </div>
+        </div>
+      </div>
+      <div class="flex items-end gap-4">
+
+        <div class="flex flex-1 flex-col gap-2">
+          <Label for="birthPlace">Lieu de naissance</Label>
+          <Input id="birthPlace" v-model="form.birthPlace" />
         </div>
         <div class="flex flex-1 flex-col gap-2">
           <Label for="nationality">Nationalité</Label>
-          <Input id="nationality" v-model="memberNationality" />
+          <Input id="nationality" v-model="form.nationality" />
         </div>
-        <div class="flex items-end gap-4">
-          <div class="flex flex-1 flex-col gap-2">
-            <Label for="dept">Fillière</Label>
-            <Input id="dept" v-model="memberDepartment" />
-          </div>
-          <div class="flex flex-1 flex-col gap-2">
-            <Label for="prom">Promo</Label>
-            <Input id="prom" v-model="memberPromotion" />
+      </div>
+
+      <div class="flex items-end gap-4">
+        <div class="flex flex-1 flex-col gap-2">
+          <Label for="department">Filière</Label>
+          <div class="flex flex-1 flex-row gap-2">
+            <Input :disabled="1" v-if="!ModifyDepartment" id="firstname" v-model="form.department" />
+            <Button v-if="!ModifyDepartment" @click="handleModifyDepartment">
+              <Icon name="edit" />
+            </Button>
+            <Select v-model="form.department" v-if="ModifyDepartment">
+              <SelectTrigger>
+                <SelectValue placeholder="Filière" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectGroup>
+                  <SelectItem value="Informatique"> Info </SelectItem>
+                  <SelectItem value="Telecommunication"> Telecom </SelectItem>
+                  <SelectItem value="Matmeca"> Matmeca </SelectItem>
+                  <SelectItem value="Electronique"> Elec </SelectItem>
+                  <SelectItem value="R&I"> R&I </SelectItem>
+                  <SelectItem value="SEE"> SEE </SelectItem>
+                </SelectGroup>
+              </SelectContent>
+            </Select>
           </div>
         </div>
-        <div class="flex items-end gap-4">
-          <div class="flex flex-1 flex-col gap-2">
-            <Label for="contrib">Date de cotisation</Label>
-            <DatePickerComponent :disabled="!canEdit" v-model="memberContributionDate" />
+        <div class="flex flex-1 flex-col gap-2">
+          <Label for="promotion">Promo</Label>
+          <Input id="promotion" :placeholder="new Date().getFullYear() + 2" v-model="form.promotion" />
+        </div>
+      </div>
+      <div class="flex items-end gap-4">
+        <div class="flex flex-1 flex-col gap-2">
+          <Label for="mobilePhone">N° de Téléphone Mobile</Label>
+          <Input id="mobilePhone" placeholder="Info" v-model="form.mobilePhone" />
+        </div>
+        <div class="flex flex-1 flex-col gap-2">
+          <Label for="landlinePhone">N° de Téléphone</Label>
+          <Input id="landlinePhone" placeholder="Tel Fixe" v-model="form.landlinePhone" />
+        </div>
+      </div>
+      <div class="flex justify-end gap-4">
+
+        <div class="flex flex-1 flex-col gap-2">
+          <Label for="landlinePhone">Email</Label>
+          <Input id="landlinePhone" placeholder="Tel Fixe" v-model="form.email" />
+        </div>
+        <div class="flex flex-1 flex-col gap-2">
+          <Label for="paymentMethod">Moyen de paiement de la Cotisation</Label>
+          <div class="flex flex-1 flex-row gap-2">
+            <Input :disabled="1" v-if="!ModifyPaymentMethod" id="firstname" v-model="form.paymentMethod" />
+            <Button v-if="!ModifyPaymentMethod" @click="handleModifyPaymentMethod">
+              <Icon name="edit" />
+            </Button>
+            <Select v-model="form.paymentMethod" v-if="ModifyPaymentMethod">
+              <SelectTrigger>
+                <SelectValue placeholder="Moyen de Payement" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectGroup>
+                  <SelectItem value="HelloAsso"> Hello Asso </SelectItem>
+                  <SelectItem value="LydiaPro"> Lydia Pro </SelectItem>
+                  <SelectItem value="Vir"> Virement </SelectItem>
+                </SelectGroup>
+              </SelectContent>
+            </Select>
           </div>
-          <div class="flex flex-1 flex-col gap-2">
-            <Label for="contribmeth">Moyen de payement</Label>
-            <Input :disabled="!canEdit" id="contribmeth" v-model="memberPaymentMethod" />
+        </div>
+      </div>
+      <div class="flex justify-end gap-4">
+        <div class="flex flex-1 flex-col gap-2">
+          <Label for="membershipNumber">Numéro de cotisation</Label>
+          <Input id="membershipNumber" v-model="form.membershipNumber" />
+        </div>
+        <div class="flex flex-1 flex-col gap-2">
+          <Label for="contributionDate">Date de cotisation</Label>
+          <div class="flex flex-1 flex-row gap-2">
+            <Input :disabled="1" v-if="!ModifyContributionDate" id="firstname" v-model="contributionDateString" />
+            <Button v-if="!ModifyContributionDate" @click="handleModifyContributionDate">
+              <Icon name="edit" />
+            </Button>
+            <DatePickerComponent v-if="ModifyContributionDate" v-model="contributionDateFormat" />
           </div>
         </div>
 
-        <Button @click="editMemberData()">Modifier</Button>
-      </CardContent>
-    </Card>
+      </div>
 
-    <Card class="flex-1">
-      <CardHeader>
-        <Icon name="location_on" class="text-6xl" />
-        <span class="text-accent">Adresse du membre</span>
-      </CardHeader>
-      <CardContent>
-        <div class="flex items-end gap-4">
-          <div class="flex flex-1 flex-col gap-2">
-            <Label for="address">Adresse</Label>
-            <Input id="address" v-model="addressAddress" />
-          </div>
-          <div class="flex flex-1 flex-col gap-2">
-            <Label for="add">Complément d'addresse</Label>
-            <Input id="add" v-model="addressAdditionnalAddress" />
-          </div>
+      <div class="flex justify-end gap-4">
+        <div class="flex flex-1 flex-col gap-2">
+          <Label for="membershipNumber">@Telegram</Label>
+          <Input id="membershipNumber" v-model="form.telegramId" />
         </div>
-        <div class="flex items-end gap-4">
-          <div class="flex flex-1 flex-col gap-2">
-            <Label for="city">Ville</Label>
-            <Input id="city" v-model="addressCity" />
-          </div>
-          <div class="flex flex-1 flex-col gap-2">
-            <Label for="postCode">Code Postal</Label>
-            <Input id="postCode" v-model="addressPostCode" />
-          </div>
-          <div class="flex flex-1 flex-col gap-2">
-            <Label for="country">Pays</Label>
-            <Input id="country" v-model="addressCountry" />
-          </div>
+        <div class="flex flex-1 flex-col gap-2">
+          <Label for="contributionDate">Chat ID (Pour connexion Bot Telegram)</Label>
+          <Input id="membershipNumber" v-model="form.chatBotId" />
         </div>
-        <Button @click="editaddressData()">Modifier l'addresse de l'utilisateur</Button>
-      </CardContent>
-    </Card>
-  </div>
+      </div>
+
+    </CardContent>
+  </Card>
+  <Toaster />
 </template>
 
 <script setup lang="ts">
@@ -117,78 +178,122 @@ const props = defineProps<{
 }>()
 
 const { toast } = useToast()
+import type { FullMemberWithAdress } from '@/types/api'
 
-import { type DateValue } from '@internationalized/date'
+import {
+  CalendarDateTime,
+  parseDateTime,
+  DateFormatter,
+  getLocalTimeZone,
+  type DateValue
+} from '@internationalized/date'
 
 const canEdit = ref(false) // to be modified when permissions are added
+const ModifyGender = ref(false);
+const ModifyContributionDate = ref(false);
+const ModifyDepartment = ref(false);
+const ModifyPaymentMethod = ref(false);
+const ModifyBirthDate = ref(false);
 
-// We define the data for the member
+const contributionDateFormat = ref<DateValue>()
+const birthDateFormat = ref<DateValue>()
+const contributionDateString = ref<string>()
+const birthDateString = ref<string>()
 
-const memberBirthDate = ref<DateValue>()
-const memberBirthPlace = ref<string>('')
-const memberNationality = ref<string>('')
-const memberPromotion = ref<string>('')
-const memberPaymentMethod = ref<string>('')
-const memberDepartment = ref<string>('')
-const memberMembershipNumber = ref<number>(NaN)
-const memberAddressId = ref<number>(NaN)
-const memberContributionDate = ref<DateValue>()
-const memberCreatedAt = ref<DateValue>()
-const memberUpdatedAt = ref<DateValue>()
 
-// We define the data for the person
 
-const personLastname = ref<string>('')
-const personFirstname = ref<string>('')
-const personGender = ref<string>('')
-const personMobilePhone = ref<string>('')
-const personLandlinePhone = ref<string>('')
-const personEmail = ref<string>('')
-const personCreatedAt = ref<DateValue>()
-const personUpdatedAt = ref<DateValue>()
+const handleModifyGender = () => {
+  ModifyGender.value = true;
+}
 
-// We define the data for the address
 
-const addressAddress = ref<string>('')
-const addressAdditionnalAddress = ref<string>('')
-const addressCity = ref<string>('')
-const addressPostCode = ref<string>('')
-const addressCountry = ref<string>('')
-const addressCreatedAt = ref<DateValue>()
-const addressUpdatedAt = ref<DateValue>()
+const handleModifyDepartment = () => {
+  ModifyDepartment.value = true;
+}
 
-const fetchInfos = () => {
-  // We fetch the member info
-  fetchMembersInfos()
+const handleModifyContributionDate = () => {
+  ModifyContributionDate.value = true;
+}
+
+const handleModifyPaymentMethod = () => {
+  ModifyPaymentMethod.value = true;
+}
+const handleModifyBirthDate = () => {
+  ModifyBirthDate.value = true;
+}
+
+const df = new DateFormatter('fr-FR', {
+  dateStyle: 'long',
+})
+
+function convertToCalendarDate(isoDateString: string): string {
+  console.log(isoDateString)
+  const dateObject = new Date(isoDateString)
+
+  // Check if the date object is valid
+  if (isNaN(dateObject.getTime())) {
+    throw new Error('Invalid date string')
+  }
+
+  // Extract year, month, and day from the date object
+  const year = dateObject.getFullYear()
+  const month = dateObject.getMonth() + 1 // Months are 0-based in JavaScript
+  const day = dateObject.getDate()
+  const hour = dateObject.getHours()
+  const minute = dateObject.getMinutes()
+  // Create and return a new CalendarDate object
+  return new CalendarDateTime(year, month, day, hour, minute).toString()
+}
+
+const form = ref<FullMemberWithAdress>({
+  personId: NaN,
+  lastname: '',
+  firstname: '',
+  gender: '',
+  mobilePhone: '',
+  landlinePhone: '',
+  email: '',
+
+  memberId: NaN,
+  birthDate: '',
+  birthPlace: '',
+  nationality: '',
+  promotion: '',
+  contributionDate: '',
+  paymentMethod: '',
+  department: '',
+  membershipNumber: NaN,
+  telegramId: '',
+  chatBotId: '',
+
+  addressId: NaN,
+  address: '',
+  additionnalAddress: '',
+  city: '',
+  postCode: '',
+  country: '',
+  createdAt: '',
+  updatedAt: ''
+})
+async function fetchInfos() {
+
+
 
   // We fetch the person info
-  fetchPersonInfos()
+  await fetchPersonInfos()
+  // We fetch the member info
+  await fetchMembersInfos()
+
+  contributionDateString.value = convertToCalendarDate(form.value.contributionDate)
+  contributionDateString.value = df.format(parseDateTime(contributionDateString.value).toDate(getLocalTimeZone()))
+  birthDateString.value = convertToCalendarDate(form.value.birthDate)
+  birthDateString.value = df.format(parseDateTime(birthDateString.value).toDate(getLocalTimeZone()))
 }
 
-const fetchAddressInfos = () => {
-  axios
-    .get(`/address/${props.memberId}`, {
-      headers: {
-        Authorization: `Bearer ${useAuthStore().token}`
-      }
-    })
-    .then((response) => {
-      const address = response.data.data.address
-      addressAddress.value = address.address
-      addressAdditionnalAddress.value = address.additionnalAddress
-      addressCity.value = address.city
-      addressPostCode.value = address.postCode
-      addressCountry.value = address.country
-      addressCreatedAt.value = address.createdAt.toString()
-      addressUpdatedAt.value = address.updatedAt.toString()
-    })
-    .catch((error) => {
-      console.error(error)
-    })
-}
 
-const fetchMembersInfos = () => {
-  axios
+
+async function fetchMembersInfos() {
+  await axios
     .get(`/member/${props.memberId}`, {
       headers: {
         Authorization: `Bearer ${useAuthStore().token}`
@@ -197,27 +302,30 @@ const fetchMembersInfos = () => {
     .then((response) => {
       const member = response.data.data.member
 
-      memberBirthDate.value = member.birthDate.toString()
-      memberBirthPlace.value = member.birthPlace
-      memberNationality.value = member.nationality
-      memberPromotion.value = member.promotion
-      memberPaymentMethod.value = member.paymentMethod
-      memberDepartment.value = member.department
-      memberMembershipNumber.value = member.membershipNumber
-      memberAddressId.value = member.addressId
-      memberContributionDate.value = member.contributionDate.toString()
-      memberCreatedAt.value = member.createdAt.toString()
-      memberUpdatedAt.value = member.updatedAt.toString()
+      form.value.birthDate = member.birthDate
+      form.value.birthPlace = member.birthPlace
+      form.value.nationality = member.nationality
+      form.value.promotion = member.promotion
+      form.value.contributionDate = member.contributionDate
+      form.value.department = member.department
+      form.value.membershipNumber = member.membershipNumber
+      form.value.addressId = member.addressId
+      form.value.paymentMethod = member.paymentMethod
+      form.value.telegramId = member.telegramId
+      form.value.chatBotId = member.chatBotId
 
-      fetchAddressInfos()
+
+
     })
     .catch((error) => {
       console.error(error)
     })
 }
 
-const fetchPersonInfos = () => {
-  axios
+
+
+async function fetchPersonInfos() {
+  await axios
     .get(`/person/${props.memberId}`, {
       headers: {
         Authorization: `Bearer ${useAuthStore().token}`
@@ -225,135 +333,119 @@ const fetchPersonInfos = () => {
     })
     .then((response) => {
       const person = response.data.data.person
-
-      personLastname.value = person.lastname
-      personFirstname.value = person.firstname
-      personGender.value = person.gender
-      personMobilePhone.value = person.mobilePhone
-      personLandlinePhone.value = person.landlinePhone
-      personEmail.value = person.email
-      personCreatedAt.value = person.createdAt.toString()
-      personUpdatedAt.value = person.updatedAt.toString()
+      form.value.personId = person.personId
+      form.value.lastname = person.lastname
+      form.value.firstname = person.firstname
+      form.value.gender = person.gender
+      form.value.mobilePhone = person.mobilePhone
+      form.value.landlinePhone = person.landlinePhone
+      form.value.email = person.email
+      form.value.createdAt = person.createdAt.toString()
+      form.value.updatedAt = person.updatedAt.toString()
     })
     .catch((error) => {
       console.error(error)
     })
 }
 
-// Function to update the member info
-const editMemberData = () => {
-  axios
-    .put(
-      `/member/${props.memberId}`,
-      {
-        member: {
-          memberId: props.memberId,
-          birthDate: memberBirthDate.value,
-          birthPlace: memberBirthPlace.value,
-          nationality: memberNationality.value,
-          promotion: memberPromotion.value,
-          contributionDate: memberContributionDate.value,
-          paymentMethod: memberPaymentMethod.value,
-          department: memberDepartment.value,
-          membershipNumber: memberMembershipNumber.value,
-          addressId: memberAddressId.value,
-          createdAt: memberCreatedAt.value?.toString(),
-          updatedAt: memberUpdatedAt.value?.toString()
-        }
-      },
-      {
-        headers: {
-          Authorization: `Bearer ${useAuthStore().token}`
-        }
-      }
-    )
-    .then(() => {
-      toast({
-        title: 'Les informations ont été mises à jour',
-        description: `Les informations du membre ont été mises à jour avec succès.`
-      })
-    })
-    .catch((error) => {
-      console.error(error)
-      toast({
-        title: 'Une erreur est survenue',
-        variant: 'destructive',
-        description: `${error.response.data.message}`
-      })
-    })
 
-  axios
-    .put(
-      `/person/${props.memberId}`,
-      {
-        person: {
-          personId: props.memberId,
-          lastname: personLastname.value,
-          firstname: personFirstname.value,
-          gender: personGender.value,
-          mobilePhone: personMobilePhone.value,
-          landlinePhone: personLandlinePhone.value,
-          email: personEmail.value,
-          createdAt: personCreatedAt.value?.toString(),
-          updatedAt: personUpdatedAt.value?.toString()
-        }
-      },
-      {
-        headers: {
-          Authorization: `Bearer ${useAuthStore().token}`
-        }
-      }
-    )
-    .then(() => {
-      toast({
-        title: 'Les informations ont été mises à jour',
-        description: `Les informations de la personne ont été mises à jour avec succès.`
-      })
-    })
-    .catch((error) => {
-      console.error(error)
-    })
-}
 
-const editaddressData = () => {
-  axios
-    .put(
-      `/address/${memberAddressId.value}`,
-      {
-        address: {
-          addressId: memberAddressId.value,
-          address: addressAddress.value,
-          additionnalAddress: addressAdditionnalAddress.value,
-          city: addressCity.value,
-          postCode: addressPostCode.value,
-          country: addressCountry.value,
-          createdAt: addressCreatedAt.value?.toString(),
-          updatedAt: addressUpdatedAt.value?.toString()
-        }
-      },
-      {
-        headers: {
-          Authorization: `Bearer ${useAuthStore().token}`
-        }
-      }
-    )
-    .then(() => {
-      toast({
-        title: 'Les informations ont été mises à jour',
-        description: `Les informations de l'addresse ont été mises à jour avec succès.`
-      })
-    })
-    .catch((error) => {
-      console.error(error)
-      toast({
-        title: 'Une erreur est survenue',
-        variant: 'destructive',
-        description: `${error.response.data.message}`
-      })
-    })
-}
 
 onMounted(() => {
   fetchInfos()
 })
+
+async function updatePerson() {
+  await axios
+    .put(
+      `/person/${form.value.personId}`,
+      {
+        person: {
+          lastname: form.value.lastname,
+          firstname: form.value.firstname,
+          gender: form.value.gender,
+          mobilePhone: form.value.mobilePhone,
+          landlinePhone: form.value.landlinePhone,
+          email: form.value.email
+        }
+      },
+      {
+        headers: {
+          Authorization: `Bearer ${useAuthStore().token}`
+        }
+      }
+    )
+    .then(() => {
+      toast({
+        title: 'PErsonne renseignée',
+        description: `${form.value.personId}`
+      })
+    })
+    .catch((error) => {
+      console.error(error)
+      toast({
+        title: 'Something wrong happened',
+        variant: 'destructive',
+        description: `${error.response.data.message}`
+      })
+    })
+}
+
+
+async function updateMember() {
+  if (contributionDateFormat.value) {
+    form.value.contributionDate = contributionDateFormat.value.toString()
+  }
+  if (typeof form.value.membershipNumber == "string") {
+    form.value.membershipNumber = parseInt(form.value.membershipNumber)
+  }
+  if (birthDateFormat.value) {
+    form.value.birthDate = birthDateFormat.value.toString()
+  }
+  await axios
+    .put(
+      `/member/${form.value.personId}`,
+      {
+        member: {
+          memberId: form.value.personId,
+          birthDate: form.value.birthDate,
+          birthPlace: form.value.birthPlace,
+          nationality: form.value.nationality,
+          promotion: form.value.promotion,
+          contributionDate: form.value.contributionDate,
+          department: form.value.department,
+          membershipNumber: form.value.membershipNumber,
+          addressId: form.value.addressId,
+          paymentMethod : form.value.paymentMethod,
+          telegramId : form.value.telegramId,
+          chatBotId : form.value.chatBotId,
+        }
+      },
+      {
+        headers: {
+          Authorization: `Bearer ${useAuthStore().token}`
+        }
+      }
+    )
+    .then(() => {
+      toast({
+        title: 'Personne renseignée',
+      })
+    })
+    .catch((error) => {
+      console.error(error)
+      toast({
+        title: 'Something wrong happened',
+        variant: 'destructive',
+        description: `${error.response.data.message}`
+      })
+    })
+}
+
+const handleClick = () => {
+
+  updatePerson()
+  updateMember()
+
+}
 </script>

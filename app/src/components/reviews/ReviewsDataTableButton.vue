@@ -1,18 +1,12 @@
 <template>
-  <div class="grid grid-cols-3 gap-2">
-    <Button
-      variant="outline"
-      size="sm"
-      class="text-xs"
-      @click="reviewDocument(thisDocument.documentId)"
-    >
-      Relire
-      <Icon name="open_in_new" class="ml-1" />
+  <div class="grid grid-cols-1 gap-2 sm:grid-cols-2 md:grid-cols-3">
+    <Button variant="outline" @click="reviewDocument(thisDocument.documentId)">
+      <span class="material-symbols-outlined"> plagiarism </span>
     </Button>
-    <Button variant="outline" size="sm" @click="changeStatus('Relu')">
+    <Button variant="outline" @click="changeStatus('Relu')">
       <span class="material-symbols-outlined"> done </span></Button
     >
-    <Button variant="destructive" size="sm" @click="changeStatus('A corriger')">
+    <Button variant="destructive" @click="changeStatus('A corriger')">
       <span class="material-symbols-outlined"> close </span></Button
     >
   </div>

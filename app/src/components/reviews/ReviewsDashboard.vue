@@ -1,7 +1,7 @@
 <template>
   <div>
-    <Wrapper class="h-full w-full">
-      <div class="mt-0">
+    <Wrapper class="flex h-full w-full flex-col md:flex-row">
+      <div class="mt-0 flex-1">
         <Card class="flex h-full flex-col justify-between">
           <CardHeader class="font-semibold"> Relectures à effectuer </CardHeader>
           <CardContent class="flex items-center justify-center text-9xl">
@@ -9,10 +9,10 @@
           </CardContent>
         </Card>
       </div>
-      <div class="mx-4 w-px bg-gray-300"></div>
-      <div>
+      <div class="mx-4 hidden w-px bg-gray-300 md:block"></div>
+      <div class="flex-1">
         <h2 class="mb-2">Suivi d'études</h2>
-        <div class="grid grid-cols-3 gap-2 text-center">
+        <div class="flex flex-row gap-2 text-center md:flex-col">
           <div v-for="(item, index) in data" :key="index">
             <Card v-if="item.acronym !== 'N/C'" class="size-14 rounded-md">
               {{ item.acronym }}
@@ -20,8 +20,8 @@
           </div>
         </div>
       </div>
-      <div class="mx-4 w-px bg-gray-300"></div>
-      <div class="h-36 w-1/2">
+      <div class="mx-4 hidden w-px bg-gray-300 md:block"></div>
+      <div class="h-36 w-full flex-1 md:w-1/2">
         <h2 class="mb-2">Dernières relectures</h2>
         <ScrollArea class="h-36 gap-4 rounded border bg-white">
           <div v-for="(item, index) in data" :key="index">

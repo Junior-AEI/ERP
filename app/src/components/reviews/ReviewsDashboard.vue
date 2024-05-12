@@ -1,7 +1,7 @@
 <template>
   <div>
-    <Wrapper class="h-full w-full">
-      <div class="mt-0">
+    <Wrapper class="flex h-full w-full flex-col md:flex-row">
+      <div class="mt-0 flex-1">
         <Card class="flex h-full flex-col justify-between">
           <CardHeader class="font-semibold"> Relectures à effectuer </CardHeader>
           <CardContent class="flex items-center justify-center text-9xl">
@@ -9,55 +9,35 @@
           </CardContent>
         </Card>
       </div>
-      <div class="mx-4 w-px bg-gray-300"></div>
-      <div>
+      <div class="mx-4 hidden w-px bg-gray-300 md:block"></div>
+      <div class="flex-1">
         <h2 class="mb-2">Suivi d'études</h2>
-        <div class="grid grid-cols-3 gap-2 text-center">
-          <Card class="size-14 rounded-md"> ABC1 </Card>
-          <Card class="size-14 rounded-md"> ABC2 </Card>
-          <Card class="size-14 rounded-md"> DEF </Card>
+        <div class="flex flex-row gap-2 text-center md:flex-col">
+          <div v-for="(item, index) in data" :key="index">
+            <Card v-if="item.acronym !== 'N/C'" class="size-14 rounded-md">
+              {{ item.acronym }}
+            </Card>
+          </div>
         </div>
       </div>
-      <div class="mx-4 w-px bg-gray-300"></div>
-      <div class="h-36 w-1/2">
+      <div class="mx-4 hidden w-px bg-gray-300 md:block"></div>
+      <div class="h-36 w-full flex-1 md:w-1/2">
         <h2 class="mb-2">Dernières relectures</h2>
         <ScrollArea class="h-36 gap-4 rounded border bg-white">
-          <Card>
-            <div class="m-4 ml-4 mr-4 flex flex-1 flex-row-reverse items-center gap-4">
-              <div
-                class="absolute left-0 top-0 flex h-full w-1/6 items-center justify-center rounded-s-xl bg-black/30"
-              >
-                ABC1
+          <div v-for="(item, index) in data" :key="index">
+            <Card>
+              <div class="m-4 ml-4 mr-4 flex flex-1 flex-row-reverse items-center gap-4">
+                <div
+                  class="absolute left-0 top-0 flex h-full w-1/6 items-center justify-center rounded-s-xl bg-black/30"
+                >
+                  {{ item.acronym }}
+                </div>
+                <div class="flex w-5/6 flex-col items-start justify-center">
+                  <span> {{ item.type }}</span>
+                </div>
               </div>
-              <div class="flex w-5/6 flex-col items-start justify-center">
-                <span>Convention d'Étude</span>
-              </div>
-            </div>
-          </Card>
-          <Card>
-            <div class="m-4 ml-4 mr-4 flex flex-1 flex-row-reverse items-center gap-4">
-              <div
-                class="absolute left-0 top-0 flex h-full w-1/6 items-center justify-center rounded-s-xl bg-black/30"
-              >
-                ABC2
-              </div>
-              <div class="flex w-5/6 flex-col items-start justify-center">
-                <span>Avenant à la convention d'Étude</span>
-              </div>
-            </div>
-          </Card>
-          <Card>
-            <div class="m-4 ml-4 mr-4 flex flex-1 flex-row-reverse items-center gap-4">
-              <div
-                class="absolute left-0 top-0 flex h-full w-1/6 items-center justify-center rounded-s-xl bg-black/30"
-              >
-                ABC1
-              </div>
-              <div class="flex w-5/6 flex-col items-start justify-center">
-                <span>Convention d'Étude</span>
-              </div>
-            </div>
-          </Card>
+            </Card>
+          </div>
         </ScrollArea>
       </div>
     </Wrapper>
@@ -71,7 +51,7 @@
 <script setup lang="ts">
 import { ref, onMounted, watch } from 'vue'
 import { columns } from './columns'
-import type { Document, DocumentType, DocumentFull } from '@/types/api'
+import type { Document, DocumentType, ExtendedDocument } from '@/types/api'
 import axios from 'axios'
 import { useAuthStore } from '@/stores/authStore'
 import { Card, CardContent, CardHeader } from '@/components/ui/card'
@@ -85,9 +65,10 @@ const props = defineProps<{
 
 const documents = ref<Document[]>([])
 const documentTypes = ref<DocumentType[]>([])
-const data = ref<DocumentFull[]>([])
+const data = ref<ExtendedDocument[]>([])
+const lastData = ref<ExtendedDocument[]>([])
 
-const dataLength = ref(data.value.length)
+const dataLength = ref(NaN)
 
 async function getData(): Promise<Document[]> {
   // Fetch data from your API here.
@@ -108,17 +89,23 @@ async function getDocumentType(): Promise<DocumentType[]> {
   return response.data.data.documentTypes
 }
 
-function createDocumentFull(document: Document, documentTypes: DocumentType[]): DocumentFull {
+function createExtendedDocument(
+  document: Document,
+  documentTypes: DocumentType[]
+): ExtendedDocument {
   const documentType = documentTypes.find((dt) => dt.typeId === document.typeId)
   const type = documentType?.type ?? ''
   const fieldNumber = documentType?.fieldNumber ?? 0
   const fieldMeaning = documentType?.fieldMeaning ?? ''
+  const index = fieldMeaning.split('|').indexOf('Étude (Acronyme)')
+  const acronym = index !== -1 ? document.information.split('|')[index] : 'N/C'
 
   return {
     ...document,
     type,
     fieldNumber,
-    fieldMeaning
+    fieldMeaning,
+    acronym
   }
 }
 
@@ -126,8 +113,12 @@ const loadData = async () => {
   documents.value = await getData()
   documentTypes.value = await getDocumentType()
   data.value = documents.value
-    .map((document: Document) => createDocumentFull(document, documentTypes.value))
-    .filter((documentFull) => documentFull.status === 'A relire')
+    .map((document: Document) => createExtendedDocument(document, documentTypes.value))
+    .filter((ExtendedDocument) => ExtendedDocument.status === 'A relire')
+  dataLength.value = data.value.length
+  lastData.value = data.value
+    .sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime())
+    .slice(0, 5)
 }
 
 onMounted(async () => {

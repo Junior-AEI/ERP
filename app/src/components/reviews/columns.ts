@@ -1,6 +1,6 @@
 import { h } from 'vue'
 import type { ColumnDef } from '@tanstack/vue-table'
-import type { DocumentFull } from '@/types/api'
+import type { ExtendedDocument } from '@/types/api'
 import { Button } from '../ui/button'
 import DocumentsDataTableButton from './ReviewsDataTableButton.vue'
 import Icon from '../Icon.vue'
@@ -30,7 +30,7 @@ function convertToCalendarDate(isoDateString: string): string {
 
 const defaultClasses = 'text-left font-medium'
 
-export const columns: ColumnDef<DocumentFull>[] = [
+export const columns: ColumnDef<ExtendedDocument>[] = [
     {
         accessorKey: 'type',
         meta: {
@@ -55,6 +55,31 @@ export const columns: ColumnDef<DocumentFull>[] = [
             )
         },
         cell: ({ row }) => h('div', { class: 'text-leftbah ' }, row.getValue('type'))
+    },
+    {
+        accessorKey: 'acronym',
+        meta: {
+            label: 'Étude'
+        },
+        header: ({ column }) => {
+            return h(
+                Button,
+                {
+                    variant: 'ghost',
+                    onClick: () => column.toggleSorting(column.getIsSorted() === 'asc')
+                },
+                () => [
+                    'Étude',
+                    h(
+                        h(Icon, {
+                            name: 'unfold_more'
+                        }),
+                        { class: '' }
+                    )
+                ]
+            )
+        },
+        cell: ({ row }) => h('div', { class: 'text-leftbah ' }, row.getValue('acronym'))
     },
     {
         accessorKey: 'createdAt',

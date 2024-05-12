@@ -62,7 +62,6 @@
               </div>
             </div>
           </div>
-          <Label>Laisser vide pour laisser inchangé</Label>
           <div class="grid gap-2">
             <Label>Description</Label>
             <Textarea
@@ -221,15 +220,6 @@ const timeEnd = ref({
   second: '00'
 })
 
-const timeSelectionIsValid = computed(() => {
-  if (dateRange.value.start === dateRange.value.end) {
-    if (timeStart.value.hour > timeEnd.value.hour) {
-      return false
-    }
-  }
-  return true
-})
-
 const dateStartISO = computed(() => {
   if (!dateRange.value.start) {
     return new CalendarDateTime(
@@ -313,7 +303,7 @@ const editEvent = () => {
         }
       }
     )
-    .then((response) => {
+    .then(() => {
       location.reload()
     })
     .catch((error) => {
@@ -333,7 +323,7 @@ const deleteEvent = () => {
         Authorization: `Bearer ${useAuthStore().token}`
       }
     })
-    .then((response) => {
+    .then(() => {
       location.reload()
     })
     .catch((error) => {

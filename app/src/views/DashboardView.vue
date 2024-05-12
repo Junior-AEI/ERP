@@ -63,21 +63,13 @@ async function getEvents(): Promise<Event[]> {
   return response.data.data.events
 }
 
-const getNextFiveEvents = (events: Event[]): Event[] => {
-  const todayDate = new Date().toISOString()
-  return events.reduce((acc: Event[], event: Event) => {
-    if (event.endDate > todayDate && acc.length < 5) {
-      acc.push(event)
-    }
-    return acc
-  }, [])
-}
-
 onMounted(async () => {
   events.value = await getEvents()
-  events.value = getNextFiveEvents(
-    events.value.sort((a, b) => new Date(a.endDate).getTime() - new Date(b.endDate).getTime())
-  )
+  events.value = events.value
+    .filter((event) => event.endDate > new Date().toISOString())
+    .sort((a, b) => new Date(a.endDate).getTime() - new Date(b.endDate).getTime())
+    .slice(0, 5)
+
   noEvents.value = events.value.length == 0
 })
 </script>
@@ -118,7 +110,7 @@ onMounted(async () => {
         </Card>
       </Wrapper>
 
-      <div class="flex h-fit sm:min-w-72 flex-1 flex-col gap-3">
+      <div class="flex h-fit flex-1 flex-col gap-3 sm:min-w-72">
         <Wrapper class="flex-col">
           <Card>
             <CardHeader>

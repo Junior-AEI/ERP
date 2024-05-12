@@ -64,8 +64,63 @@
             >
               <div class="flex-col gap-2">
                 <Label>{{ field }}</Label>
-                <Input v-if="field != 'Date de fin de validité'" v-model="documentInfos[index]" />
-                <DatePickerComponent v-else v-model="dateFinValidite" class="w-full" />
+                <div v-if="field == 'Étude (Acronyme)'">
+                  <Popover v-model:open="isOpenProject">
+                    <PopoverTrigger as-child>
+                      <Button
+                        variant="outline"
+                        role="combobox"
+                        :aria-expanded="isOpenProject"
+                        class="justify-between"
+                      >
+                        {{ selectedProject ? selectedProject : "Sélectionner l'étude" }}
+                        <Icon name="unfold_more" class="ml-2 h-4 w-4 shrink-0 opacity-50" />
+                      </Button>
+                    </PopoverTrigger>
+                    <PopoverContent class="p-0">
+                      <Command>
+                        <CommandList>
+                          <CommandGroup>
+                            <CommandItem
+                              v-for="(project, i) in projectsAcronym"
+                              :key="i"
+                              :value="project"
+                              @select="
+                                (ev) => {
+                                  if (typeof ev.detail.value === 'string') {
+                                    selectedProject = ev.detail.value
+                                    documentInfos[index] = ev.detail.value
+                                  }
+                                  isOpenProject = false
+                                }
+                              "
+                            >
+                              {{ project }}
+                            </CommandItem>
+                            <CommandItem
+                              value="N/C"
+                              @select="
+                                (ev) => {
+                                  if (typeof ev.detail.value === 'string') {
+                                    selectedProject = 'N/C'
+                                    documentInfos[index] = ev.detail.value
+                                  }
+                                  isOpenProject = false
+                                }
+                              "
+                            >
+                              N/C
+                            </CommandItem>
+                          </CommandGroup>
+                        </CommandList>
+                      </Command>
+                    </PopoverContent>
+                  </Popover>
+                </div>
+                <div v-else>
+                  <Input v-if="field != 'Date de fin de validité'" v-model="documentInfos[index]" />
+                  <DatePickerComponent v-else v-model="dateFinValidite" class="w-full" />
+                </div>
               </div>
             </div>
           </div>
@@ -81,7 +136,7 @@
 <script setup lang="ts">
 import axios from 'axios'
 import { useAuthStore } from '@/stores/authStore'
-import type { DocumentType } from '@/types/api'
+import type { DocumentType, Project } from '@/types/api'
 import { computed, ref, onMounted, watch } from 'vue'
 import { useToast } from '@/components/ui/toast/use-toast'
 import { type DateValue } from '@internationalized/date'
@@ -90,13 +145,16 @@ const emit = defineEmits(['update:files'])
 
 const hasDoc = computed(() => files.value.length > 0)
 const isOpen = ref(false)
+const isOpenProject = ref(false)
 const { toast } = useToast()
 
 /* Values for document information storage */
 const documentTypes = ref<DocumentType[]>([])
+const projectsAcronym = ref<String[]>([])
 
 const version = ref(1)
 const documentTypeName = ref('')
+const selectedProject = ref('')
 const documentInfos = ref<string[]>([])
 const dateFinValidite = ref<DateValue>()
 const status = ref('A relire')
@@ -146,6 +204,7 @@ const clearFields = () => {
   dateFinValidite.value = undefined
   documentInfos.value = []
   status.value = 'A relire'
+  selectedProject.value = ''
 }
 
 const removeExtension = (filename: string): string => {
@@ -160,6 +219,15 @@ async function getDocumentType(): Promise<DocumentType[]> {
     }
   })
   return response.data.data.documentTypes
+}
+
+async function getProjectAcronyms(): Promise<String[]> {
+  const response = await axios.get(`/project`, {
+    headers: {
+      Authorization: `Bearer ${useAuthStore().token}`
+    }
+  })
+  return response.data.data.projects.map((project: Project) => project.acronym)
 }
 
 const uploadDocument = () => {
@@ -219,5 +287,6 @@ const uploadDocument = () => {
 
 onMounted(async () => {
   documentTypes.value = await getDocumentType()
+  projectsAcronym.value = await getProjectAcronyms()
 })
 </script>

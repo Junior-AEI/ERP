@@ -58,14 +58,17 @@
             </Link>
           </template>
           <template v-slot:children>
-            <Link
-              v-for="child in route.children"
+            
+            <Link 
+            v-for="child in route.children.filter((child)=>child.meta?.visible !== false)"
               :to="child.path"
-              :icon="child.meta?.icon"
+              :icon="child.meta?.icon as IconNames"
               :key="child.path"
               class="p-1 pl-3"
             >
+            
               {{ child.name }}
+
             </Link>
           </template>
         </CollapsibleMenu>
@@ -102,7 +105,7 @@ import useMatchRoute from '@/composables/useMatchRoute'
 const matchRoute = (route: string) => (useMatchRoute(route) ? 'active' : 'default')
 
 import { modules } from '@/router'
-import type { Route } from '@/types'
+import {type IconNames, type Route } from '@/types'
 
 const bottomRoutes: Array<Route> = []
 const topRoutes: Array<Route> = []

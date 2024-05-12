@@ -1,6 +1,6 @@
 import { h } from 'vue'
 import type { ColumnDef } from '@tanstack/vue-table'
-import type { DocumentFull } from '@/types/api'
+import type { ExtendedDocument } from '@/types/api'
 import { Button } from '@/components/ui/button'
 import DocumentsDataTableButton from './DocumentsDataTableButton.vue'
 import Icon from '@/components/Icon.vue'
@@ -31,7 +31,7 @@ function convertToCalendarDate(isoDateString: string): string {
 const defaultClasses = 'text-left font-medium'
 
 
-export const columns: ColumnDef<DocumentFull>[] = [
+export const columns: ColumnDef<ExtendedDocument>[] = [
   {
     accessorKey: 'type',
     meta: {
@@ -56,6 +56,33 @@ export const columns: ColumnDef<DocumentFull>[] = [
       )
     },
     cell: ({ row }) => h('div', { class: 'text-left ' }, row.original.name)
+  },
+  {
+    accessorKey: 'acronym',
+    meta: {
+      label: 'Étude'
+    },
+    header: ({ column }) => {
+      return h(
+        Button,
+        {
+          variant: 'ghost',
+          onClick: () => column.toggleSorting(column.getIsSorted() === 'asc')
+        },
+        () => [
+          'Étude',
+          h(
+            h(Icon, {
+              name: 'unfold_more'
+            }),
+            { class: '' }
+          )
+        ]
+      )
+    },
+    cell: ({ row }) => {
+      return h('div', { class: 'text-left ' }, row.getValue('acronym'))
+    }
   },
   {
     accessorKey: 'type',
@@ -131,39 +158,6 @@ export const columns: ColumnDef<DocumentFull>[] = [
       )
     },
     cell: ({ row }) => h('div', { class: 'text-left ' }, row.getValue('status'))
-  },
-  {
-    accessorKey: 'createdAt',
-    meta: {
-      label: 'Créé le'
-    },
-    header: ({ column }) => {
-      return h(
-        Button,
-        {
-          variant: 'ghost',
-          onClick: () => column.toggleSorting(column.getIsSorted() === 'asc')
-        },
-        () => [
-          'Créé le',
-          h(
-            h(Icon, {
-              name: 'unfold_more'
-            }),
-            { class: defaultClasses }
-          )
-        ]
-      )
-    },
-    cell: ({ row }) => {
-      const endDate = convertToCalendarDate(row.getValue('createdAt'))
-
-      return h(
-        'div',
-        { class: defaultClasses },
-        df.format(parseDateTime(endDate).toDate(getLocalTimeZone()))
-      )
-    }
   },
   {
     id: 'actions',

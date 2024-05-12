@@ -14,7 +14,8 @@ import Contributors from '../models/contributor.model'
 const getAll = async (req: Request, res: Response) => {
     try {
         const contributors = await Contributors.findAll({})
-
+        console.log(contributors);
+        
         return res.status(200).json({
             status: 'success',
             data: {
@@ -44,6 +45,29 @@ const getByPk = async (req: Request, res: Response) => {
             status: 'success',
             data: {
                 contributor: contributor
+            }
+        })
+    } catch (err) {
+        if (err instanceof HttpError) controllerErrorHandler(err, res)
+        else throw err
+    }
+}
+
+async function getByProject(req: Request, res: Response) {
+    try {
+        const identifier = parseInt(req.params.projectId)
+        if (isNaN(identifier)) throw createHttpError(400, 'Please provide a valid identifier')
+
+        const contributors = await Contributors.findAll({
+            where: {
+                projectId: identifier
+            }
+        })
+
+        return res.status(200).json({
+            status: 'success',
+            data: {
+                contributors: contributors
             }
         })
     } catch (err) {
@@ -167,6 +191,7 @@ const del = async (req: Request, res: Response) => {
 const contributorController = {
     getAll,
     getByPk,
+    getByProject,
     create,
     del,
     update

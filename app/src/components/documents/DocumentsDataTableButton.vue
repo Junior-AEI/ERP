@@ -29,6 +29,10 @@
                 <h3>{{ item.title }}</h3>
                 <h4>{{ item.subtitle }}</h4>
               </div>
+              <div class="grid grid-cols-2 gap-2">
+                <h3>Créé le</h3>
+                <h4>{{ new Date(thisDocument.createdAt).toLocaleString('fr-FR') }}</h4>
+              </div>
             </DialogContent>
           </Dialog>
           <Dialog>
@@ -114,18 +118,18 @@
 <script setup lang="ts">
 import axios from 'axios'
 import { ref } from 'vue'
-import type { DocumentFull } from '@/types/api'
+import type { ExtendedDocument } from '@/types/api'
 import { useAuthStore } from '@/stores/authStore'
 import { useToast } from '../ui/toast'
 
 const props = defineProps<{
-  item: DocumentFull // Document + DocumentType
+  item: ExtendedDocument // Document + DocumentType
 }>()
 
 const { toast } = useToast()
 
 const files = ref<File[]>([])
-const thisDocument = ref<DocumentFull>(props.item)
+const thisDocument = ref<ExtendedDocument>(props.item)
 const version = ref(thisDocument.value.version + 1)
 const infos = ref(thisDocument.value.information.split('|'))
 const fieldMeaningArray = thisDocument?.value.fieldMeaning.split('|') ?? []

@@ -2,7 +2,7 @@
 
     <Card>
         <CardContent>
-            <div class="flex flex-1 flex-row gap-2 items-center">
+            <div class="flex flex-1 flex-row gap-2 items-center" @click="handleClick" >
                 <!-- <Icon name="app_registration"></Icon> -->
                 <div class="flex flex-1 flex-col gap-2">
 
@@ -16,14 +16,15 @@
                     </div>
                     <div class="flex flex-1 justify-start flex-wrap gap-4 ml-4">
                         <Card class="flex flex-row w-fit">
+                            <div :class=bg_color(delay(props.infos.endDate))>
                             <div
-                                class=" w-fit h-full bg-black/30 rounded-s-xl flex justify-center items-center pr-2 pl-2">
-                                Date de Fin</div>
+                                class=" ">
+                                Date de Fin</div></div>
                             <CardContent class="flex flex-1 flex-row gap-4 m-2 mr-4 ml-4 items-center p-0">
                                 <div class='flex flex-row justify-between items-center gap-2'>
-                                    <div :class=bg_color(delay(props.infos.endDate))><span>Le {{
+                                    <span>Le {{
                                             convertToCalendarDate(props.infos.endDate) }} </span>
-                                    </div>
+                                    
                                     <span v-if="delay(props.infos.endDate) > 0" class="text-muted-foreground/50"> (dans {{
                                         delay(props.infos.endDate) }} j) </span>
 
@@ -137,18 +138,26 @@ function bg_color(differenceInDays: number): string {
 
     // Choix de la couleur en fonction de la différence en jours
     if (differenceInDays < 0) {
-        colorDate = 'p-1 rounded bg-gray-300'; // Date expirée (dans le passé)
+        colorDate = 'w-fit h-full rounded-s-xl flex justify-center items-center pr-2 pl-2 bg-blue-500'; // Date expirée (dans le passé)
     } else if (differenceInDays < 7) {
-        colorDate = 'p-1 rounded bg-red-500'; // Date dans moins d'une semaine
+        colorDate = 'w-fit h-full rounded-s-xl flex justify-center items-center pr-2 pl-2 bg-red-500'; // Date dans moins d'une semaine
     }
     else if (differenceInDays < 14) {
-        colorDate = 'p-1 rounded bg-orange-500'; // Date dans moins d'une semaine
+        colorDate = 'w-fit h-full rounded-s-xl flex justify-center items-center pr-2 pl-2 bg-orange-500'; // Date dans moins d'une semaine
     } else {
-        colorDate = 'p-1 rounded bg-green-400'; // Date dans plus d'une semaine
+        colorDate = 'w-fit h-full rounded-s-xl flex justify-center items-center pr-2 pl-2 bg-green-300'; // Date dans plus d'une semaine
     }
 
     // Calcul de la différence en jours
     return colorDate
+}
+import { useRouter } from 'vue-router'
+const router = useRouter()
+const handleClick = () => {
+  router.push({
+    path: '/projects/details',
+    query: { id: props.infos.projectId}
+  })
 }
 
 

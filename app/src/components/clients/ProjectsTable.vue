@@ -136,8 +136,8 @@ const router = useRouter()
 
 const handleClick = (row: any) => {
   router.push({
-    path: '/client/profil',
-    query: { id: row.clientId, name : `${row.firstname} ${row.lastname} de ${row.name}`}
+    path: '/projects/details',
+    query: { id: row.projectId}
   })
 }
 </script>

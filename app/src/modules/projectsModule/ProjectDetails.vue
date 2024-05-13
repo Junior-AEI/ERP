@@ -10,7 +10,7 @@
 
           <Card class="flex w-fit flex-1">
             <CardContent class="ml-3 mr-3 flex flex-1">
-              <ProjectInfos :infos="infos_project"> </ProjectInfos>
+              <ProjectInfos v-if="infos_project" :infos="infos_project"> </ProjectInfos>
             </CardContent>
           </Card>
 
@@ -29,12 +29,7 @@
               <Button variant="outline" icon="add"></Button>
             </CardHeader>
             <CardContent class="flex flex-row flex-wrap">
-              <DocumentCard
-                class="flex-1"
-                v-for="doc in documents"
-                :infos="doc"
-                :key="doc.documentId"
-              ></DocumentCard>
+              <DocumentCard class="flex-1" v-for="doc in documents" :infos="doc" :key="doc.documentId"></DocumentCard>
             </CardContent>
           </Card>
         </Wrapper>
@@ -59,7 +54,7 @@
 <script setup lang="ts">
 import axios from 'axios'
 import { useRoute } from 'vue-router'
-import { ref } from 'vue'
+import { ref, onMounted } from 'vue'
 import { type ExtendedProject } from '@/types/api'
 
 import {
@@ -83,7 +78,13 @@ function convertToNumber(input: string | string[]): number {
 }
 
 const route = useRoute()
-const projectId = convertToNumber(route.params.projectId)
+const projectId = (() => {
+  if (route.query.id && typeof route.query.id === 'string') {
+    console.log(route.query.id)
+    return parseInt(route.query.id)
+  }
+  return 0
+})()
 
 const exampleDocument: ExtendedDocument = {
   documentId: 1,
@@ -398,18 +399,98 @@ const exampleExtendedProject: ExtendedProject = {
 
 const infos = ref<ExtendedProject>()
 
-axios
-  .get(`/project/${projectId}`, {
+
+import { useAuthStore } from '@/stores/authStore'
+
+async function getData(): Promise<ExtendedProject> {
+  // Fetch data from your API here.
+
+  const project = await axios.get(`/project/${projectId}`, {
     headers: {
-      Authorization: `Bearer ${localStorage.getItem('token')}`
+      Authorization: `Bearer ${useAuthStore().token}`
     }
   })
-  .then((response) => {
-    infos.value = response.data.data.project
-  })
-  .catch((error) => {
-    console.log(error)
+
+  const client = await axios.get(`/client/${project.data.data?.project.clientId}`, {
+    headers: {
+      Authorization: `Bearer ${useAuthStore().token}`
+    }
   })
 
-const infos_project = ref<ExtendedProject>(exampleExtendedProject)
+
+  const person = await axios.get(`/person/${project.data.data?.project.clientId}`, {
+    headers: {
+      Authorization: `Bearer ${useAuthStore().token}`
+    }
+  })
+
+
+  const company = await axios.get(`/company/${client.data.data?.client.companyId}`, {
+    headers: {
+      Authorization: `Bearer ${useAuthStore().token}`
+    }
+  })
+
+  const address = await axios.get(`/address/${company.data.data?.company.addressId}`, {
+    headers: {
+      Authorization: `Bearer ${useAuthStore().token}`
+    }
+  })
+
+  const persons = await axios.get(`/person`, {
+    headers: {
+      Authorization: `Bearer ${useAuthStore().token}`
+    }
+  })
+  const managers = await axios.get(`/projectManager`, {
+    headers: {
+      Authorization: `Bearer ${useAuthStore().token}`
+    }
+  })
+
+  const ManagerPersons = managers.data.data?.projectManagers.map((manager: any) => {
+    const person = persons.data.data?.persons.find(
+      (person: any) => person.personId === manager.userId
+    )
+    return {
+      ...manager,
+      ...person
+    }
+  })
+
+
+  const contributors = await axios.get(`/contributor`, {
+    headers: {
+      Authorization: `Bearer ${useAuthStore().token}`
+    }
+  })
+
+  const ContributorPersons = contributors.data.data?.contributors.map((contributor: any) => {
+    const person = persons.data.data?.persons.find(
+      (person: any) => person.personId === contributor.memberId
+    )
+    return {
+      ...contributor,
+      ...person
+    }
+  })
+
+  const projectManagers = ManagerPersons.filter((manager: any) => manager.projectId === project.data.data?.project.projectId);
+  const projectContributors = ContributorPersons.filter((contributor: any) => contributor.projectId === project.data.data?.project.projectId);
+
+
+  return { ...client.data.data?.client, ...person.data.data?.person, ...project.data.data?.project, ...company.data.data?.company, ...address.data.data?.adress, projectManagers: projectManagers, 
+    contributors: projectContributors,
+  name : company.data.data?.company.name,
+nameProject: project.data.data?.project.name }
+}
+const infos_project = ref<ExtendedProject>()
+
+onMounted(async () => {
+  infos_project.value = await getData()
+  if (!infos_project.value) {
+    infos_project.value = exampleExtendedProject
+  }
+  console.log(infos_project.value)
+})
 </script>

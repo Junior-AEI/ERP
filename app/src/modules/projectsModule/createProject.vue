@@ -216,7 +216,7 @@
               <DatePickerComponent v-model="endDateFormat" />
             </div>
           </div>
-          <Button @click="handleClickProject" class="mt-3">Créer un nouveau Client</Button>
+          <Button @click="handleClickProject" class="mt-3">Créer une nouvelle étude</Button>
         </div>
       </CardContent>
     </Card>

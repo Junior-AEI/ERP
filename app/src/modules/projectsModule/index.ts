@@ -33,7 +33,7 @@ export const projectsModule: Module = {
           }
         },
         {
-          path: '/details/:projectId',
+          path: '/details',
           name: 'Détails Etude',
           component: () => import('./ProjectDetails.vue'),
           meta: {

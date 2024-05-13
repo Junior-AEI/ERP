@@ -3,7 +3,7 @@ import createHttpError from 'http-errors'
 import Persons from '../models/person.model'
 import { HttpError } from 'http-errors'
 import { isValidPerson } from '../validator/person.validator'
-import { controllerErrorHandler, isNumber } from './utils.controller'
+import { controllerErrorHandler } from './utils.controller'
 
 /**
  * Get all users

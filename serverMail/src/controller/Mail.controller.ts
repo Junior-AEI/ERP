@@ -1,6 +1,5 @@
 import * as nodemailer from 'nodemailer';
 import { Request, Response } from "express";
-import createHttpError, { HttpError } from 'http-errors'
 
 
 
@@ -35,8 +34,8 @@ const sendEmail = async (req: Request, res: Response) => {
             message: 'Email sent successfully',
             messageId: info.messageId
         });
-      
-    } catch (err ) {
+
+    } catch (err) {
         // En cas d'erreur, retourner une réponse JSON avec un message d'erreur
         console.error('Erreur lors de l\'envoi de l\'e-mail : ', err);
         return res.status(500).json({
@@ -49,8 +48,8 @@ const sendEmail = async (req: Request, res: Response) => {
 
 const botController = {
     sendEmail,
-  };
-  
+};
+
 
 
 export default botController;

@@ -1,6 +1,6 @@
 const request = require('supertest')
 import app from '../src/app'
-import { beforeAllTests, afterAllTests, clearDatabase, showErrorMessage } from './utils'
+import { beforeAllTests, afterAllTests, clearDatabase } from './utils'
 import { createUser } from './seeders/user.seeders'
 import { createToken } from './seeders/token.seeders'
 import { initUser } from './seeders/general'
@@ -69,7 +69,7 @@ describe('ROUTE (GET): /api/group/:groupId (Get a specific group)', () => {
 
     it('Normal usage', async () => {
 
-        const groupId = await createGroup('group_1') 
+        const groupId = await createGroup('group_1')
 
         const token = await initUser('john.doe')
 

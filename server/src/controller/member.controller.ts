@@ -5,7 +5,6 @@ import { HttpError } from 'http-errors'
 import createHttpError from 'http-errors'
 import { isValidMember } from '../validator/member.validator'
 import Persons from '../models/person.model'
-import { log } from 'console'
 
 /**
  * Get all members
@@ -44,7 +43,7 @@ const getByPk = async (req: Request, res: Response) => {
         if (!member) throw createHttpError(404, 'Member not found')
 
         console.log(member);
-        
+
         return res.status(200).json({
             status: 'success',
             data: {
@@ -67,11 +66,11 @@ const create = async (req: Request, res: Response) => {
         // Parse identifier
         const identifier = parseInt(req.body.member.memberId);
         if (isNaN(identifier)) throw createHttpError(400, 'Please provide a valid identifier')
-        
+
         const person = await Persons.findByPk(identifier)
         if (!person) throw createHttpError(404, 'Person not found')
-    
-        
+
+
         // Test params
         const birthDateFormat = new Date(req.body.member.birthDate)
         const contributionDateFormat = new Date(req.body.member.contributionDate)
@@ -122,7 +121,7 @@ const update = async (req: Request, res: Response) => {
         const member = await Members.findByPk(identifier)
         if (!member) throw createHttpError(404, 'Member not found')
 
-            const birthDateFormat = new Date(req.body.member.birthDate)
+        const birthDateFormat = new Date(req.body.member.birthDate)
         const contributionDateFormat = new Date(req.body.member.contributionDate)
         const validator = isValidMember(birthDateFormat, req.body.member.birthPlace, req.body.member.nationality, req.body.member.promotion, contributionDateFormat, req.body.member.department, req.body.member.membershipNumber)
 

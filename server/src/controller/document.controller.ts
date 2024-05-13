@@ -7,7 +7,6 @@ import createHttpError from 'http-errors'
 import { isValidDocument } from '../validator/document.validator'
 import Users from '../models/user.model'
 import Documents, { Status } from '../models/document.model'
-import DocumentTypes from '../models/documentType.model'
 import { getExtension, getType } from 'mime'
 
 
@@ -96,7 +95,7 @@ async function getByProject(req: Request, res: Response) {
         if (isNaN(identifier)) throw createHttpError(400, 'Please provide a valid identifier')
 
         const documents = await Documents.findAll({
-            
+
         })
 
         return res.status(200).json({

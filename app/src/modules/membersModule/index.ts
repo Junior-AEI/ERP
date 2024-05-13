@@ -19,7 +19,7 @@ export const membersModule: Module = {
             icon: 'person_add'
           }
         },
-    
+
         {
           path: '/users/new',
           name: 'Nouvel utilisateur',

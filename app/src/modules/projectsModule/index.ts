@@ -48,13 +48,11 @@ export const projectsModule: Module = {
           meta: {
             icon: 'work'
           }
-        },
+        }
       ],
       meta: {
         icon: 'work'
-      },
-      
-    },
-    
+      }
+    }
   ]
 }

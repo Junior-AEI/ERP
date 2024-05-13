@@ -22,5 +22,4 @@ export function registerModule(module: Module) {
   routes.forEach((route) => {
     appendRouteRecursive(route)
   })
-
 }

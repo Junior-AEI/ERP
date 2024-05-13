@@ -1,4 +1,4 @@
-const request = require('supertest')
+import request from 'supertest'
 import bcrypt from 'bcrypt'
 import app from '../src/app'
 import { createUser } from './seeders/user.seeders'

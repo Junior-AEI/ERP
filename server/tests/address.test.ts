@@ -1,4 +1,4 @@
-const request = require('supertest')
+import request from 'supertest'
 import app from '../src/app'
 import { beforeAllTests, afterAllTests, clearDatabase } from './utils'
 import { createToken } from './seeders/token.seeders'

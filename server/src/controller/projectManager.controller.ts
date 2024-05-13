@@ -5,7 +5,6 @@ import { controllerErrorHandler } from './utils.controller'
 import ProjectManagers from '../models/projectManager.model'
 import Users from '../models/user.model'
 import Projects from '../models/project.model'
-import { get } from 'http'
 
 /**
  * Get all users

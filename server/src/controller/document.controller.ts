@@ -33,10 +33,12 @@ const storage = multer.diskStorage({
     }
 })
 
+const maxFileSize = 50 * 10 ** 6; // taille de 1 Mo
+
 const upload = multer({
     storage: storage,
     limits: {
-        fileSize: 20 * 10 ** 6 // Limite la taille des fichiers à 20 Mo
+        fileSize: maxFileSize // Limite la taille des fichiers à maxFileSize
     },
 }).single('file') // Utilisez .single('file') pour un seul fichier
 
@@ -125,6 +127,10 @@ async function create(req: Request, res: Response) {
                 return res.status(400).json({ error: 'File is missing' });
             }
 
+            if (req.file.size >= maxFileSize) {
+                return res.status(400).json({ error: 'File is too big' });
+            }
+
             // parse author (user) identifier
             const idAuthor = parseInt(req.body.document.authorId ?? undefined)
             if (isNaN(idAuthor)) throw createHttpError(400, 'Please provide a valid author identifier')
@@ -188,6 +194,14 @@ const update = async (req: Request, res: Response) => {
 
                 if (req.body.document === undefined) {
                     return res.status(400).json({ error: 'Document information is missing' });
+                }
+
+                if (req.file === undefined) {
+                    return res.status(400).json({ error: 'File is missing' });
+                }
+
+                if (req.file.size >= maxFileSize) {
+                    return res.status(400).json({ error: 'File is too big' });
                 }
 
                 // parse identifier

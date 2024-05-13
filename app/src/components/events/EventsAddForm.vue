@@ -164,7 +164,6 @@ import {
 
 const emit = defineEmits(['add:event'])
 
-const isOpen = ref(false)
 const isOpenEventType = ref(false)
 
 const eventTypes = [

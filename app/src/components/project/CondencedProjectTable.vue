@@ -1,43 +1,23 @@
 <template>
-    <div class="flex flex-col gap-2">
-      <Input placeholder="Rechercher" v-model="research" />
-  
-      <Card class="max-h-screen ">
-        <ScrollArea class="flex h-full flex-col gap-1">
-          <CardContent class="h-full pr-3">
-              
-           <CondencedProject
-              v-for="project in results"
-              :infos="project"
-            >
-            </CondencedProject> 
-  
-          </CardContent>
-        </ScrollArea>
-      </Card>
-    </div>
-  </template>
-  
+  <div class="flex flex-col gap-2">
+    <Input placeholder="Rechercher" v-model="research" />
 
-  
+    <Card class="max-h-screen">
+      <ScrollArea class="flex h-full flex-col gap-1">
+        <CardContent class="h-full pr-3">
+          <CondencedProject v-for="project in results" :infos="project" :key="project.projectId">
+          </CondencedProject>
+        </CardContent>
+      </ScrollArea>
+    </Card>
+  </div>
+</template>
 
 <script setup lang="ts">
-import { ref,onMounted } from 'vue'
+import { ref, onMounted } from 'vue'
 import axios from 'axios'
-import { type ClientInfo } from '@/types/api'
-import {
-  type ProjectInfo,
-  type Project,
-  type Address,
-  type Person,
-  type ExtendedProject,
-  type ProjectManager,
-  type Contributor
-} from '@/types/api'
+import { type ExtendedProject } from '@/types/api'
 import { useAuthStore } from '@/stores/authStore'
-import { SortDesc } from 'lucide-vue-next'
-import { sortingFns } from '@tanstack/vue-table'
-import { computed } from 'vue'
 
 
 
@@ -60,7 +40,6 @@ async function getData(): Promise<ExtendedProject[]> {
       Authorization: `Bearer ${useAuthStore().token}`
     }
   })
-
 
   const persons = await axios.get(`/person`, {
     headers: {
@@ -100,8 +79,6 @@ async function getData(): Promise<ExtendedProject[]> {
     }
   })
 
-  
-
   const fullClients = ClientPerson.map((client: any) => {
     const company = CompanyWithAddress.find(
       (company: any) => company.companyId === client.companyId
@@ -112,7 +89,6 @@ async function getData(): Promise<ExtendedProject[]> {
     }
   })
 
-
   const projects = await axios.get(`/project`, {
     headers: {
       Authorization: `Bearer ${useAuthStore().token}`
@@ -120,13 +96,11 @@ async function getData(): Promise<ExtendedProject[]> {
   })
 
   const fullProject = projects.data.data?.projects.map((project: any) => {
-    const client = fullClients.find(
-      (client: any) => client.clientId === client.clientId
-    )
+    const client = fullClients.find((client: any) => client.clientId === client.clientId)
     return {
-      nameProject : project.name,
+      nameProject: project.name,
       ...project,
-      ...client,
+      ...client
     }
   })
 
@@ -146,7 +120,6 @@ async function getData(): Promise<ExtendedProject[]> {
     }
   })
 
-
   const contributors = await axios.get(`/contributor`, {
     headers: {
       Authorization: `Bearer ${useAuthStore().token}`
@@ -163,11 +136,14 @@ async function getData(): Promise<ExtendedProject[]> {
     }
   })
   const ProjectWithAllInfo = fullProject.map((project: any) => {
-      const projectManagers = ManagerPersons.filter((manager: any) => manager.projectId === project.projectId);
-      const projectContributors = ContributorPersons.filter((contributor: any) => contributor.projectId === project.projectId);
-      return { ...project, projectManagers : projectManagers, contributors: projectContributors };
-    });
-
+    const projectManagers = ManagerPersons.filter(
+      (manager: any) => manager.projectId === project.projectId
+    )
+    const projectContributors = ContributorPersons.filter(
+      (contributor: any) => contributor.projectId === project.projectId
+    )
+    return { ...project, projectManagers: projectManagers, contributors: projectContributors }
+  })
 
     ProjectWithAllInfo.sort((projectA: any, projectB: any) => {
         // Récupérer les dates de fin de chaque projet

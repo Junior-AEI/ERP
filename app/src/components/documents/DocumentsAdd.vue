@@ -37,7 +37,7 @@
                         :key="documentType.typeId"
                         :value="documentType.type"
                         @select="
-                          (ev) => {
+                          (ev: any) => {
                             if (typeof ev.detail.value === 'string') {
                               documentTypeName = ev.detail.value
                             }
@@ -86,7 +86,7 @@
                               :key="i"
                               :value="project"
                               @select="
-                                (ev) => {
+                                (ev: any) => {
                                   if (typeof ev.detail.value === 'string') {
                                     selectedProject = ev.detail.value
                                     documentInfos[index] = ev.detail.value
@@ -100,7 +100,7 @@
                             <CommandItem
                               value="N/C"
                               @select="
-                                (ev) => {
+                                (ev: any) => {
                                   if (typeof ev.detail.value === 'string') {
                                     selectedProject = 'N/C'
                                     documentInfos[index] = ev.detail.value

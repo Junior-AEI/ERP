@@ -70,7 +70,6 @@ const getByPk = async (req: Request, res: Response) => {
 async function create(req: Request, res: Response) {
     try {
         // Parse identifier for member heredity
-        console.log(req.body.user.userId)
         const identifier = parseInt(req.body.user.userId)
         if (isNaN(identifier)) throw createHttpError(400, 'Please provide a valid identifier')
 

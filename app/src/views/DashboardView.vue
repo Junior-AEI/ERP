@@ -127,8 +127,7 @@ onMounted(async () => {
             <CardHeader>
               <Icon name="pin_drop" />
               <span class="text-accent">Prochains événements </span>
-              <Link class="p-2 " to="/events" icon="read_more">
-              </Link>
+              <Link class="p-2" to="/events" icon="read_more"> </Link>
             </CardHeader>
             <CardContent>
               <div v-if="noEvents">

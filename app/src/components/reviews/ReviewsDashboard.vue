@@ -12,7 +12,7 @@
       <div class="mx-4 hidden w-px bg-gray-300 md:block"></div>
       <div class="flex-1">
         <h2 class="mb-2">Suivi d'études</h2>
-        <div class="flex flex-row gap-2 text-center md:flex-col">
+        <div class="flex flex-row flex-wrap gap-2 text-center">
           <div v-for="(item, index) in data" :key="index">
             <Card v-if="item.acronym !== 'N/C'" class="size-14 rounded-md">
               {{ item.acronym }}

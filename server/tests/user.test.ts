@@ -1,6 +1,6 @@
-const request = require('supertest')
+import request from 'supertest'
 import app from '../src/app'
-import { beforeAllTests, afterAllTests, clearDatabase, showErrorMessage } from './utils'
+import { beforeAllTests, afterAllTests, clearDatabase } from './utils'
 import { createUser } from './seeders/user.seeders'
 import { createToken } from './seeders/token.seeders'
 import bcrypt from 'bcrypt'

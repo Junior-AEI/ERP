@@ -1,36 +1,27 @@
 <template>
-
-    <Card>
+  <Card>
     <CardContent>
     <div class="flex flex-1 flex-row gap-2 items-center" @click="handleClick" >
         <Icon name="person"></Icon>
         <div class="flex flex-1 flex-col">
-            <span class="text-accent">
-                {{ props.infos.firstname }} {{ props.infos.lastname }}
-            </span>
-            <span class="text-sm">
-                {{ props.infos.department }}  |  Promo {{ props.infos.promotion }}
-            </span>
-            
+          <span class="text-accent"> {{ props.infos.firstname }} {{ props.infos.lastname }} </span>
+          <span class="text-sm">
+            {{ props.infos.department }} | Promo {{ props.infos.promotion }}
+          </span>
         </div>
-    </div>
-    
+      </div>
     </CardContent>
-    
-    </Card>
-    
-    
+  </Card>
 </template>
-    
+
 <script lang="ts" setup>
     import { useRouter } from 'vue-router'
 import { type FullMember } from '@/types/api'
 import { defineProps } from 'vue'
 const router = useRouter()
 
-
 const props = defineProps<{
-    infos: FullMember
+  infos: FullMember
 }>()
 
 
@@ -42,4 +33,3 @@ const handleClick = () => {
 }
 
 </script>
-    

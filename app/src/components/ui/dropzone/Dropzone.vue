@@ -19,7 +19,7 @@ const props = defineProps({
   },
   maxFileSize: {
     type: Number,
-    default: 20 // in MB
+    default: 50 // in MB
   },
   firstLine: {
     type: String,

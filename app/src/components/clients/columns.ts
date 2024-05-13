@@ -5,7 +5,6 @@ import type { ClientInfoForTable } from '@/types/api'
 const defaultClasses = 'text-left font-medium'
 
 export const columns: ColumnDef<ClientInfoForTable>[] = [
-
   {
     accessorKey: 'lastname',
     accessorFn: (row) => row.lastname,
@@ -69,11 +68,17 @@ export const columns: ColumnDef<ClientInfoForTable>[] = [
     cell: ({ row }) => {
       const item = row.original
       const badgeColorClass = 'bg-gray-100'
-      return h('div', { class: `lowercase ${defaultClasses}` },
+      return h(
+        'div',
+        { class: `lowercase ${defaultClasses}` },
         item.Projectsname.map((projectName) => {
-          return h('div', { class: `text-black text-center p-1 rounded m-2 w-20 ${badgeColorClass}` }, projectName);
+          return h(
+            'div',
+            { class: `text-black text-center p-1 rounded m-2 w-20 ${badgeColorClass}` },
+            projectName
+          )
         })
-      );
+      )
     }
   },
   {
@@ -84,10 +89,9 @@ export const columns: ColumnDef<ClientInfoForTable>[] = [
     },
     header: () => h('div', { class: defaultClasses }, 'Premier Contact'),
     cell: ({ row }) => {
-
       const firstContact = row.getValue('firstContact') as string
 
       return h('div', { class: defaultClasses }, firstContact)
     }
-  },
+  }
 ]

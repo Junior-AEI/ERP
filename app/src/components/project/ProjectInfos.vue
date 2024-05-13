@@ -27,9 +27,8 @@
 import { defineProps } from 'vue'
 import { type ExtendedProject } from '@/types/api'
 
-
 const props = defineProps<{
-    infos: ExtendedProject
+  infos: ExtendedProject
 }>()
 
 

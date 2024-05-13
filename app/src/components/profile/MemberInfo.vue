@@ -1,5 +1,4 @@
 <template>
-
   <Card class="flex-1">
     <CardHeader>
       <Icon name="badge" class="text-6xl" />
@@ -16,14 +15,17 @@
           <Label for="firstname">Prénom</Label>
           <Input id="firstname" v-model="form.firstname" />
         </div>
-
       </div>
       <div class="flex items-end gap-4">
         <div class="flex flex-1 flex-col gap-2">
           <Label for="gender">Genre</Label>
           <div class="flex flex-1 flex-row gap-2">
-
-            <Input :disabled="!canEdit" v-if="ModifyGender == false" id="firstname" v-model="form.gender" />
+            <Input
+              :disabled="!canEdit"
+              v-if="ModifyGender == false"
+              id="firstname"
+              v-model="form.gender"
+            />
             <Button v-if="ModifyGender == false" @click="handleModifyGender">
               <Icon name="edit" />
             </Button>
@@ -40,7 +42,6 @@
               </SelectContent>
             </Select>
           </div>
-
         </div>
         <div class="flex flex-1 flex-col gap-2">
           <Label for="birthDate">Date de naissance</Label>
@@ -54,7 +55,6 @@
         </div>
       </div>
       <div class="flex items-end gap-4">
-
         <div class="flex flex-1 flex-col gap-2">
           <Label for="birthPlace">Lieu de naissance</Label>
           <Input id="birthPlace" v-model="form.birthPlace" />
@@ -69,7 +69,12 @@
         <div class="flex flex-1 flex-col gap-2">
           <Label for="department">Filière</Label>
           <div class="flex flex-1 flex-row gap-2">
-            <Input :disabled="1" v-if="!ModifyDepartment" id="firstname" v-model="form.department" />
+            <Input
+              :disabled="1"
+              v-if="!ModifyDepartment"
+              id="firstname"
+              v-model="form.department"
+            />
             <Button v-if="!ModifyDepartment" @click="handleModifyDepartment">
               <Icon name="edit" />
             </Button>
@@ -92,7 +97,11 @@
         </div>
         <div class="flex flex-1 flex-col gap-2">
           <Label for="promotion">Promo</Label>
-          <Input id="promotion" :placeholder="new Date().getFullYear() + 2" v-model="form.promotion" />
+          <Input
+            id="promotion"
+            :placeholder="new Date().getFullYear() + 2"
+            v-model="form.promotion"
+          />
         </div>
       </div>
       <div class="flex items-end gap-4">
@@ -106,7 +115,6 @@
         </div>
       </div>
       <div class="flex justify-end gap-4">
-
         <div class="flex flex-1 flex-col gap-2">
           <Label for="landlinePhone">Email</Label>
           <Input id="landlinePhone" placeholder="Tel Fixe" v-model="form.email" />
@@ -114,7 +122,12 @@
         <div class="flex flex-1 flex-col gap-2">
           <Label for="paymentMethod">Moyen de paiement de la Cotisation</Label>
           <div class="flex flex-1 flex-row gap-2">
-            <Input :disabled="1" v-if="!ModifyPaymentMethod" id="firstname" v-model="form.paymentMethod" />
+            <Input
+              :disabled="1"
+              v-if="!ModifyPaymentMethod"
+              id="firstname"
+              v-model="form.paymentMethod"
+            />
             <Button v-if="!ModifyPaymentMethod" @click="handleModifyPaymentMethod">
               <Icon name="edit" />
             </Button>
@@ -141,14 +154,18 @@
         <div class="flex flex-1 flex-col gap-2">
           <Label for="contributionDate">Date de cotisation</Label>
           <div class="flex flex-1 flex-row gap-2">
-            <Input :disabled="1" v-if="!ModifyContributionDate" id="firstname" v-model="contributionDateString" />
+            <Input
+              :disabled="1"
+              v-if="!ModifyContributionDate"
+              id="firstname"
+              v-model="contributionDateString"
+            />
             <Button v-if="!ModifyContributionDate" @click="handleModifyContributionDate">
               <Icon name="edit" />
             </Button>
             <DatePickerComponent v-if="ModifyContributionDate" v-model="contributionDateFormat" />
           </div>
         </div>
-
       </div>
 
       <div class="flex justify-end gap-4">
@@ -161,7 +178,6 @@
           <Input id="membershipNumber" v-model="form.chatBotId" />
         </div>
       </div>
-
     </CardContent>
   </Card>
   <Toaster />
@@ -189,41 +205,38 @@ import {
 } from '@internationalized/date'
 
 const canEdit = ref(false) // to be modified when permissions are added
-const ModifyGender = ref(false);
-const ModifyContributionDate = ref(false);
-const ModifyDepartment = ref(false);
-const ModifyPaymentMethod = ref(false);
-const ModifyBirthDate = ref(false);
+const ModifyGender = ref(false)
+const ModifyContributionDate = ref(false)
+const ModifyDepartment = ref(false)
+const ModifyPaymentMethod = ref(false)
+const ModifyBirthDate = ref(false)
 
 const contributionDateFormat = ref<DateValue>()
 const birthDateFormat = ref<DateValue>()
 const contributionDateString = ref<string>()
 const birthDateString = ref<string>()
 
-
-
 const handleModifyGender = () => {
-  ModifyGender.value = true;
+  ModifyGender.value = true
 }
 
-
 const handleModifyDepartment = () => {
-  ModifyDepartment.value = true;
+  ModifyDepartment.value = true
 }
 
 const handleModifyContributionDate = () => {
-  ModifyContributionDate.value = true;
+  ModifyContributionDate.value = true
 }
 
 const handleModifyPaymentMethod = () => {
-  ModifyPaymentMethod.value = true;
+  ModifyPaymentMethod.value = true
 }
 const handleModifyBirthDate = () => {
-  ModifyBirthDate.value = true;
+  ModifyBirthDate.value = true
 }
 
 const df = new DateFormatter('fr-FR', {
-  dateStyle: 'long',
+  dateStyle: 'long'
 })
 
 function convertToCalendarDate(isoDateString: string): string {
@@ -276,21 +289,18 @@ const form = ref<FullMemberWithAdress>({
   updatedAt: ''
 })
 async function fetchInfos() {
-
-
-
   // We fetch the person info
   await fetchPersonInfos()
   // We fetch the member info
   await fetchMembersInfos()
 
   contributionDateString.value = convertToCalendarDate(form.value.contributionDate)
-  contributionDateString.value = df.format(parseDateTime(contributionDateString.value).toDate(getLocalTimeZone()))
+  contributionDateString.value = df.format(
+    parseDateTime(contributionDateString.value).toDate(getLocalTimeZone())
+  )
   birthDateString.value = convertToCalendarDate(form.value.birthDate)
   birthDateString.value = df.format(parseDateTime(birthDateString.value).toDate(getLocalTimeZone()))
 }
-
-
 
 async function fetchMembersInfos() {
   await axios
@@ -313,16 +323,11 @@ async function fetchMembersInfos() {
       form.value.paymentMethod = member.paymentMethod
       form.value.telegramId = member.telegramId
       form.value.chatBotId = member.chatBotId
-
-
-
     })
     .catch((error) => {
       console.error(error)
     })
 }
-
-
 
 async function fetchPersonInfos() {
   await axios
@@ -347,9 +352,6 @@ async function fetchPersonInfos() {
       console.error(error)
     })
 }
-
-
-
 
 onMounted(() => {
   fetchInfos()
@@ -391,12 +393,11 @@ async function updatePerson() {
     })
 }
 
-
 async function updateMember() {
   if (contributionDateFormat.value) {
     form.value.contributionDate = contributionDateFormat.value.toString()
   }
-  if (typeof form.value.membershipNumber == "string") {
+  if (typeof form.value.membershipNumber == 'string') {
     form.value.membershipNumber = parseInt(form.value.membershipNumber)
   }
   if (birthDateFormat.value) {
@@ -416,9 +417,9 @@ async function updateMember() {
           department: form.value.department,
           membershipNumber: form.value.membershipNumber,
           addressId: form.value.addressId,
-          paymentMethod : form.value.paymentMethod,
-          telegramId : form.value.telegramId,
-          chatBotId : form.value.chatBotId,
+          paymentMethod: form.value.paymentMethod,
+          telegramId: form.value.telegramId,
+          chatBotId: form.value.chatBotId
         }
       },
       {
@@ -429,7 +430,7 @@ async function updateMember() {
     )
     .then(() => {
       toast({
-        title: 'Personne renseignée',
+        title: 'Personne renseignée'
       })
     })
     .catch((error) => {
@@ -443,9 +444,7 @@ async function updateMember() {
 }
 
 const handleClick = () => {
-
   updatePerson()
   updateMember()
-
 }
 </script>

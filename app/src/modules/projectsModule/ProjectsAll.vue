@@ -8,4 +8,4 @@
       <ProjectsTable />
     </div>
   </div>
-  </template>
+</template>

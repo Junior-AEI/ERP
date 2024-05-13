@@ -43,7 +43,7 @@ export interface User {
   mandateStart: DateString
   mandateEnd: DateString
   emailJE: string
-  password : string
+  password: string
 }
 
 export interface Address {
@@ -134,8 +134,7 @@ export interface Client {
 
 export type ClientInfo = Client & Company & Person & Address
 
-
-//WAITING This interface is created with element of ClientInfo,Event and Project 
+//WAITING This interface is created with element of ClientInfo,Event and Project
 //so if you change one of them change this too
 export interface ClientInfoForTable {
   lastname: string
@@ -166,8 +165,7 @@ export interface DocumentType {
   fieldMeaning: string
 }
 
-export type ExtendedDocument = Document & DocumentType & { acronym: string }// combine Document and DocumentType
-
+export type ExtendedDocument = Document & DocumentType & { acronym: string } // combine Document and DocumentType
 
 export type ProjectInfo = Project & ClientInfo
 
@@ -178,7 +176,6 @@ export interface Project {
   startDate: DateString
   endDate: DateString
   clientId: number
-
 }
 
 export interface ProjectNotes {
@@ -191,8 +188,10 @@ export interface ProjectNotes {
   updatedAt: DateString
 }
 
-export type ExtendedProject = ProjectInfo & { delta: string } & { contributors: Person[], projectManagers: Person[] }
-
+export type ExtendedProject = ProjectInfo & { delta: string } & {
+  contributors: Person[]
+  projectManagers: Person[]
+}
 
 export interface Contributor {
   contributorId: number
@@ -205,4 +204,3 @@ export interface ProjectManager {
   projectId: number
   personId: number
 }
-

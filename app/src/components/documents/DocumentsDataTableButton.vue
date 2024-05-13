@@ -226,7 +226,7 @@ const downloadDocument = (id: number) => {
       const url = window.URL.createObjectURL(file)
       const a = document.createElement('a')
       a.href = url
-      a.download = `${thisDocument.value.name}_v${thisDocument.value.version}.${getExtensionByMime(
+      a.download = `${thisDocument.value.name}.${getExtensionByMime(
         response.headers['content-type']
       )}`
       a.click()

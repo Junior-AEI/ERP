@@ -16,14 +16,14 @@
           <div class="flex flex-1 gap-1">
             <span class="text-sm text-muted-foreground/80">dernière mise à jour le :</span>
             <span class="text-sm text-muted-foreground/80">{{
-              projectNotes[currentNote].updatedAt
+              projectNotes[currentNote]?.updatedAt
             }}</span>
           </div>
           <div>
-            <span
-              >{{ projectNotes[currentNote].advancement }} :
-              {{ projectNotes[currentNote].comment }}</span
-            >
+            <span>
+              {{ projectNotes[currentNote]?.advancement }} :
+              {{ projectNotes[currentNote]?.comment }}
+            </span>
           </div>
         </div>
         <div class="flex items-center justify-end gap-4">

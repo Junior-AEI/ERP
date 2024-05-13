@@ -2,7 +2,7 @@
     "name": "servermail",
     "version": "1.0.0",
     "description": "",
-    "main": "index.ts",
+    "main": "index.js",
     "scripts": {
         "config": "tsc --strict --target es5 --module commonjs src/config/sequelize.config.ts",
         "dev": "nodemon",

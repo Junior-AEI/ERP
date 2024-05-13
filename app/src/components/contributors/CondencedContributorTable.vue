@@ -46,7 +46,6 @@ axios
     }
   })
   .then((response) => {
-   
     contributors.value.push(...response.data.data.contributors)
 
     contributors.value.forEach((element) => {

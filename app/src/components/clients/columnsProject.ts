@@ -33,7 +33,6 @@ function convertToCalendarDate(isoDateString: string): string {
 }
 
 export const columns: ColumnDef<ExtendedProject>[] = [
-
   {
     accessorKey: 'acronym',
     accessorFn: (row) => row.acronym,
@@ -51,7 +50,7 @@ export const columns: ColumnDef<ExtendedProject>[] = [
     accessorKey: 'nameProject',
     accessorFn: (row) => row.nameProject,
     meta: {
-      label: 'Nom de l\'étude'
+      label: "Nom de l'étude"
     },
     header: () => h('div', { class: defaultClasses }, 'Nom'),
     cell: ({ row }) => {
@@ -71,9 +70,11 @@ export const columns: ColumnDef<ExtendedProject>[] = [
     cell: ({ row }) => {
       const item = row.original
 
-
-      return h('div', { class: defaultClasses }, [item.name, h('br'), item.lastname + " " + item.firstname]
-      )
+      return h('div', { class: defaultClasses }, [
+        item.name,
+        h('br'),
+        item.lastname + ' ' + item.firstname
+      ])
     }
   },
 
@@ -87,11 +88,13 @@ export const columns: ColumnDef<ExtendedProject>[] = [
 
     cell: ({ row }) => {
       const item = row.original
-      return h('div', { class: `lowercase ${defaultClasses}` },
+      return h(
+        'div',
+        { class: `lowercase ${defaultClasses}` },
         item.projectManagers.map((manager) => {
-          return h('div', { class: `defaultClasses` }, manager.lastname + " " + manager.firstname);
+          return h('div', { class: `defaultClasses` }, manager.lastname + ' ' + manager.firstname)
         })
-      );
+      )
     }
   },
   {
@@ -104,11 +107,17 @@ export const columns: ColumnDef<ExtendedProject>[] = [
 
     cell: ({ row }) => {
       const item = row.original
-      return h('div', { class: `lowercase ${defaultClasses}` },
+      return h(
+        'div',
+        { class: `lowercase ${defaultClasses}` },
         item.contributors.map((contributor) => {
-          return h('div', { class: `defaultClasses` }, contributor.lastname + " " + contributor.firstname);
+          return h(
+            'div',
+            { class: `defaultClasses` },
+            contributor.lastname + ' ' + contributor.firstname
+          )
         })
-      );
+      )
     }
   },
   {
@@ -136,32 +145,30 @@ export const columns: ColumnDef<ExtendedProject>[] = [
     },
     header: () => h('div', { class: defaultClasses }, 'Date de Fin'),
     cell: ({ row }) => {
-      let colorDate = '';
-      const currentDate = new Date().getTime(); // Convertir la date actuelle en timestamp UNIX
-      const endDate = convertToCalendarDate(row.getValue('endDate'));
-      const endDateTime = new Date(row.getValue('endDate')).getTime();
+      let colorDate = ''
+      const currentDate = new Date().getTime() // Convertir la date actuelle en timestamp UNIX
+      const endDate = convertToCalendarDate(row.getValue('endDate'))
+      const endDateTime = new Date(row.getValue('endDate')).getTime()
 
       // Calcul de la différence en jours
-      const differenceInDays = Math.floor((endDateTime - currentDate) / (1000 * 60 * 60 * 24));
+      const differenceInDays = Math.floor((endDateTime - currentDate) / (1000 * 60 * 60 * 24))
 
       // Choix de la couleur en fonction de la différence en jours
       if (differenceInDays < 0) {
-        colorDate = 'bg-gray-500'; // Date expirée (dans le passé)
+        colorDate = 'bg-gray-500' // Date expirée (dans le passé)
       } else if (differenceInDays < 7) {
-        colorDate = 'bg-red-500'; // Date dans moins d'une semaine
-      }
-      else if (differenceInDays < 14) {
-        colorDate = 'bg-orange-500'; // Date dans moins d'une semaine
+        colorDate = 'bg-red-500' // Date dans moins d'une semaine
+      } else if (differenceInDays < 14) {
+        colorDate = 'bg-orange-500' // Date dans moins d'une semaine
       } else {
-        colorDate = 'bg-green-500'; // Date dans plus d'une semaine
+        colorDate = 'bg-green-500' // Date dans plus d'une semaine
       }
 
       return h(
         'div',
         { class: `text-white p-1 rounded mr-2 w-28 ${colorDate}` },
         df.format(parseDateTime(endDate).toDate(getLocalTimeZone()))
-      );
+      )
     }
-
-  },
+  }
 ]

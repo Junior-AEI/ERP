@@ -42,4 +42,3 @@ console.log('tasks :', tasks.value)
     </div>
   </div>
 </template>
-

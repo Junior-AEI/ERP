@@ -263,7 +263,7 @@ const form = ref<FullUserWithAdress>({
   mandateStart: '',
   mandateEnd: '',
   emailJE: '',
-  password : ''
+  password: ''
 })
 
 const membershipNumberFormat = ref<string>()
@@ -306,7 +306,7 @@ async function getDataMembers(): Promise<{ value: string; label: string }[]> {
     }
   })
 
-  const MembersPerson =  members.data.data?.members.map((member: any) => {
+  const MembersPerson = members.data.data?.members.map((member: any) => {
     const person = persons.data.data?.persons.find(
       (person: any) => person.personId === member.memberId
     )
@@ -320,22 +320,19 @@ async function getDataMembers(): Promise<{ value: string; label: string }[]> {
       Authorization: `Bearer ${useAuthStore().token}`
     }
   })
-  console.log(users.data.data?.users) 
+  console.log(users.data.data?.users)
 
-
-  const UsersMembers =  users.data.data?.users.map((user: any) => {
-    const member = members.data.data?.members.find(
-      (member: any) => user.userId === member.memberId
-    )
+  const UsersMembers = users.data.data?.users.map((user: any) => {
+    const member = members.data.data?.members.find((member: any) => user.userId === member.memberId)
     return {
       ...user,
       ...member
     }
   })
-  console.log(UsersMembers) 
+  console.log(UsersMembers)
   const nonUserMembers = MembersPerson.filter((member: any) => {
-    return !UsersMembers.some((user: any)  => user.userId == member.memberId);
-  });
+    return !UsersMembers.some((user: any) => user.userId == member.memberId)
+  })
 
   const membersLists = nonUserMembers.map((member: any) => {
     return {
@@ -343,10 +340,9 @@ async function getDataMembers(): Promise<{ value: string; label: string }[]> {
       label: `${member.firstname} ${member.lastname}`
     }
   })
-  console.log(membersLists) 
+  console.log(membersLists)
 
-  return membersLists;
-
+  return membersLists
 }
 
 async function getDataAddress(): Promise<{ value: string; label: string }[]> {
@@ -522,7 +518,6 @@ async function newUser() {
           mandateEnd: form.value.mandateEnd,
           emailJE: form.value.emailJE,
           password: form.value.password
-
         }
       },
       {
@@ -546,7 +541,6 @@ async function newUser() {
         description: `${error.response.data.message}`
       })
     })
-  
 }
 async function handleClickMember() {
   if (form.value.addressId == 0) {
@@ -565,8 +559,7 @@ async function newPassword() {
     .post(
       `/forget`,
       {
-          username: form.value.username,
-
+        username: form.value.username
       },
       {
         headers: {
@@ -577,7 +570,7 @@ async function newPassword() {
     .then((response) => {
       console.log(response)
       toast({
-        title: 'Utilisateur renseigné',
+        title: 'Utilisateur renseigné'
       })
     })
     .catch((error) => {
@@ -588,7 +581,6 @@ async function newPassword() {
         description: `${error.response.data.message}`
       })
     })
-  
 }
 async function handleClickUser() {
   await newUser()

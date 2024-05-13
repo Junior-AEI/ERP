@@ -14,7 +14,7 @@ export const treasuryModule: Module = {
           component: () => import('./views/ExpenseAdmin.vue'),
           meta: {
             icon: 'credit_card'
-          },
+          }
         }
       ],
       meta: {

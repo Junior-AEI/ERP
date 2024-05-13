@@ -7,9 +7,8 @@ defineProps<{
   <Wrapper class="flex-row">
     <MemberInfo :memberId="personId" />
     <div class="flex flex-1 flex-col gap-2">
-
-    <AdressInfo :userId="personId"/>
-    <UserInfo :userId="personId"  />
+      <AdressInfo :userId="personId" />
+      <UserInfo :userId="personId" />
     </div>
   </Wrapper>
 </template>

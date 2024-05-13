@@ -58,7 +58,7 @@ export const columns: ColumnDef<FullMember>[] = [
         Button,
         {
           variant: 'ghost',
-          onClick: () => column.toggleSorting(column.getIsSorted() === 'asc'),
+          onClick: () => column.toggleSorting(column.getIsSorted() === 'asc')
         },
         () => [
           'Email',
@@ -71,7 +71,8 @@ export const columns: ColumnDef<FullMember>[] = [
         ]
       )
     },
-    cell: ({ row }) => h('div', { class: `lowercase px-4 ${defaultClasses}` }, row.getValue('email'))
+    cell: ({ row }) =>
+      h('div', { class: `lowercase px-4 ${defaultClasses}` }, row.getValue('email'))
   },
   {
     accessorKey: 'department',
@@ -83,7 +84,7 @@ export const columns: ColumnDef<FullMember>[] = [
         Button,
         {
           variant: 'ghost',
-          onClick: () => column.toggleSorting(column.getIsSorted() === 'asc'),
+          onClick: () => column.toggleSorting(column.getIsSorted() === 'asc')
         },
         () => [
           'Filière',
@@ -108,7 +109,7 @@ export const columns: ColumnDef<FullMember>[] = [
         Button,
         {
           variant: 'ghost',
-          onClick: () => column.toggleSorting(column.getIsSorted() === 'asc'),
+          onClick: () => column.toggleSorting(column.getIsSorted() === 'asc')
         },
         () => [
           'Promo',
@@ -121,9 +122,14 @@ export const columns: ColumnDef<FullMember>[] = [
         ]
       )
     },
-    cell: ({ row }) => h('div', {
-      class: `${defaultClasses} px-4`
-    }, row.getValue('promotion'))
+    cell: ({ row }) =>
+      h(
+        'div',
+        {
+          class: `${defaultClasses} px-4`
+        },
+        row.getValue('promotion')
+      )
   },
   {
     id: 'actions',
@@ -138,7 +144,7 @@ export const columns: ColumnDef<FullMember>[] = [
           item: {
             memberId: item.memberId,
             firstname: item.firstname,
-            lastname: item.lastname,
+            lastname: item.lastname
           }
         })
       )

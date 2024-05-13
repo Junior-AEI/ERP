@@ -17,7 +17,6 @@ async function getData(): Promise<ClientInfoForTable[]> {
     }
   })
 
-
   const persons = await axios.get(`/person`, {
     headers: {
       Authorization: `Bearer ${useAuthStore().token}`
@@ -56,8 +55,6 @@ async function getData(): Promise<ClientInfoForTable[]> {
     }
   })
 
-  
-
   const fullClients = ClientPerson.map((client: any) => {
     const company = CompanyWithAddress.find(
       (company: any) => company.companyId === client.companyId
@@ -68,20 +65,19 @@ async function getData(): Promise<ClientInfoForTable[]> {
     }
   })
 
-
   const projects = await axios.get(`/project`, {
     headers: {
       Authorization: `Bearer ${useAuthStore().token}`
     }
   })
 
-
   const ClientsWithProjects = fullClients.map((client: any) => {
-      const clientProjects = projects.data.data?.projects.filter((project: any) => project.clientId === client.clientId);
-      const Projectsname = clientProjects.map((project: any) => project.acronym);
-      return { ...client, Projectsname : Projectsname, firstContact: client.firstContact };
-    });
-
+    const clientProjects = projects.data.data?.projects.filter(
+      (project: any) => project.clientId === client.clientId
+    )
+    const Projectsname = clientProjects.map((project: any) => project.acronym)
+    return { ...client, Projectsname: Projectsname, firstContact: client.firstContact }
+  })
 
   return ClientsWithProjects
 }
@@ -95,7 +91,7 @@ const router = useRouter()
 const handleClick = (row: any) => {
   router.push({
     path: '/client/profil',
-    query: { id: row.clientId, name : `${row.firstname} ${row.lastname} de ${row.name}`}
+    query: { id: row.clientId, name: `${row.firstname} ${row.lastname} de ${row.name}` }
   })
 }
 </script>

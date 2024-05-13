@@ -183,7 +183,6 @@ import { ref, onMounted } from 'vue'
 import { useAuthStore } from '@/stores/authStore'
 import axios from 'axios'
 import { useToast } from '@/components/ui/toast/use-toast'
-const temp = ref('temp')
 import type { ClientInfo } from '@/types/api'
 
 const form = ref<ClientInfo>({
@@ -200,8 +199,8 @@ const form = ref<ClientInfo>({
   name: '',
   legalEntity: '',
   addressId: NaN,
-  companyType : '',
-  activityField : '',
+  companyType: '',
+  activityField: '',
 
   function: '',
   firstContact: '',
@@ -325,7 +324,6 @@ async function newCompany() {
           addressId: form.value.addressId,
           companyType: form.value.companyType,
           activityField: form.value.activityField
-
         }
       },
       {

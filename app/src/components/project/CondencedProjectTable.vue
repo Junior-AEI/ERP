@@ -1,37 +1,37 @@
 <template>
-    <div class="flex flex-col gap-2">
-      <Input placeholder="Rechercher" v-model="research" />
-  
-      <Card class="max-h-screen ">
-        <ScrollArea class="flex h-full flex-col gap-1">
-          <CardContent class="h-full pr-3">
-              
-           <CondencedProject
-              v-for="project in res"
-              :infos="project"
-            >
-            </CondencedProject> 
-  
-          </CardContent>
-        </ScrollArea>
-      </Card>
-    </div>
-  </template>
-  
-  <script setup lang="ts">
-  import { ref } from 'vue'
-  import axios from 'axios'
-  import { type ClientInfo, type Client } from '@/types/api'
-  import { type ProjectInfo, type Project, type Address, type Person, type ExtendedProject, type ProjectManager, type Contributor } from '@/types/api'
-  import { useAuthStore } from '@/stores/authStore'
-  import { SortDesc } from 'lucide-vue-next'
-  import { sortingFns } from '@tanstack/vue-table'
-  import { computed } from 'vue'
-  
+  <div class="flex flex-col gap-2">
+    <Input placeholder="Rechercher" v-model="research" />
 
+    <Card class="max-h-screen">
+      <ScrollArea class="flex h-full flex-col gap-1">
+        <CardContent class="h-full pr-3">
+          <CondencedProject v-for="project in res" :key="project.projectId" :infos="project">
+          </CondencedProject>
+        </CardContent>
+      </ScrollArea>
+    </Card>
+  </div>
+</template>
 
+<script setup lang="ts">
+import { ref } from 'vue'
+import axios from 'axios'
+import { type ClientInfo } from '@/types/api'
+import {
+  type ProjectInfo,
+  type Project,
+  type Address,
+  type Person,
+  type ExtendedProject,
+  type ProjectManager,
+  type Contributor
+} from '@/types/api'
+import { useAuthStore } from '@/stores/authStore'
+import { SortDesc } from 'lucide-vue-next'
+import { sortingFns } from '@tanstack/vue-table'
+import { computed } from 'vue'
 
-  const examplePerson: Person = {
+const examplePerson: Person = {
   personId: 1,
   lastname: 'Doe',
   firstname: 'John',
@@ -41,7 +41,7 @@
   email: 'john.doe@example.com',
   createdAt: '2021-01-01',
   updatedAt: '2021-01-01'
-};
+}
 
 const exampleAddress: Address = {
   addressId: 1,
@@ -50,18 +50,19 @@ const exampleAddress: Address = {
   city: 'Paris',
   postCode: '75000',
   country: 'France'
-};
+}
 
 const exampleClientInfo: ClientInfo = {
   ...examplePerson,
   ...exampleAddress,
+  activityField: 'IT Services',
   function: 'Project Manager',
   firstContact: '2021-01-02',
   name: 'Example Company',
   legalEntity: 'SA',
   companyId: 1,
   companyType: 'IT Services'
-};
+}
 
 const exampleProject: Project = {
   projectId: 1,
@@ -70,12 +71,12 @@ const exampleProject: Project = {
   startDate: '2021-01-03',
   endDate: '2021-12-31',
   clientId: 1
-};
+}
 
 const exampleProjectInfo: ProjectInfo = {
   ...exampleProject,
   ...exampleClientInfo
-};
+}
 
 const exampleContributors: Person[] = [
   {
@@ -88,9 +89,9 @@ const exampleContributors: Person[] = [
     email: 'jane.smith@example.com',
     createdAt: '2021-01-04',
     updatedAt: '2021-01-04'
-  },
+  }
   // ... other contributors
-];
+]
 
 const exampleProjectManagers: Person[] = [
   {
@@ -103,9 +104,9 @@ const exampleProjectManagers: Person[] = [
     email: 'bob.brown@example.com',
     createdAt: '2021-01-05',
     updatedAt: '2021-01-05'
-  },
+  }
   // ... other project managers
-];
+]
 // Deuxième exemple de projet
 const examplePerson2: Person = {
   personId: 4,
@@ -117,7 +118,7 @@ const examplePerson2: Person = {
   email: 'alice.doe@example.com',
   createdAt: '2021-01-01',
   updatedAt: '2021-01-01'
-};
+}
 
 const exampleAddress2: Address = {
   addressId: 2,
@@ -126,18 +127,19 @@ const exampleAddress2: Address = {
   city: 'Lyon',
   postCode: '69000',
   country: 'France'
-};
+}
 
 const exampleClientInfo2: ClientInfo = {
   ...examplePerson2,
   ...exampleAddress2,
+  activityField: 'IT Services',
   function: 'Project Manager',
   firstContact: '2021-01-02',
   name: 'Example Company 2',
   legalEntity: 'SAS',
   companyId: 2,
   companyType: 'IT Services'
-};
+}
 
 const exampleProject2: Project = {
   projectId: 2,
@@ -146,12 +148,12 @@ const exampleProject2: Project = {
   startDate: '2021-02-01',
   endDate: '2022-02-28',
   clientId: 2
-};
+}
 
 const exampleProjectInfo2: ProjectInfo = {
   ...exampleProject2,
   ...exampleClientInfo2
-};
+}
 
 const exampleContributors2: Person[] = [
   {
@@ -176,7 +178,7 @@ const exampleContributors2: Person[] = [
     createdAt: '2021-02-01',
     updatedAt: '2021-02-01'
   }
-];
+]
 
 const exampleProjectManagers2: Person[] = [
   {
@@ -201,14 +203,14 @@ const exampleProjectManagers2: Person[] = [
     createdAt: '2021-02-01',
     updatedAt: '2021-02-01'
   }
-];
+]
 
 const exampleExtendedProject2: ExtendedProject = {
   ...exampleProjectInfo2,
   delta: 'This is a delta for project 2',
   contributors: exampleContributors2,
   projectManagers: exampleProjectManagers2
-};
+}
 
 // Troisième exemple de projet
 const examplePerson3: Person = {
@@ -221,7 +223,7 @@ const examplePerson3: Person = {
   email: 'michael.doe@example.com',
   createdAt: '2021-01-01',
   updatedAt: '2021-01-01'
-};
+}
 
 const exampleAddress3: Address = {
   addressId: 3,
@@ -230,18 +232,19 @@ const exampleAddress3: Address = {
   city: 'Marseille',
   postCode: '13000',
   country: 'France'
-};
+}
 
 const exampleClientInfo3: ClientInfo = {
   ...examplePerson3,
   ...exampleAddress3,
+  activityField: 'IT Services',
   function: 'Project Manager',
   firstContact: '2021-01-02',
   name: 'Example Company 3',
   legalEntity: 'SARL',
   companyId: 3,
   companyType: 'IT Services'
-};
+}
 
 const exampleProject3: Project = {
   projectId: 3,
@@ -250,12 +253,12 @@ const exampleProject3: Project = {
   startDate: '2021-03-01',
   endDate: '2022-03-31',
   clientId: 3
-};
+}
 
 const exampleProjectInfo3: ProjectInfo = {
   ...exampleProject3,
   ...exampleClientInfo3
-};
+}
 
 const exampleContributors3: Person[] = [
   {
@@ -280,7 +283,7 @@ const exampleContributors3: Person[] = [
     createdAt: '2021-03-01',
     updatedAt: '2021-03-01'
   }
-];
+]
 
 const exampleProjectManagers3: Person[] = [
   {
@@ -305,184 +308,182 @@ const exampleProjectManagers3: Person[] = [
     createdAt: '2021-03-01',
     updatedAt: '2021-03-01'
   }
-];
+]
 
 const exampleExtendedProject3: ExtendedProject = {
   ...exampleProjectInfo3,
   delta: 'This is a delta for project 3',
   contributors: exampleContributors3,
   projectManagers: exampleProjectManagers3
-};
-
+}
 
 const exampleExtendedProject: ExtendedProject = {
   ...exampleProjectInfo,
   delta: '2 jours',
   contributors: exampleContributors,
   projectManagers: exampleProjectManagers
-};
+}
 
+const research = ref('')
+const results = ref<ExtendedProject[]>([])
 
+function result() {
+  return projects.value.filter((project) => {
+    const fields: string = Object.values(project).join(' ').toLocaleLowerCase()
+    return fields.includes(research.value.toLowerCase())
+  })
+}
 
-  const research = ref('')
-  const results = ref<ExtendedProject[]>([])
-  
-  function result() {
-      return projects.value.filter((project) => {
-          const fields: string = Object.values(project).join(' ').toLocaleLowerCase()
-          return fields.includes(research.value.toLowerCase())
-        })
-    }
-    
-    const res = computed(result)
-    
-    const projects = ref<ExtendedProject[]>([
-])
+const res = computed(result)
+
+const projects = ref<ExtendedProject[]>([])
 const authStore = useAuthStore()
 
-axios.get(`/project/`, {
+axios
+  .get(`/project/`, {
     headers: {
-        Authorization: `Bearer ${authStore.token}`
+      Authorization: `Bearer ${authStore.token}`
     }
-}).then((response) => {
+  })
+  .then((response) => {
     projects.value.push(...response.data.data.projects)
-    
+
     // récupérer les infos client
-    projects.value.forEach(element => {
-        console.log("project",element);
-        
-        axios.get(`/client/${element.clientId}`, {
-            headers: {
-                Authorization: `Bearer ${authStore.token}`
-            }
-        }).then((response1) => {
+    projects.value.forEach((element) => {
+      console.log('project', element)
 
-            element.clientId = response1.data.data.client.clientId
-            element.function = response1.data.data.client.function
-            element.firstContact = response1.data.data.client.firstContact
-            element.addressId = response1.data.data.client.addressId
-            element.companyId = response1.data.data.client.companyId
-            element.personId = response1.data.data.client.personId
-        });
-
-        console.log("project with client",element);
-        
-        
-        // récupérer les infos de l'entreprise
-        axios.get(`/company/${element.companyId}`, {
+      axios
+        .get(`/client/${element.clientId}`, {
           headers: {
             Authorization: `Bearer ${authStore.token}`
           }
-        }).then((response2) => {
-            element.companyId = response2.data.data.company.companyId
-            element.name = response2.data.data.company.name
-            element.legalEntity = response2.data.data.company.legalEntity
-            element.addressId = response2.data.data.company.addressId
-            element.companyType = response2.data.data.company.companyType
-            
-            });
-        
-        console.log("project with company",element);
-        
+        })
+        .then((response1) => {
+          element.clientId = response1.data.data.client.clientId
+          element.function = response1.data.data.client.function
+          element.firstContact = response1.data.data.client.firstContact
+          element.addressId = response1.data.data.client.addressId
+          element.companyId = response1.data.data.client.companyId
+          element.personId = response1.data.data.client.personId
+        })
 
-        // récupérer les infos personnelles du client
-        axios.get(`/person/${element.clientId}`, {
+      console.log('project with client', element)
+
+      // récupérer les infos de l'entreprise
+      axios
+        .get(`/company/${element.companyId}`, {
+          headers: {
+            Authorization: `Bearer ${authStore.token}`
+          }
+        })
+        .then((response2) => {
+          element.companyId = response2.data.data.company.companyId
+          element.name = response2.data.data.company.name
+          element.legalEntity = response2.data.data.company.legalEntity
+          element.addressId = response2.data.data.company.addressId
+          element.companyType = response2.data.data.company.companyType
+        })
+
+      console.log('project with company', element)
+
+      // récupérer les infos personnelles du client
+      axios
+        .get(`/person/${element.clientId}`, {
+          headers: {
+            Authorization: `Bearer ${authStore.token}`
+          }
+        })
+        .then((response3) => {
+          element.firstname = response3.data.data.person.firstname
+          element.lastname = response3.data.data.person.lastname
+          element.gender = response3.data.data.person.gender
+          element.mobilePhone = response3.data.data.person.mobilePhone
+          element.landlinePhone = response3.data.data.person.landlinePhone
+          element.email = response3.data.data.person.email
+        })
+
+      console.log('project with person (client)', element)
+
+      // récupérer les infos de l'adresse de l'entreprise
+      axios
+        .get(`/address/${element.addressId}`, {
+          headers: {
+            Authorization: `Bearer ${authStore.token}`
+          }
+        })
+        .then((response4) => {
+          element.address = response4.data.data.address.address
+          element.additionnalAddress = response4.data.data.address.additionnalAddress
+          element.city = response4.data.data.address.city
+          element.postCode = response4.data.data.address.postCode
+          element.country = response4.data.data.address.country
+        })
+
+      console.log('project with address', element)
+
+      const managersId = ref<ProjectManager[]>([])
+
+      // récupérer les infos personnelles des projects managers
+      console.log(`/projectManager/byProject/${element.projectId}`)
+
+      axios
+        .get(`/projectManager/byProject/${element.projectId}`, {
+          headers: {
+            Authorization: `Bearer ${authStore.token}`
+          }
+        })
+        .then((response5) => {
+          console.log('response manager', response5.data.data.projectManager)
+
+          managersId.value = response5.data.data.projectManager
+        })
+
+      console.log('managersId', managersId.value)
+
+      managersId.value.forEach((managerId) => {
+        axios
+          .get(`/person/${managerId}`, {
             headers: {
-                Authorization: `Bearer ${authStore.token}`
+              Authorization: `Bearer ${authStore.token}`
             }
-        }).then((response3) => {
-            element.firstname = response3.data.data.person.firstname
-            element.lastname = response3.data.data.person.lastname
-            element.gender = response3.data.data.person.gender
-            element.mobilePhone = response3.data.data.person.mobilePhone
-            element.landlinePhone = response3.data.data.person.landlinePhone
-            element.email = response3.data.data.person.email
+          })
+          .then((response6) => {
+            element.projectManagers.push(...response6.data.data.person)
+          })
+      })
 
+      console.log('project with managers', element)
+
+      // récupérer les infos personnelles des contributeurs
+      const contributorsId = ref<Contributor[]>([])
+      console.log(`/contributor/byProject/${element.projectId}`)
+
+      axios
+        .get(`/contributor/byProject/${element.projectId}`, {
+          headers: {
+            Authorization: `Bearer ${authStore.token}`
+          }
         })
+        .then((response7) => {
+          console.log('response contributor', response7.data.data.contributor)
 
-        console.log("project with person (client)",element);
-
-
-        // récupérer les infos de l'adresse de l'entreprise
-        axios.get(`/address/${element.addressId}`, {
+          contributorsId.value = response7.data.data.contributor
+        })
+      contributorsId.value.forEach((contributorId) => {
+        axios
+          .get(`/person/${contributorId}`, {
             headers: {
-                Authorization: `Bearer ${authStore.token}`
+              Authorization: `Bearer ${authStore.token}`
             }
-        }).then((response4) => {
-            element.address = response4.data.data.address.address
-            element.additionnalAddress = response4.data.data.address.additionnalAddress
-            element.city = response4.data.data.address.city
-            element.postCode = response4.data.data.address.postCode
-            element.country = response4.data.data.address.country
-        })
+          })
+          .then((response8) => {
+            element.contributors.push(response8.data.data.person)
+          })
+      })
 
-        console.log("project with address",element);
-        
-        const managersId = ref<ProjectManager[]>([])
-
-        // récupérer les infos personnelles des projects managers
-        console.log(`/projectManager/byProject/${element.projectId}`);
-        
-        axios.get(`/projectManager/byProject/${element.projectId}`, {
-            headers: {
-                Authorization: `Bearer ${authStore.token}`
-            }
-        }).then((response5) => {
-            console.log("response manager",response5.data.data.projectManager);
-            
-            managersId.value = response5.data.data.projectManager
-        })
-
-        console.log("managersId",managersId.value);
-        
-
-
-        managersId.value.forEach((managerId) => {
-            axios.get(`/person/${managerId}`, {
-                headers: {
-                    Authorization: `Bearer ${authStore.token}`
-                }
-            }).then((response6) => {
-                element.projectManagers.push(...response6.data.data.person)
-            })
-        })
-
-        console.log("project with managers",element);
-        
-
-      // récupérer les infos personnelles des contributeurs 
-        const contributorsId = ref<Contributor[]>([])
-        console.log(`/contributor/byProject/${element.projectId}`);
-        
-        axios.get(`/contributor/byProject/${element.projectId}`, {
-            headers: {
-                Authorization: `Bearer ${authStore.token}`
-            }
-        }).then((response7) => {
-            console.log("response contributor",response7.data.data.contributor);
-            
-            contributorsId.value = response7.data.data.contributor
-        })
-        contributorsId.value.forEach((contributorId) => {
-            axios.get(`/person/${contributorId}`, {
-                headers: {
-                    Authorization: `Bearer ${authStore.token}`
-                }
-            }).then((response8) => {
-                element.contributors.push(response8.data.data.person)
-            })
-        })
-
-        console.log("project with contributors",element);
-
-        });
+      console.log('project with contributors', element)
     })
+  })
 
-
-    console.log("projects final", projects.value);
-    
-
-
-  
-  </script>
-  
+console.log('projects final', projects.value)
+</script>

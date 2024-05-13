@@ -158,7 +158,7 @@ const handleClick = () => {
         }
       }
     )
-    .then((response) => {
+    .then(() => {
       toast({
         title: 'Demande envoyée',
         description: `${form.value.reason}`

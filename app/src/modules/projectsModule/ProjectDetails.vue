@@ -29,7 +29,12 @@
               <Button variant="outline" icon="add"></Button>
             </CardHeader>
             <CardContent class="flex flex-row flex-wrap">
-              <DocumentCard class="flex-1" v-for="doc in documents" :infos="doc"></DocumentCard>
+              <DocumentCard
+                class="flex-1"
+                v-for="doc in documents"
+                :infos="doc"
+                :key="doc.documentId"
+              ></DocumentCard>
             </CardContent>
           </Card>
         </Wrapper>
@@ -45,17 +50,6 @@
 
             <ProjectNoteViewer :projectId="projectId"></ProjectNoteViewer>
           </div>
-
-          <div class="flex h-fit flex-col gap-2">
-            <div class="flex flex-1 justify-between items-center">
-                <h3>Réunions</h3>
-                <Button variant="outline" icon="add">Ajouter une Réunion</Button>
-            </div>
-            <Card>
-              <CardContent> </CardContent>
-            </Card>
-
-           </div>
         </Wrapper>
       </div>
     </div>
@@ -283,12 +277,12 @@ const exampleProjectManagers2: Person[] = [
   }
 ]
 
-const exampleExtendedProject2: ExtendedProject = {
+/* const exampleExtendedProject2: ExtendedProject = {
   ...exampleProjectInfo2,
   delta: 'This is a delta for project 2',
   contributors: exampleContributors2,
   projectManagers: exampleProjectManagers2
-}
+} */
 
 // Troisième exemple de projet
 const examplePerson3: Person = {
@@ -315,7 +309,7 @@ const exampleAddress3: Address = {
 const exampleClientInfo3: ClientInfo = {
   ...examplePerson3,
   ...exampleAddress3,
-    activityField: 'IT Services',
+  activityField: 'IT Services',
   function: 'Project Manager',
   firstContact: '2021-01-02',
   name: 'Example Company 3',

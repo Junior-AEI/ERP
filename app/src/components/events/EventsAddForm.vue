@@ -290,7 +290,7 @@ const addEvent = async () => {
         }
       }
     )
-    .then((response) => {
+    .then(() => {
       emit('add:event', [])
       toast({
         title: 'Événement ajouté',

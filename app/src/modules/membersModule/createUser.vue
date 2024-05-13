@@ -220,7 +220,6 @@ import { ref, onMounted } from 'vue'
 import { useAuthStore } from '@/stores/authStore'
 import axios from 'axios'
 import { useToast } from '@/components/ui/toast/use-toast'
-const temp = ref('temp')
 import type { FullUserWithAdress } from '@/types/api'
 import { type DateValue } from '@internationalized/date'
 import CardContent from '@/components/ui/card/CardContent.vue'

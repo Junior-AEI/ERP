@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed, getCurrentInstance, onMounted } from 'vue'
+import { computed, getCurrentInstance } from 'vue'
 import { useToast } from '../toast'
 
 const { toast } = useToast()

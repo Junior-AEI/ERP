@@ -84,7 +84,7 @@ export const columns: ColumnDef<ClientInfoForTable>[] = [
     meta: {
       label: 'Premier Contact'
     },
-    header: () => h('div', { class: defaultClasses }, 'Domaine'),
+    header: () => h('div', { class: defaultClasses }, 'Premier Contact'),
     cell: ({ row }) => {
       
       const firstContact = row.getValue('firstContact') as string

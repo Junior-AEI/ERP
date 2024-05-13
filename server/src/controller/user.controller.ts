@@ -70,6 +70,7 @@ const getByPk = async (req: Request, res: Response) => {
 async function create(req: Request, res: Response) {
     try {
         // Parse identifier for member heredity
+        console.log(req.body.user.userId)
         const identifier = parseInt(req.body.user.userId)
         if (isNaN(identifier)) throw createHttpError(400, 'Please provide a valid identifier')
 
@@ -80,12 +81,14 @@ async function create(req: Request, res: Response) {
         // Test params
         const validator = isValidUser(req.body.user.username, req.body.user.password, req.body.user.mandateStart, req.body.user.mandateEnd, req.body.user.emailJE)
         if (!validator.valid) throw createHttpError(400, validator.message as string)
+        
+        const hashedPassword = await bcrypt.hash(req.body.user.password, 10)
 
         // Insert data
         const user = await Users.create({
             userId: identifier,
             username: req.body.user.username,
-            password: req.body.user.password,
+            password: hashedPassword,
             mandateStart: new Date(req.body.user.mandateStart),
             mandateEnd: new Date(req.body.user.mandateEnd),
             emailJE: req.body.user.emailJE

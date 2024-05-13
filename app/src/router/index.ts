@@ -40,6 +40,15 @@ const baseRoutes = [
     }
   },
   {
+    path: '/modif/password',
+    name: 'Modifier son mot de Passe',
+    component: () => import('../views/ModifyPasswordView.vue'),
+    meta: {
+      icon: 'login',
+      public: true
+    }
+  },
+  {
     path: '/:pathMatch(.*)*',
     name: 'NotFound',
     component: () => import('../views/NotFound.vue'),

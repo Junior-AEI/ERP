@@ -1,1 +1,2 @@
-export { default as MembersTable } from '@/components/members/MembersTable.vue'
+export { default as ClientsTable } from './ClientsTable.vue'
+export { default as ProjectsTable } from './ProjectsTable.vue'

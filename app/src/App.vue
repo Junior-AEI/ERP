@@ -32,7 +32,7 @@ const route = useRoute()
 const logedMode = ref(false)
 
 watch(route, () => {
-  logedMode.value = route.path !== '/login'
+  logedMode.value = route.path !== '/login' && route.path !== '/modif/password'
 })
 </script>
 

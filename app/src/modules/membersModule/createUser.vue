@@ -207,6 +207,10 @@
               <Label for="firstname">Email à AEI </Label>
               <Input id="firstname" v-model="form.emailJE" />
             </div>
+            <div class="flex flex-1 flex-col gap-2">
+              <Label for="firstname">Mot de Passe ERP</Label>
+              <Input id="firstname" v-model="form.password" />
+            </div>
           </div>
           <Button @click="handleClickUser" class="mt-4">Créer un nouvel Utilisateur</Button>
         </div>
@@ -259,7 +263,8 @@ const form = ref<FullUserWithAdress>({
   username: '',
   mandateStart: '',
   mandateEnd: '',
-  emailJE: ''
+  emailJE: '',
+  password : ''
 })
 
 const membershipNumberFormat = ref<string>()
@@ -302,18 +307,47 @@ async function getDataMembers(): Promise<{ value: string; label: string }[]> {
     }
   })
 
-  const membersLists = members.data.data?.members.map((member: any) => {
+  const MembersPerson =  members.data.data?.members.map((member: any) => {
     const person = persons.data.data?.persons.find(
       (person: any) => person.personId === member.memberId
     )
-
     return {
-      value: member.memberId.toString(),
-      label: `${person.firstname} ${person.lastname}`
+      ...person,
+      ...member
     }
   })
+  const users = await axios.get(`/user`, {
+    headers: {
+      Authorization: `Bearer ${useAuthStore().token}`
+    }
+  })
+  console.log(users.data.data?.users) 
 
-  return membersLists
+
+  const UsersMembers =  users.data.data?.users.map((user: any) => {
+    const member = members.data.data?.members.find(
+      (member: any) => user.userId === member.memberId
+    )
+    return {
+      ...user,
+      ...member
+    }
+  })
+  console.log(UsersMembers) 
+  const nonUserMembers = MembersPerson.filter((member: any) => {
+    return !UsersMembers.some((user: any)  => user.userId == member.memberId);
+  });
+
+  const membersLists = nonUserMembers.map((member: any) => {
+    return {
+      value: member.memberId.toString(),
+      label: `${member.firstname} ${member.lastname}`
+    }
+  })
+  console.log(membersLists) 
+
+  return membersLists;
+
 }
 
 async function getDataAddress(): Promise<{ value: string; label: string }[]> {
@@ -478,17 +512,18 @@ async function newMember() {
 }
 
 async function newUser() {
-  birthDateFormat
   await axios
     .post(
       `/user/`,
       {
         user: {
-          userId: form.value.personId,
+          userId: form.value.memberId,
           username: form.value.username,
           mandateStart: form.value.mandateStart,
           mandateEnd: form.value.mandateEnd,
-          emailJE: form.value.emailJE
+          emailJE: form.value.emailJE,
+          password: form.value.password
+
         }
       },
       {
@@ -512,6 +547,7 @@ async function newUser() {
         description: `${error.response.data.message}`
       })
     })
+  
 }
 async function handleClickMember() {
   if (form.value.addressId == 0) {
@@ -524,7 +560,39 @@ async function handleClickMember() {
   }
   handleInputMember(form.value.memberId.toString())
 }
+
+async function newPassword() {
+  await axios
+    .post(
+      `/forget`,
+      {
+          username: form.value.username,
+
+      },
+      {
+        headers: {
+          Authorization: `Bearer ${useAuthStore().token}`
+        }
+      }
+    )
+    .then((response) => {
+      console.log(response)
+      toast({
+        title: 'Utilisateur renseigné',
+      })
+    })
+    .catch((error) => {
+      console.error(error)
+      toast({
+        title: 'Something wrong happened',
+        variant: 'destructive',
+        description: `${error.response.data.message}`
+      })
+    })
+  
+}
 async function handleClickUser() {
   await newUser()
+  await newPassword()
 }
 </script>

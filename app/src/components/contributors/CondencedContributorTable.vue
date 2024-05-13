@@ -48,7 +48,6 @@ axios.get(`/contributor/`, {
   })
   .then((response) => {
    
-    
     contributors.value.push(...response.data.data.contributors)
     
     

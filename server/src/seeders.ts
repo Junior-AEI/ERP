@@ -511,7 +511,7 @@ const createUser = async () => {
             gender: 'F',
             mobilePhone: '9876543210',
             landlinePhone: '0123456789',
-            email: 'soominlee@example.com',
+            email: 'mathieu.chaillon@gmail.com',
             createdAt: '2022-01-01',
             updatedAt: '2022-01-01',
             memberId: 9,

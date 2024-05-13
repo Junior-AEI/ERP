@@ -17,52 +17,57 @@
                     <div class="flex flex-1 justify-start flex-wrap gap-4 ml-4">
                         <Card class="flex flex-row w-fit">
                             <div
-                            class=" w-fit h-full bg-black/30 rounded-s-xl flex justify-center items-center pr-2 pl-2">
-                            Client</div>
+                                class=" w-fit h-full bg-black/30 rounded-s-xl flex justify-center items-center pr-2 pl-2">
+                                Date de Fin</div>
                             <CardContent class="flex flex-1 flex-row gap-4 m-2 mr-4 ml-4 items-center p-0">
-                                    <div class="flex flex-row justify-between items-center gap-2">
-                                        <span>Le {{ props.infos.endDate }} </span>
-                                        <span class="text-muted-foreground/50"> (dans {{ props.infos.delta }}) </span>
+                                <div class='flex flex-row justify-between items-center gap-2'>
+                                    <div :class=bg_color(delay(props.infos.endDate))><span>Le {{ convertToCalendarDate(props.infos.endDate) }} </span>
                                     </div>
-                                
+                                    <span v-if="delay(props.infos.endDate)>0"class="text-muted-foreground/50"> (dans {{ delay(props.infos.endDate) }} j) </span>
+                                    
+                                </div>
+
                             </CardContent>
                         </Card>
 
                         <Card class="flex flex-row w-fit">
                             <div
-                            class=" w-fit h-full bg-black/30 rounded-s-xl flex justify-center items-center pr-2 pl-2">
-                            Client</div>
-                            <CardContent class="flex flex-1 flex-row gap-4 m-2 mr-4 ml-4 items-center p-0">
-                                    <div class="flex flex-row justify-start items-center">
-                                        <span> {{ props.infos.firstname }} {{ props.infos.lastname }} </span>
-                                        
-                                    </div>
-                                
-                            </CardContent>
-                        </Card>
-
-                        <Card class="flex flex-row w-fit">
-                            <div
-                            class=" w-fit h-full bg-black/30 rounded-s-xl flex justify-center items-center pr-2 pl-2">
-                            Chargé d'Étude</div>
+                                class=" w-fit h-full bg-black/30 rounded-s-xl flex justify-center items-center pr-2 pl-2">
+                                Client</div>
                             <CardContent class="flex flex-1 flex-row gap-4 m-2 mr-4 ml-4 items-center p-0">
                                 <div class="flex flex-row justify-start items-center">
-                                    <span v-for="manager in props.infos.projectManagers">
-                                        {{ manager.firstname }} {{ manager.lastname }} </span>
+                                    <span> {{ props.infos.firstname }} {{ props.infos.lastname }} </span>
 
+                                </div>
+
+                            </CardContent>
+                        </Card>
+
+                        <Card class="flex flex-row w-fit">
+                            <div
+                                class="w-fit h-full bg-black/30 rounded-s-xl flex justify-center items-center pr-2 pl-2">
+                                Chargé d'Étude
+                            </div>
+                            <CardContent class="flex flex-1 flex-row gap-4 m-2 mr-4 ml-4 items-center p-0">
+                                <div class="flex flex-wrap">
+                                    <div v-for="manager in props.infos.projectManagers"
+                                        class="flex flex-row justify-start items-center">
+                                        {{ manager.firstname }} {{ manager.lastname }} /
+                                    </div>
                                 </div>
                             </CardContent>
                         </Card>
 
+
                         <Card class="flex flex-row w-fit">
                             <div
-                            class=" w-fit h-full bg-black/30 rounded-s-xl flex justify-center items-center pr-2 pl-2">
-                            Intervenants</div>
+                                class=" w-fit h-full bg-black/30 rounded-s-xl flex justify-center items-center pr-2 pl-2">
+                                Intervenants</div>
                             <CardContent class="flex flex-1 flex-row gap-4 m-2 mr-4 ml-4 items-center p-0">
-                                    
+
                                 <div class="flex flex-row justify-start items-center">
                                     <span v-for="contributor in props.infos.contributors">
-                                        {{ contributor.firstname }} {{ contributor.lastname }} </span>
+                                        {{ contributor.firstname }} {{ contributor.lastname }} /</span>
 
                                 </div>
                             </CardContent>
@@ -85,10 +90,70 @@
 
 import { type ExtendedProject } from '@/types/api'
 import { defineProps } from 'vue'
-
+import {
+    CalendarDateTime,
+    parseDateTime,
+    DateFormatter,
+    getLocalTimeZone
+} from '@internationalized/date'
 
 const props = defineProps<{
     infos: ExtendedProject
 }>()
+
+const defaultClasses = 'text-left font-medium'
+const df = new DateFormatter('fr-FR', {
+    dateStyle: 'long'
+})
+function convertToCalendarDate(isoDateString: string): string {
+    const dateObject = new Date(isoDateString)
+
+    // Check if the date object is valid
+    if (isNaN(dateObject.getTime())) {
+        throw new Error('Invalid date string')
+    }
+
+    // Extract year, month, and day from the date object
+    const year = dateObject.getFullYear()
+    const month = dateObject.getMonth() + 1 // Months are 0-based in JavaScript
+    const day = dateObject.getDate()
+    const hour = dateObject.getHours()
+    const minute = dateObject.getMinutes()
+
+    const date = new CalendarDateTime(year, month, day, hour, minute)
+    // Create and return a new CalendarDate object
+    const dateFormat = date.toString()
+    return df.format(parseDateTime(dateFormat).toDate(getLocalTimeZone()))
+}
+
+function delay (isoDateString: string): number{
+    const currentDate = new Date().getTime(); // Convertir la date actuelle en timestamp UNIX
+const endDateTime = new Date(isoDateString).getTime();
+
+// Calcul de la différence en jours
+return  Math.floor((endDateTime - currentDate) / (1000 * 60 * 60 * 24));
+}
+
+
+function bg_color (differenceInDays: number): string{
+    let colorDate = '';
+
+// Choix de la couleur en fonction de la différence en jours
+if (differenceInDays < 0) {
+    colorDate = 'p-1 rounded bg-gray-300'; // Date expirée (dans le passé)
+} else if (differenceInDays < 7) {
+    colorDate = 'p-1 rounded bg-red-500'; // Date dans moins d'une semaine
+}
+else if (differenceInDays < 14) {
+    colorDate = 'p-1 rounded bg-orange-500'; // Date dans moins d'une semaine
+} else {
+    colorDate = 'p-1 rounded bg-green-400'; // Date dans plus d'une semaine
+}
+
+// Calcul de la différence en jours
+return  colorDate
+}
+
+
 
 </script>

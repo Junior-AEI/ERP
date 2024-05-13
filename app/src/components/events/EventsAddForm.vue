@@ -115,7 +115,7 @@
             </Popover>
           </div>
         </div>
-        <div class="flex items-end gap-4">
+        <!-- <div class="flex items-end gap-4">
           <Collapsible v-model:open="isOpen">
             <CollapsibleTrigger>
               <div class="item-center flex gap-2">
@@ -130,7 +130,7 @@
               </div>
             </CollapsibleContent>
           </Collapsible>
-        </div>
+        </div> -->
       </CardContent>
       <CardFooter>
         <Button @click="addEvent()" class="w-full"> Ajouter un événement</Button>

@@ -9,7 +9,7 @@ export const projectsModule: Module = {
       component: () => import('./Projects.vue'),
       children: [
         {
-          path: '/liste-des-prospects',
+          path: '/clients',
           name: 'Liste des prospects',
           component: () => import('./Clients.vue'),
           meta: {
@@ -40,7 +40,15 @@ export const projectsModule: Module = {
             visible: false,
             icon: 'article'
           }
-        }
+        },
+        {
+          path: '/list',
+          name: 'Liste des études',
+          component: () => import('./ProjectsAll.vue'),
+          meta: {
+            icon: 'work'
+          }
+        },
       ],
       meta: {
         icon: 'work'

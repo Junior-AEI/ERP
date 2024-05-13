@@ -97,6 +97,7 @@ const forgetPassword = async (req: Request, res: Response) => {
             }
         })
 
+
         // Function to generate random token
         const generateToken = () => {
             const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789'
@@ -111,6 +112,11 @@ const forgetPassword = async (req: Request, res: Response) => {
         // If user is found, generate a random token
 
         if (user) {
+            const person = await Persons.findOne({
+                where: {
+                    personId: user.userId
+                }
+            })
             const _token = generateToken()
             const currentDate = new Date()
             const tenMinutesLater = new Date(currentDate.getTime() + 10 * 60000)
@@ -121,8 +127,14 @@ const forgetPassword = async (req: Request, res: Response) => {
                 userId: user.userId
             })
 
-            // TODO: Send an email with a link
-            // ! (not in test env)
+            sendEmail(user.emailJE, "Réinitialisation Mot de Passe pour l'ERP", `Bonjour, Une demande de changement de Mot de Passe sur l'ERP a été demandé pour votre compte (nom d'utilisateur : ${user.username}) \n
+            Si vous êtes le demandeur de cette réinitialisation veuillez cliquez sur ce lien : 
+            Token à renseigner : ${_token}`)
+            if (person) {
+                sendEmail(person.email, "Réinitialisation Mot de Passe pour l'ERP", `Bonjour, Une demande de changement de Mot de Passe sur l'ERP a été demandé pour votre compte (nom d'utilisateur : ${user.username}) \n
+            Si vous êtes le demandeur de cette réinitialisation veuillez cliquez sur ce lien : 
+            Token à renseigner : ${_token}`)
+            }
 
             // Return success response
             return res.status(200).json({
@@ -166,7 +178,11 @@ const askNewPassword = async (req: Request, res: Response) => {
         if (!foundToken) throw createHttpError(401, 'Unable to find the provided token')
 
         if (foundToken.validity <= new Date()) throw createHttpError(401, 'Link is expired')
-
+        const user = await Users.findOne({
+            where: {
+                userId: foundToken.userId
+            }
+        })
         // TODO : Check password before insertion ?
 
         const hashedPassword = await bcrypt.hash(_newPassword, 10)
@@ -174,13 +190,21 @@ const askNewPassword = async (req: Request, res: Response) => {
         const updatedUserPassword = {
             password: hashedPassword
         }
-
-        await Users.update(updatedUserPassword, {
+        console.log(updatedUserPassword)
+        if(user){
+        await Users.update({
+            userId: user.userId,
+            username: user.username,
+            password: updatedUserPassword,
+            mandateStart: user.mandateStart,
+            mandateEnd: user.mandateEnd,
+            emailJE:user.emailJE },
+            {
             where: {
-                userId: foundToken.userId
+                userId: user.userId
             }
         })
-
+    }
         // Return success response
         return res.status(200).json({
             status: 'success'
@@ -193,6 +217,8 @@ const askNewPassword = async (req: Request, res: Response) => {
         throw err
     }
 }
+
+
 
 const authController = {
     login,

@@ -43,6 +43,7 @@ export interface User {
   mandateStart: DateString
   mandateEnd: DateString
   emailJE: string
+  password : string
 }
 
 export interface Address {
@@ -190,6 +191,7 @@ export interface ProjectNotes {
 }
 
 export type ExtendedProject = ProjectInfo & { delta: string } & { contributors: Person[], projectManagers: Person[] }
+
 
 export interface Contributor {
   contributorId: number

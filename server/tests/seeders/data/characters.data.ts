@@ -57,5 +57,5 @@ export const characters: any = {
             membershipNumber: 2
         },
         password: 'mdp'
-    }
+    },
 }

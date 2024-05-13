@@ -173,9 +173,18 @@ const editDocument = () => {
     )
     .then((response) => {
       console.log(response)
-      //location.reload()
+      toast({
+        title: 'Document modifié',
+        description: 'Le document a été modifié avec succès'
+      })
+      location.reload()
     })
     .catch((error) => {
+      toast({
+        title: 'Erreur lors de la modification',
+        variant: 'destructive',
+        description: error
+      })
       console.error(error)
     })
 }

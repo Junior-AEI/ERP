@@ -261,9 +261,7 @@ const previewDocument = (id: number) => {
     .then((response) => {
       const file = new File(
         [response.data],
-        `${thisDocument.value.name}_v${thisDocument.value.version}.${getExtensionByMime(
-          response.headers['content-type']
-        )}`,
+        `${thisDocument.value.name}.${getExtensionByMime(response.headers['content-type'])}`,
         { type: response.headers['content-type'] }
       )
       window.open(URL.createObjectURL(file))

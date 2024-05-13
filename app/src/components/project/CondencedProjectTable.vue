@@ -1,28 +1,20 @@
 <template>
-    <div class="flex flex-col gap-2">
-      <Input placeholder="Rechercher" v-model="research" />
-  
-      <Card class="max-h-screen ">
-        <ScrollArea class="flex h-full flex-col gap-1">
-          <CardContent class="h-full pr-3">
-              
-           <CondencedProject
-              v-for="project in results"
-              :infos="project"
-            >
-            </CondencedProject> 
-  
-          </CardContent>
-        </ScrollArea>
-      </Card>
-    </div>
-  </template>
-  
+  <div class="flex flex-col gap-2">
+    <Input placeholder="Rechercher" v-model="research" />
 
-  
+    <Card class="max-h-screen">
+      <ScrollArea class="flex h-full flex-col gap-1">
+        <CardContent class="h-full pr-3">
+          <CondencedProject v-for="project in results" :infos="project" :key="project.projectId">
+          </CondencedProject>
+        </CardContent>
+      </ScrollArea>
+    </Card>
+  </div>
+</template>
 
 <script setup lang="ts">
-import { ref,onMounted } from 'vue'
+import { ref, onMounted } from 'vue'
 import axios from 'axios'
 import { type ClientInfo } from '@/types/api'
 import {
@@ -332,19 +324,18 @@ const exampleExtendedProject: ExtendedProject = {
   projectManagers: exampleProjectManagers
 }
 
+const research = ref('')
+const results = ref<ExtendedProject[]>([])
 
-  const research = ref('')
-  const results = ref<ExtendedProject[]>([])
-  
 //   function result() {
 //       return projects.value.filter((project) => {
 //           const fields: string = Object.values(project).join(' ').toLocaleLowerCase()
 //           return fields.includes(research.value.toLowerCase())
 //         })
 //     }
-    
+
 //     const res = computed(result)
-    
+
 //     const projects = ref<ExtendedProject[]>([
 // ])
 // const authStore = useAuthStore()
@@ -355,11 +346,11 @@ const exampleExtendedProject: ExtendedProject = {
 //     }
 // }).then((response) => {
 //     projects.value.push(...response.data.data.projects)
-    
+
 //     // récupérer les infos client
 //     projects.value.forEach(element => {
 //         console.log("project",element);
-        
+
 //         axios.get(`/client/${element.clientId}`, {
 //             headers: {
 //                 Authorization: `Bearer ${authStore.token}`
@@ -375,8 +366,7 @@ const exampleExtendedProject: ExtendedProject = {
 //         });
 
 //         console.log("project with client",element);
-        
-        
+
 //         // récupérer les infos de l'entreprise
 //         axios.get(`/company/${element.companyId}`, {
 //           headers: {
@@ -388,11 +378,10 @@ const exampleExtendedProject: ExtendedProject = {
 //             element.legalEntity = response2.data.data.company.legalEntity
 //             element.addressId = response2.data.data.company.addressId
 //             element.companyType = response2.data.data.company.companyType
-            
+
 //             });
-        
+
 //         console.log("project with company",element);
-        
 
 //         // récupérer les infos personnelles du client
 //         axios.get(`/person/${element.clientId}`, {
@@ -411,7 +400,6 @@ const exampleExtendedProject: ExtendedProject = {
 
 //         console.log("project with person (client)",element);
 
-
 //         // récupérer les infos de l'adresse de l'entreprise
 //         axios.get(`/address/${element.addressId}`, {
 //             headers: {
@@ -426,25 +414,23 @@ const exampleExtendedProject: ExtendedProject = {
 //         })
 
 //         console.log("project with address",element);
-        
+
 //         const managersId = ref<ProjectManager[]>([])
 
 //         // récupérer les infos personnelles des projects managers
 //         console.log(`/projectManager/byProject/${element.projectId}`);
-        
+
 //         axios.get(`/projectManager/byProject/${element.projectId}`, {
 //             headers: {
 //                 Authorization: `Bearer ${authStore.token}`
 //             }
 //         }).then((response5) => {
 //             console.log("response manager",response5.data.data.projectManager);
-            
+
 //             managersId.value = response5.data.data.projectManager
 //         })
 
 //         console.log("managersId",managersId.value);
-        
-
 
 //         managersId.value.forEach((managerId) => {
 //             axios.get(`/person/${managerId}`, {
@@ -457,19 +443,18 @@ const exampleExtendedProject: ExtendedProject = {
 //         })
 
 //         console.log("project with managers",element);
-        
 
-//       // récupérer les infos personnelles des contributeurs 
+//       // récupérer les infos personnelles des contributeurs
 //         const contributorsId = ref<Contributor[]>([])
 //         console.log(`/contributor/byProject/${element.projectId}`);
-        
+
 //         axios.get(`/contributor/byProject/${element.projectId}`, {
 //             headers: {
 //                 Authorization: `Bearer ${authStore.token}`
 //             }
 //         }).then((response7) => {
 //             console.log("response contributor",response7.data.data.contributor);
-            
+
 //             contributorsId.value = response7.data.data.contributor
 //         })
 //         contributorsId.value.forEach((contributorId) => {
@@ -487,9 +472,8 @@ const exampleExtendedProject: ExtendedProject = {
 //         });
 //     })
 
-
 //     console.log("projects final", projects.value);
-    
+
 async function getData(): Promise<ExtendedProject[]> {
   // Fetch data from your API here.
 
@@ -498,7 +482,6 @@ async function getData(): Promise<ExtendedProject[]> {
       Authorization: `Bearer ${useAuthStore().token}`
     }
   })
-
 
   const persons = await axios.get(`/person`, {
     headers: {
@@ -538,8 +521,6 @@ async function getData(): Promise<ExtendedProject[]> {
     }
   })
 
-  
-
   const fullClients = ClientPerson.map((client: any) => {
     const company = CompanyWithAddress.find(
       (company: any) => company.companyId === client.companyId
@@ -550,7 +531,6 @@ async function getData(): Promise<ExtendedProject[]> {
     }
   })
 
-
   const projects = await axios.get(`/project`, {
     headers: {
       Authorization: `Bearer ${useAuthStore().token}`
@@ -558,13 +538,11 @@ async function getData(): Promise<ExtendedProject[]> {
   })
 
   const fullProject = projects.data.data?.projects.map((project: any) => {
-    const client = fullClients.find(
-      (client: any) => client.clientId === client.clientId
-    )
+    const client = fullClients.find((client: any) => client.clientId === client.clientId)
     return {
-      nameProject : project.name,
+      nameProject: project.name,
       ...project,
-      ...client,
+      ...client
     }
   })
 
@@ -584,7 +562,6 @@ async function getData(): Promise<ExtendedProject[]> {
     }
   })
 
-
   const contributors = await axios.get(`/contributor`, {
     headers: {
       Authorization: `Bearer ${useAuthStore().token}`
@@ -601,19 +578,18 @@ async function getData(): Promise<ExtendedProject[]> {
     }
   })
   const ProjectWithAllInfo = fullProject.map((project: any) => {
-      const projectManagers = ManagerPersons.filter((manager: any) => manager.projectId === project.projectId);
-      const projectContributors = ContributorPersons.filter((contributor: any) => contributor.projectId === project.projectId);
-      return { ...project, projectManagers : projectManagers, contributors: projectContributors };
-    });
-
+    const projectManagers = ManagerPersons.filter(
+      (manager: any) => manager.projectId === project.projectId
+    )
+    const projectContributors = ContributorPersons.filter(
+      (contributor: any) => contributor.projectId === project.projectId
+    )
+    return { ...project, projectManagers: projectManagers, contributors: projectContributors }
+  })
 
   return ProjectWithAllInfo
 }
 onMounted(async () => {
   results.value = await getData()
 })
-
-
-  
-  </script>
-  
+</script>

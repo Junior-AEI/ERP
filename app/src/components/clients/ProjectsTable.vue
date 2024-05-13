@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { ref, onMounted } from 'vue'
 import { columns } from './columnsProject'
-import type { ProjectInfo, ExtendedProject } from '@/types/api'
+import type { ExtendedProject } from '@/types/api'
 import axios from 'axios'
 import { useRouter } from 'vue-router'
 
@@ -16,7 +16,6 @@ async function getData(): Promise<ExtendedProject[]> {
       Authorization: `Bearer ${useAuthStore().token}`
     }
   })
-
 
   const persons = await axios.get(`/person`, {
     headers: {
@@ -56,8 +55,6 @@ async function getData(): Promise<ExtendedProject[]> {
     }
   })
 
-  
-
   const fullClients = ClientPerson.map((client: any) => {
     const company = CompanyWithAddress.find(
       (company: any) => company.companyId === client.companyId
@@ -68,7 +65,6 @@ async function getData(): Promise<ExtendedProject[]> {
     }
   })
 
-
   const projects = await axios.get(`/project`, {
     headers: {
       Authorization: `Bearer ${useAuthStore().token}`
@@ -76,13 +72,11 @@ async function getData(): Promise<ExtendedProject[]> {
   })
 
   const fullProject = projects.data.data?.projects.map((project: any) => {
-    const client = fullClients.find(
-      (client: any) => client.clientId === client.clientId
-    )
+    const client = fullClients.find((client: any) => client.clientId === client.clientId)
     return {
-      nameProject : project.name,
+      nameProject: project.name,
       ...project,
-      ...client,
+      ...client
     }
   })
 
@@ -102,7 +96,6 @@ async function getData(): Promise<ExtendedProject[]> {
     }
   })
 
-
   const contributors = await axios.get(`/contributor`, {
     headers: {
       Authorization: `Bearer ${useAuthStore().token}`
@@ -119,11 +112,14 @@ async function getData(): Promise<ExtendedProject[]> {
     }
   })
   const ProjectWithAllInfo = fullProject.map((project: any) => {
-      const projectManagers = ManagerPersons.filter((manager: any) => manager.projectId === project.projectId);
-      const projectContributors = ContributorPersons.filter((contributor: any) => contributor.projectId === project.projectId);
-      return { ...project, projectManagers : projectManagers, contributors: projectContributors };
-    });
-
+    const projectManagers = ManagerPersons.filter(
+      (manager: any) => manager.projectId === project.projectId
+    )
+    const projectContributors = ContributorPersons.filter(
+      (contributor: any) => contributor.projectId === project.projectId
+    )
+    return { ...project, projectManagers: projectManagers, contributors: projectContributors }
+  })
 
   return ProjectWithAllInfo
 }
@@ -137,7 +133,7 @@ const router = useRouter()
 const handleClick = (row: any) => {
   router.push({
     path: '/client/profil',
-    query: { id: row.clientId, name : `${row.firstname} ${row.lastname} de ${row.name}`}
+    query: { id: row.clientId, name: `${row.firstname} ${row.lastname} de ${row.name}` }
   })
 }
 </script>

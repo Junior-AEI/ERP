@@ -66,7 +66,6 @@ import {
   type ExtendedDocument,
   type Project,
   type Person,
-  type Client,
   type Address,
   type ClientInfo,
   type ProjectInfo

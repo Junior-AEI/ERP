@@ -2,16 +2,11 @@
   <div class="flex flex-col gap-2">
     <Input placeholder="Rechercher" v-model="research" />
 
-    <Card class="max-h-44 ">
+    <Card class="max-h-44">
       <ScrollArea class="flex h-full flex-col gap-1">
         <CardContent class="h-full pr-3">
-            
-         <CondencedClient
-            v-for="client in res"
-            :infos="client"
-          >
-          </CondencedClient> 
-
+          <CondencedClient v-for="client in res" :infos="client" :key="client.personId">
+          </CondencedClient>
         </CardContent>
       </ScrollArea>
     </Card>
@@ -23,12 +18,10 @@ import { ref } from 'vue'
 import axios from 'axios'
 import { type ClientInfo, type Client } from '@/types/api'
 import { useAuthStore } from '@/stores/authStore'
-import { SortDesc } from 'lucide-vue-next'
-import { sortingFns } from '@tanstack/vue-table'
 import { computed } from 'vue'
 
 const research = ref('')
-const results = ref<ClientInfo[]>([])
+//const results = ref<ClientInfo[]>([])
 
 function result() {
   return clients.value.filter((client) => {
@@ -47,6 +40,7 @@ const clients = ref<ClientInfo[]>([
   //     function: "CEO"
   // },
   {
+    activityField: 'Technology',
     function: 'Manager',
     firstContact: 'John Doe',
     name: 'ABC Company',

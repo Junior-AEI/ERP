@@ -39,6 +39,8 @@ const getByProject = async (req: Request, res: Response) => {
             },
             order: [['createdAt', 'DESC']],
         })
+        console.log(projectNotes);
+
 
         return res.status(200).json({
             status: 'success',
@@ -56,7 +58,7 @@ const getLastNoteByProject = async (req: Request, res: Response) => {
     try {
         const identifier = parseInt(req.params.projectId)
         if (isNaN(identifier)) throw createHttpError(400, 'Please provide a valid identifier')
-        
+
         const projectNotes = await ProjectNotes.findOne({
             where: {
                 projectId: identifier
@@ -80,7 +82,7 @@ const search = async (req: Request, res: Response) => {
     try {
         const projectNotes = await ProjectNotes.findAll({
             where: {
-                
+
             }
         })
 

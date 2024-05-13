@@ -29,7 +29,6 @@
 </template>
 
 <script setup lang="ts">
-import axios from 'axios'
 import { ref } from 'vue'
 
 const states: string[] = []
@@ -52,10 +51,10 @@ const props = defineProps<{
 
 const duedate = ref<Date>(new Date(props.dueDate))
 
-function changeState() {
+/* function changeState() {
   console.log('change state')
   axios.put(`/task/${props.taskId}`, { state: props.state }).then((response) => {
     console.log(response)
   })
-}
+} */
 </script>

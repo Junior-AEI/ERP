@@ -1,11 +1,7 @@
 const request = require('supertest')
 import app from '../src/app'
-import { beforeAllTests, afterAllTests, clearDatabase, showErrorMessage } from './utils'
-import { createToken } from './seeders/token.seeders'
+import { beforeAllTests, afterAllTests, clearDatabase } from './utils'
 import { initUser } from './seeders/general'
-import { characters } from './seeders/data/characters.data'
-import { createdAddress } from './seeders/address.seeders'
-import Addresses from '../src/models/address.model'
 import { createPermission } from './seeders/permission.seeders'
 
 beforeAll(beforeAllTests)

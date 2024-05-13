@@ -36,40 +36,9 @@ import {
   getLocalTimeZone
 } from '@internationalized/date'
 
-import {
-  Dialog,
-  DialogContent,
-  DialogFooter,
-  DialogHeader,
-  DialogTitle,
-  DialogTrigger
-} from '@/components/ui/dialog'
-
-import axios from 'axios'
-import { useAuthStore } from '@/stores/authStore'
-
-import { Input } from '@/components/ui/input'
-import { Textarea } from '@/components/ui/textarea'
-import { Checkbox } from '@/components/ui/checkbox'
-import { cn } from '@/lib/utils'
-import { type DateValue } from '@internationalized/date'
 import type { itTicketInfo } from '@/types/api'
-import { Label } from '@/components/ui/label'
 
-import { Collapsible, CollapsibleContent, CollapsibleTrigger } from '@/components/ui/collapsible'
-
-import {
-  Command,
-  CommandEmpty,
-  CommandGroup,
-  CommandInput,
-  CommandItem,
-  CommandList
-} from '@/components/ui/command'
-
-import { useToast } from '@/components/ui/toast/use-toast'
-
-const props = defineProps<{
+defineProps<{
   item: itTicketInfo
 }>()
 

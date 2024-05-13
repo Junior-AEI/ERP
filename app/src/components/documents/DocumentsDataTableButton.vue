@@ -173,9 +173,18 @@ const editDocument = () => {
     )
     .then((response) => {
       console.log(response)
-      //location.reload()
+      toast({
+        title: 'Document modifié',
+        description: 'Le document a été modifié avec succès'
+      })
+      location.reload()
     })
     .catch((error) => {
+      toast({
+        title: 'Erreur lors de la modification',
+        variant: 'destructive',
+        description: error
+      })
       console.error(error)
     })
 }
@@ -226,7 +235,7 @@ const downloadDocument = (id: number) => {
       const url = window.URL.createObjectURL(file)
       const a = document.createElement('a')
       a.href = url
-      a.download = `${thisDocument.value.name}_v${thisDocument.value.version}.${getExtensionByMime(
+      a.download = `${thisDocument.value.name}.${getExtensionByMime(
         response.headers['content-type']
       )}`
       a.click()

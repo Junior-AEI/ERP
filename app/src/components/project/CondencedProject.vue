@@ -21,10 +21,12 @@
                                 Date de Fin</div>
                             <CardContent class="flex flex-1 flex-row gap-4 m-2 mr-4 ml-4 items-center p-0">
                                 <div class='flex flex-row justify-between items-center gap-2'>
-                                    <div :class=bg_color(delay(props.infos.endDate))><span>Le {{ convertToCalendarDate(props.infos.endDate) }} </span>
+                                    <div :class=bg_color(delay(props.infos.endDate))><span>Le {{
+                                            convertToCalendarDate(props.infos.endDate) }} </span>
                                     </div>
-                                    <span v-if="delay(props.infos.endDate)>0"class="text-muted-foreground/50"> (dans {{ delay(props.infos.endDate) }} j) </span>
-                                    
+                                    <span v-if="delay(props.infos.endDate) > 0" class="text-muted-foreground/50"> (dans {{
+                                        delay(props.infos.endDate) }} j) </span>
+
                                 </div>
 
                             </CardContent>
@@ -78,16 +80,11 @@
 
                 </div>
             </div>
-
         </CardContent>
-
     </Card>
-
-
 </template>
 
 <script lang="ts" setup>
-
 import { type ExtendedProject } from '@/types/api'
 import { defineProps } from 'vue'
 import {
@@ -126,32 +123,32 @@ function convertToCalendarDate(isoDateString: string): string {
     return df.format(parseDateTime(dateFormat).toDate(getLocalTimeZone()))
 }
 
-function delay (isoDateString: string): number{
+function delay(isoDateString: string): number {
     const currentDate = new Date().getTime(); // Convertir la date actuelle en timestamp UNIX
-const endDateTime = new Date(isoDateString).getTime();
+    const endDateTime = new Date(isoDateString).getTime();
 
-// Calcul de la différence en jours
-return  Math.floor((endDateTime - currentDate) / (1000 * 60 * 60 * 24));
+    // Calcul de la différence en jours
+    return Math.floor((endDateTime - currentDate) / (1000 * 60 * 60 * 24));
 }
 
 
-function bg_color (differenceInDays: number): string{
+function bg_color(differenceInDays: number): string {
     let colorDate = '';
 
-// Choix de la couleur en fonction de la différence en jours
-if (differenceInDays < 0) {
-    colorDate = 'p-1 rounded bg-gray-300'; // Date expirée (dans le passé)
-} else if (differenceInDays < 7) {
-    colorDate = 'p-1 rounded bg-red-500'; // Date dans moins d'une semaine
-}
-else if (differenceInDays < 14) {
-    colorDate = 'p-1 rounded bg-orange-500'; // Date dans moins d'une semaine
-} else {
-    colorDate = 'p-1 rounded bg-green-400'; // Date dans plus d'une semaine
-}
+    // Choix de la couleur en fonction de la différence en jours
+    if (differenceInDays < 0) {
+        colorDate = 'p-1 rounded bg-gray-300'; // Date expirée (dans le passé)
+    } else if (differenceInDays < 7) {
+        colorDate = 'p-1 rounded bg-red-500'; // Date dans moins d'une semaine
+    }
+    else if (differenceInDays < 14) {
+        colorDate = 'p-1 rounded bg-orange-500'; // Date dans moins d'une semaine
+    } else {
+        colorDate = 'p-1 rounded bg-green-400'; // Date dans plus d'une semaine
+    }
 
-// Calcul de la différence en jours
-return  colorDate
+    // Calcul de la différence en jours
+    return colorDate
 }
 
 

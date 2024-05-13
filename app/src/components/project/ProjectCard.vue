@@ -1,8 +1,12 @@
 <template>
   <Card>
-    <div class="flex flex-1 flex-row-reverse gap-4 m-2 mr-4 ml-4 items-center">
-      <div class="absolute top-0 left-0 w-1/6 h-full bg-black/30 rounded-s-xl flex justify-center items-center">{{ props.acronym }}</div>
-      <div class="w-5/6 flex flex-col items-start justify-center">
+    <div class="m-2 ml-4 mr-4 flex flex-1 flex-row-reverse items-center gap-4">
+      <div
+        class="absolute left-0 top-0 flex h-full w-1/6 items-center justify-center rounded-s-xl bg-black/30"
+      >
+        {{ props.acronym }}
+      </div>
+      <div class="flex w-5/6 flex-col items-start justify-center">
         <h3>{{ props.advancement }}</h3>
         <span>{{ props.comment }}</span>
       </div>
@@ -11,18 +15,11 @@
 </template>
 
 <script setup lang="ts">
-
-import axios from 'axios';
-import { defineProps, ref } from 'vue'
-
+import { defineProps } from 'vue'
 
 const props = defineProps<{
   acronym: string
   advancement: string
   comment: string
 }>()
-
-
-
-
 </script>

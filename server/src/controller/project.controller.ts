@@ -30,7 +30,7 @@ const getAll = async (req: Request, res: Response) => {
 
 const getAllActive = async (req: Request, res: Response) => {
     try {
-        
+
         const activProjects = await Projects.findAll({
             where: {
                 endDate: { [Op.gt]: new Date() }
@@ -49,7 +49,7 @@ const getAllActive = async (req: Request, res: Response) => {
 
     }
     console.log('getAllActive [53]');
-    
+
 }
 
 

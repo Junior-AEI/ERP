@@ -3,8 +3,7 @@ import createHttpError from 'http-errors'
 import Tasks from '../models/task.model'
 import { HttpError } from 'http-errors'
 import { isValidTask } from '../validator/task.validator'
-import { controllerErrorHandler, isNumber, sendBotMesssage } from './utils.controller'
-import sequelize from 'sequelize'
+import { controllerErrorHandler, sendBotMesssage } from './utils.controller'
 
 /**
  * Get all tasks

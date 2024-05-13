@@ -1,7 +1,7 @@
 import { Request, Response } from 'express'
 import createHttpError from 'http-errors'
 import { HttpError } from 'http-errors'
-import { controllerErrorHandler, isNumber } from './utils.controller'
+import { controllerErrorHandler } from './utils.controller'
 import Members from '../models/member.model'
 import Projects from '../models/project.model'
 import Contributors from '../models/contributor.model'
@@ -15,7 +15,7 @@ const getAll = async (req: Request, res: Response) => {
     try {
         const contributors = await Contributors.findAll({})
         console.log(contributors);
-        
+
         return res.status(200).json({
             status: 'success',
             data: {

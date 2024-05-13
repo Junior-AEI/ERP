@@ -1,10 +1,9 @@
 import request from 'supertest'
 import app from '../src/app'
-import { beforeAllTests, afterAllTests, clearDatabase, showErrorMessage } from './utils'
+import { beforeAllTests, afterAllTests, clearDatabase } from './utils'
 import { initUser } from './seeders/general'
 import { createEvent } from './seeders/event.seeders'
 import { events } from './seeders/data/events.data'
-import { promisify } from 'util'
 import Events from '../src/models/event.model'
 
 beforeAll(beforeAllTests)

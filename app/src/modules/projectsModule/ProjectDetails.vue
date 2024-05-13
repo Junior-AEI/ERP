@@ -29,7 +29,12 @@
               <Button variant="outline" icon="add"></Button>
             </CardHeader>
             <CardContent class="flex flex-row flex-wrap">
-              <DocumentCard class="flex-1" v-for="doc in documents" :infos="doc"></DocumentCard>
+              <DocumentCard
+                class="flex-1"
+                v-for="doc in documents"
+                :infos="doc"
+                :key="doc.documentId"
+              ></DocumentCard>
             </CardContent>
           </Card>
         </Wrapper>
@@ -122,6 +127,7 @@ const exampleAddress: Address = {
 const exampleClientInfo: ClientInfo = {
   ...examplePerson,
   ...exampleAddress,
+  activityField: 'IT Services',
   function: 'Project Manager',
   firstContact: '2021-01-02',
   name: 'Example Company',
@@ -198,6 +204,7 @@ const exampleAddress2: Address = {
 const exampleClientInfo2: ClientInfo = {
   ...examplePerson2,
   ...exampleAddress2,
+  activityField: 'IT Services',
   function: 'Project Manager',
   firstContact: '2021-01-02',
   name: 'Example Company 2',
@@ -270,12 +277,12 @@ const exampleProjectManagers2: Person[] = [
   }
 ]
 
-const exampleExtendedProject2: ExtendedProject = {
+/* const exampleExtendedProject2: ExtendedProject = {
   ...exampleProjectInfo2,
   delta: 'This is a delta for project 2',
   contributors: exampleContributors2,
   projectManagers: exampleProjectManagers2
-}
+} */
 
 // Troisième exemple de projet
 const examplePerson3: Person = {
@@ -302,6 +309,7 @@ const exampleAddress3: Address = {
 const exampleClientInfo3: ClientInfo = {
   ...examplePerson3,
   ...exampleAddress3,
+  activityField: 'IT Services',
   function: 'Project Manager',
   firstContact: '2021-01-02',
   name: 'Example Company 3',

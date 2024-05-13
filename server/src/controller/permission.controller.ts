@@ -1,9 +1,7 @@
 import { Request, Response } from 'express'
 import Permissions from '../models/permission.model'
 import { controllerErrorHandler } from './utils.controller'
-import createHttpError from 'http-errors'
 import { HttpError } from 'http-errors'
-import { isValidPermission } from '../validator/permission.validator'
 
 /**
  * Get all groups

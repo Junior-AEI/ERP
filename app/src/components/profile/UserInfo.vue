@@ -37,19 +37,9 @@
 <script setup lang="ts">
 import axios from 'axios'
 import { ref } from 'vue'
-import { cn } from '@/lib/utils'
 import { useAuthStore } from '@/stores/authStore'
 
-import {
-  DateFormatter,
-  getLocalTimeZone,
-  parseAbsoluteToLocal,
-  type DateValue
-} from '@internationalized/date'
-
-const df = new DateFormatter('fr-FR', {
-  dateStyle: 'long'
-})
+import { parseAbsoluteToLocal, type DateValue } from '@internationalized/date'
 
 const editUserData = () => {
   alert('Not Implemented Yet (route not ready)')

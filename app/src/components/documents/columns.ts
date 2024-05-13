@@ -131,7 +131,18 @@ export const columns: ColumnDef<ExtendedDocument>[] = [
         ]
       )
     },
-    cell: ({ row }) => h('div', { class: 'text-left ' }, row.getValue('status'))
+    cell: ({ row }) => {
+      let colorStatus = ''
+      const status = (row.getValue('status') as any).toString()
+      if (status === 'Relu') {
+        colorStatus = 'bg-green-500'
+      } else if (status === 'A relire') {
+        colorStatus = 'bg-gray-500'
+      } else if (status === 'A corriger') {
+        colorStatus = 'bg-red-500'
+      }
+      return h('div', { class: `text-left text-white p-1 rounded mr-2 w-28 ${colorStatus}` }, status)
+    }
   },
   {
     id: 'actions',

@@ -45,6 +45,17 @@
 
             <ProjectNoteViewer :projectId="projectId"></ProjectNoteViewer>
           </div>
+
+          <div class="flex h-fit flex-col gap-2">
+            <div class="flex flex-1 justify-between items-center">
+                <h3>Réunions</h3>
+                <Button variant="outline" icon="add">Ajouter une Réunion</Button>
+            </div>
+            <Card>
+              <CardContent> </CardContent>
+            </Card>
+
+           </div>
         </Wrapper>
       </div>
     </div>
@@ -122,6 +133,7 @@ const exampleAddress: Address = {
 const exampleClientInfo: ClientInfo = {
   ...examplePerson,
   ...exampleAddress,
+  activityField: 'IT Services',
   function: 'Project Manager',
   firstContact: '2021-01-02',
   name: 'Example Company',
@@ -198,6 +210,7 @@ const exampleAddress2: Address = {
 const exampleClientInfo2: ClientInfo = {
   ...examplePerson2,
   ...exampleAddress2,
+  activityField: 'IT Services',
   function: 'Project Manager',
   firstContact: '2021-01-02',
   name: 'Example Company 2',
@@ -302,6 +315,7 @@ const exampleAddress3: Address = {
 const exampleClientInfo3: ClientInfo = {
   ...examplePerson3,
   ...exampleAddress3,
+    activityField: 'IT Services',
   function: 'Project Manager',
   firstContact: '2021-01-02',
   name: 'Example Company 3',

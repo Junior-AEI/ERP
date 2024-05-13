@@ -6,6 +6,7 @@ import { isValidProjectNote } from '../validator/projectNote.validator'
 import { controllerErrorHandler } from './utils.controller'
 import Projects from '../models/project.model'
 import Users from '../models/user.model'
+import { log } from 'console'
 
 /**
  * Get all projectNotes
@@ -39,6 +40,8 @@ const getByProject = async (req: Request, res: Response) => {
             },
             order: [['createdAt', 'DESC']],
         })
+        console.log(projectNotes);
+        
 
         return res.status(200).json({
             status: 'success',

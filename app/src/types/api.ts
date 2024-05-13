@@ -187,6 +187,7 @@ export interface ProjectNotes {
   comment: string
   advancement: string
   createdAt: DateString
+  updatedAt: DateString
 }
 
 export type ExtendedProject = ProjectInfo & { delta: string } & { contributors: Person[], projectManagers: Person[] }

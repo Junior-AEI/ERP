@@ -5,7 +5,7 @@ const router = express.Router()
 
 router.get('/', projectNoteController.getAll)
 router.get('/:projectNoteId', projectNoteController.getByPk)
-router.get('/byProject/:projectNoteProject', projectNoteController.getByProject)
+router.get('/byProject/:projectId', projectNoteController.getByProject)
 router.get('/:projectId/lastNote', projectNoteController.getLastNoteByProject)
 router.post('/search',projectNoteController.search)
 router.post('/', projectNoteController.create)

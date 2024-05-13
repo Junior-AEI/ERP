@@ -1,6 +1,6 @@
-const request = require('supertest')
+import request from 'supertest'
 import app from '../src/app'
-import { beforeAllTests, afterAllTests, clearDatabase, showErrorMessage } from './utils'
+import { beforeAllTests, afterAllTests, clearDatabase } from './utils'
 import { createToken } from './seeders/token.seeders'
 import { initUser } from './seeders/general'
 import { characters } from './seeders/data/characters.data'

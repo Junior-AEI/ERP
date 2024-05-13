@@ -1,16 +1,12 @@
-const request = require('supertest')
+import request from 'supertest'
 import app from "../src/app"
-import { beforeAllTests, afterAllTests, clearDatabase, showErrorMessage } from './utils'
+import { beforeAllTests, afterAllTests, clearDatabase } from './utils'
 import { createToken } from './seeders/token.seeders'
 import { initUser } from './seeders/general'
-import { characters } from "./seeders/data/characters.data"
-import { createPerson } from "./seeders/person.seeders "
-import Persons from "../src/models/person.model"
 import { createTask } from "./seeders/tasks.seeders"
 import { createUser } from "./seeders/user.seeders"
 import Tasks from "../src/models/task.model"
 import { tasks } from "./seeders/data/tasks.data"
-import { join } from "path"
 
 beforeAll(beforeAllTests)
 afterAll(afterAllTests)

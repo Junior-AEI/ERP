@@ -51,15 +51,6 @@ const getByPk = async (req: Request, res: Response) => {
 }
 
 /**
- * HelloWorld
- * @param req
- * @param res
- */
-const getTheUser = async (req: Request, res: Response) => {
-    console.log('getTheUser')
-}
-
-/**
  * Select all tasks for a specific user
  * @param req
  * @param res
@@ -193,7 +184,6 @@ const taskController = {
     getAll,
     getByPk,
     getByUser,
-    getTheUser,
     create,
     del,
     update

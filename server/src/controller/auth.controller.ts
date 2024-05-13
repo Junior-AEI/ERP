@@ -1,5 +1,5 @@
 import { Request, Response } from 'express'
-import { SignJWT, errors } from 'jose'
+import { SignJWT } from 'jose'
 import bcrypt from 'bcrypt'
 import dotenv from 'dotenv'
 dotenv.config()

@@ -36,7 +36,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, onMounted, computed } from 'vue'
+import { ref } from 'vue'
 import axios from 'axios'
 const emit = defineEmits(['update:tasks'])
 
@@ -72,7 +72,7 @@ function modifyTaskState( state: string) {
         }
       }
     )
-    .then((response) => {
+    .then(() => {
       bg_color(state)
       emit('update:tasks', [])
       

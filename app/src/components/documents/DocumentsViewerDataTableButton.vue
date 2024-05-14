@@ -40,33 +40,7 @@ const getExtensionByMime = (mime: string) => {
   return mimeTypes[mime] || ''
 }
 
-const downloadDocument = (id: number) => {
-  axios
-    .get('/document/downloadById/' + id, {
-      responseType: 'blob',
-      headers: {
-        Authorization: 'Bearer ' + localStorage.getItem('token')
-      }
-    })
-    .then((response) => {
-      const file = new Blob([response.data], { type: response.headers['content-type'] })
-      const url = window.URL.createObjectURL(file)
-      const a = document.createElement('a')
-      a.href = url
-      a.download = `${thisDocument.value.name}.${getExtensionByMime(
-        response.headers['content-type']
-      )}`
-      a.click()
-      window.URL.revokeObjectURL(url)
-    })
-    .catch((error) => {
-      toast({
-        title: 'Erreur lors du téléchargement',
-        variant: 'destructive',
-        description: error
-      })
-    })
-}
+
 
 const previewDocument = (id: number) => {
   axios

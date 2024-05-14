@@ -49,9 +49,6 @@ import { useToast } from '@/components/ui/toast/use-toast'
 
 import { parseAbsoluteToLocal, type DateValue } from '@internationalized/date'
 
-const editUserData = () => {
-  alert('Not Implemented Yet (route not ready)')
-}
 
 const props = defineProps<{
   userId: number
@@ -62,7 +59,6 @@ const canEdit = ref(false) // to be edited when permissions are added
 const username = ref('')
 const mandateStart = ref<DateValue>()
 const mandateEnd = ref<DateValue>()
-const mandateStartFormat = ref<Date>()
 
 const emailJE = ref('')
 const { toast } = useToast()

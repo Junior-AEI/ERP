@@ -75,15 +75,7 @@ import {
   type ProjectInfo
 } from '@/types/api'
 
-function convertToNumber(input: string | string[]): number {
-  if (Array.isArray(input)) {
-    // C'est un tableau de chaînes de caractères, donc nous devons convertir chaque élément en nombre
-    return input.map((str) => Number(str))[0]
-  } else {
-    // C'est une chaîne de caractères unique, donc nous la convertissons simplement en nombre
-    return Number(input)
-  }
-}
+
 
 const route = useRoute()
 const projectId = (() => {
@@ -188,7 +180,6 @@ const exampleExtendedProject: ExtendedProject = {
   projectManagers: exampleProjectManagers
 }
 
-const infos = ref<ExtendedProject>()
 
 import { useAuthStore } from '@/stores/authStore'
 

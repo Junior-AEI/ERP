@@ -39,7 +39,7 @@ import {
     getLocalTimeZone
 } from '@internationalized/date'
 
-const defaultClasses = 'text-left font-medium'
+
 const df = new DateFormatter('fr-FR', {
     dateStyle: 'long'
 })

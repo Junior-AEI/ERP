@@ -180,35 +180,14 @@ import {
 } from '@internationalized/date'
 
 const canEdit = ref(false) // to be modified when permissions are added
-const ModifyGender = ref(false)
-const ModifyContributionDate = ref(false)
-const ModifyDepartment = ref(false)
-const ModifyPaymentMethod = ref(false)
-const ModifyBirthDate = ref(false)
+
 
 const contributionDateFormat = ref<DateValue>()
 const birthDateFormat = ref<DateValue>()
 const contributionDateString = ref<string>()
 const birthDateString = ref<string>()
 
-const handleModifyGender = () => {
-  ModifyGender.value = true
-}
 
-const handleModifyDepartment = () => {
-  ModifyDepartment.value = true
-}
-
-const handleModifyContributionDate = () => {
-  ModifyContributionDate.value = true
-}
-
-const handleModifyPaymentMethod = () => {
-  ModifyPaymentMethod.value = true
-}
-const handleModifyBirthDate = () => {
-  ModifyBirthDate.value = true
-}
 
 const df = new DateFormatter('fr-FR', {
   dateStyle: 'long'

@@ -27,11 +27,6 @@ async function getData(): Promise<FullInfoForProfil> {
     }
   })
 
-  const person = await axios.get(`/person/${personId}`, {
-    headers: {
-      Authorization: `Bearer ${useAuthStore().token}`
-    }
-  })
 
   const users = await axios.get(`/user`, {
     headers: {
@@ -39,7 +34,6 @@ async function getData(): Promise<FullInfoForProfil> {
     }
   })
   const memberInfo = member.data.data.member;
-  const personInfo = person.data.data.person;
   const usersInfo = users.data.data.users;
 
   const isMemberInUser = usersInfo.some((user: any) => user.userId === memberInfo.memberId);
@@ -115,7 +109,7 @@ function YearfromDate(isoDateString: string): string {
               </div>
             </Elevated>
             <div class="mt-2 p-2 text-sm">Groupes :</div>
-            <template v-for="group in data.Groups" :key="Groups">
+            <template v-for="group in data.Groups" :key="group.groupName">
               <Elevated class="mt-2 p-2 text-sm">
                 <div class="flex items-center justify-between">
                   <span>{{ group.groupName }}</span>

@@ -79,7 +79,9 @@ const form = ref<ExpenseAccountWithDoc>({
   expenseDate: '',
   description: '',
   state: '',
-  documentList : []
+  documentList : [],
+  usernameUser: '',
+  usernameApprobator: '',
 })
 
 async function getData(): Promise<{ value: string; label: string }[]> {

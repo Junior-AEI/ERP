@@ -14,7 +14,7 @@
       <div class="flex items-end gap-4">
         <div class="flex flex-1 flex-col gap-2">
           <Label for="name">Adresse </Label>
-          <Input :disabled="!canEdit" id="address"v-model="form.address" />
+          <Input :disabled="!canEdit" id="address" v-model="form.address" />
         </div>
         <div class="flex flex-1 flex-col gap-2">
           <Label for="legalEntity">Complément d'adresse</Label>
@@ -45,13 +45,10 @@ import { ref, onMounted } from 'vue'
 import { useAuthStore } from '@/stores/authStore'
 import type { Address } from '@/types/api'
 
-import { parseAbsoluteToLocal, type DateValue } from '@internationalized/date'
 import { useToast } from '@/components/ui/toast/use-toast'
 
 const { toast } = useToast()
-const editUserData = () => {
-  alert('Not Implemented Yet (route not ready)')
-}
+
 
 const props = defineProps<{
   memberId: number
@@ -134,7 +131,6 @@ async function updateAdress() {
     })
 }
 
-const data = ref<Address>()
 
 onMounted(async () => {
   await getData()

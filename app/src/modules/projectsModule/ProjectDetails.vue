@@ -31,7 +31,9 @@
             <CardContent class="flex flex-row flex-wrap">
               <DocumentCard
                 class="flex-1"
-                v-for="doc in extDocs"
+                v-for="doc in extDocs.filter(
+                  (document) => document.acronym === infos_project?.acronym
+                )"
                 :infos="doc"
                 :key="doc.documentId"
               ></DocumentCard>

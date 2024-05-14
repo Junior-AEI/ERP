@@ -1,5 +1,6 @@
 # Status
 [![Build infrastructure with .env.example](https://github.com/Junior-AEI/ERP/actions/workflows/docker.yaml/badge.svg)](https://github.com/Junior-AEI/ERP/actions/workflows/docker.yaml)
+[![Execute API tests with .env.test](https://github.com/Junior-AEI/ERP/actions/workflows/tests.yaml/badge.svg)](https://github.com/Junior-AEI/ERP/actions/workflows/tests.yaml)
 
 # Requirements
 

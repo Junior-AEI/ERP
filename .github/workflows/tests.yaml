@@ -19,7 +19,7 @@ jobs:
       uses: actions/checkout@v2
 
     - name: Go to API folder
-      run: cd API
+      run: cd server
 
     - name: Use test env sample
       run: cp .env.test .env

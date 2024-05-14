@@ -1,0 +1,31 @@
+name: Execute API tests with .env.test
+
+on:
+  push:
+    branches:
+      - main
+      - test
+  pull_request:
+    branches:
+      - main
+      - test
+
+jobs:
+  test-api:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout du code
+      uses: actions/checkout@v2
+
+    - name: Go to API folder
+      run: cd API
+
+    - name: Use test env sample
+      run: cp .env.test .env
+
+    - name: Install dependancies
+      run: npm install
+
+    - name: Execute tests
+      run: npm run test

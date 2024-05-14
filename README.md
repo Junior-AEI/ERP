@@ -1,3 +1,6 @@
+# Status
+[![Build infrastructure with .env.example](https://github.com/Junior-AEI/ERP/actions/workflows/docker.yaml/badge.svg)](https://github.com/Junior-AEI/ERP/actions/workflows/docker.yaml)
+
 # Requirements
 
 ```

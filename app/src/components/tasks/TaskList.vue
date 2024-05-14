@@ -65,8 +65,8 @@ watch(
 
 <template>
    <Card class="flex-1">
-    <CardHeader class="flex justify-between items-center">
-      <div class="flex items-center">
+    <CardHeader class="flex flex-1 justify-between items-center">
+      <div class="flex items-center gap-2">
         <Icon name="list_alt" class="text-6xl" />
         <span class="text-accent"> Tâches à effectuer </span>
       </div>
@@ -74,7 +74,7 @@ watch(
       <Button class="ml-5" variant="outline" @click="handleClickAdd"><Icon name="add" class="text-6xl" /></Button>
 
     </CardHeader>
-    <CardContent><div class="flex flex-1 flex-col gap-1">
+    <CardContent><div class="flex flex-1 flex-col gap-2">
       <TaskAdd v-if="AddTask" @close="handleClose" ></TaskAdd>
 
       <Task :need-reload="needReload" 

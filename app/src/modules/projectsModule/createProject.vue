@@ -9,19 +9,18 @@
         <div class="flex items-end gap-4">
           <div class="flex flex-1 flex-col gap-2">
             <Label for="client">Client</Label>
-            <Combobox
-              @input="handleInputClient"
-              :options="clientsList"
-              :comboboxLabel="'Selectionner un client existant'"
-            >
-            </Combobox>
-            <Button variant="outline" @click="handleClickNewClient"
-              >Rentrer un nouveau client</Button
-            >
+            <div class="flex flex-1 flex-wrap gap-2">
+
+              <Combobox @input="handleInputClient" :options="clientsList"
+                :comboboxLabel="'Selectionner un client existant'">
+              </Combobox>
+              <Button class="flex-1" variant="outline" icon="edit" @click="handleClickNewClient">Rentrer un nouveau
+                client</Button>
+            </div>
           </div>
         </div>
 
-        <div v-if="form.clientId == 0">
+        <div v-if="form.clientId == 0" class="flex flex-col gap-3">
           <div class="flex items-end gap-4">
             <div class="flex flex-1 flex-col gap-2">
               <Label for="lastname">Nom</Label>
@@ -50,7 +49,7 @@
           <div class="flex items-end gap-4">
             <div class="flex flex-1 flex-col gap-2">
               <Label for="mobilePhone">N° de Téléphone Mobile</Label>
-              <Input id="mobilePhone" placeholder="Info" v-model="form.mobilePhone" />
+              <Input id="mobilePhone" placeholder="Mobile" v-model="form.mobilePhone" />
             </div>
             <div class="flex flex-1 flex-col gap-2">
               <Label for="landlinePhone">N° de Téléphone</Label>
@@ -59,25 +58,24 @@
           </div>
           <div class="flex flex-1 flex-col gap-2">
             <Label for="landlinePhone">Email</Label>
-            <Input id="landlinePhone" placeholder="Tel Fixe" v-model="form.email" />
+            <Input id="landlinePhone" placeholder="@" v-model="form.email" />
           </div>
           <div class="flex items-start gap-4">
             <div class="flex flex-col gap-2">
               <Label for="application">Entreprise du Client</Label>
-              <Combobox
-                @input="handleInputCompany"
-                :options="companyList"
-                :comboboxLabel="'Selectionner l\'entreprise'"
-              >
-              </Combobox>
-              <Button variant="outline" @click="handleClickNewCompany"
-                >Renseigner une nouvelle entreprise</Button
-              >
+              <div class="flex flex-1 flex-wrap gap-2">
+
+                <Combobox @input="handleInputCompany" :options="companyList"
+                  :comboboxLabel="'Selectionner l\'entreprise'">
+                </Combobox>
+                <Button variant="outline" icon="edit" @click="handleClickNewCompany">Renseigner une nouvelle
+                  entreprise</Button>
+              </div>
             </div>
             <div class="flex flex-col gap-2">
               <div class="flex flex-1 flex-col gap-2">
                 <Label for="landlinePhone">Poste dans l'entreprise</Label>
-                <Input id="landlinePhone" placeholder="Tel Fixe" v-model="form.function" />
+                <Input id="landlinePhone" placeholder="Poste" v-model="form.function" />
               </div>
               <div class="flex flex-1 flex-col gap-2">
                 <Label for="landlinePhone">Premier Contact</Label>
@@ -104,15 +102,15 @@
             </div>
           </div>
 
-          <div v-if="form.companyId == 0">
+          <div v-if="form.companyId == 0" class="flex flex-col gap-3">
             <div class="flex items-end gap-4">
               <div class="flex flex-1 flex-col gap-2">
                 <Label for="name">Nom de l'Entreprise</Label>
-                <Input id="name" placeholder="Tel Fixe" v-model="form.name" />
+                <Input id="name" placeholder="Entreprise" v-model="form.name" />
               </div>
               <div class="flex flex-1 flex-col gap-2">
                 <Label for="legalEntity">N° de SIRET de l'entreprise</Label>
-                <Input id="legalEntity" placeholder="Tel Fixe" v-model="form.legalEntity" />
+                <Input id="legalEntity" placeholder="n° ..." v-model="form.legalEntity" />
               </div>
             </div>
             <div class="flex items-end gap-4">
@@ -137,22 +135,20 @@
               </div>
               <div class="flex flex-1 flex-col gap-2">
                 <Label for="Ac">Domaine</Label>
-                <Input id="legalEntity" placeholder="Tel Fixe" v-model="form.activityField" />
+                <Input id="legalEntity" placeholder="Spatial" v-model="form.activityField" />
               </div>
             </div>
             <div class="mt-2 flex flex-col gap-2">
               <div class="flex items-end gap-4">
                 <div class="flex flex-1 flex-col gap-2">
                   <Label for="application">Adresse de l'Entreprise</Label>
-                  <Combobox
-                    @input="handleInputAddress"
-                    :options="addressList"
-                    :comboboxLabel="'Selectionner l\'adresse'"
-                  >
+                  <div class="flex flex-1 flex-wrap gap-2">
+
+                    <Combobox @input="handleInputAddress" :options="addressList"
+                    :comboboxLabel="'Selectionner l\'adresse'">
                   </Combobox>
-                  <Button variant="outline" @click="handleClickNewAdress"
-                    >Renseigner une nouvelle Adresse</Button
-                  >
+                  <Button variant="outline" icon="edit" @click="handleClickNewAdress">Renseigner une nouvelle Adresse</Button>
+                </div>
                 </div>
                 <div class="flex flex-1 flex-col gap-2"></div>
               </div>
@@ -167,26 +163,22 @@
               </div>
               <div class="flex flex-1 flex-col gap-2">
                 <Label for="legalEntity">Complément d'adresse</Label>
-                <Input
-                  id="additionnalAddress"
-                  placeholder="Tel Fixe"
-                  v-model="form.additionnalAddress"
-                />
+                <Input id="additionnalAddress" placeholder="Bâtiment, ..." v-model="form.additionnalAddress" />
               </div>
             </div>
             <div class="flex items-end gap-4">
               <div class="mt-2 flex flex-1 flex-col gap-2">
                 <Label for="name">Code Postal </Label>
-                <Input id="postCode" placeholder="Tel Fixe" v-model="form.postCode" />
+                <Input id="postCode" placeholder="33400" v-model="form.postCode" />
               </div>
               <div class="flex flex-1 flex-col gap-2">
                 <Label for="legalEntity">Ville</Label>
-                <Input id="city" placeholder="Tel Fixe" v-model="form.city" />
+                <Input id="city" placeholder="Bordeaux" v-model="form.city" />
               </div>
             </div>
             <div class="mt-2 flex flex-1 flex-col gap-2">
               <Label for="legalEntity">Pays</Label>
-              <Input id="country" placeholder="Tel Fixe" v-model="form.country" />
+              <Input id="country" placeholder="France" v-model="form.country" />
             </div>
           </div>
 
@@ -196,11 +188,11 @@
           <div class="flex items-end gap-4">
             <div class="mt-2 flex flex-1 flex-col gap-2">
               <Label for="name">Nom de l'étude</Label>
-              <Input id="postCode" placeholder="Tel Fixe" v-model="form.nameProject" />
+              <Input id="postCode" placeholder="Étude" v-model="form.nameProject" />
             </div>
             <div class="mt-2 flex flex-1 flex-col gap-2">
               <Label for="name">Acronyme de l'étude</Label>
-              <Input id="postCode" placeholder="Tel Fixe" v-model="form.acronym" />
+              <Input id="postCode" placeholder="ETD" v-model="form.acronym" />
             </div>
           </div>
 
@@ -210,13 +202,11 @@
               <DatePickerComponent v-model="startDateFormat" />
             </div>
             <div class="flex flex-1 flex-col gap-2">
-              <Label for="legalEntity"
-                >Date de Fin (Présent sur la CE (à modifier en cas d'ACE))</Label
-              >
+              <Label for="legalEntity">Date de Fin (Présent sur la CE (à modifier en cas d'ACE))</Label>
               <DatePickerComponent v-model="endDateFormat" />
             </div>
           </div>
-          <Button @click="handleClickProject" class="mt-3">Créer une nouvelle étude</Button>
+          <Button @click="handleClickProject" icon="edit" class="mt-3">Créer une nouvelle étude</Button>
         </div>
       </CardContent>
     </Card>

@@ -36,7 +36,7 @@
 
             <Card class="flex w-fit flex-row">
               <div
-                class="flex h-full w-fit items-center justify-center rounded-s-xl bg-black/30 pl-2 pr-2"
+                class="flex h-full w-fit items-center justify-center rounded-s-xl bg-deep-accent text-deep-accent-foreground pl-2 pr-2"
               >
                 Client
               </div>

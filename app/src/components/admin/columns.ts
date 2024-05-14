@@ -87,7 +87,7 @@ export const columns: ColumnDef<itTicketWithDoc>[] = [
       return h('div', { class: 'flex items-center' }, [
         h(
           'div',
-          { class: `text-white p-1 rounded mr-2 ${badgeColorClass}` },
+          { class: `text-white p-1 rounded mr-2 ${badgeColorClass} whitespace-nowrap` },
           row.getValue('state')
         ),
         h(itTicketDataTableDropDown, {
@@ -235,7 +235,7 @@ export const columns: ColumnDef<itTicketWithDoc>[] = [
             'div',
             { class: 'relative' },
             h(DocumentsViewerDataTableButton, {
-              item : document
+              item: document
             })
           )
         })

@@ -195,7 +195,7 @@ const askNewPassword = async (req: Request, res: Response) => {
         await Users.update({
             userId: user.userId,
             username: user.username,
-            password: updatedUserPassword,
+            password: updatedUserPassword.password,
             mandateStart: user.mandateStart,
             mandateEnd: user.mandateEnd,
             emailJE:user.emailJE },

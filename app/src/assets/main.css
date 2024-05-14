@@ -19,6 +19,8 @@
     --border: 240 5.9% 90%;
     --input: 240 5.9% 90%;
 
+    
+
     --primary: 240 5.9% 10%;
     --primary-foreground: 0 0% 98%;
 
@@ -27,6 +29,8 @@
 
     --accent: 222 79% 55%;
     --accent-foreground: 255 100% 100%;
+    --deep-accent: 222 79% 22%;
+    --deep-accent-foreground: 0 0% 98%;
 
     --destructive: 0 84.2% 60.2%;
     --destructive-foreground: 0 0% 98%;
@@ -34,6 +38,14 @@
     --ring: 240 10% 3.9%;
 
     --radius: 0.5rem;
+
+    --success: 120 58% 40%;
+    --success-foreground: 0 0% 98%;
+    --warning: 40 100% 50%;
+    --warning-foreground: 0 0% 98%;
+    --error: 0 84.2% 60.2%;
+    --error-foreground: 0 0% 98%;
+
   }
 
   .dark {

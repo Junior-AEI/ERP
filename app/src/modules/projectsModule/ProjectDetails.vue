@@ -26,10 +26,17 @@
                 <Icon name="description" />
                 <span class="text-accent"> Documents </span>
               </div>
-              <Button variant="outline" icon="add"></Button>
+              <Button variant="outline" icon="add" @click="redirect()"></Button>
             </CardHeader>
             <CardContent class="flex flex-row flex-wrap">
-              <DocumentCard class="flex-1" v-for="doc in documents" :infos="doc" :key="doc.documentId"></DocumentCard>
+              <DocumentCard
+                class="flex-1"
+                v-for="doc in extDocs.filter(
+                  (document) => document.acronym === infos_project?.acronym
+                )"
+                :infos="doc"
+                :key="doc.documentId"
+              ></DocumentCard>
             </CardContent>
           </Card>
         </Wrapper>
@@ -58,6 +65,8 @@ import { ref, onMounted } from 'vue'
 import { type ExtendedProject } from '@/types/api'
 
 import {
+  type Document,
+  type DocumentType,
   type ExtendedDocument,
   type Project,
   type Person,
@@ -84,24 +93,6 @@ const projectId = (() => {
   }
   return 0
 })()
-
-const exampleDocument: ExtendedDocument = {
-  documentId: 1,
-  name: 'Example Document',
-  type: 'PDF',
-  path: 'example.pdf',
-  version: 1,
-  createdAt: '2021-01-01',
-  typeId: 1, // Replace with the actual type ID
-  information: 'Example information',
-  status: 'Example status',
-  authorId: 1, // Replace with the actual author ID
-  fieldNumber: 3,
-  fieldMeaning: 'Example field meaning',
-  acronym: 'ABC'
-}
-
-const documents = ref<ExtendedDocument[]>([exampleDocument])
 
 const examplePerson: Person = {
   personId: 1,
@@ -199,7 +190,6 @@ const exampleExtendedProject: ExtendedProject = {
 
 const infos = ref<ExtendedProject>()
 
-
 import { useAuthStore } from '@/stores/authStore'
 
 async function getData(): Promise<ExtendedProject> {
@@ -217,13 +207,11 @@ async function getData(): Promise<ExtendedProject> {
     }
   })
 
-
   const person = await axios.get(`/person/${project.data.data?.project.clientId}`, {
     headers: {
       Authorization: `Bearer ${useAuthStore().token}`
     }
   })
-
 
   const company = await axios.get(`/company/${client.data.data?.client.companyId}`, {
     headers: {
@@ -258,7 +246,6 @@ async function getData(): Promise<ExtendedProject> {
     }
   })
 
-
   const contributors = await axios.get(`/contributor`, {
     headers: {
       Authorization: `Bearer ${useAuthStore().token}`
@@ -275,16 +262,82 @@ async function getData(): Promise<ExtendedProject> {
     }
   })
 
-  const projectManagers = ManagerPersons.filter((manager: any) => manager.projectId === project.data.data?.project.projectId);
-  const projectContributors = ContributorPersons.filter((contributor: any) => contributor.projectId === project.data.data?.project.projectId);
+  const projectManagers = ManagerPersons.filter(
+    (manager: any) => manager.projectId === project.data.data?.project.projectId
+  )
+  const projectContributors = ContributorPersons.filter(
+    (contributor: any) => contributor.projectId === project.data.data?.project.projectId
+  )
 
-
-  return { ...client.data.data?.client, ...person.data.data?.person, ...project.data.data?.project, ...company.data.data?.company, ...address.data.data?.adress, projectManagers: projectManagers, 
+  return {
+    ...client.data.data?.client,
+    ...person.data.data?.person,
+    ...project.data.data?.project,
+    ...company.data.data?.company,
+    ...address.data.data?.adress,
+    projectManagers: projectManagers,
     contributors: projectContributors,
-  name : company.data.data?.company.name,
-nameProject: project.data.data?.project.name }
+    name: company.data.data?.company.name,
+    nameProject: project.data.data?.project.name
+  }
 }
 const infos_project = ref<ExtendedProject>()
+
+const docs = ref<Document[]>([])
+const docTypes = ref<DocumentType[]>([])
+
+const extDocs = ref<ExtendedDocument[]>([])
+
+async function getDocuments(): Promise<Document[]> {
+  // Fetch data from your API here.
+  const response = await axios.get(`/document`, {
+    headers: {
+      Authorization: `Bearer ${useAuthStore().token}`
+    }
+  })
+  return response.data.data.documents
+}
+
+async function getDocumentType(): Promise<DocumentType[]> {
+  const response = await axios.get(`/documentType`, {
+    headers: {
+      Authorization: `Bearer ${useAuthStore().token}`
+    }
+  })
+  return response.data.data.documentTypes
+}
+
+function createExtendedDocument(
+  document: Document,
+  documentTypes: DocumentType[]
+): ExtendedDocument {
+  const documentType = documentTypes.find((dt) => dt.typeId === document.typeId)
+  const type = documentType?.type ?? ''
+  const fieldNumber = documentType?.fieldNumber ?? 0
+  const fieldMeaning = documentType?.fieldMeaning ?? ''
+  const index = fieldMeaning.split('|').indexOf('Étude (Acronyme)')
+  const acronym = index !== -1 ? document.information.split('|')[index] : 'N/C'
+
+  return {
+    ...document,
+    type,
+    fieldNumber,
+    fieldMeaning,
+    acronym
+  }
+}
+
+const loadDocuments = async () => {
+  docs.value = await getDocuments()
+  docTypes.value = await getDocumentType()
+  extDocs.value = docs.value.map((document: Document) =>
+    createExtendedDocument(document, docTypes.value)
+  )
+}
+
+function redirect() {
+  window.location.href = '/documents'
+}
 
 onMounted(async () => {
   infos_project.value = await getData()
@@ -292,5 +345,6 @@ onMounted(async () => {
     infos_project.value = exampleExtendedProject
   }
   console.log(infos_project.value)
+  loadDocuments()
 })
 </script>

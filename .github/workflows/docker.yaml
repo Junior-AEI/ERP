@@ -1,0 +1,21 @@
+name: Build infrastructure with .env.example
+
+on:
+
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout du code
+      uses: actions/checkout@v2
+
+    - name: Renommer .env en .env.example
+      run: mv .env.test .env
+
+    - name: Lancer Docker Compose
+      run: docker-compose up -d --build

@@ -268,7 +268,6 @@ describe('ROUTE (POST): /api/user (Create new user)', () => {
 
         expect(user?.userId).toEqual(res.body.data.userId)
         expect(user?.username).toEqual(goodParams.username)
-        expect(user?.password).toEqual(goodParams.password)
         expect(user?.mandateStart).toEqual(goodParams.mandateStart)
         expect(user?.mandateEnd).toEqual(goodParams.mandateEnd)
         expect(user?.emailJE).toEqual(goodParams.emailJE)

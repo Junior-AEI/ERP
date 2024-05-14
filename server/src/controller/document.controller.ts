@@ -199,13 +199,14 @@ const update = async (req: Request, res: Response) => {
                     return res.status(400).json({ error: 'Document information is missing' });
                 }
 
-                if (req.file === undefined) {
-                    return res.status(400).json({ error: 'File is missing' });
-                }
+                // TODO : Proper file error handling (at the moment : an update request can be made without a file ; case to be handled)
+                // if (req.file === undefined) {
+                //     return res.status(400).json({ error: 'File is missing' });
+                // }
 
-                if (req.file.size >= maxFileSize) {
-                    return res.status(400).json({ error: 'File is too big' });
-                }
+                // if (req.file.size >= maxFileSize) {
+                //     return res.status(400).json({ error: 'File is too big' });
+                // }
 
                 // parse identifier
                 const identifier = parseInt(req.params.documentId)

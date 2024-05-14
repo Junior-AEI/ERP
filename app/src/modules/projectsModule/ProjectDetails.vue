@@ -26,7 +26,7 @@
                 <Icon name="description" />
                 <span class="text-accent"> Documents </span>
               </div>
-              <Button variant="outline" icon="add"></Button>
+              <Button variant="outline" icon="add" @click="redirect()"></Button>
             </CardHeader>
             <CardContent class="flex flex-row flex-wrap">
               <DocumentCard
@@ -331,6 +331,10 @@ const loadDocuments = async () => {
   extDocs.value = docs.value.map((document: Document) =>
     createExtendedDocument(document, docTypes.value)
   )
+}
+
+function redirect() {
+  window.location.href = '/documents'
 }
 
 onMounted(async () => {

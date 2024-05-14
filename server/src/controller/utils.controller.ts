@@ -38,7 +38,7 @@ export const sendEmail = async (to: string, subject: string, text: string, from:
 
         }
         else {
-            mailApiUrl = '127.0.0.1:' + process.env.MAIL_POR
+            mailApiUrl = '127.0.0.1:' + process.env.MAIL_PORT + "/api"
         }
         await axios.options(`${mailApiUrl}/mail`)
         const response = await axios.post(`${mailApiUrl}/mail`, { from, to, subject, text })
@@ -58,7 +58,15 @@ export const sendEmail = async (to: string, subject: string, text: string, from:
 export const sendBotMesssage = async (chatID: number, message: string) => {
     if (process.env.NODE_ENV === 'test') return
     try {
-        const botApiUrl = process.env.BOT_API_URL
+        let botApiUrl =""
+
+        if(process.env.NODE_ENV === "dev"){
+            botApiUrl = "http://localhost:"+ process.env.BOT_PORT + "/api"
+
+        }
+        else {
+            botApiUrl = '127.0.0.1:' + process.env.BOT_PORT + "/api"
+        }
         await axios.options(`${botApiUrl}/send`)
         const response = await axios.post(`${botApiUrl}/send`, { chatID, message })
         console.log(response.data)

@@ -18,14 +18,13 @@
                         <Card class="flex flex-row w-fit">
                             <div :class=bg_color(delay(props.infos.endDate))>
 
-                            <div
-                                class=" w-fit h-full bg-black/30 rounded-s-xl flex justify-center items-center pr-2 pl-2">
-                                Date de Fin</div></div>
+                            
+                                Date de Fin</div>
                             <CardContent class="flex flex-1 flex-row gap-4 m-2 mr-4 ml-4 items-center p-0">
                                 <div class='flex flex-row justify-between items-center gap-2'>
-                                    <div :class=bg_color(delay(props.infos.endDate))><span>Le {{
+                               <span>Le {{
                                             convertToCalendarDate(props.infos.endDate) }} </span>
-                                    </div>
+                               
                                     <span v-if="delay(props.infos.endDate) > 0" class="text-muted-foreground/50"> (dans {{
                                         delay(props.infos.endDate) }} j) </span>
 

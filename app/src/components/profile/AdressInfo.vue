@@ -1,75 +1,151 @@
 <template>
   <Card class="h-auto">
-    <CardHeader>
-      <Icon name="user_attributes" class="text-6xl" />
-      <span class="text-accent"> Informations du compte utilisateur </span>
+    <CardHeader class="flex justify-between items-center">
+      <div class="flex items-center">
+        <Icon name="pin_drop" class="text-6xl" />
+      <span class="text-accent"> Adresse </span>
+      </div>
+      <Button class="ml-5" variant="outline" v-if="!canEdit" @click="handleClickModif">Passer en mode Modif</Button>
+
+      <Button class="ml-5" v-if="canEdit" @click="handleClickValidate">Valider les modifications</Button>
+
     </CardHeader>
     <CardContent>
       <div class="flex items-end gap-4">
         <div class="flex flex-1 flex-col gap-2">
-          <Label for="userId">Identifiant Utilisateur</Label>
-          <Input :disabled="!canEdit" id="userId" :placeholder="userId" />
+          <Label for="name">Adresse </Label>
+          <Input :disabled="!canEdit" id="address"v-model="form.address" />
         </div>
         <div class="flex flex-1 flex-col gap-2">
-          <Label for="username">Nom d'utilisateur</Label>
-          <Input :disabled="!canEdit" id="username" v-model="username" />
+          <Label for="legalEntity">Complément d'adresse</Label>
+          <Input :disabled="!canEdit" id="additionnalAddress"  v-model="form.additionnalAddress" />
         </div>
-      </div>
-      <div class="flex flex-1 flex-col gap-2">
-        <Label for="emailJE">Email J.E.</Label>
-        <Input :disabled="!canEdit" id="emailJE" v-model="emailJE" />
       </div>
       <div class="flex items-end gap-4">
-        <div class="flex flex-1 flex-col gap-2">
-          <Label for="mandateStart">Date de début de mandat</Label>
-          <DatePickerComponent :disabled="!canEdit" v-model="mandateStart" />
+        <div class="mt-2 flex flex-1 flex-col gap-2">
+          <Label for="name">Code Postal </Label>
+          <Input :disabled="!canEdit" id="postCode"  v-model="form.postCode" />
         </div>
         <div class="flex flex-1 flex-col gap-2">
-          <Label for="lastname">Date de fin de mandat</Label>
-          <DatePickerComponent :disabled="!canEdit" v-model="mandateEnd" />
+          <Label for="legalEntity">Ville</Label>
+          <Input :disabled="!canEdit" id="city"  v-model="form.city" />
         </div>
       </div>
-      <Button v-if="canEdit" @click="editUserData()">Modifier</Button>
+      <div class="mt-2 flex flex-1 flex-col gap-2">
+        <Label for="legalEntity">Pays</Label>
+        <Input :disabled="!canEdit" id="country"  v-model="form.country" />
+      </div>
     </CardContent>
   </Card>
 </template>
 
 <script setup lang="ts">
 import axios from 'axios'
-import { ref } from 'vue'
+import { ref, onMounted } from 'vue'
 import { useAuthStore } from '@/stores/authStore'
+import type { Address } from '@/types/api'
 
 import { parseAbsoluteToLocal, type DateValue } from '@internationalized/date'
+import { useToast } from '@/components/ui/toast/use-toast'
 
+const { toast } = useToast()
 const editUserData = () => {
   alert('Not Implemented Yet (route not ready)')
 }
 
 const props = defineProps<{
-  userId: number
+  memberId: number
 }>()
 
 const canEdit = ref(false) // to be edited when permissions are added
 
-const username = ref('')
-const mandateStart = ref<DateValue>()
-const mandateEnd = ref<DateValue>()
-const emailJE = ref('')
+const form = ref<Address>({
+  addressId: NaN,
+  address: '',
+  additionnalAddress: '',
+  city: '',
+  postCode: '',
+  country: '',
+})
 
-axios
-  .get(`/user/${props.userId}`, {
+async function getData(){
+
+  const member = await axios.get(`/member/${props.memberId}`, {
     headers: {
       Authorization: `Bearer ${useAuthStore().token}`
     }
   })
-  .then((response) => {
-    const user = response.data.data.user
-    username.value = user.username
-    mandateStart.value = parseAbsoluteToLocal(user.mandateStart)
-    mandateEnd.value = parseAbsoluteToLocal(user.mandateEnd)
-    emailJE.value = user.emailJE
+
+  const memberInfo = member.data.data.member;
+  console.log(memberInfo.addressId)
+
+  const address = await axios.get(`/address/${memberInfo.addressId}`, {
+    headers: {
+      Authorization: `Bearer ${useAuthStore().token}`
+    }
   })
-  .catch((error) => {
-    console.error(error)
-  })
+
+  const adressInfo = address.data.data.address
+  console.log(adressInfo)
+
+
+  form.value.addressId =  adressInfo.addressId
+  form.value.address =  adressInfo.address
+  form.value.additionnalAddress =  adressInfo.additionnalAddress
+  form.value.city =  adressInfo.city
+  form.value.postCode =  adressInfo.postCode
+  form.value.country =  adressInfo.country
+
+}
+
+async function updateAdress() {
+  await axios
+    .put(
+      `/address/${form.value.addressId }`,
+      {
+        address: {
+          addressId: form.value.addressId ,
+          address: form.value.address,
+          additionnalAddress: form.value.additionnalAddress,
+          city: form.value.city,
+          postCode: form.value.postCode,
+          country: form.value.country
+        }
+      },
+      {
+        headers: {
+          Authorization: `Bearer ${useAuthStore().token}`
+        }
+      }
+    )
+    .then((response) => {
+      form.value.addressId = response.data.data.addressId
+      toast({
+        title: 'Adresse modifié',
+      })
+    })
+    .catch((error) => {
+      console.error(error)
+      toast({
+        title: 'Something wrong happened',
+        variant: 'destructive',
+        description: `${error.response.data.message}`
+      })
+    })
+}
+
+const data = ref<Address>()
+
+onMounted(async () => {
+  await getData()
+})
+
+
+const handleClickValidate = () => {
+  updateAdress()
+
+}
+const handleClickModif = () => {
+  canEdit.value = true
+}
 </script>

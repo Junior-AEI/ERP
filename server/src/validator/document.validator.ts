@@ -11,7 +11,7 @@ export const isValidDocument = (name: any, path: any, version: any, information:
     if (typeof version !== 'number') return { valid: 0, message: 'Your version is not correctly formatted.' }
     if (version < 0) return { valid: 0, message: 'Your version has to be positiv.' }
     if (typeof information !== 'string') return { valid: 0, message: 'Your information is not correctly formatted.' }
-    if (information.length < 5 || information.length >= 100)
+    if (information.length < 1 || information.length >= 100)
         return {
             valid: 0,
             message: 'Your information size has to be bigger than 5 and smaller than 100'

@@ -55,8 +55,8 @@
 
 <script setup lang="ts">
 import { useAuthStore } from '@/stores/authStore'
-import type { itTicket } from '@/types/api'
-import { ref } from 'vue'
+import type { itTicket, DocumentType, Document } from '@/types/api'
+import { ref , onMounted} from 'vue'
 import axios from 'axios'
 import { useToast } from '@/components/ui/toast/use-toast'
 
@@ -86,10 +86,11 @@ const handleInput = (value: string) => {
   form.value.applicationConcerned = value
 }
 const files = ref<File[]>([])
+const documentTypes = ref<DocumentType[]>([])
 
 const { toast } = useToast()
 
-const handleClick = () => {
+const addTicket = async () => {
   if (
     form.value.applicationConcerned === 'Autre (non renseigné)' &&
     otherApplicationConcerned.value != ''
@@ -97,7 +98,7 @@ const handleClick = () => {
     form.value.applicationConcerned = otherApplicationConcerned.value
   }
   // Crée un objet pour envoyer en requête
-  axios
+  await axios
     .post(
       `/itTicket/`,
       {
@@ -116,6 +117,7 @@ const handleClick = () => {
     )
     .then((response) => {
       console.log(response)
+      form.value.ticketId = response.data.data?.ticketId
       toast({
         title: 'Ticket envoyé',
         description: `${form.value.title}`
@@ -129,5 +131,97 @@ const handleClick = () => {
         description: `${error.response.data.message}`
       })
     })
+}
+
+const uploadDocument = (i : number) => {
+
+const documentInfos = ref<Document>({
+  documentId : NaN,
+  name: '',
+  path: '',
+  version: 1,
+  typeId: NaN,
+  information: '',
+  status: 'Sans Relecture',
+  authorId: user.userId,
+  createdAt: '',
+})
+console.log(files.value[i].name)
+const removeExtension = (filename: string): string => {
+  return filename.split('.').slice(0, -1).join('.')
+}
+axios
+  .post(
+    `/document`,
+    {
+      document: {
+        name: removeExtension(files.value[i].name),
+        version: documentInfos.value.version,
+        typeId:
+          documentTypes.value.find(
+            (documentType: any) => documentType.type === "Doc lié à un ticket DSI"
+          )?.typeId ?? 0, // should not be equal to 0
+        information: form.value.ticketId.toString(),
+        status: documentInfos.value.status,
+        authorId: documentInfos.value.authorId,
+      },
+      file: files.value[i]
+    },
+    {
+      headers: {
+        Authorization: `Bearer ${useAuthStore().token}`,
+        'Content-Type': 'multipart/form-data'
+      }
+    }
+  )
+  .then(() => {
+    toast({
+      title: 'Document envoyé',
+      description: `Le document a été envoyé avec succès.`
+    })
+  })
+  .catch((error) => {
+    console.error(error)
+    toast({
+      title: 'Something wrong happened',
+      variant: 'destructive',
+      description: `${error.response.data.message}`
+    })
+  })
+
+}
+
+async function getDocumentType(): Promise<DocumentType[]> {
+  const response = await axios.get(`/documentType`, {
+    headers: {
+      Authorization: `Bearer ${useAuthStore().token}`
+    }
+  })
+  return response.data.data.documentTypes
+}
+
+onMounted(async () => {
+  documentTypes.value = await getDocumentType()
+})
+
+async function handleClick() {
+  await addTicket()
+  if (files.value) {
+    for (let i = 0; i < files.value.length; i++) { 
+      await uploadDocument(i)
+    }
+    
+  }
+  clearFields()
+}
+const clearFields = () => {
+  form.value.ticketId = NaN,
+  form.value.title = '',
+  form.value.applicationConcerned = '',
+  form.value.state = '',
+  form.value.description = '',
+  files.value = [];
+
+
 }
 </script>

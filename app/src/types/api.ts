@@ -57,6 +57,8 @@ export interface Address {
 
 export type FullMemberWithAdress = Member & Person & Address
 export type FullUserWithAdress = Member & Person & Address & User
+export type FullInfoForProfil = Member & Person & Address & User & {Groups :Group[]} & {isUser : boolean}
+
 export interface Event {
   eventId: number
   name: string
@@ -204,3 +206,12 @@ export interface ProjectManager {
   projectId: number
   personId: number
 }
+
+
+export type EventDoc = {eventId : number} & Document
+
+export type EventWithDoc = { documentList: Document[] } & Event  ;
+export type itTicketWithDoc = { documentList: Document[] } & itTicket & User;
+
+export type ExpenseAccountWithDoc = { documentList: Document[] } & ExpenseAccountInfo  ;
+

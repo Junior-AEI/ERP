@@ -1,7 +1,9 @@
 import { h } from 'vue'
 import type { ColumnDef } from '@tanstack/vue-table'
-import type { Event } from '@/types/api'
+import type { EventWithDoc } from '@/types/api'
 import EventsDataTableButton from './EventsDataTableButton.vue'
+import DocumentsViewerDataTableButton from '../documents/DocumentsViewerDataTableButton.vue'
+
 import { Button } from '../ui/button'
 import Icon from '../Icon.vue'
 import {
@@ -34,9 +36,11 @@ function convertToCalendarDate(isoDateString: string): string {
   return new CalendarDateTime(year, month, day, hour, minute).toString()
 }
 
+
+
 const defaultClasses = 'text-left font-medium'
 
-export const columns: ColumnDef<Event>[] = [
+export const columns: ColumnDef<EventWithDoc>[] = [
   {
     accessorKey: 'name',
     meta: {
@@ -164,6 +168,30 @@ export const columns: ColumnDef<Event>[] = [
       )
     },
     cell: ({ row }) => h('div', { class: 'text-left' }, row.getValue('eventTypeName'))
+  },
+  {
+    accessorKey: 'eventTypeName',
+    meta: {
+      label: "Document lié"
+    },
+    header: () => h('div', { class: defaultClasses }, 'Document lié'),
+    cell: ({ row }) => {
+      const item = row.original
+
+      return h(
+        'div',
+        { class: `lowercase ${defaultClasses}` },
+        item.documentList.map((document) => {
+          return h(
+            'div',
+            { class: 'relative' },
+            h(DocumentsViewerDataTableButton, {
+              item : document
+            })
+          )
+        })
+      )
+    }
   },
   {
     id: 'actions',

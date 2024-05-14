@@ -124,7 +124,7 @@ const dropzoneId = 'dropzone-file-' + getCurrentInstance()?.uid
             v-if="isImageList"
             :src="generatePreview(file)"
             @click="preview(file)"
-            class="h-fit max-h-20 w-fit rounded-md bg-red-300 object-scale-down"
+            class="h-fit max-h-20 w-fit rounded-md object-scale-down"
           />
           <span class="font-medium">
             {{ file?.name }}

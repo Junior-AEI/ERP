@@ -21,7 +21,7 @@ export const characters: any = {
             birthPlace: 'Royan',
             nationality: 'FRA',
             promotion: '2024',
-            paymentMethod: 'CB',
+            paymentMethod: 'HelloAsso',
             department: 'Informatique',
             telegramId: '@pabechou',
             membershipNumber: 1
@@ -51,7 +51,7 @@ export const characters: any = {
             birthPlace: 'Paris',
             nationality: 'FRA',
             promotion: '2024',
-            paymentMethod: 'CB',
+            paymentMethod: 'HelloAsso',
             department: 'Informatique',
             telegramId: '',
             membershipNumber: 2

@@ -1,19 +1,21 @@
 <template>
   <Wrapper class="flex-col">
     <Card>
-      <CardHeader>
-        <span class="material-symbols-outlined"> calendar_add_on </span>
-        <span class="text-accent">Ajouter un événement</span>
+      <CardHeader class="flex justify-between items-center">
+        <div class="flex items-center">
+          <span class="material-symbols-outlined">calendar_add_on</span>
+          <span class="text-accent ml-2">Ajouter un événement</span>
+        </div>
+        <Button @click="emit('close')">
+          <Icon name="close" class="text-6xl" />
+        </Button>
       </CardHeader>
       <CardContent class="flex flex-col gap-4">
         <div class="flex flex-1 flex-wrap items-end gap-2">
           <div class="flex flex-1 flex-col gap-2">
             <Label>Nom de l'événement</Label>
-            <Input
-              id="eventName"
-              v-model="eventInfo.name"
-              placeholder="Formation : Apprendre à utiliser le nouvel ERP"
-            />
+            <Input id="eventName" v-model="eventInfo.name"
+              placeholder="Formation : Apprendre à utiliser le nouvel ERP" />
           </div>
           <div class="flex flex-1 flex-col gap-2">
             <Label>Emplacement</Label>
@@ -36,84 +38,64 @@
             </div>
           </div>
         </div>
-        <p
-          v-if="!timeSelectionIsValid"
-          class="text-sm text-red-500"
-          role="alert"
-          aria-live="assertive"
-        >
+        <p v-if="!timeSelectionIsValid" class="text-sm text-red-500" role="alert" aria-live="assertive">
           L'heure de fin doit être après l'heure de début
         </p>
 
         <div class="flex flex-col gap-4">
           <Label>Description</Label>
-          <Textarea
-            id="description"
-            v-model="eventInfo.description"
-            placeholder="Une description très fournie. Elle peut être sur plusieurs lignes."
-          />
+          <Textarea id="description" v-model="eventInfo.description"
+            placeholder="Une description très fournie. Elle peut être sur plusieurs lignes." />
+        </div>
+        <div class="flex max-w-full flex-1 flex-col gap-2">
+          <Label for="eventType">Type d'événement</Label>
+          <Popover v-model:open="isOpenEventType">
+            <PopoverTrigger as-child>
+              <Button variant="outline" role="combobox" :aria-expanded="isOpenEventType"
+                class="justify-between text-clip">
+                <span class="truncate">
+                  {{
+                    eventTypeName
+                      ? eventTypes.find((eventType) => eventType.value === eventTypeName)?.label
+                      : "Sélectionner le type d'événement"
+                  }}
+                </span>
+                <Icon name="unfold_more" class="ml-2 h-4 w-4 shrink-0 opacity-50" />
+              </Button>
+            </PopoverTrigger>
+            <PopoverContent class="p-0">
+              <Command>
+                <CommandInput class="h-9" placeholder="Rechercher un événement" />
+                <CommandEmpty>Aucun événement trouvé</CommandEmpty>
+                <CommandList>
+                  <CommandGroup>
+                    <CommandItem v-for="eventType in eventTypes" :key="eventType.value" :value="eventType.value"
+                      @select="(ev) => {
+                        if (typeof ev.detail.value === 'string') {
+                          eventTypeName = ev.detail.value
+                        }
+                        isOpenEventType = false
+                      }
+                        ">
+                      {{ eventType.label }}
+                      <Icon name="check" :class="cn(
+                        'ml-auto h-4 w-4',
+                        eventTypeName === eventType.value ? 'opacity-100' : 'opacity-0'
+                      )
+                        " />
+                    </CommandItem>
+                  </CommandGroup>
+                </CommandList>
+              </Command>
+            </PopoverContent>
+          </Popover>
         </div>
         <div class="flex flex-wrap items-end gap-4">
           <div class="flex flex-1 flex-col gap-2">
             <Label for="document">Ajouter une pièce jointe</Label>
-            <Input disabled id="document" type="file" />
+            <Dropzone v-model="files" />
           </div>
-          <div class="flex max-w-full flex-1 flex-col gap-2">
-            <Label for="eventType">Type d'événement</Label>
-            <Popover v-model:open="isOpenEventType">
-              <PopoverTrigger as-child>
-                <Button
-                  variant="outline"
-                  role="combobox"
-                  :aria-expanded="isOpenEventType"
-                  class="justify-between text-clip"
-                >
-                  <span class="truncate">
-                    {{
-                      eventTypeName
-                        ? eventTypes.find((eventType) => eventType.value === eventTypeName)?.label
-                        : "Sélectionner le type d'événement"
-                    }}
-                  </span>
-                  <Icon name="unfold_more" class="ml-2 h-4 w-4 shrink-0 opacity-50" />
-                </Button>
-              </PopoverTrigger>
-              <PopoverContent class="p-0">
-                <Command>
-                  <CommandInput class="h-9" placeholder="Rechercher un événement" />
-                  <CommandEmpty>Aucun événement trouvé</CommandEmpty>
-                  <CommandList>
-                    <CommandGroup>
-                      <CommandItem
-                        v-for="eventType in eventTypes"
-                        :key="eventType.value"
-                        :value="eventType.value"
-                        @select="
-                          (ev) => {
-                            if (typeof ev.detail.value === 'string') {
-                              eventTypeName = ev.detail.value
-                            }
-                            isOpenEventType = false
-                          }
-                        "
-                      >
-                        {{ eventType.label }}
-                        <Icon
-                          name="check"
-                          :class="
-                            cn(
-                              'ml-auto h-4 w-4',
-                              eventTypeName === eventType.value ? 'opacity-100' : 'opacity-0'
-                            )
-                          "
-                        />
-                      </CommandItem>
-                    </CommandGroup>
-                  </CommandList>
-                </Command>
-              </PopoverContent>
-            </Popover>
-          </div>
+
         </div>
         <!-- <div class="flex items-end gap-4">
           <Collapsible v-model:open="isOpen">
@@ -133,7 +115,7 @@
         </div> -->
       </CardContent>
       <CardFooter>
-        <Button @click="addEvent()" class="w-full"> Ajouter un événement</Button>
+        <Button @click="handleClick()" class="w-full"> Ajouter un événement</Button>
       </CardFooter>
     </Card>
   </Wrapper>
@@ -142,9 +124,9 @@
 <script setup lang="ts">
 import axios from 'axios'
 import { useAuthStore } from '@/stores/authStore'
-import type { Event } from '@/types/api'
+import type { Event, EventDoc, DocumentType } from '@/types/api'
 
-import { ref, type Ref, computed } from 'vue'
+import { ref, type Ref, computed, onMounted } from 'vue'
 
 import { cn } from '@/lib/utils'
 
@@ -162,7 +144,7 @@ import {
   CommandList
 } from '@/components/ui/command'
 
-const emit = defineEmits(['add:event'])
+const emit = defineEmits(['add:event', 'close'])
 
 const isOpenEventType = ref(false)
 
@@ -269,8 +251,12 @@ const eventInfo = ref<Event>({
   eventTypeName: ''
 })
 
+const files = ref<File[]>([])
+const documentTypes = ref<DocumentType[]>([])
+
+
 const addEvent = async () => {
-  axios
+  await axios
     .post(
       `/event`,
       {
@@ -289,8 +275,10 @@ const addEvent = async () => {
         }
       }
     )
-    .then(() => {
+    .then((response) => {
       emit('add:event', [])
+      documentInfos.value.eventId = response.data.data.eventId
+      
       toast({
         title: 'Événement ajouté',
         description: `L'événement ${eventInfo.value.name} a bien été ajouté.`
@@ -304,5 +292,102 @@ const addEvent = async () => {
         description: `${error.response.data.message}`
       })
     })
+}
+const removeExtension = (filename: string): string => {
+  return filename.split('.').slice(0, -1).join('.')
+}
+
+const user = useAuthStore()
+
+const documentInfos = ref<EventDoc>({
+  documentId: NaN,
+  name: '',
+  path: '',
+  version: 1,
+  typeId: NaN,
+  information: '',
+  status: 'Sans Relecture',
+  authorId: user.userId,
+  createdAt: '',
+  eventId: NaN,
+})
+
+async function getDocumentType(): Promise<DocumentType[]> {
+  const response = await axios.get(`/documentType`, {
+    headers: {
+      Authorization: `Bearer ${useAuthStore().token}`
+    }
+  })
+  return response.data.data.documentTypes
+}
+
+const uploadDocument = () => {
+
+  console.log(documentInfos.value.eventId)
+
+  axios
+    .post(
+      `/document`,
+      {
+        document: {
+          name: removeExtension(files.value[0].name),
+          version: documentInfos.value.version,
+          typeId:
+            documentTypes.value.find(
+              (documentType: any) => documentType.type === "Doc lié à un événement"
+            )?.typeId ?? 0, // should not be equal to 0
+          information: documentInfos.value.eventId.toString(),
+          status: documentInfos.value.status,
+          authorId: documentInfos.value.authorId,
+        },
+        file: files.value[0]
+      },
+      {
+        headers: {
+          Authorization: `Bearer ${useAuthStore().token}`,
+          'Content-Type': 'multipart/form-data'
+        }
+      }
+    )
+    .then(() => {
+      toast({
+        title: 'Document envoyé',
+        description: `Le document a été envoyé avec succès.`
+      })
+    })
+    .catch((error) => {
+      console.error(error)
+      toast({
+        title: 'Something wrong happened',
+        variant: 'destructive',
+        description: `${error.response.data.message}`
+      })
+    })
+
+}
+onMounted(async () => {
+  documentTypes.value = await getDocumentType()
+})
+
+
+async function handleClick() {
+  await addEvent()
+  if (files.value) {
+    await uploadDocument()
+  }
+  clearFields()
+}
+
+const clearFields = () => {
+  eventInfo.value.eventId = NaN,
+    eventInfo.value.name = '',
+    eventInfo.value.startDate = '',
+    eventInfo.value.endDate = '',
+    eventInfo.value.location = '',
+    eventInfo.value.description = '',
+    eventInfo.value.eventTypeName = '',
+    files.value = [];
+
+
 }
 </script>

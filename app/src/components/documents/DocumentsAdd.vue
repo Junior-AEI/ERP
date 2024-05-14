@@ -205,6 +205,8 @@ const clearFields = () => {
   documentInfos.value = []
   status.value = 'A relire'
   selectedProject.value = ''
+  files.value = []
+
 }
 
 const removeExtension = (filename: string): string => {
@@ -241,6 +243,7 @@ const uploadDocument = () => {
       description: `Veuillez remplir tous les champs.`
     })
   } else {
+    console.log(files.value[0])
     axios
       .post(
         `/document`,

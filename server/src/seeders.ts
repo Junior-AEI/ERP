@@ -49,7 +49,7 @@ const createUser = async () => {
         nationality: 'FRA',
         promotion: '2024',
         contributionDate: ct,
-        paymentMethod: 'CB',
+        paymentMethod: 'HelloAsso',
         department: 'Informatique',
         telegramId: '@pabechou',
         membershipNumber: '1234',
@@ -142,7 +142,7 @@ const createUser = async () => {
         nationality: 'FRA',
         promotion: '2024',
         contributionDate: ct2,
-        paymentMethod: 'CB',
+        paymentMethod: 'HelloAsso',
         department: 'Telecommunication',
         telegramId: '@pabechou',
         membershipNumber: '1235',
@@ -184,7 +184,7 @@ const createUser = async () => {
         nationality: 'FRA',
         promotion: '2024',
         contributionDate: ct3,
-        paymentMethod: 'CB',
+        paymentMethod: 'HelloAsso',
         department: 'Matmeca',
         telegramId: '@pabechou',
         membershipNumber: '1236',
@@ -247,6 +247,11 @@ const createUser = async () => {
         userId: user.userId,
         groupId: groupperson.groupId
     })
+
+    const belongerBureau2 = await Belongers.create({
+        userId: user2.userId,
+        groupId: groupBureau.groupId
+    })
     const groupperson2 = await Groups.create({
         groupName: person2.firstname + ' ' + person2.lastname,
         createdAt: ct,
@@ -267,7 +272,7 @@ const createUser = async () => {
     })
 
     console.log('Group created', groupperson, groupperson2, groupperson3)
-    console.log('Belonger created', belongerperson, belongerperson2, belongerperson3)
+    console.log('Belonger created', belongerperson, belongerperson2, belongerperson3, belongerBureau2)
 
     const event1 = await Events.create({
         eventId: 1,
@@ -328,8 +333,26 @@ const createUser = async () => {
         fieldNumber: 5,
         fieldMeaning: 'Numéro de facture|Frais de commande (HT)|Frais de structure (HT)|JEH (HT)|Date de fin de validité'
     })
+    const documentType5 = await DocumentTypes.create({
+        documentTypeId: 5,
+        type: "Doc lié à un événement",
+        fieldNumber: 1,
+        fieldMeaning: 'EventId'
+    })
+    const documentType6 = await DocumentTypes.create({
+        documentTypeId: 6,
+        type: "Doc lié à un ticket DSI",
+        fieldNumber: 1,
+        fieldMeaning: 'TicketId'
+    })
 
-    console.log('DocumentType created', documentType1, documentType2, documentType3, documentType4)
+    const documentType7 = await DocumentTypes.create({
+        documentTypeId: 7,
+        type: "Doc lié à une Demande de Note de Frais",
+        fieldNumber: 1,
+        fieldMeaning: 'expenseAccountId'
+    })
+    console.log('DocumentType created', documentType1, documentType2, documentType3, documentType4, documentType5, documentType6)
 
 
     const personClient1 = await Persons.create({
@@ -474,7 +497,7 @@ const createUser = async () => {
             nationality: 'GBR',
             promotion: '2019',
             contributionDate: '2022-01-01',
-            paymentMethod: 'CB',
+            paymentMethod: 'HelloAsso',
             department: 'Informatique',
             membershipNumber: 987654,
             addressId: 1,
@@ -497,7 +520,7 @@ const createUser = async () => {
             nationality: 'ESP',
             promotion: '2017',
             contributionDate: '2022-01-01',
-            paymentMethod: 'CB',
+            paymentMethod: 'HelloAsso',
             department: 'Matmeca',
             membershipNumber: 543210,
             addressId: 1,
@@ -520,7 +543,7 @@ const createUser = async () => {
             nationality: 'KOR',
             promotion: '2016',
             contributionDate: '2022-01-01',
-            paymentMethod: 'CB',
+            paymentMethod: 'HelloAsso',
             department: 'R&I',
             membershipNumber: 876543,
             addressId: 1,

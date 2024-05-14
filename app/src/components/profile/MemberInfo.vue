@@ -1,67 +1,63 @@
 <template>
   <Card class="flex-1">
-    <CardHeader>
-      <Icon name="badge" class="text-6xl" />
-      <span class="text-accent"> Informations du Membre </span>
-      <Button class="ml-5" v-if="!canEdit" @click="handleClick">Valider les modifications</Button>
+    <CardHeader class="flex justify-between items-center">
+      <div class="flex items-center">
+        <Icon name="badge" class="text-6xl" />
+        <span class="text-accent"> Informations du Membre </span>
+      </div>
+      <Button class="ml-5" variant="outline" v-if="!canEdit" @click="handleClickModif">Passer en mode Modif</Button>
+
+      <Button class="ml-5" v-if="canEdit" @click="handleClickValidate">Valider les modifications</Button>
+
     </CardHeader>
     <CardContent>
       <div class="flex items-end gap-4">
         <div class="flex flex-1 flex-col gap-2">
           <Label for="lastname">Nom</Label>
-          <Input id="lastname" v-model="form.lastname" />
+          <Input :disabled="!canEdit" id="lastname" v-model="form.lastname" />
         </div>
         <div class="flex flex-1 flex-col gap-2">
           <Label for="firstname">Prénom</Label>
-          <Input id="firstname" v-model="form.firstname" />
+          <Input :disabled="!canEdit" id="firstname" v-model="form.firstname" />
         </div>
       </div>
       <div class="flex items-end gap-4">
         <div class="flex flex-1 flex-col gap-2">
           <Label for="gender">Genre</Label>
           <div class="flex flex-1 flex-row gap-2">
-            <Input
-              :disabled="!canEdit"
-              v-if="ModifyGender == false"
-              id="firstname"
-              v-model="form.gender"
-            />
-            <Button v-if="ModifyGender == false" @click="handleModifyGender">
-              <Icon name="edit" />
-            </Button>
-            <Select v-model="form.gender" v-if="ModifyGender == true">
-              <SelectTrigger>
-                <SelectValue placeholder="Genre" />
-              </SelectTrigger>
-              <SelectContent>
-                <SelectGroup>
-                  <SelectItem value="M"> Homme </SelectItem>
-                  <SelectItem value="F"> Femme </SelectItem>
-                  <SelectItem value="O"> Autre </SelectItem>
-                </SelectGroup>
-              </SelectContent>
-            </Select>
+            <Input disabled v-if="!canEdit" id="firstname" v-model="form.gender" />
+            <div v-if="canEdit">
+              <Select v-model="form.gender" >
+                <SelectTrigger>
+                  <SelectValue placeholder="Genre" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectGroup>
+                    <SelectItem value="M"> Homme </SelectItem>
+                    <SelectItem value="F"> Femme </SelectItem>
+                    <SelectItem value="O"> Autre </SelectItem>
+                  </SelectGroup>
+                </SelectContent>
+              </Select>
+            </div>
           </div>
         </div>
         <div class="flex flex-1 flex-col gap-2">
           <Label for="birthDate">Date de naissance</Label>
           <div class="flex flex-1 flex-row gap-2">
-            <Input :disabled="1" v-if="!ModifyBirthDate" id="firstname" v-model="birthDateString" />
-            <Button v-if="!ModifyBirthDate" @click="handleModifyBirthDate">
-              <Icon name="edit" />
-            </Button>
-            <DatePickerComponent v-if="ModifyBirthDate" v-model="birthDateFormat" />
+            <DatePickerComponent :disabled="!canEdit" v-model="birthDateFormat" />
+
           </div>
         </div>
       </div>
       <div class="flex items-end gap-4">
         <div class="flex flex-1 flex-col gap-2">
           <Label for="birthPlace">Lieu de naissance</Label>
-          <Input id="birthPlace" v-model="form.birthPlace" />
+          <Input :disabled="!canEdit" id="birthPlace" v-model="form.birthPlace" />
         </div>
         <div class="flex flex-1 flex-col gap-2">
           <Label for="nationality">Nationalité</Label>
-          <Input id="nationality" v-model="form.nationality" />
+          <Input :disabled="!canEdit" id="nationality" v-model="form.nationality" />
         </div>
       </div>
 
@@ -69,113 +65,91 @@
         <div class="flex flex-1 flex-col gap-2">
           <Label for="department">Filière</Label>
           <div class="flex flex-1 flex-row gap-2">
-            <Input
-              :disabled="1"
-              v-if="!ModifyDepartment"
-              id="firstname"
-              v-model="form.department"
-            />
-            <Button v-if="!ModifyDepartment" @click="handleModifyDepartment">
-              <Icon name="edit" />
-            </Button>
-            <Select v-model="form.department" v-if="ModifyDepartment">
-              <SelectTrigger>
-                <SelectValue placeholder="Filière" />
-              </SelectTrigger>
-              <SelectContent>
-                <SelectGroup>
-                  <SelectItem value="Informatique"> Info </SelectItem>
-                  <SelectItem value="Telecommunication"> Telecom </SelectItem>
-                  <SelectItem value="Matmeca"> Matmeca </SelectItem>
-                  <SelectItem value="Electronique"> Elec </SelectItem>
-                  <SelectItem value="R&I"> R&I </SelectItem>
-                  <SelectItem value="SEE"> SEE </SelectItem>
-                </SelectGroup>
-              </SelectContent>
-            </Select>
+            <Input disabled v-if="!canEdit" id="firstname" v-model="form.department" />
+            <div v-if="canEdit">
+              <Select v-model="form.department" >
+                <SelectTrigger>
+                  <SelectValue placeholder="Filière" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectGroup>
+                    <SelectItem value="Informatique"> Info </SelectItem>
+                    <SelectItem value="Telecommunication"> Telecom </SelectItem>
+                    <SelectItem value="Matmeca"> Matmeca </SelectItem>
+                    <SelectItem value="Electronique"> Elec </SelectItem>
+                    <SelectItem value="R&I"> R&I </SelectItem>
+                    <SelectItem value="SEE"> SEE </SelectItem>
+                  </SelectGroup>
+                </SelectContent>
+              </Select>
+            </div>
           </div>
         </div>
         <div class="flex flex-1 flex-col gap-2">
           <Label for="promotion">Promo</Label>
-          <Input
-            id="promotion"
-            :placeholder="new Date().getFullYear() + 2"
-            v-model="form.promotion"
-          />
+          <Input :disabled="!canEdit" id="promotion" :placeholder="new Date().getFullYear() + 2"
+            v-model="form.promotion" />
         </div>
       </div>
       <div class="flex items-end gap-4">
         <div class="flex flex-1 flex-col gap-2">
           <Label for="mobilePhone">N° de Téléphone Mobile</Label>
-          <Input id="mobilePhone" placeholder="Info" v-model="form.mobilePhone" />
+          <Input id="mobilePhone" :disabled="!canEdit" placeholder="Info" v-model="form.mobilePhone" />
         </div>
         <div class="flex flex-1 flex-col gap-2">
           <Label for="landlinePhone">N° de Téléphone</Label>
-          <Input id="landlinePhone" placeholder="Tel Fixe" v-model="form.landlinePhone" />
+          <Input id="landlinePhone" :disabled="!canEdit" placeholder="Tel Fixe" v-model="form.landlinePhone" />
         </div>
       </div>
       <div class="flex justify-end gap-4">
         <div class="flex flex-1 flex-col gap-2">
           <Label for="landlinePhone">Email</Label>
-          <Input id="landlinePhone" placeholder="Tel Fixe" v-model="form.email" />
+          <Input id="landlinePhone" :disabled="!canEdit" placeholder="Tel Fixe" v-model="form.email" />
         </div>
         <div class="flex flex-1 flex-col gap-2">
           <Label for="paymentMethod">Moyen de paiement de la Cotisation</Label>
           <div class="flex flex-1 flex-row gap-2">
-            <Input
-              :disabled="1"
-              v-if="!ModifyPaymentMethod"
-              id="firstname"
-              v-model="form.paymentMethod"
-            />
-            <Button v-if="!ModifyPaymentMethod" @click="handleModifyPaymentMethod">
-              <Icon name="edit" />
-            </Button>
-            <Select v-model="form.paymentMethod" v-if="ModifyPaymentMethod">
-              <SelectTrigger>
-                <SelectValue placeholder="Moyen de Payement" />
-              </SelectTrigger>
-              <SelectContent>
-                <SelectGroup>
-                  <SelectItem value="HelloAsso"> Hello Asso </SelectItem>
-                  <SelectItem value="LydiaPro"> Lydia Pro </SelectItem>
-                  <SelectItem value="Vir"> Virement </SelectItem>
-                </SelectGroup>
-              </SelectContent>
-            </Select>
+            <Input disabled v-if="!canEdit" id="firstname" v-model="form.paymentMethod" />
+            <div v-if="canEdit">
+
+              <Select v-model="form.paymentMethod" >
+                <SelectTrigger>
+                  <SelectValue placeholder="Moyen de Payement" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectGroup>
+                    <SelectItem value="HelloAsso"> Hello Asso </SelectItem>
+                    <SelectItem value="LydiaPro"> Lydia Pro </SelectItem>
+                    <SelectItem value="Vir"> Virement </SelectItem>
+                  </SelectGroup>
+                </SelectContent>
+              </Select>
+            </div>
           </div>
         </div>
       </div>
       <div class="flex justify-end gap-4">
         <div class="flex flex-1 flex-col gap-2">
           <Label for="membershipNumber">Numéro de cotisation</Label>
-          <Input id="membershipNumber" v-model="form.membershipNumber" />
+          <Input id="membershipNumber" :disabled="!canEdit" v-model="form.membershipNumber" />
         </div>
         <div class="flex flex-1 flex-col gap-2">
           <Label for="contributionDate">Date de cotisation</Label>
-          <div class="flex flex-1 flex-row gap-2">
-            <Input
-              :disabled="1"
-              v-if="!ModifyContributionDate"
-              id="firstname"
-              v-model="contributionDateString"
-            />
-            <Button v-if="!ModifyContributionDate" @click="handleModifyContributionDate">
-              <Icon name="edit" />
-            </Button>
-            <DatePickerComponent v-if="ModifyContributionDate" v-model="contributionDateFormat" />
-          </div>
+
+          <DatePickerComponent :disabled="!canEdit" v-model="contributionDateFormat" />
+
+
         </div>
       </div>
 
       <div class="flex justify-end gap-4">
         <div class="flex flex-1 flex-col gap-2">
           <Label for="membershipNumber">@Telegram</Label>
-          <Input id="membershipNumber" v-model="form.telegramId" />
+          <Input id="membershipNumber" :disabled="!canEdit" v-model="form.telegramId" />
         </div>
         <div class="flex flex-1 flex-col gap-2">
           <Label for="contributionDate">Chat ID (Pour connexion Bot Telegram)</Label>
-          <Input id="membershipNumber" v-model="form.chatBotId" />
+          <Input id="membershipNumber" :disabled="!canEdit" v-model="form.chatBotId" />
         </div>
       </div>
     </CardContent>
@@ -201,7 +175,8 @@ import {
   parseDateTime,
   DateFormatter,
   getLocalTimeZone,
-  type DateValue
+  type DateValue,
+  parseAbsoluteToLocal
 } from '@internationalized/date'
 
 const canEdit = ref(false) // to be modified when permissions are added
@@ -312,6 +287,8 @@ async function fetchMembersInfos() {
     .then((response) => {
       const member = response.data.data.member
 
+      birthDateFormat.value = parseAbsoluteToLocal(member.birthDate)
+      contributionDateFormat.value = parseAbsoluteToLocal(member.contributionDate)
       form.value.birthDate = member.birthDate
       form.value.birthPlace = member.birthPlace
       form.value.nationality = member.nationality
@@ -429,8 +406,9 @@ async function updateMember() {
       }
     )
     .then(() => {
+      canEdit.value = false
       toast({
-        title: 'Personne renseignée'
+        title: 'Personne modifiée'
       })
     })
     .catch((error) => {
@@ -443,8 +421,12 @@ async function updateMember() {
     })
 }
 
-const handleClick = () => {
+const handleClickValidate = () => {
   updatePerson()
   updateMember()
+
+}
+const handleClickModif = () => {
+  canEdit.value = true
 }
 </script>

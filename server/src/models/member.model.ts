@@ -17,7 +17,7 @@ import Persons from './person.model'
 import Users from './user.model'
 import Contributors from './contributor.model'
 
-const PAYMENTS = ['Esp', 'CB', 'HelloAsso', 'Vir', 'LydiaPro']
+const PAYMENTS = ['HelloAsso', 'Vir', 'LydiaPro']
 const DEPARTMENTS = ['Informatique', 'Electronique', 'Telecommunication', 'Matmeca', 'R&I', 'SEE']
 
 @Table

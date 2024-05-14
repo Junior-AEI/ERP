@@ -1,9 +1,10 @@
 import { h } from 'vue'
 import type { ColumnDef } from '@tanstack/vue-table'
-import type { itTicketInfo } from '@/types/api'
+import type { itTicketWithDoc } from '@/types/api'
 import itTicketsDataTableButton from './itTicketsDataTableButton.vue'
 import { Button } from '../ui/button'
 import Icon from '../Icon.vue'
+import DocumentsViewerDataTableButton from '../documents/DocumentsViewerDataTableButton.vue'
 import {
   CalendarDateTime,
   parseDateTime,
@@ -38,7 +39,7 @@ function convertToCalendarDate(isoDateString: string): string {
   return date.toString()
 }
 
-export const columns: ColumnDef<itTicketInfo>[] = [
+export const columns: ColumnDef<itTicketWithDoc>[] = [
   {
     accessorKey: 'state',
     accessorFn: (row) => row.state,
@@ -214,6 +215,30 @@ export const columns: ColumnDef<itTicketInfo>[] = [
         'div',
         { class: defaultClasses },
         df.format(parseDateTime(createdAt).toDate(getLocalTimeZone()))
+      )
+    }
+  },
+  {
+    accessorKey: 'eventTypeName',
+    meta: {
+      label: "Document lié"
+    },
+    header: () => h('div', { class: defaultClasses }, 'Document lié'),
+    cell: ({ row }) => {
+      const item = row.original
+
+      return h(
+        'div',
+        { class: `lowercase ${defaultClasses}` },
+        item.documentList.map((document) => {
+          return h(
+            'div',
+            { class: 'relative' },
+            h(DocumentsViewerDataTableButton, {
+              item : document
+            })
+          )
+        })
       )
     }
   },

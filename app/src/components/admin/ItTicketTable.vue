@@ -1,13 +1,13 @@
 <script setup lang="ts">
 import { ref, onMounted } from 'vue'
 import { columns } from './columns'
-import type { itTicketInfo } from '@/types/api'
+import type { itTicketWithDoc } from '@/types/api'
 import axios from 'axios'
 
-const data = ref<itTicketInfo[]>([])
+const data = ref<itTicketWithDoc[]>([])
 import { useAuthStore } from '@/stores/authStore'
 
-async function getData(): Promise<itTicketInfo[]> {
+async function getData(): Promise<itTicketWithDoc[]> {
   // Fetch data from your API here.
 
   const itTickets = await axios.get(`/itTicket`, {
@@ -22,13 +22,40 @@ async function getData(): Promise<itTicketInfo[]> {
     }
   })
 
-  const itTicketsInfo = itTickets.data.data?.itTickets.map((itTicket: any) => {
-    const user = users.data.data?.users.find((user: any) => user.userId === itTicket.userId)
-    return {
-      ...user,
-      ...itTicket
+  const docTypes = await axios.get(`/documentType`, {
+    headers: {
+      Authorization: `Bearer ${useAuthStore().token}`
     }
   })
+  const typeDoc = docTypes.data.data.documentTypes.find(
+              (documentType: any) => documentType.type === "Doc lié à un ticket DSI"
+            )
+            console.log(typeDoc)
+
+  const documents = await axios.get(`/document`, {
+    headers: {
+      Authorization: `Bearer ${useAuthStore().token}`
+    }
+  })
+  const DocItTicket = documents.data.data.documents.filter(
+              (document: any) => document.typeId == typeDoc.typeId
+            )
+
+            
+  const itTicketsInfo = itTickets.data.data?.itTickets.map((itTicket: any) => {
+    const user = users.data.data?.users.find((user: any) => user.userId === itTicket.userId)
+    const DocList = DocItTicket.filter(
+      (document: any) => document.information === itTicket.ticketId.toString()
+    )
+    return {
+      ...user,
+      ...itTicket,
+      documentList: DocList
+    }
+  })
+
+
+
 
   return itTicketsInfo
 }

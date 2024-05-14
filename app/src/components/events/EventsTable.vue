@@ -1,11 +1,11 @@
 <script setup lang="ts">
 import { ref, onMounted, watch } from 'vue'
 import { columns } from './columns'
-import type { Event } from '@/types/api'
+import type { EventWithDoc } from '@/types/api'
 import axios from 'axios'
 import { useAuthStore } from '@/stores/authStore'
 
-const data = ref<Event[]>([])
+const data = ref<EventWithDoc[]>([])
 
 const emit = defineEmits(['reloaded'])
 
@@ -13,14 +13,49 @@ const props = defineProps<{
   needReload?: boolean
 }>()
 
-async function getData(): Promise<Event[]> {
+async function getData(): Promise<EventWithDoc[]> {
   // Fetch data from your API here.
-  const response = await axios.get(`/event`, {
+  const events = await axios.get(`/event`, {
     headers: {
       Authorization: `Bearer ${useAuthStore().token}`
     }
   })
-  return response.data.data.events
+
+  const docTypes = await axios.get(`/documentType`, {
+    headers: {
+      Authorization: `Bearer ${useAuthStore().token}`
+    }
+  })
+
+  const typeDoc = docTypes.data.data.documentTypes.find(
+              (documentType: any) => documentType.type === "Doc lié à un événement"
+            )
+            console.log(typeDoc)
+
+  const documents = await axios.get(`/document`, {
+    headers: {
+      Authorization: `Bearer ${useAuthStore().token}`
+    }
+  })
+  const DocEvent = documents.data.data.documents.filter(
+              (document: any) => document.typeId == typeDoc.typeId
+            )
+
+  const eventWithDocList = events.data.data?.events.map((event: any) => {
+    const DocList = DocEvent.filter(
+      (document: any) => document.information === event.eventId.toString()
+    )
+    return {
+    ...event,
+    documentList: DocList
+    }
+  })
+
+
+  console.log(eventWithDocList)
+
+  return eventWithDocList
+
 }
 
 async function loadData() {

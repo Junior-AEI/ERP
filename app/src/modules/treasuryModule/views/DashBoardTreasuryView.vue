@@ -4,14 +4,9 @@ import TasksCard from '@/components/tasks/TasksCard.vue';
     <div class="flex flex-1 flex-row flex-wrap gap-6">
       <div class="flex max-w-2xl flex-1 flex-col gap-4">
         <TasksCard> </TasksCard>
-        <Card>
-          <CardContent> </CardContent>
-        </Card>
       </div>
       <div class="flex flex-1 flex-col gap-4">
-        <Card>
-          <CardContent> </CardContent>
-        </Card>
+        
         <ProjectProgressCard> </ProjectProgressCard>
       </div>
     </div>

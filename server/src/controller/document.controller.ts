@@ -127,6 +127,7 @@ async function create(req: Request, res: Response) {
                 return res.status(400).json({ error: 'File is missing' });
             }
 
+
             if (req.file.size >= maxFileSize) {
                 return res.status(400).json({ error: 'File is too big' });
             }
@@ -152,6 +153,8 @@ async function create(req: Request, res: Response) {
             if (validator.valid == 0) {
                 return res.status(400).json({ error: validator.message });
             }
+            console.log(idAuthor)
+            console.log(idType)
 
             // Insert data
             const document = await Documents.create({

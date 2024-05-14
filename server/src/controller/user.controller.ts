@@ -77,6 +77,7 @@ async function create(req: Request, res: Response) {
         const member = await Members.findByPk(identifier)
         if (!member) throw createHttpError(404, 'Unable to find the linked member.')
 
+        
         // Test params
         const validator = isValidUser(req.body.user.username, req.body.user.password, req.body.user.mandateStart, req.body.user.mandateEnd, req.body.user.emailJE)
         if (!validator.valid) throw createHttpError(400, validator.message as string)
@@ -119,16 +120,30 @@ const update = async (req: Request, res: Response) => {
 
         const user = await Users.findByPk(identifier)
         if (!user) throw createHttpError(404, 'User not found')
+        var validator = isValidUser(req.body.user.username, "Sans mot de passe", req.body.user.mandateStart, req.body.user.mandateEnd, req.body.user.emailJE)
+        if(req.body.updatePassword){
+            const encryptedPassword = await bcrypt.hash(req.body.user.password, 10)
+            req.body.user.password = encryptedPassword
+            validator = isValidUser(req.body.user.username, req.body.user.password, req.body.user.mandateStart, req.body.user.mandateEnd, req.body.user.emailJE)
 
-        const validator = isValidUser(req.body.user.username, req.body.user.password, req.body.user.mandateStart, req.body.user.mandateEnd, req.body.user.emailJE)
+        }
+        else {
+            req.body.user.password =user.password
+
+        }
 
         if (validator.valid == 0) throw createHttpError(400, validator.message as string)
 
-        const encryptedPassword = await bcrypt.hash(req.body.user.password, 10)
-        req.body.user.updatedAt = null
-        req.body.user.password = encryptedPassword
+        
 
-        await Users.update(req.body.user, {
+        await Users.update({
+            userId: identifier,
+            username: req.body.user.username,
+            password: req.body.user.password,
+            mandateStart: new Date(req.body.user.mandateStart),
+            mandateEnd: new Date(req.body.user.mandateEnd),
+            emailJE: req.body.user.emailJE
+        }, {
             where: { userId: identifier }
         })
 
@@ -140,6 +155,7 @@ const update = async (req: Request, res: Response) => {
         else throw err
     }
 }
+
 
 /**
  * Delete an user

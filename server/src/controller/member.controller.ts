@@ -65,6 +65,7 @@ const create = async (req: Request, res: Response) => {
     try {
         // Parse identifier
         const identifier = parseInt(req.body.member.memberId);
+        console.log(identifier)
         if (isNaN(identifier)) throw createHttpError(400, 'Please provide a valid identifier')
 
         const person = await Persons.findByPk(identifier)

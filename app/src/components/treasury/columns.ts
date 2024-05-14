@@ -1,9 +1,10 @@
 import { h } from 'vue'
 import type { ColumnDef } from '@tanstack/vue-table'
-import type { ExpenseAccountInfo } from '@/types/api'
+import type { ExpenseAccountWithDoc } from '@/types/api'
 import ExpenseDataTableButton from './ExpenseDataTableButton.vue'
 import { Button } from '../ui/button'
 import Icon from '../Icon.vue'
+import DocumentsViewerDataTableButton from '../documents/DocumentsViewerDataTableButton.vue'
 import {
   CalendarDateTime,
   parseDateTime,
@@ -37,7 +38,7 @@ function convertToCalendarDate(isoDateString: string): string {
   return date.toString()
 }
 
-export const columns: ColumnDef<ExpenseAccountInfo>[] = [
+export const columns: ColumnDef<ExpenseAccountWithDoc>[] = [
   {
     accessorKey: 'state',
     accessorFn: (row) => row.state,
@@ -175,6 +176,30 @@ export const columns: ColumnDef<ExpenseAccountInfo>[] = [
         'div',
         { class: defaultClasses },
         df.format(parseDateTime(expenseDate).toDate(getLocalTimeZone()))
+      )
+    }
+  },
+  {
+    accessorKey: 'eventTypeName',
+    meta: {
+      label: "Document lié"
+    },
+    header: () => h('div', { class: defaultClasses }, 'Document lié'),
+    cell: ({ row }) => {
+      const item = row.original
+
+      return h(
+        'div',
+        { class: `lowercase ${defaultClasses}` },
+        item.documentList.map((document) => {
+          return h(
+            'div',
+            { class: 'relative' },
+            h(DocumentsViewerDataTableButton, {
+              item : document
+            })
+          )
+        })
       )
     }
   },

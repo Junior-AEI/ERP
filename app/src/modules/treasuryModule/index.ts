@@ -6,7 +6,7 @@ export const treasuryModule: Module = {
     {
       path: '/treasury',
       name: 'Trésorerie',
-      component: () => import('./views/DashBoardTreasuryView.vue'),
+      component: () => import('@/views/Construction.vue'),
       children: [
         {
           path: '/notes-de-frais',

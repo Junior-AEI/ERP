@@ -252,7 +252,10 @@ const update = async (req: Request, res: Response) => {
         if (!client) throw createHttpError(404, 'Unable to find the linked client.')
 
         // Test params
-        const validator = isValidProject(req.body.project.name, req.body.project.acronym, req.body.project.startDate, req.body.project.endDate)
+        const birthDateFormat = new Date(req.body.project.startDate)
+
+        console.log(birthDateFormat.toString())
+        const validator = isValidProject(req.body.project.name, req.body.project.acronym, birthDateFormat, birthDateFormat)
         if (!validator.valid) throw createHttpError(400, validator.message as string)
 
         await Projects.update(req.body.project, {

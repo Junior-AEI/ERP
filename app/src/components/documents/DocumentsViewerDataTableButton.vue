@@ -13,7 +13,6 @@
 import axios from 'axios'
 import { ref } from 'vue'
 import type { Document } from '@/types/api'
-import { useAuthStore } from '@/stores/authStore'
 import { useToast } from '../ui/toast'
 
 const props = defineProps<{

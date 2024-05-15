@@ -351,6 +351,7 @@ async function updatePerson() {
 
 async function updateMember() {
   if (contributionDateFormat.value) {
+
     form.value.contributionDate = contributionDateFormat.value.toString()
   }
   if (typeof form.value.membershipNumber == 'string') {

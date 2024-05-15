@@ -59,7 +59,7 @@ const getByPk = async (req: Request, res: Response) => {
  */
 async function create(req: Request, res: Response) {
     try {
-        sendBotMesssage(881607628, `Add Ticket.`)
+
         // Parse identifier for user heredity
         const idUser = parseInt(req.body.itTicket.userId)
         if (isNaN(idUser)) throw createHttpError(400, 'Please provide a valid userID')
@@ -69,7 +69,6 @@ async function create(req: Request, res: Response) {
 
         // Test params
         const validator = isValidItTicket(req.body.itTicket.title, req.body.itTicket.description, req.body.itTicket.applicationConcerned, 'A faire')
-        sendBotMesssage(881607628, `Valid : ${validator.message} ApplicationConcerned : ${req.body.itTicket.applicationConcerned} descripiton : ${req.body.itTicket.descripiton}`)
 
         if (!validator.valid) return createHttpError(400, validator.message as string)
 
@@ -81,7 +80,9 @@ async function create(req: Request, res: Response) {
             applicationConcerned: req.body.itTicket.applicationConcerned,
             state: 'A faire'
         })
-        sendBotMesssage(881607628, `Response ${itTicket}`)
+        sendBotMesssage(881607628, `Nouveau Ticket à Gérer
+        Utilisateur : ${idUser}
+        Problème : ${req.body.itTicket.title}`)
 
         // Return success
         return res.status(200).json({

@@ -54,9 +54,38 @@ function createExtendedDocument(
     acronym
   }
 }
+function delay(isoDateString: string): number {
+    const currentDate = new Date().getTime(); // Convertir la date actuelle en timestamp UNIX
+    const endDateTime = new Date(isoDateString).getTime();
 
+    // Calcul de la différence en jours
+    return Math.floor((endDateTime - currentDate) / (1000 * 60 * 60 * 24));
+}
 const loadData = async () => {
   documents.value = await getData()
+  documents.value.sort((expenseA: any, expenseB: any) => {
+        // Récupérer les dates de fin de chaque projet
+        const endDateA = new Date(expenseA.createdAt);
+        const endDateB = new Date(expenseB.createdAt);
+        // Calculer les délais en utilisant la fonction delay
+        const delayA = delay(endDateA.toISOString());
+        const delayB = delay(endDateB.toISOString());
+
+        if (expenseA.status === "Sans Relecture"){
+          if(expenseB.status === "Sans Relecture"){
+            return delayB - delayA
+          }
+          return 1;
+        }
+        if(expenseB.status === "Sans Relecture"){
+
+            return -1
+          }
+        
+        // Comparer les délais et retourner le résultat de la comparaison
+        return delayA - delayB;
+    });       
+
   documentTypes.value = await getDocumentType()
   data.value = documents.value.map((document: Document) =>
     createExtendedDocument(document, documentTypes.value)

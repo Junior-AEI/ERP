@@ -60,6 +60,7 @@ async function getEvents(): Promise<Event[]> {
       Authorization: `Bearer ${useAuthStore().token}`
     }
   })
+  console.log(response.data.data.events)
   return response.data.data.events
 }
 
@@ -67,7 +68,7 @@ onMounted(async () => {
   events.value = await getEvents()
   events.value = events.value
     .filter((event) => event.endDate > new Date().toISOString())
-    .sort((a, b) => new Date(a.endDate).getTime() - new Date(b.endDate).getTime())
+    .sort((a, b) => new Date(a.startDate).getTime() - new Date(b.startDate).getTime())
     .slice(0, 5)
 
   noEvents.value = events.value.length == 0
@@ -76,7 +77,7 @@ onMounted(async () => {
 
 <template>
   <main class="flex flex-1 flex-col gap-6">
-    <Wrapper class="w-full">
+    <!-- <Wrapper class="w-full">
       <Card>
         <CardContent> </CardContent>
       </Card>
@@ -86,7 +87,7 @@ onMounted(async () => {
       <Card>
         <CardContent> </CardContent>
       </Card>
-    </Wrapper>
+    </Wrapper> -->
 
     <div class="flex flex-wrap gap-3">
       <Wrapper class="flex-2 flex-col">
@@ -139,6 +140,8 @@ onMounted(async () => {
               </div>
               <Link class="p-2" to="/events" icon="read_more"> </Link>
             </CardHeader>
+            <div class="max-h-96 overflow-y-auto"> 
+
             <CardContent>
               <div v-if="noEvents">
                 <span class="text-muted-foreground">Aucun événement à venir</span>
@@ -171,7 +174,9 @@ onMounted(async () => {
                 </div>
               </div>
             </CardContent>
+           </div>
           </Card>
+          
         </Wrapper>
       </div>
     </div>

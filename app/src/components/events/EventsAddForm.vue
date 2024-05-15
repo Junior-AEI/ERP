@@ -93,7 +93,7 @@
         <div class="flex flex-wrap items-end gap-4">
           <div class="flex flex-1 flex-col gap-2">
             <Label for="document">Ajouter une pièce jointe</Label>
-            <Dropzone v-model="files" />
+            <Dropzone v-model="files" :multiple="true" />
           </div>
 
         </div>
@@ -321,7 +321,7 @@ async function getDocumentType(): Promise<DocumentType[]> {
   return response.data.data.documentTypes
 }
 
-const uploadDocument = () => {
+const uploadDocument = (i : number) => {
 
   console.log(documentInfos.value.eventId)
 
@@ -330,7 +330,7 @@ const uploadDocument = () => {
       `/document`,
       {
         document: {
-          name: removeExtension(files.value[0].name),
+          name: removeExtension(files.value[i].name),
           version: documentInfos.value.version,
           typeId:
             documentTypes.value.find(
@@ -340,7 +340,7 @@ const uploadDocument = () => {
           status: documentInfos.value.status,
           authorId: documentInfos.value.authorId,
         },
-        file: files.value[0]
+        file: files.value[i]
       },
       {
         headers: {
@@ -373,7 +373,10 @@ onMounted(async () => {
 async function handleClick() {
   await addEvent()
   if (files.value) {
-    await uploadDocument()
+    for (let i = 0; i < files.value.length; i++) { 
+      await uploadDocument(i)
+    }
+    
   }
   clearFields()
 }

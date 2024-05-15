@@ -3,7 +3,7 @@ import createHttpError from 'http-errors'
 import Tasks from '../models/task.model'
 import { HttpError } from 'http-errors'
 import { isValidTask } from '../validator/task.validator'
-import { controllerErrorHandler, sendBotMesssage } from './utils.controller'
+import { controllerErrorHandler } from './utils.controller'
 
 /**
  * Get all tasks
@@ -90,8 +90,6 @@ async function create(req: Request, res: Response) {
         const validator = isValidTask(req.body.task.dueDate, req.body.task.description, 'A faire')
         if (!validator.valid) throw createHttpError(400, validator.message as string)
 
-        // Send bot message
-        sendBotMesssage(881607628, `Valid : ${validator.message} DueDate : ${req.body.task.dueDate}`)
 
         // Insert data
         const task = await Tasks.create({

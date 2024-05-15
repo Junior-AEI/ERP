@@ -4,7 +4,7 @@ export const isValidAddress = (address: any, additionnalAddress: any, city: any,
 
     if (typeof address != 'string') return { valid: 0, message: 'Your adress is not correctly formatted.' }
     if (address.length === 0 || address.length > 50) return { valid: 0, message: 'Your adress is too long.' }
-    if (additionnalAddress !== undefined) {
+    if (additionnalAddress !== undefined && additionnalAddress !== "" && additionnalAddress !== null) {
         if (typeof additionnalAddress != 'string') return { valid: 0, message: 'Your additionnal adress is not correctly formatted.' }
         if (additionnalAddress.length > 50) return { valid: 0, message: 'Your additionnal address is too long.' }
     }

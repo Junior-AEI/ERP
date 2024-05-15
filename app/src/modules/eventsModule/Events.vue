@@ -4,7 +4,7 @@
       <EventsAddForm @add:event="addedEvent" @close="handleClickClose" />
     </div>
     <div>
-      <h1>Prochains événements</h1>
+      <h1>Tous les événements</h1>
       <Button variant="outline" @click="handleClickAdd" class="w-60"> Ajouter un nouvel événement</Button>
       <EventsTable @reloaded="reloaded" :need-reload="needReload" />
     </div>

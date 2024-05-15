@@ -32,19 +32,12 @@
         <div class="flex flex-col gap-4">
           <div class="flex flex-col gap-2">
             <Label>Nom de l'événement</Label>
-            <Input
-              id="eventName"
-              v-model="eventInfo.name"
-              placeholder="Formation Alten : être performant face à un intervenant"
-            />
+            <Input id="eventName" v-model="eventInfo.name"
+              placeholder="Formation Alten : être performant face à un intervenant" />
           </div>
           <div class="flex flex-col flex-wrap gap-2">
             <Label>Emplacement</Label>
-            <Input
-              id="location"
-              v-model="eventInfo.location"
-              placeholder="Où est-ce que ca se passe ?"
-            />
+            <Input id="location" v-model="eventInfo.location" placeholder="Où est-ce que ca se passe ?" />
           </div>
           <div class="flex flex-wrap items-end gap-4">
             <div class="md:sm-w-72 flex flex-col gap-2">
@@ -64,24 +57,16 @@
           </div>
           <div class="grid gap-2">
             <Label>Description</Label>
-            <Textarea
-              id="description"
-              v-model="eventInfo.description"
-              placeholder="Une description très fournie. Elle peut être sur plusieurs lignes."
-            />
+            <Textarea id="description" v-model="eventInfo.description"
+              placeholder="Une description très fournie. Elle peut être sur plusieurs lignes." />
           </div>
           <div class="grid grid-cols-2 gap-2">
             <Label for="document">Ajouter une pièce jointe</Label>
             <Label for="eventType">Type d'événement</Label>
-            <Input disabled id="document" type="file" />
+            <Dropzone v-model="files" :multiple="true" />
             <Popover v-model:open="isOpenEventType">
               <PopoverTrigger as-child>
-                <Button
-                  variant="outline"
-                  role="combobox"
-                  :aria-expanded="isOpenEventType"
-                  class="justify-between"
-                >
+                <Button variant="outline" role="combobox" :aria-expanded="isOpenEventType" class="justify-between">
                   {{
                     eventTypeName
                       ? eventTypes.find((eventType) => eventType.value === eventTypeName)?.label
@@ -96,29 +81,20 @@
                   <CommandEmpty>Aucun événement trouvé</CommandEmpty>
                   <CommandList>
                     <CommandGroup>
-                      <CommandItem
-                        v-for="eventType in eventTypes"
-                        :key="eventType.value"
-                        :value="eventType.value"
-                        @select="
-                          (ev) => {
+                      <CommandItem v-for="eventType in eventTypes" :key="eventType.value" :value="eventType.value"
+                        @select="(ev) => {
                             if (typeof ev.detail.value === 'string') {
                               eventTypeName = ev.detail.value
                             }
                             isOpenEventType = false
                           }
-                        "
-                      >
+                          ">
                         {{ eventType.label }}
-                        <Icon
-                          name="check"
-                          :class="
-                            cn(
-                              'ml-auto h-4 w-4',
-                              eventTypeName === eventType.value ? 'opacity-100' : 'opacity-0'
-                            )
-                          "
-                        />
+                        <Icon name="check" :class="cn(
+                          'ml-auto h-4 w-4',
+                          eventTypeName === eventType.value ? 'opacity-100' : 'opacity-0'
+                        )
+                          " />
                       </CommandItem>
                     </CommandGroup>
                   </CommandList>
@@ -126,7 +102,7 @@
               </PopoverContent>
             </Popover>
           </div>
-          <div class="grid gap-4">
+          <!-- <div class="grid gap-4">
             <Collapsible v-model:open="isOpen">
               <CollapsibleTrigger>
                 <div class="item-center flex gap-2">
@@ -141,12 +117,17 @@
                 </div>
               </CollapsibleContent>
             </Collapsible>
-          </div>
+          </div> -->
         </div>
 
         <DialogFooter>
-          <Button @click="deleteEvent()" variant="destructive"> Supprimer l'événement </Button>
-          <Button @click="editEvent()" type="submit"> Enregistrer les modifications </Button>
+          <DialogClose as-child>
+            <Button @click="deleteEvent()" variant="destructive"> Supprimer l'événement </Button>
+          </DialogClose>
+          <DialogClose as-child>
+            <Button @click="editEvent()" type="submit"> Enregistrer les modifications </Button>
+          </DialogClose>
+
         </DialogFooter>
       </DialogContent>
     </Dialog>
@@ -154,7 +135,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, type Ref, computed } from 'vue'
+import { ref, type Ref, computed, onMounted } from 'vue'
 import {
   Dialog,
   DialogContent,
@@ -168,7 +149,7 @@ import axios from 'axios'
 import { useAuthStore } from '@/stores/authStore'
 
 import { cn } from '@/lib/utils'
-import type { Event } from '@/types/api'
+import type { Event, EventDoc, DocumentType } from '@/types/api'
 
 import { type DateRange } from 'radix-vue'
 import { CalendarDate, CalendarDateTime } from '@internationalized/date'
@@ -196,29 +177,50 @@ const openDialog = (event: Event) => {
 
 const eventInfo = ref<Event>(props.item)
 
-const today = new Date()
-const calendarDateToday = new CalendarDate(
-  today.getFullYear(),
-  today.getMonth() + 1,
-  today.getDate()
+const startDateFormat = new Date(props.item.startDate)
+
+
+const calendarDateStart = new CalendarDate(
+  startDateFormat.getFullYear(),
+  startDateFormat.getMonth() + 1,
+  startDateFormat.getDate()
+)
+const endDateFormat = new Date(props.item.endDate)
+
+const calendarDateEnd = new CalendarDate(
+  endDateFormat.getFullYear(),
+  endDateFormat.getMonth() + 1,
+  endDateFormat.getDate()
 )
 
 const dateRange = ref({
-  start: calendarDateToday,
-  end: calendarDateToday.add({ days: 1 })
+  start: calendarDateStart,
+  end: calendarDateEnd
 }) as Ref<DateRange>
 
+
 const timeStart = ref({
-  hour: '12',
-  minute: '00',
-  second: '00'
+  hour: startDateFormat.getHours().toString(),
+  minute: startDateFormat.getMinutes().toString(),
+  second: startDateFormat.getSeconds().toString()
+
 })
 
+
+
 const timeEnd = ref({
-  hour: '12',
-  minute: '00',
-  second: '00'
+  hour: endDateFormat.getHours().toString(),
+  minute: endDateFormat.getMinutes().toString(),
+  second: endDateFormat.getSeconds().toString()
 })
+if (endDateFormat.getMinutes()<10){
+  timeEnd.value.minute = "0" + timeEnd.value.minute
+}
+if (startDateFormat.getMinutes()<10){
+  timeStart.value.minute = "0" + timeStart.value.minute
+}
+
+
 
 const dateStartISO = computed(() => {
   if (!dateRange.value.start) {
@@ -278,12 +280,11 @@ const eventTypes = [
   { value: 'RDV client', label: 'Rendez-vous client' }
 ]
 
-const isOpen = ref(false)
 const isOpenEventType = ref(false)
 
 const { toast } = useToast()
 
-const editEvent = () => {
+const updateEvent = () => {
   axios
     .put(
       `/event/${eventInfo.value.eventId}`,
@@ -305,6 +306,7 @@ const editEvent = () => {
     )
     .then(() => {
       location.reload()
+
     })
     .catch((error) => {
       console.error(error)
@@ -324,7 +326,6 @@ const deleteEvent = () => {
       }
     })
     .then(() => {
-      location.reload()
     })
     .catch((error) => {
       console.error(error)
@@ -335,4 +336,93 @@ const deleteEvent = () => {
       })
     })
 }
+
+async function getDocumentType(): Promise<DocumentType[]> {
+  const response = await axios.get(`/documentType`, {
+    headers: {
+      Authorization: `Bearer ${useAuthStore().token}`
+    }
+  })
+  return response.data.data.documentTypes
+}
+
+
+const files = ref<File[]>([])
+const documentTypes = ref<DocumentType[]>([])
+const user = useAuthStore()
+
+const documentInfos = ref<EventDoc>({
+  documentId: NaN,
+  name: '',
+  path: '',
+  version: 1,
+  typeId: NaN,
+  information: '',
+  status: 'Sans Relecture',
+  authorId: user.userId,
+  createdAt: '',
+  eventId: NaN,
+})
+onMounted(async () => {
+  documentTypes.value = await getDocumentType()
+})
+const uploadDocument = (i: number) => {
+
+  console.log(documentInfos.value.eventId)
+  const removeExtension = (filename: string): string => {
+    return filename.split('.').slice(0, -1).join('.')
+  }
+
+  axios
+    .post(
+      `/document`,
+      {
+        document: {
+          name: removeExtension(files.value[i].name),
+          version: documentInfos.value.version,
+          typeId:
+            documentTypes.value.find(
+              (documentType: any) => documentType.type === "Doc lié à un événement"
+            )?.typeId ?? 0, // should not be equal to 0
+          information: eventInfo.value.eventId.toString(),
+          status: documentInfos.value.status,
+          authorId: documentInfos.value.authorId,
+        },
+        file: files.value[i]
+      },
+      {
+        headers: {
+          Authorization: `Bearer ${useAuthStore().token}`,
+          'Content-Type': 'multipart/form-data'
+        }
+      }
+    )
+    .then(() => {
+      toast({
+        title: 'Document envoyé',
+        description: `Le document a été envoyé avec succès.`
+      })
+    })
+    .catch((error) => {
+      console.error(error)
+      toast({
+        title: 'Something wrong happened',
+        variant: 'destructive',
+        description: `${error.response.data.message}`
+      })
+    })
+
+}
+
+async function editEvent() {
+  await updateEvent()
+  if (files.value) {
+    for (let i = 0; i < files.value.length; i++) {
+      await uploadDocument(i)
+    }
+
+  }
+
+}
+
 </script>

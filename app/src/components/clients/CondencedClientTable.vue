@@ -33,36 +33,7 @@ function result() {
 const res = computed(result)
 
 const clients = ref<ClientInfo[]>([
-  // {
-  //     firstname: 'Lucas',
-  //     lastname: 'Georges',
-  //     name: "Lucas Film",
-  //     function: "CEO"
-  // },
-  {
-    activityField: 'Technology',
-    function: 'Manager',
-    firstContact: 'John Doe',
-    name: 'ABC Company',
-    legalEntity: 'LLC',
-    addressId: 1,
-    companyId: 1,
-    companyType: 'Technology',
-    personId: 1,
-    lastname: 'Doe',
-    firstname: 'John',
-    gender: 'Male',
-    mobilePhone: '123-456-7890',
-    landlinePhone: '987-654-3210',
-    email: 'john.doe@example.com',
-    createdAt: '2022-01-01',
-    updatedAt: '2022-01-02',
-    address: '123 Main St',
-    additionnalAddress: 'Apt 4B',
-    city: 'New York',
-    postCode: '10001',
-    country: 'USA'
-  }
+
 ])
 const authStore = useAuthStore()
 

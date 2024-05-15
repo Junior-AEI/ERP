@@ -107,6 +107,7 @@ async function update(req: Request, res: Response) {
         if (!address) throw createHttpError(404, 'Address not found');
 
         // Test params
+        console.log("Test" + req.body.address.additionnalAddress)
         const validator = isValidAddress(req.body.address.address, req.body.address.additionnalAddress, req.body.address.city, req.body.address.postCode, req.body.address.country)
 
         if (!validator.valid) throw createHttpError(400, validator.message as string)

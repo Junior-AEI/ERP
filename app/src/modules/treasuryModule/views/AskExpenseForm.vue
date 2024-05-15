@@ -269,14 +269,12 @@ async function handleClick() {
 
 const clearFields = () => {
   form.value.expenseId = NaN,
-  form.value.approbatorId = NaN,
   form.value.reason = '',
   form.value.expenseDate = '',
   form.value.description = '',
   form.value.state = '',
   form.value.documentList = [],
   files.value = [];
-
 
 }
 </script>

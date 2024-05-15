@@ -28,8 +28,7 @@
 
             <Card class="flex w-fit flex-row">
               <div
-                class="bg-deep-accent text-deep-accent-foreground flex h-full w-fit items-center justify-center rounded-s-xl pl-2 pr-2"
-              >
+                class="bg-deep-accent text-deep-accent-foreground flex h-full w-fit items-center justify-center rounded-s-xl pl-2 pr-2">
                 Client
               </div>
               <CardContent class="m-2 ml-4 mr-4 flex flex-1 flex-row items-center gap-4 p-0">
@@ -40,38 +39,32 @@
             </Card>
 
             <Card class="flex w-fit flex-row">
-              <div
-                class="flex h-full w-fit items-center justify-center rounded-s-xl bg-black/30 pl-2 pr-2"
-              >
+              <div class="flex h-full w-fit items-center justify-center rounded-s-xl bg-black/30 pl-2 pr-2">
                 Chargé d'Étude
               </div>
               <CardContent class="m-2 ml-4 mr-4 flex flex-1 flex-row items-center gap-4 p-0">
                 <div class="flex flex-wrap">
-                  <div
-                    v-for="manager in props.infos.projectManagers"
-                    :key="manager.firstname"
-                    class="flex flex-row items-center justify-start"
-                  >
-                    {{ manager.firstname }} {{ manager.lastname }} /
+                  <div v-for="(manager, index) in props.infos.projectManagers" :key="manager.firstname"
+                    class="flex flex-row items-center justify-start">
+                    {{ manager.firstname }} {{ manager.lastname }}
+                    <span v-if="index !== props.infos.projectManagers.length - 1"> / </span>
+
+
                   </div>
                 </div>
               </CardContent>
             </Card>
 
             <Card class="flex w-fit flex-row">
-              <div
-                class="flex h-full w-fit items-center justify-center rounded-s-xl bg-black/30 pl-2 pr-2"
-              >
+              <div class="flex h-full w-fit items-center justify-center rounded-s-xl bg-black/30 pl-2 pr-2">
                 Intervenants
               </div>
               <CardContent class="m-2 ml-4 mr-4 flex flex-1 flex-row items-center gap-4 p-0">
                 <div class="flex flex-row items-center justify-start">
-                  <span
-                    v-for="contributor in props.infos.contributors"
-                    :key="contributor.firstname"
-                  >
-                    {{ contributor.firstname }} {{ contributor.lastname }} /</span
-                  >
+                  <template v-for="(contributor, index) in props.infos.contributors" :key="contributor.lastname">
+                    {{ contributor.firstname }} {{ contributor.lastname }}
+                    <span v-if="index !== props.infos.contributors.length - 1"> / </span>
+                  </template>
                 </div>
               </CardContent>
             </Card>

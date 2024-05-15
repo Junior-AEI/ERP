@@ -40,6 +40,7 @@ import { ref } from 'vue'
 import axios from 'axios'
 const emit = defineEmits(['update:tasks'])
 
+
 const props = defineProps<{
   taskId: number
   userId: number
@@ -102,6 +103,7 @@ const bg_color = async (state : string) => {
       }
 
 }
+
 
 const duedate = ref<Date>(new Date(props.dueDate))
 

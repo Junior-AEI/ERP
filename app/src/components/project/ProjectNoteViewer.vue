@@ -17,7 +17,7 @@
             <span class="text-sm text-muted-foreground/80">dernière mise à jour le :</span>
             <span class="text-sm text-muted-foreground/80">{{
               projectNotes[currentNote]?.updatedAt
-            }}</span>
+              }}</span>
           </div>
           <div>
             <span>
@@ -26,19 +26,11 @@
             </span>
           </div>
         </div>
-        <div class="flex items-center justify-end gap-4">
-          <Icon name="edit" />
-          <Icon name="delete" v-if="delete_mode" @click="add_to_delete" />
-        </div>
       </CardContent>
 
       <!-- Extended variant -->
       <CardContent class="flex flex-1 flex-col items-center" v-if="allnotes">
-        <div
-          class="flex h-fit w-full flex-1 justify-between gap-3"
-          v-for="note in projectNotes"
-          :key="note.noteId"
-        >
+        <div class="flex h-fit w-full flex-1 justify-between gap-3" v-for="note in projectNotes" :key="note.noteId">
           <div class="flex flex-row items-center justify-center gap-0.5">
             <span class="text-xs text-muted-foreground/70">{{
               projectNotes.findIndex((projectnote) => {
@@ -52,15 +44,11 @@
           <div class="ml-2 mr-2 flex flex-1 flex-col gap-1">
             <div class="flex flex-1 gap-1">
               <span class="text-sm text-muted-foreground/80">dernière mise à jour le :</span>
-              <span class="text-sm text-muted-foreground/80">{{ note.updatedAt }}</span>
+              <span class="text-sm text-muted-foreground/80">{{ convertToCalendarDate(note.updatedAt) }}</span>
             </div>
             <div>
               <span>{{ note.advancement }} : {{ note.comment }}</span>
             </div>
-          </div>
-          <div class="flex items-center justify-end gap-4">
-            <Icon name="edit" />
-            <Icon name="delete" v-if="delete_mode" @click="add_to_delete" />
           </div>
         </div>
       </CardContent>
@@ -68,29 +56,63 @@
 
     <div class="ml-2 mr-2 flex flex-row flex-wrap items-center justify-between gap-2">
       <div class="flex flex-row gap-2">
-        <span class="text-sm text-muted-foreground/80" v-if="!allnotes" @click="toggle_all_notes"
-          >Afficher toutes les notes</span
-        >
-        <span class="text-sm text-muted-foreground/80" v-if="allnotes" @click="toggle_all_notes"
-          >Cacher toutes les notes</span
-        >
+        <span class="text-sm text-muted-foreground/80" v-if="!allnotes" @click="toggle_all_notes">Afficher toutes les
+          notes</span>
+        <span class="text-sm text-muted-foreground/80" v-if="allnotes" @click="toggle_all_notes">Cacher toutes les
+          notes</span>
       </div>
       <div class="flex flex-row gap-2">
         <span class="text-sm text-muted-foreground/80" @click="add_note">Ajouter une note</span>
-        <span
-          class="text-sm text-muted-foreground/80"
-          v-if="!delete_mode"
-          @click="enter_delete_mode"
-          >Supprimer des notes</span
-        >
-        <span class="text-sm text-muted-foreground/80" v-if="delete_mode" @click="exit_delete_mode"
-          >Annuler la suppression</span
-        >
       </div>
     </div>
 
     <Card v-if="addnote_mode">
-      <CardContent> </CardContent>
+      <CardHeader class="flex justify-between items-center">
+        <div class="flex items-center">
+          <Icon name="add_circle" class="text-6xl" />
+          <span class="text-accent"> Ajouter une tâche </span>
+        </div>
+
+        <Button class="ml-5" @click="no_add_note">
+          <Icon name="close" class="text-6xl" />
+        </Button>
+
+      </CardHeader>
+      <CardContent>
+        <div class="flex flex-col gap-2">
+          <Select v-model="form.advancement">
+            <SelectTrigger>
+              <SelectValue placeholder="Avancement de l'étude" />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectGroup>
+                <SelectItem value="Prospection">Prospection</SelectItem>
+                <SelectItem value="Devis validé">Devis validé</SelectItem>
+                <SelectItem value="CE signé">CE signé</SelectItem>
+                <SelectItem value="RM signé">RM signé</SelectItem>
+                <SelectItem value="FA émise">FA émise</SelectItem>
+                <SelectItem value="FA payée">FA payée</SelectItem>
+                <SelectItem value="FI émise">FI émise</SelectItem>
+                <SelectItem value="FI payée">FI payée</SelectItem>
+                <SelectItem value="FS émise">FS émise</SelectItem>
+                <SelectItem value="FS payée">FS payée</SelectItem>
+                <SelectItem value="PVRF signé">PVRF signé</SelectItem>
+                <SelectItem value="PVRI signé">PVRI signé</SelectItem>
+                <SelectItem value="ARM signé">ARM signé</SelectItem>
+                <SelectItem value="ARCE signé">ARCE signé</SelectItem>
+                <SelectItem value="ARRM signé">ARRM signé</SelectItem>
+                <SelectItem value="ARCE signé">ARCE signé</SelectItem>
+                <SelectItem value="BV payé">BV payé</SelectItem>
+                <SelectItem value="Terminé">Terminé</SelectItem>
+              </SelectGroup>
+            </SelectContent>
+          </Select>
+          <Label>Commentaire</Label>
+          <Input type="text" placeholder="Client rapide" v-model="form.comment" />
+          <Button variant="outline" @click="AddNote">Ajouter</Button>
+
+        </div>
+      </CardContent>
     </Card>
   </div>
 </template>
@@ -100,47 +122,69 @@ import { ref } from 'vue'
 import { defineProps } from 'vue'
 import { type ProjectNotes } from '@/types/api'
 import axios from 'axios'
+import { useAuthStore } from '@/stores/authStore'
+const user = useAuthStore()
+import { useToast } from '@/components/ui/toast/use-toast'
+import {
+  CalendarDateTime,
+  parseDateTime,
+  DateFormatter,
+  getLocalTimeZone
+} from '@internationalized/date'
 
 const props = defineProps<{
   projectId: number
 }>()
 
 const allnotes = ref<boolean>(false)
-const delete_mode = ref<boolean>(false)
-const note_to_delete = ref<number[]>([])
 const addnote_mode = ref<boolean>(false)
+
+const form = ref<ProjectNotes>({
+  noteId: NaN,
+  projectId: props.projectId,
+  writerId: user.userId,
+  comment: '',
+  advancement: '',
+  createdAt: '',
+  updatedAt: '',
+})
 
 function add_note() {
   addnote_mode.value = true
 }
-
-function enter_delete_mode() {
-  delete_mode.value = true
+function no_add_note() {
+  addnote_mode.value = false
 }
 
-function add_to_delete(noteId: number) {
-  if (note_to_delete.value.includes(noteId)) {
-    note_to_delete.value = note_to_delete.value.filter((note) => note !== noteId)
-  } else {
-    note_to_delete.value.push(noteId)
+const df = new DateFormatter('fr-FR', {
+  dateStyle: 'long',
+  timeStyle: 'short'
+})
+function convertToCalendarDate(isoDateString: string): string {
+  const dateObject = new Date(isoDateString)
+
+  // Check if the date object is valid
+  if (isNaN(dateObject.getTime())) {
+    throw new Error('Invalid date string')
   }
+
+  // Extract year, month, and day from the date object
+  const year = dateObject.getFullYear()
+  const month = dateObject.getMonth() + 1 // Months are 0-based in JavaScript
+  const day = dateObject.getDate()
+  const hour = dateObject.getHours()
+  const minute = dateObject.getMinutes()
+
+  let date = new CalendarDateTime(year, month, day, hour, minute)
+
+  const dateFormated = df.format(parseDateTime(date.toString()).toDate(getLocalTimeZone()))
+
+  // Create and return a new CalendarDate object
+  return dateFormated
 }
 
-function exit_delete_mode() {
-  delete_mode.value = false
-}
 
-/* function delete_note() {
-  console.log('DELETE')
 
-  // for (const note of note_to_delete) {
-  //     axios.delete(`/projectNote/${note}`, {
-  //         headers: {
-  //             Authorization: `Bearer ${localStorage.getItem('token')}`
-  //         }
-  //     })
-  // }
-} */
 
 function toggle_all_notes() {
   allnotes.value = !allnotes.value
@@ -168,11 +212,66 @@ axios
   })
   .then((response) => {
     projectNotes.value = [...response.data.data.projectNotes]
-    console.log(projectNotes.value)
-    console.log(projectNotes.value[currentNote.value])
     currentNote.value = projectNotes.value.length - 1
+    projectNotes.value.sort((noteA: any, noteB: any) => {
+        // Récupérer les dates de fin de chaque projet
+        const endDateA = new Date(noteA.createdAt);
+        const endDateB = new Date(noteB.createdAt);
+        // Calculer les délais en utilisant la fonction delay
+        const delayA = delay(endDateA.toISOString());
+        const delayB = delay(endDateB.toISOString());
+        console.log(delayA)
+        // Comparer les délais et retourner le résultat de la comparaison
+        return delayA - delayB;
+    });
   })
   .catch((error) => {
     console.log(error)
   })
+  function delay(isoDateString: string): number {
+    const currentDate = new Date().getTime(); // Convertir la date actuelle en timestamp UNIX
+    const endDateTime = new Date(isoDateString).getTime();
+
+    // Calcul de la différence en jours
+    return endDateTime - currentDate;
+}
+  
+
+  const { toast } = useToast()
+
+
+  const AddNote = async () => {
+  await axios
+    .post(
+      `/projectNote`,
+      {
+        projectNote: {
+          projectId: form.value.projectId,
+          writerId: form.value.writerId,
+          comment: form.value.comment,
+          advancement: form.value.advancement,
+        }
+      },
+      {
+        headers: {
+          Authorization: `Bearer ${useAuthStore().token}`
+        }
+      }
+    )
+    .then(() => {
+      
+      toast({
+        title: 'Événement ajouté',
+        description: `La note a bien été ajouté.`
+      })
+    })
+    .catch((error) => {
+      console.error(error)
+      toast({
+        title: 'Something wrong happened',
+        variant: 'destructive',
+        description: `${error.response.data.message}`
+      })
+    })
+}
 </script>

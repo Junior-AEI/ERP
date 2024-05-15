@@ -14,7 +14,7 @@ export const adminModule: Module = {
         {
           path: '/parametres-erp',
           name: "Paramétrage de l'ERP",
-          component: () => import('./views/SettingsView.vue'),
+          component: () => import('@/views/Construction.vue'),
           meta: {
             icon: 'construction'
           }

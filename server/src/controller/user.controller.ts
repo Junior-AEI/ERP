@@ -120,7 +120,7 @@ const update = async (req: Request, res: Response) => {
 
         const user = await Users.findByPk(identifier)
         if (!user) throw createHttpError(404, 'User not found')
-        var validator = isValidUser(req.body.user.username, "Sans mot de passe", req.body.user.mandateStart, req.body.user.mandateEnd, req.body.user.emailJE)
+        let validator = isValidUser(req.body.user.username, "Sans mot de passe", req.body.user.mandateStart, req.body.user.mandateEnd, req.body.user.emailJE)
         if(req.body.updatePassword){
             const encryptedPassword = await bcrypt.hash(req.body.user.password, 10)
             req.body.user.password = encryptedPassword

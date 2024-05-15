@@ -8,7 +8,7 @@ import Users from '../models/user.model'
 import Tokens from '../models/token.model'
 import Members from '../models/member.model'
 import { promisify } from 'util'
-import { controllerErrorHandler, sendEmail, sendBotMesssage } from './utils.controller'
+import { controllerErrorHandler, sendEmail } from './utils.controller'
 import createHttpError, { HttpError } from 'http-errors'
 import Persons from '../models/person.model'
 
@@ -51,11 +51,7 @@ const login = async (req: Request, res: Response) => {
         // Create JWT token
         const token = await new SignJWT({ username }).setProtectedHeader({ alg: 'HS256' }).setAudience(JWT_AUDIENCE).setIssuer(JWT_ISSUER).setExpirationTime(JWT_EXPIRATION).sign(JWT_SECRET_KEY)
 
-        // Send email in background
-        sendEmail('mathieu.chaillon@gmail.com', 'User Logged In', `User ${username} has logged in.`).catch(error => console.error('Error sending email:', error)) // Log any errors, but don't let them propagate
 
-        // CHAT ID A CHANGER ICI
-        sendBotMesssage(881607628, `User ${username} has logged in.`).catch(error => console.error('Error sending email:', error))
 
         // Return success with token and user details
         return res.status(200).json({
@@ -127,13 +123,13 @@ const forgetPassword = async (req: Request, res: Response) => {
                 userId: user.userId
             })
 
-            sendEmail(user.emailJE, "Réinitialisation Mot de Passe pour l'ERP", `Bonjour, Une demande de changement de Mot de Passe sur l'ERP a été demandé pour votre compte (nom d'utilisateur : ${user.username}) \n
-            Si vous êtes le demandeur de cette réinitialisation veuillez cliquez sur ce lien : 
-            Token à renseigner : ${_token}`)
+            // sendEmail(user.emailJE, "Réinitialisation Mot de Passe pour l'ERP", `Bonjour, Une demande de changement de Mot de Passe sur l'ERP a été demandé pour votre compte (nom d'utilisateur : ${user.username}) \n
+            // Si vous êtes le demandeur de cette réinitialisation veuillez cliquez sur ce lien : 
+            // Token à renseigner : ${_token}`)
             if (person) {
-                sendEmail(person.email, "Réinitialisation Mot de Passe pour l'ERP", `Bonjour, Une demande de changement de Mot de Passe sur l'ERP a été demandé pour votre compte (nom d'utilisateur : ${user.username}) \n
-            Si vous êtes le demandeur de cette réinitialisation veuillez cliquez sur ce lien : 
-            Token à renseigner : ${_token}`)
+                sendEmail(person.email,"Bienvenue sur l'ERP",`Bonjour \n Le pole DSI de AEI vient de créer ton compte sur l'ERP tu peux le rejoindre en copier collant ce lien http://localhost:5173/  
+                \n Voici ton identifiant  ${username} 
+                \n Ton mot de passe te seras transmis par le pole DSI en personne  `)
             }
 
             // Return success response

@@ -21,7 +21,7 @@ const router = useRouter()
 const props = defineProps<{
   infos: ClientInfo
 }>()
-const handleClick = (row: any) => {
+const handleClick = () => {
   router.push({
     path: '/client/profil',
     query: {

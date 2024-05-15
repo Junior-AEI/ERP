@@ -5,18 +5,18 @@
         <Wrapper class="flex w-fit flex-1 flex-col gap-2">
           <div class="flex flex-1 flex-row items-center justify-between">
             <h2 class="border-b-0 p-0">Informations</h2>
-            <Button variant="outline" icon="star">Suivre l'Étude</Button>
+            <!-- <Button variant="outline" icon="star">Suivre l'Étude</Button> -->
           </div>
 
           <Card class="flex w-fit flex-1">
             <CardContent class="ml-3 mr-3 flex flex-1">
-              <ProjectInfos v-if="infos_project" :infos="infos_project"> </ProjectInfos>
+              <ProjectInfos v-if="infos_project" :infos="infos_project" @update:project="updatedProject"> </ProjectInfos>
             </CardContent>
           </Card>
 
           <div class="flex flex-1 flex-row items-center justify-between gap-2">
-            <Button variant="outline" icon="edit">Modifier l'Étude</Button>
-            <Button variant="destructive" icon="archive">Archiver l'Étude</Button>
+            <!-- <Button variant="outline" icon="edit">Modifier l'Étude</Button> -->
+            <!-- <Button variant="destructive" icon="archive">Archiver l'Étude</Button> -->
           </div>
         </Wrapper>
         <Wrapper class="min-w-sm flex flex-1 flex-col gap-2">
@@ -43,9 +43,7 @@
       </div>
       <div class="flex flex-1 flex-col gap-2">
         <Wrapper class="flex flex-1 flex-col gap-4">
-          <Card>
-            <CardContent> </CardContent>
-          </Card>
+
 
           <div class="flex h-fit flex-col gap-2">
             <h3>Notes sur l'avancement de l'Étude</h3>
@@ -61,21 +59,39 @@
 <script setup lang="ts">
 import axios from 'axios'
 import { useRoute } from 'vue-router'
-import { ref, onMounted } from 'vue'
+import { ref, onMounted , watch} from 'vue'
 import { type ExtendedProject } from '@/types/api'
 
 import {
   type Document,
   type DocumentType,
   type ExtendedDocument,
-  type Project,
-  type Person,
-  type Address,
-  type ClientInfo,
-  type ProjectInfo
 } from '@/types/api'
 
+const needReload = ref(false)
 
+const updatedProject = () => {
+  console.log("Test")
+  needReload.value = true
+}
+
+const reloaded = () => {
+  needReload.value = false
+}
+
+onMounted(async () => {
+  getData()
+})
+
+watch(
+  () => needReload.value,
+  async (value) => {
+    if (value) {
+      infos_project.value = await getData()
+      reloaded()
+    }
+  }
+)
 
 const route = useRoute()
 const projectId = (() => {
@@ -85,100 +101,6 @@ const projectId = (() => {
   }
   return 0
 })()
-
-const examplePerson: Person = {
-  personId: 1,
-  lastname: 'Doe',
-  firstname: 'John',
-  gender: 'Male',
-  mobilePhone: '0612345678',
-  landlinePhone: '0123456789',
-  email: 'john.doe@example.com',
-  createdAt: '2021-01-01',
-  updatedAt: '2021-01-01'
-}
-
-const exampleAddress: Address = {
-  addressId: 1,
-  address: '123 Main St',
-  additionnalAddress: 'Apt 4',
-  city: 'Paris',
-  postCode: '75000',
-  country: 'France'
-}
-
-const exampleClientInfo: ClientInfo = {
-  ...examplePerson,
-  ...exampleAddress,
-  activityField: 'IT Services',
-  function: 'Project Manager',
-  firstContact: '2021-01-02',
-  name: 'Example Company',
-  legalEntity: 'SA',
-  companyId: 1,
-  companyType: 'IT Services'
-}
-
-const exampleProject: Project = {
-  projectId: 1,
-  acronym: 'EXPRJ',
-  nameProject: 'Example Project',
-  startDate: '2021-01-03',
-  endDate: '2021-12-31',
-  clientId: 1
-}
-
-const exampleProjectInfo: ProjectInfo = {
-  ...exampleProject,
-  ...exampleClientInfo
-}
-
-const exampleContributors: Person[] = [
-  {
-    personId: 2,
-    lastname: 'Smith',
-    firstname: 'Jane',
-    gender: 'Female',
-    mobilePhone: '0698765432',
-    landlinePhone: '0198765432',
-    email: 'jane.smith@example.com',
-    createdAt: '2021-01-04',
-    updatedAt: '2021-01-04'
-  }
-  // ... other contributors
-]
-
-const exampleProjectManagers: Person[] = [
-  {
-    personId: 3,
-    lastname: 'Brown',
-    firstname: 'Bob',
-    gender: 'Male',
-    mobilePhone: '0623456789',
-    landlinePhone: '0123456789',
-    email: 'bob.brown@example.com',
-    createdAt: '2021-01-05',
-    updatedAt: '2021-01-05'
-  }
-  // ... other project managers
-]
-// Deuxième exemple de projet
-
-/* const exampleExtendedProject2: ExtendedProject = {
-  ...exampleProjectInfo2,
-  delta: 'This is a delta for project 2',
-  contributors: exampleContributors2,
-  projectManagers: exampleProjectManagers2
-} */
-
-// Troisième exemple de projet
-
-const exampleExtendedProject: ExtendedProject = {
-  ...exampleProjectInfo,
-  delta: '2 jours',
-  contributors: exampleContributors,
-  projectManagers: exampleProjectManagers
-}
 
 
 import { useAuthStore } from '@/stores/authStore'
@@ -332,9 +254,6 @@ function redirect() {
 
 onMounted(async () => {
   infos_project.value = await getData()
-  if (!infos_project.value) {
-    infos_project.value = exampleExtendedProject
-  }
   console.log(infos_project.value)
   loadDocuments()
 })

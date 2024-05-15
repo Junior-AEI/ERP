@@ -6,7 +6,13 @@ import axios from 'axios'
 
 const data = ref<itTicketWithDoc[]>([])
 import { useAuthStore } from '@/stores/authStore'
+function delay(isoDateString: string): number {
+    const currentDate = new Date().getTime(); // Convertir la date actuelle en timestamp UNIX
+    const endDateTime = new Date(isoDateString).getTime();
 
+    // Calcul de la différence en jours
+    return Math.floor((endDateTime - currentDate) / (1000 * 60 * 60 * 24));
+}
 async function getData(): Promise<itTicketWithDoc[]> {
   // Fetch data from your API here.
 
@@ -41,7 +47,28 @@ async function getData(): Promise<itTicketWithDoc[]> {
               (document: any) => document.typeId == typeDoc.typeId
             )
 
-            
+            itTickets.data.data?.itTickets.sort((expenseA: any, expenseB: any) => {
+        // Récupérer les dates de fin de chaque projet
+        const endDateA = new Date(expenseA.createdAt);
+        const endDateB = new Date(expenseB.createdAt);
+        // Calculer les délais en utilisant la fonction delay
+        const delayA = delay(endDateA.toISOString());
+        const delayB = delay(endDateB.toISOString());
+
+        if (expenseA.state === "Clos"){
+          if(expenseB.state === "Clos"){
+            return delayB - delayA
+          }
+          return 1;
+        }
+        if(expenseB.state === "Clos"){
+
+            return -1
+          }
+
+        // Comparer les délais et retourner le résultat de la comparaison
+        return delayA - delayB;
+    });          
   const itTicketsInfo = itTickets.data.data?.itTickets.map((itTicket: any) => {
     const user = users.data.data?.users.find((user: any) => user.userId === itTicket.userId)
     const DocList = DocItTicket.filter(

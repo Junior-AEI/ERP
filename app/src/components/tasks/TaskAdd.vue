@@ -79,16 +79,17 @@ function addTask() {
           dueDate.value = "",
           selectedUsers.value = [],
           emit('close')
+          emit('update:tasks')
         toast({
         title: 'Tache ajouté',
-        description: `Le document a été envoyé avec succès.`
+        description: `Notification envoyé`
       })
     })
       }
     }
   }
 }
-const emit = defineEmits([ 'close'])
+const emit = defineEmits([ 'close','update:tasks'])
 
 </script>
 

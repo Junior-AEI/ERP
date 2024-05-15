@@ -20,8 +20,14 @@ import { valueUpdater } from '@/lib/utils'
 const props = defineProps<{
   columns: ColumnDef<TData, TValue>[]
   data: TData[]
+  max_item_by_page?: number; // Rendre max_item_by_page optionnel
 }>()
 
+
+let Max_item_by_page = 10
+if(props.max_item_by_page){
+  Max_item_by_page= props.max_item_by_page
+}
 const sorting = ref<SortingState>([])
 const columnFilters = ref<ColumnFiltersState>([])
 const columnVisibility = ref<VisibilityState>({})
@@ -53,7 +59,7 @@ const table = useVueTable({
   }
 })
 
-table.setPageSize(10)
+table.setPageSize(Max_item_by_page)
 
 const setFilterModelValue = (event: string | number) => {
   table.setGlobalFilter(event)

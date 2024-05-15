@@ -6,6 +6,13 @@ import axios from 'axios'
 
 const data = ref<ExpenseAccountWithDoc[]>([])
 import { useAuthStore } from '@/stores/authStore'
+function delay(isoDateString: string): number {
+    const currentDate = new Date().getTime(); // Convertir la date actuelle en timestamp UNIX
+    const endDateTime = new Date(isoDateString).getTime();
+
+    // Calcul de la différence en jours
+    return Math.floor((endDateTime - currentDate) / (1000 * 60 * 60 * 24));
+}
 
 async function getData(): Promise<ExpenseAccountWithDoc[]> {
   // Fetch data from your API here.
@@ -44,6 +51,28 @@ async function getData(): Promise<ExpenseAccountWithDoc[]> {
   )
   console.log(DocExpenseAccount)
 
+  ExpenseAccounts.data.data?.accountExpenses.sort((expenseA: any, expenseB: any) => {
+        // Récupérer les dates de fin de chaque projet
+        const endDateA = new Date(expenseA.expenseDate);
+        const endDateB = new Date(expenseB.expenseDate);
+        // Calculer les délais en utilisant la fonction delay
+        const delayA = delay(endDateA.toISOString());
+        const delayB = delay(endDateB.toISOString());
+
+        if (expenseA.state === "Traitée"){
+          if(expenseB.state === "Traitée"){
+            return delayB - delayA
+          }
+          return 1;
+        }
+        if(expenseB.state === "Traitée"){
+
+            return -1
+          }
+
+        // Comparer les délais et retourner le résultat de la comparaison
+        return delayA - delayB;
+    });
   const ExpenseAccountsAll = ExpenseAccounts.data.data?.accountExpenses.map(
     (ExpenseAccount: any) => {
       const aprob = persons.data.data?.persons.find(

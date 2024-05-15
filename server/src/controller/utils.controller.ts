@@ -1,11 +1,6 @@
 import { Response } from 'express'
 import { HttpError } from 'http-errors'
-import dotenv from 'dotenv'
-dotenv.config()
-import axios, { AxiosError } from 'axios';
- 
-
-
+import axios, { AxiosError } from 'axios'
 
 /**
  * Check if a string represents a number
@@ -21,7 +16,7 @@ export function isNumber(str: string): boolean {
  * @param res : Error status and message, 500 by default
  */
 export async function controllerErrorHandler(err: HttpError, res: Response) {
-    if (process.env.NODE_ENV !== "test") console.error(err)
+    if (process.env.NODE_ENV !== 'test') console.error(err)
     if (err.status === undefined) {
         err.status = 500
     }
@@ -34,43 +29,92 @@ export async function controllerErrorHandler(err: HttpError, res: Response) {
     })
 }
 
-
-
-
-export const sendEmail = async (to: string, subject: string, text: string, from : string = 'erp-mail@junior-aei.com') => {
+export const sendEmail = async (to: string, subject: string, text: string, from: string = 'erp-mail@junior-aei.com') => {
+    if (process.env.NODE_ENV === 'test') return
     try {
-        const mailApiUrl = process.env.MAIL_API_URL;
-        await axios.options(`${mailApiUrl}/mail`);
-        const response = await axios.post(`${mailApiUrl}/mail`, { from, to, subject, text });
-        console.log(response.data);
-        return response.data;
+        let mailApiUrl =""
+        if(process.env.NODE_ENV === "dev"){
+            mailApiUrl = "http://localhost:"+ process.env.MAIL_PORT + "/api"
+
+        }
+        else {
+            mailApiUrl = '127.0.0.1:' + process.env.MAIL_PORT + "/api"
+        }
+        await axios.options(`${mailApiUrl}/mail`)
+        const response = await axios.post(`${mailApiUrl}/mail`, { from, to, subject, text })
+        console.log(response.data)
+        return response.data
     } catch (error) {
         if ((error as AxiosError).response?.status === 404 || (error as AxiosError).code === 'ECONNREFUSED') {
-            console.error('Le serveur mail sur le port 5002 est hors ligne ou inaccessible.');
-            return { success: false, message: 'Le serveur mail sur le port 5002 est hors ligne ou inaccessible.' };
+            console.error('Le serveur mail sur le port 5002 est hors ligne ou inaccessible.')
+            return { success: false, message: 'Le serveur mail sur le port 5002 est hors ligne ou inaccessible.' }
         } else {
-            console.error('Erreur lors de la tentative de communication avec le serveur mail : ', error);
-            return { success: false, message: 'Erreur lors de la tentative de communication avec le serveur mail.' };
+            console.error('Erreur lors de la tentative de communication avec le serveur mail : ', error)
+            return { success: false, message: 'Erreur lors de la tentative de communication avec le serveur mail.' }
         }
     }
-};
+}
 
-
-
-export const sendBotMesssage = async (chatID: number, message: string,) => {
+export const sendBotMesssage = async (chatID: number, message: string) => {
+    if (process.env.NODE_ENV === 'test') return
     try {
-        const botApiUrl = process.env.BOT_API_URL;
-        await axios.options(`${botApiUrl}/send`);
-        const response = await axios.post(`${botApiUrl}/send`, { chatID, message });
-        console.log(response.data);
-        return response.data;
+        let botApiUrl =""
+
+        if(process.env.NODE_ENV === "dev"){
+            botApiUrl = "http://localhost:"+ process.env.BOT_PORT + "/api"
+
+        }
+        else {
+            botApiUrl = '127.0.0.1:' + process.env.BOT_PORT + "/api"
+        }
+        await axios.options(`${botApiUrl}/send`)
+        const response = await axios.post(`${botApiUrl}/send`, { chatID, message })
+        console.log(response.data)
+        return response.data
     } catch (error) {
         if ((error as AxiosError).response?.status === 404 || (error as AxiosError).code === 'ECONNREFUSED') {
-            console.error('Le serveur bot sur le port 5001 est hors ligne ou inaccessible.');
-            return { success: false, message: 'Le serveur bot sur le port 5001 est hors ligne ou inaccessible.' };
+            console.error('Le serveur bot sur le port 5001 est hors ligne ou inaccessible.')
+            return { success: false, message: 'Le serveur bot sur le port 5001 est hors ligne ou inaccessible.' }
         } else {
-            console.error('Erreur lors de la tentative de communication avec le serveur bot : ', error);
-            return { success: false, message: 'Erreur lors de la tentative de communication avec le serveur bot.' };
+            console.error('Erreur lors de la tentative de communication avec le serveur bot : ', error)
+            return { success: false, message: 'Erreur lors de la tentative de communication avec le serveur bot.' }
         }
     }
-};
+}
+
+
+
+// import { Model, FindOptions } from 'sequelize';
+// import { Constructor } from 'sequelize-typescript/dist/shared/types'
+
+// // interface IGetAllOptions<T> {
+// //   where?: Optional<T, 'createdAt'>;
+// //   include?: any[];
+// //   order?: any[];
+// //   attributes?: any[];
+// // }
+
+
+// class ExtendedModel extends Model {
+//   public static async findAll<T extends Model>(options?: FindOptions<any>) {
+//     return this.findAll(options);
+//   }
+// }
+
+// const getAll = async <T extends Model>(req: Request, res: Response, model: ExtendedModel, options?: FindOptions<any>) => {
+//   try {
+//     const items = await model.findAll(options);
+
+//     return res.status(200).json({
+//       status: 'success',
+//       data: {
+//         items: items
+//       }
+//     });
+//   } catch (err) {
+//     if (err instanceof HttpError) controllerErrorHandler(err, res);
+//     else throw err;
+//   }
+// };
+
+

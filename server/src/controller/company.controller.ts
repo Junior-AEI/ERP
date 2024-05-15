@@ -62,23 +62,25 @@ async function create(req: Request, res: Response) {
     try {
         // Parse identifier for address link
         const identifier = parseInt(req.body.company.addressId)
-        if (isNaN(identifier)) throw createHttpError(400, 'Please provide a valid identifier');
-            
+        if (isNaN(identifier)) throw createHttpError(400, 'Please provide a valid identifier')
+
         // Try to find the linked address
         const address = await Addresses.findByPk(identifier)
-        if (!address) throw createHttpError(404, 'Unable to find the linked address.');
+        if (!address) throw createHttpError(404, 'Unable to find the linked address.')
             
         // Test params
-        const validator = isValidCompany(req.body.company.name, req.body.company.legalEntity)
+        const validator = isValidCompany(req.body.company.name, req.body.company.legalEntity, req.body.company.companyType, req.body.company.activityField)
         if (!validator.valid) {
-            throw createHttpError(400, validator.message as string);
+            throw createHttpError(400, validator.message as string)
         }
-        
+
         // Insert in database
         const company = await Companies.create({
             name: req.body.company.name,
             legalEntity: req.body.company.legalEntity,
-            addressId: identifier,
+            companyType: req.body.company.companyType,
+            activityField: req.body.company.activityField,
+            addressId: identifier
         })
 
         // Return success
@@ -103,24 +105,24 @@ const update = async (req: Request, res: Response) => {
     try {
         // Parse identifier
         const identifier = parseInt(req.params.companyId)
-        if (isNaN(identifier)) throw createHttpError(400, 'Please provide a valid identifier');
-            
+        if (isNaN(identifier)) throw createHttpError(400, 'Please provide a valid identifier')
+
         const company = await Companies.findByPk(identifier)
-        if (!company) throw createHttpError(404, 'Company not found');
+        if (!company) throw createHttpError(404, 'Company not found')
 
         // Identify address
         const idAddress = parseInt(req.body.company.addressId)
-        if (isNaN(idAddress)) throw createHttpError(400, 'Please provide a valid address identifier');
+        if (isNaN(idAddress)) throw createHttpError(400, 'Please provide a valid address identifier')
 
         const address = await Addresses.findByPk(idAddress)
-        if (!address) throw createHttpError(404, 'Address not found');
-        
-        const validator = isValidCompany(req.body.company.name, req.body.company.legalEntity)
-        if (validator.valid == 0) throw createHttpError(400, validator.message as string);
+        if (!address) throw createHttpError(404, 'Address not found')
+
+        const validator = isValidCompany(req.body.company.name, req.body.company.legalEntity, req.body.company.companyType, req.body.company.activityField)
+        if (validator.valid == 0) throw createHttpError(400, validator.message as string)
 
         await Companies.update(req.body.company, {
-            where: { 
-                companyId: identifier,
+            where: {
+                companyId: identifier
             }
         })
 

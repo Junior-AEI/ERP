@@ -10,10 +10,12 @@
 // LATIME is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more details.
 
 // You should have received a copy of the GNU Affero General Public License along with LATIME. If not, see <https://www.gnu.org/licenses/>.
-import { Table, Column, Model, DataType, ForeignKey, BelongsTo, PrimaryKey, HasMany } from 'sequelize-typescript'
+import { Table, Column, Model, DataType, ForeignKey, BelongsTo, PrimaryKey, HasMany, IsIn } from 'sequelize-typescript'
 import Companies from './company.model'
 import Persons from './person.model'
 import Projects from './project.model'
+
+export const FIRSTCONTACTS = ['Bouche à oreille', 'Soirée partenaire', 'Appel téléphonique', 'Site AEI', 'Congrès','Salon', 'RS', 'Autre']
 
 @Table
 export default class Clients extends Model {
@@ -33,6 +35,14 @@ export default class Clients extends Model {
         allowNull: false
     })
     function!: string
+
+    @IsIn([FIRSTCONTACTS])
+    @Column({
+        type: DataType.ENUM,
+        values: FIRSTCONTACTS,
+        allowNull: false
+    })
+    firstContact!: string
 
     @ForeignKey(() => Companies)
     @Column({

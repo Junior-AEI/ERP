@@ -17,7 +17,7 @@ import Persons from './person.model'
 import Users from './user.model'
 import Contributors from './contributor.model'
 
-const PAYMENTS = ['Esp', 'CB', 'Vir', 'Lydia']
+const PAYMENTS = ['HelloAsso', 'Vir', 'LydiaPro']
 const DEPARTMENTS = ['Informatique', 'Electronique', 'Telecommunication', 'Matmeca', 'R&I', 'SEE']
 
 @Table
@@ -91,6 +91,18 @@ export default class Members extends Model {
         values: DEPARTMENTS
     })
     department!: string
+
+    @Column({
+        type: DataType.STRING,
+        allowNull: true
+    })
+    telegramId!: string
+
+    @Column({
+        type: DataType.STRING,
+        allowNull: true
+    })
+    chatBotId!: string
 
     @NotEmpty
     @Column({

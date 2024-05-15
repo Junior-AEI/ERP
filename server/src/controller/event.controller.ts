@@ -3,7 +3,7 @@ import createHttpError from 'http-errors'
 import Events from '../models/event.model'
 import { HttpError } from 'http-errors'
 import { isValidEvent } from '../validator/event.validator'
-import { controllerErrorHandler, isNumber } from './utils.controller'
+import { controllerErrorHandler } from './utils.controller'
 
 /**
  * Get all users
@@ -59,7 +59,6 @@ const getByPk = async (req: Request, res: Response) => {
  */
 async function create(req: Request, res: Response) {
     try {
-
         // Test params
         const validator = isValidEvent(req.body.event.name, req.body.event.startDate, req.body.event.endDate, req.body.event.location, req.body.event.description, req.body.event.eventTypeName)
 
@@ -73,7 +72,7 @@ async function create(req: Request, res: Response) {
             location: req.body.event.location,
             description: req.body.event.description,
             eventTypeName: req.body.event.eventTypeName
-        });
+        })
 
         // Return success
         return res.status(200).json({
@@ -82,7 +81,6 @@ async function create(req: Request, res: Response) {
                 eventId: event.eventId
             }
         })
-
     } catch (err) {
         if (err instanceof HttpError) controllerErrorHandler(err, res)
         else throw err
@@ -128,10 +126,10 @@ const del = async (req: Request, res: Response) => {
     try {
         const identifier = parseInt(req.params.eventId)
         if (isNaN(identifier)) throw createHttpError(400, 'Please provide a valid identifier')
-        
+
         const event = await Events.findByPk(identifier)
         if (!event) throw createHttpError(404, 'Event not found')
-        
+
         await Events.destroy({
             where: {
                 eventId: identifier
@@ -140,8 +138,7 @@ const del = async (req: Request, res: Response) => {
 
         return res.status(200).json({
             status: 'success'
-        });
-
+        })
     } catch (err) {
         if (err instanceof HttpError) controllerErrorHandler(err, res)
         else throw err

@@ -12,11 +12,20 @@ export const membersModule: Module = {
       },
       children: [
         {
-          path: '/members/new',
+          path: '/new',
           name: 'Nouveau membre',
           component: () => import('./createMember.vue'),
           meta: {
-            icon: 'group'
+            icon: 'person_add'
+          }
+        },
+
+        {
+          path: '/users/new',
+          name: 'Nouvel utilisateur',
+          component: () => import('./createUser.vue'),
+          meta: {
+            icon: 'person_add'
           }
         }
       ]

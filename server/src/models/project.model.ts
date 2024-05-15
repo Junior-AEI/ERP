@@ -31,7 +31,13 @@ export default class Projects extends Model {
         type: DataType.STRING,
         allowNull: false
     })
-    acronym!: number
+    name!: string
+
+    @Column({
+        type: DataType.STRING,
+        allowNull: false
+    })
+    acronym!: string
 
     @ForeignKey(() => Clients)
     @Column({

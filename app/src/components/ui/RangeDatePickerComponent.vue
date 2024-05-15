@@ -6,12 +6,31 @@ import { RangeCalendar } from '@/components/ui/range-calendar'
 import { Button } from '@/components/ui/button'
 import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover'
 import { cn } from '@/lib/utils'
+import { type DateValue } from '@internationalized/date'
 
 const df = new DateFormatter('fr-FR', {
   dateStyle: 'medium'
 })
 
 const value = defineModel<DateRange>()
+
+const updateValueOnStartChange = (startDate: DateValue | undefined) => {
+  if (value.value) {
+    value.value.start = startDate
+    value.value.end = startDate
+  }
+}
+
+const updateValueOnEndChange = (endDate: DateValue | undefined) => {
+  if (value.value) {
+    value.value.end = endDate
+    if (value.value.start && endDate && value.value.start > endDate) {
+      const temp = value.value.start
+      value.value.start = endDate
+      value.value.end = temp
+    }
+  }
+}
 </script>
 
 <template>
@@ -43,7 +62,8 @@ const value = defineModel<DateRange>()
         v-model="value"
         initial-focus
         :number-of-months="2"
-        @update:start-value="(startDate) => (value ? (value.start = startDate) : '')"
+        @update:start-value="updateValueOnStartChange"
+        @update:end-value="updateValueOnEndChange"
       />
     </PopoverContent>
   </Popover>

@@ -1,6 +1,4 @@
-
 export const characters: any = {
-
     // John Doe character
     'john.doe': {
         person: {
@@ -23,7 +21,7 @@ export const characters: any = {
             birthPlace: 'Royan',
             nationality: 'FRA',
             promotion: '2024',
-            paymentMethod: 'CB',
+            paymentMethod: 'HelloAsso',
             department: 'Informatique',
             telegramId: '@pabechou',
             membershipNumber: 1
@@ -32,7 +30,7 @@ export const characters: any = {
     },
 
     // Jane Doe character
-    "jane.doe": {
+    'jane.doe': {
         person: {
             firstname: 'Jane',
             lastname: 'Doe',
@@ -53,12 +51,11 @@ export const characters: any = {
             birthPlace: 'Paris',
             nationality: 'FRA',
             promotion: '2024',
-            paymentMethod: 'CB',
+            paymentMethod: 'HelloAsso',
             department: 'Informatique',
             telegramId: '',
             membershipNumber: 2
         },
         password: 'mdp'
     },
-
 }

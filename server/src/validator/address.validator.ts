@@ -1,12 +1,13 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 export const isValidAddress = (address: any, additionnalAddress: any, city: any, postCode: any, country: any) => {
-
-    if (address === undefined || additionnalAddress === undefined || city === undefined || postCode === undefined || country === undefined) return { valid: 0, message: "Please fill all the fields." }
+    if (address === undefined || city === undefined || postCode === undefined || country === undefined) return { valid: 0, message: 'Please fill all the fields.' }
 
     if (typeof address != 'string') return { valid: 0, message: 'Your adress is not correctly formatted.' }
     if (address.length === 0 || address.length > 50) return { valid: 0, message: 'Your adress is too long.' }
-    if (typeof additionnalAddress != 'string') return { valid: 0, message: 'Your additionnal adress is not correctly formatted.' }
-    if (additionnalAddress.length > 50) return { valid: 0, message: 'Your additionnal address is too long.' }
+    if (additionnalAddress !== undefined && additionnalAddress !== "" && additionnalAddress !== null) {
+        if (typeof additionnalAddress != 'string') return { valid: 0, message: 'Your additionnal adress is not correctly formatted.' }
+        if (additionnalAddress.length > 50) return { valid: 0, message: 'Your additionnal address is too long.' }
+    }
     if (typeof city != 'string') return { valid: 0, message: 'Your city is not correctly formatted.' }
     if (city.length === 0 || city.length > 50) return { valid: 0, message: 'Your city is too long.' }
     if (typeof postCode != 'string') return { valid: 0, message: 'Your postal code is not correctly formatted.' }

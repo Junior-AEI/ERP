@@ -1,10 +1,16 @@
 <template>
-  <div class="flex w-full flex-col gap-3 px-6 py-5 sm:w-80">
+  <div class="flex w-full flex-col gap-3 px-4 py-3 sm:w-72">
     <div class="flex w-full justify-between">
       <Link to="/profile" icon="person" :variant="matchRoute('/profile')"
         >{{ user.firstName }} {{ user.lastName }}
       </Link>
-      <Button icon="chevron_left" size="icon" variant="link" @click="$emit('reduce')"></Button>
+      <Button
+        icon="chevron_left"
+        size="icon"
+        class="p-0"
+        variant="link"
+        @click="$emit('reduce')"
+      ></Button>
     </div>
 
     <Button
@@ -24,7 +30,7 @@
       </span>
     </Button>
 
-    <div class="flex flex-1 flex-col items-start gap-1 overflow-y-auto overflow-x-hidden pb-6">
+    <ScrollArea class="flex flex-1 flex-col items-start gap-1">
       <Link to="/" icon="dashboard" class="w-full justify-start" :variant="matchRoute('/')">
         Tableau de bord
       </Link>
@@ -53,18 +59,18 @@
           </template>
           <template v-slot:children>
             <Link
-              v-for="child in route.children"
+              v-for="child in route.children.filter((child) => child.meta?.visible !== false)"
               :to="child.path"
-              :icon="child.meta?.icon"
+              :icon="child.meta?.icon as IconNames"
               :key="child.path"
-              class="p-1 pl-6"
+              class="p-1 pl-3"
             >
               {{ child.name }}
             </Link>
           </template>
         </CollapsibleMenu>
       </div>
-    </div>
+    </ScrollArea>
 
     <div class="flex flex-col items-start gap-1">
       <Link
@@ -96,7 +102,7 @@ import useMatchRoute from '@/composables/useMatchRoute'
 const matchRoute = (route: string) => (useMatchRoute(route) ? 'active' : 'default')
 
 import { modules } from '@/router'
-import type { Route } from '@/types'
+import { type IconNames, type Route } from '@/types'
 
 const bottomRoutes: Array<Route> = []
 const topRoutes: Array<Route> = []

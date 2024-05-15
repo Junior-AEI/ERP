@@ -1,12 +1,13 @@
 <template>
   <Sidebar v-if="logedMode" :class="generalStore.sidebarStatusShrink ? '' : 'w-full sm:w-fit'" />
-  <div
-    class="h-screen flex-1 flex-col overflow-y-auto"
+  <ScrollArea
+    class="h-screen flex-1 flex-col"
     :class="generalStore.sidebarStatusShrink ? 'flex' : 'hidden sm:flex'"
   >
     <Titlebar v-if="logedMode" />
     <RouterView class="flex flex-col gap-3 p-6" v-auto-animate />
-  </div>
+  </ScrollArea>
+  <Toaster />
 </template>
 
 <script setup lang="ts">
@@ -31,7 +32,7 @@ const route = useRoute()
 const logedMode = ref(false)
 
 watch(route, () => {
-  logedMode.value = route.path !== '/login'
+  logedMode.value = route.path !== '/login' && route.path !== '/modif/password'
 })
 </script>
 

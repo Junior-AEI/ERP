@@ -1,35 +1,46 @@
 import { h } from 'vue'
 import type { ColumnDef } from '@tanstack/vue-table'
-import type { Event } from '@/types/api'
+import type { EventWithDoc } from '@/types/api'
 import EventsDataTableButton from './EventsDataTableButton.vue'
+import DocumentsViewerDataTableButton from '../documents/DocumentsViewerDataTableButton.vue'
+
 import { Button } from '../ui/button'
 import Icon from '../Icon.vue'
-import { CalendarDate, parseDate, DateFormatter, getLocalTimeZone } from '@internationalized/date'
+import {
+  CalendarDateTime,
+  parseDateTime,
+  DateFormatter,
+  getLocalTimeZone
+} from '@internationalized/date'
 
 const df = new DateFormatter('fr-FR', {
-  dateStyle: 'long'
+  dateStyle: 'long',
+  timeStyle: 'short'
 })
 
 function convertToCalendarDate(isoDateString: string): string {
-  const dateObject = new Date(isoDateString);
+  const dateObject = new Date(isoDateString)
 
   // Check if the date object is valid
   if (isNaN(dateObject.getTime())) {
-    throw new Error('Invalid date string');
+    throw new Error('Invalid date string')
   }
 
   // Extract year, month, and day from the date object
-  const year = dateObject.getFullYear();
-  const month = dateObject.getMonth() + 1; // Months are 0-based in JavaScript
-  const day = dateObject.getDate();
-
+  const year = dateObject.getFullYear()
+  const month = dateObject.getMonth() + 1 // Months are 0-based in JavaScript
+  const day = dateObject.getDate()
+  const hour = dateObject.getHours()
+  const minute = dateObject.getMinutes()
   // Create and return a new CalendarDate object
-  return new CalendarDate(year, month, day).toString();
+  return new CalendarDateTime(year, month, day, hour, minute).toString()
 }
+
+
 
 const defaultClasses = 'text-left font-medium'
 
-export const columns: ColumnDef<Event>[] = [
+export const columns: ColumnDef<EventWithDoc>[] = [
   {
     accessorKey: 'name',
     meta: {
@@ -84,7 +95,7 @@ export const columns: ColumnDef<Event>[] = [
       return h(
         'div',
         { class: defaultClasses },
-        df.format(parseDate(startDate).toDate(getLocalTimeZone()))
+        df.format(parseDateTime(startDate).toDate(getLocalTimeZone()))
       )
     }
   },
@@ -117,7 +128,7 @@ export const columns: ColumnDef<Event>[] = [
       return h(
         'div',
         { class: defaultClasses },
-        df.format(parseDate(endDate).toDate(getLocalTimeZone()))
+        df.format(parseDateTime(endDate).toDate(getLocalTimeZone()))
       )
     }
   },
@@ -136,7 +147,7 @@ export const columns: ColumnDef<Event>[] = [
   {
     accessorKey: 'eventTypeName',
     meta: {
-      label: 'Type d\'événement'
+      label: "Type d'événement"
     },
     header: ({ column }) => {
       return h(
@@ -146,7 +157,7 @@ export const columns: ColumnDef<Event>[] = [
           onClick: () => column.toggleSorting(column.getIsSorted() === 'asc')
         },
         () => [
-          'Type d\'événement',
+          "Type d'événement",
           h(
             h(Icon, {
               name: 'unfold_more'
@@ -157,6 +168,30 @@ export const columns: ColumnDef<Event>[] = [
       )
     },
     cell: ({ row }) => h('div', { class: 'text-left' }, row.getValue('eventTypeName'))
+  },
+  {
+    accessorKey: 'eventTypeName',
+    meta: {
+      label: "Document lié"
+    },
+    header: () => h('div', { class: defaultClasses }, 'Document lié'),
+    cell: ({ row }) => {
+      const item = row.original
+
+      return h(
+        'div',
+        { class: `lowercase ${defaultClasses}` },
+        item.documentList.map((document) => {
+          return h(
+            'div',
+            { class: 'relative' },
+            h(DocumentsViewerDataTableButton, {
+              item : document
+            })
+          )
+        })
+      )
+    }
   },
   {
     id: 'actions',

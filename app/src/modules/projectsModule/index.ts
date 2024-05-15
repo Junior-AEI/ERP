@@ -6,14 +6,47 @@ export const projectsModule: Module = {
     {
       path: '/projects',
       name: 'Etudes',
-      component: () => import('@/views/Construction.vue'),
+      component: () => import('./Projects.vue'),
       children: [
         {
-          path: '/liste-des-prospects',
+          path: '/clients',
           name: 'Liste des prospects',
-          component: () => import('@/views/Construction.vue'),
+          component: () => import('./Clients.vue'),
           meta: {
             icon: 'contacts'
+          }
+        },
+        {
+          path: '/clients/new',
+          name: 'Ajouter Client',
+          component: () => import('./createClient.vue'),
+          meta: {
+            icon: 'domain_add'
+          }
+        },
+        {
+          path: '/new',
+          name: 'Ajouter Etude',
+          component: () => import('./createProject.vue'),
+          meta: {
+            icon: 'domain_add'
+          }
+        },
+        {
+          path: '/details',
+          name: 'Détails Etude',
+          component: () => import('./ProjectDetails.vue'),
+          meta: {
+            visible: false,
+            icon: 'article'
+          }
+        },
+        {
+          path: '/list',
+          name: 'Liste des études',
+          component: () => import('./ProjectsAll.vue'),
+          meta: {
+            icon: 'work'
           }
         }
       ],

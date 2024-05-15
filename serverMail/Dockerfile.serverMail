@@ -1,0 +1,42 @@
+# Start from NodeJS image
+FROM node:20
+
+# Workdir definition
+WORKDIR /var/www
+
+# Environment declaration variables
+ARG NODE_ENV="dev"
+
+# PM2 Demonizer installation
+RUN npm install -g pm2
+
+# Install typescript
+RUN cd /var/www && npm install -g typescript
+
+# Various files (TODO : Determine if these files has to be build)
+COPY nodemon.json /var/www/nodemon.json
+COPY tsconfig.json /var/www/tsconfig.json
+
+# Setting up environment
+RUN echo "NODE_ENV=${NODE_ENV}" > .env
+
+# Dependencies
+COPY package.json /var/www/package.json
+COPY package-lock.json /var/www/package-lock.json
+RUN npm install
+
+# Copy sources
+COPY src /var/www/src
+
+# Compilation des fichiers TypeScript
+RUN npm run build
+
+# Review permissions
+RUN chown -R node:node /var/www
+RUN chmod -R u=rwx,g=,o= /var/www
+
+# Expose port
+EXPOSE 5002
+
+# Start app
+CMD ["pm2", "start", "dist/index.js", "--no-daemon"]

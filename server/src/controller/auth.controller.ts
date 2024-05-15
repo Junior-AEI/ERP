@@ -1,15 +1,16 @@
 import { Request, Response } from 'express'
-import { SignJWT, errors } from 'jose'
+import { SignJWT } from 'jose'
 import bcrypt from 'bcrypt'
+import dotenv from 'dotenv'
+dotenv.config()
 import { JWT_AUDIENCE, JWT_EXPIRATION, JWT_ISSUER, JWT_SECRET_KEY } from '../config/auth.config'
 import Users from '../models/user.model'
 import Tokens from '../models/token.model'
 import Members from '../models/member.model'
 import { promisify } from 'util'
-import { controllerErrorHandler,sendEmail, sendBotMesssage } from './utils.controller'
+import { controllerErrorHandler, sendEmail } from './utils.controller'
 import createHttpError, { HttpError } from 'http-errors'
 import Persons from '../models/person.model'
-
 
 /**
  * Login route
@@ -17,7 +18,6 @@ import Persons from '../models/person.model'
  * @param res
  */
 const login = async (req: Request, res: Response) => {
-
     try {
         // Retrieve username and password from request body
         const username = req.body.username || ''
@@ -39,9 +39,6 @@ const login = async (req: Request, res: Response) => {
             ]
         })
 
-        
-
-
         // Return error if user not found
         if (!user) throw createHttpError(401, 'Invalid username or password')
 
@@ -55,15 +52,7 @@ const login = async (req: Request, res: Response) => {
         const token = await new SignJWT({ username }).setProtectedHeader({ alg: 'HS256' }).setAudience(JWT_AUDIENCE).setIssuer(JWT_ISSUER).setExpirationTime(JWT_EXPIRATION).sign(JWT_SECRET_KEY)
 
 
-         // Send email in background
-         sendEmail('mathieu.chaillon@gmail.com', 'User Logged In', `User ${username} has logged in.`)
-         .catch(error => console.error('Error sending email:', error)); // Log any errors, but don't let them propagate
-        
 
-
-        // CHAT ID A CHANGER ICI 
-         sendBotMesssage(881607628,`User ${username} has logged in.`)
-         .catch(error => console.error('Error sending email:', error)); 
         // Return success with token and user details
         return res.status(200).json({
             status: 'success',
@@ -75,13 +64,12 @@ const login = async (req: Request, res: Response) => {
                 token: token
             }
         })
-    } catch (err ) {
+    } catch (err) {
         // Gestion des erreurs
-        
-            // Vous pouvez choisir de journaliser l'erreur, de retourner une réponse d'erreur, ou prendre toute autre action appropriée
+
+        // Vous pouvez choisir de journaliser l'erreur, de retourner une réponse d'erreur, ou prendre toute autre action appropriée
         // Handle errors
         if (err instanceof HttpError) {
-           
             return controllerErrorHandler(err, res)
         }
         throw err
@@ -105,6 +93,7 @@ const forgetPassword = async (req: Request, res: Response) => {
             }
         })
 
+
         // Function to generate random token
         const generateToken = () => {
             const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789'
@@ -119,6 +108,11 @@ const forgetPassword = async (req: Request, res: Response) => {
         // If user is found, generate a random token
 
         if (user) {
+            const person = await Persons.findOne({
+                where: {
+                    personId: user.userId
+                }
+            })
             const _token = generateToken()
             const currentDate = new Date()
             const tenMinutesLater = new Date(currentDate.getTime() + 10 * 60000)
@@ -129,8 +123,14 @@ const forgetPassword = async (req: Request, res: Response) => {
                 userId: user.userId
             })
 
-            // TODO: Send an email with a link 
-            // ! (not in test env)
+            // sendEmail(user.emailJE, "Réinitialisation Mot de Passe pour l'ERP", `Bonjour, Une demande de changement de Mot de Passe sur l'ERP a été demandé pour votre compte (nom d'utilisateur : ${user.username}) \n
+            // Si vous êtes le demandeur de cette réinitialisation veuillez cliquez sur ce lien : 
+            // Token à renseigner : ${_token}`)
+            if (person) {
+                sendEmail(person.email,"Bienvenue sur l'ERP",`Bonjour \n Le pole DSI de AEI vient de créer ton compte sur l'ERP tu peux le rejoindre en copier collant ce lien http://localhost:5173/  
+                \n Voici ton identifiant  ${username} 
+                \n Ton mot de passe te seras transmis par le pole DSI en personne  `)
+            }
 
             // Return success response
             return res.status(200).json({
@@ -174,7 +174,11 @@ const askNewPassword = async (req: Request, res: Response) => {
         if (!foundToken) throw createHttpError(401, 'Unable to find the provided token')
 
         if (foundToken.validity <= new Date()) throw createHttpError(401, 'Link is expired')
-
+        const user = await Users.findOne({
+            where: {
+                userId: foundToken.userId
+            }
+        })
         // TODO : Check password before insertion ?
 
         const hashedPassword = await bcrypt.hash(_newPassword, 10)
@@ -182,13 +186,21 @@ const askNewPassword = async (req: Request, res: Response) => {
         const updatedUserPassword = {
             password: hashedPassword
         }
-
-        await Users.update(updatedUserPassword, {
+        console.log(updatedUserPassword)
+        if(user){
+        await Users.update({
+            userId: user.userId,
+            username: user.username,
+            password: updatedUserPassword.password,
+            mandateStart: user.mandateStart,
+            mandateEnd: user.mandateEnd,
+            emailJE:user.emailJE },
+            {
             where: {
-                userId: foundToken.userId
+                userId: user.userId
             }
         })
-
+    }
         // Return success response
         return res.status(200).json({
             status: 'success'
@@ -201,6 +213,8 @@ const askNewPassword = async (req: Request, res: Response) => {
         throw err
     }
 }
+
+
 
 const authController = {
     login,

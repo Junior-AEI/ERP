@@ -11,7 +11,7 @@ import groupRouter from './group.route'
 import concernedRouter from './concerned.route'
 import permissionRouter from './permission.route'
 import projectRouter from './project.route'
-import projectNotesRouter from './projectNotes.route'
+import projectNoteRouter from './projectNote.route'
 import contributorRouter from './contributor.route'
 import projectManagerRouter from './projectManager.route'
 import documentRouter from './document.route'
@@ -22,6 +22,7 @@ import eventGroupConcernedRouter from './eventGroupConcerned.route'
 import taskRouter from './task.route'
 import itTicketRouter from './itTicket.route'
 import expenseAccountRouter from './expenseAccount.route'
+import notificationRouter from './notification.route'
 
 import { getUsername, verifyAuthentication } from '../middlewares/auth.middleware'
 
@@ -41,7 +42,7 @@ router.use('/permission', getUsername, verifyAuthentication, permissionRouter)
 router.use('/project', getUsername, verifyAuthentication, projectRouter)
 router.use('/projectManager', getUsername, verifyAuthentication, projectManagerRouter)
 router.use('/contributor', getUsername, verifyAuthentication, contributorRouter)
-router.use('/projectNotes', getUsername, verifyAuthentication, projectNotesRouter)
+router.use('/projectNote', getUsername, verifyAuthentication, projectNoteRouter)
 router.use('/document', getUsername, verifyAuthentication, documentRouter)
 router.use('/documentType', getUsername, verifyAuthentication, documentTypeRouter)
 router.use('/event', getUsername, verifyAuthentication, eventRouter)
@@ -50,5 +51,6 @@ router.use('/eventGroupConcerned', getUsername, verifyAuthentication, eventGroup
 router.use('/task', getUsername, verifyAuthentication, taskRouter)
 router.use('/itTicket', getUsername, verifyAuthentication, itTicketRouter)
 router.use('/expenseAccount', getUsername, verifyAuthentication, expenseAccountRouter)
+router.use('/notification', getUsername, verifyAuthentication, notificationRouter)
 
 export default router

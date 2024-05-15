@@ -4,8 +4,11 @@ defineProps<{
 }>()
 </script>
 <template>
-  <Wrapper class="w-full max-w-xl flex-col">
+  <Wrapper class="flex-row">
     <MemberInfo :memberId="personId" />
-    <UserInfo :userId="personId" />
+    <div class="flex flex-1 flex-col gap-2">
+      <AdressInfo :memberId="personId" />
+      <UserInfo :userId="personId" />
+    </div>
   </Wrapper>
 </template>

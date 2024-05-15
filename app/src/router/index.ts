@@ -16,16 +16,16 @@ const baseRoutes = [
   },
   {
     path: '/profile',
-    name: 'Mon Profil',
+    name: 'Profil',
     component: () => import('../views/ProfileView.vue'),
     meta: {
       icon: 'person'
     }
   },
   {
-    path: '/profile/:id',
-    name: "Profil de l'utilisateur",
-    component: () => import('../views/ProfileView.vue'),
+    path: '/client/profil',
+    name: 'Profil du client',
+    component: () => import('@/modules/projectsModule/ClientProfilView.vue'),
     meta: {
       icon: 'person'
     }
@@ -34,6 +34,15 @@ const baseRoutes = [
     path: '/login',
     name: 'Se connecter',
     component: () => import('../views/LoginView.vue'),
+    meta: {
+      icon: 'login',
+      public: true
+    }
+  },
+  {
+    path: '/modif/password',
+    name: 'Modifier son mot de Passe',
+    component: () => import('../views/ModifyPasswordView.vue'),
     meta: {
       icon: 'login',
       public: true

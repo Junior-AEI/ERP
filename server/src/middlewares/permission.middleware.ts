@@ -13,11 +13,11 @@
 import { Request, Response } from 'express'
 import Permission from '../models/permission.model'
 
-function verifyPermission(nomPermission: string) {
+function verifyPermission(permissionName: string) {
     return async (req: Request, res: Response, next: () => void) => {
         const perm = await Permission.findOne({
             where: {
-                nomPermission: nomPermission,
+                permissionName: permissionName,
                 idUtilisateur: res.locals.user.id
             }
         })

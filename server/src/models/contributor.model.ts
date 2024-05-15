@@ -17,6 +17,14 @@ import Projects from './project.model'
 @Table
 export default class Contributors extends Model {
     @PrimaryKey
+    @Column({
+        type: DataType.INTEGER,
+        allowNull: false,
+        primaryKey: true,
+        autoIncrement: true
+    })
+    contributorId!: number
+
     @ForeignKey(() => Members)
     @Column({
         type: DataType.INTEGER,
@@ -27,7 +35,6 @@ export default class Contributors extends Model {
     @BelongsTo(() => Members)
     member!: Members
 
-    @PrimaryKey
     @ForeignKey(() => Projects)
     @Column({
         type: DataType.INTEGER,

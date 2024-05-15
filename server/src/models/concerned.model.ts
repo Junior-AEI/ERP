@@ -17,23 +17,30 @@ import Groups from './group.model'
 @Table
 export default class Concerned extends Model {
     @PrimaryKey
+    @Column({
+        type: DataType.INTEGER,
+        allowNull: false,
+        primaryKey: true,
+        autoIncrement: true
+    })
+    concernedId!: number
+
     @ForeignKey(() => Permissions)
     @Column({
-        type: DataType.STRING,
+        type: DataType.INTEGER,
         allowNull: false
     })
-    permissionName!: string
+    permissionId!: number
 
     @BelongsTo(() => Permissions)
     permission!: Permissions
 
-    @PrimaryKey
     @ForeignKey(() => Groups)
     @Column({
-        type: DataType.STRING,
+        type: DataType.INTEGER,
         allowNull: false
     })
-    groupName!: string
+    groupId!: number
 
     @BelongsTo(() => Groups)
     group!: Groups

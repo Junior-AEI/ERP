@@ -92,12 +92,12 @@ export const exampleModule: Module = {
             },
             children: [
                 {
-                    path: 'first',
+                    path: '/first',
                     name: 'First child route',
                     component: () => import('./views/Relectures.vue'),
                 },
                 {
-                    path: 'second',
+                    path: '/second',
                     name: 'Second child route',
                     component: () => import('./views/Relectures.vue'),
                 },

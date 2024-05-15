@@ -3,18 +3,16 @@ import createHttpError from 'http-errors'
 import Tasks from '../models/task.model'
 import { HttpError } from 'http-errors'
 import { isValidTask } from '../validator/task.validator'
-import { controllerErrorHandler, isNumber } from './utils.controller'
-import sequelize from 'sequelize'
+import { controllerErrorHandler } from './utils.controller'
 
 /**
- * Get all users
+ * Get all tasks
  * @param req
  * @param res
  */
 const getAll = async (req: Request, res: Response) => {
     try {
         const tasks = await Tasks.findAll({})
-
         return res.status(200).json({
             status: 'success',
             data: {
@@ -34,8 +32,8 @@ const getAll = async (req: Request, res: Response) => {
  */
 const getByPk = async (req: Request, res: Response) => {
     try {
-        if (req.params.taskId && !isNumber(req.params.taskId)) throw createHttpError(400, 'Please provide a valid identifier')
         const identifier = parseInt(req.params.taskId)
+        if (isNaN(identifier)) throw createHttpError(400, 'Please provide a valid identifier')
 
         const task = await Tasks.findByPk(identifier, {})
         if (!task) throw createHttpError(404, 'Task not found')
@@ -53,25 +51,15 @@ const getByPk = async (req: Request, res: Response) => {
 }
 
 /**
- * HelloWorld
- * @param req
- * @param res
- */
-const getTheUser = async (req: Request, res: Response) => {
-    console.log('getTheUser');
-}
-
-    
-
-/**
  * Select all tasks for a specific user
  * @param req
  * @param res
  */
 const getByUser = async (req: Request, res: Response) => {
+
     try {
-        if (req.params.taskUser && !isNumber(req.params.taskUser)) throw createHttpError(400, 'Please provide a valid identifier')
         const identifier = parseInt(req.params.taskUser)
+        if (isNaN(identifier)) throw createHttpError(400, 'Please provide a valid identifier')
 
         const tasks = await Tasks.findAll({
             where: {
@@ -98,19 +86,18 @@ const getByUser = async (req: Request, res: Response) => {
  */
 async function create(req: Request, res: Response) {
     try {
-        // Generate identifier
-        // const identifier = 
-
         // Test params
-        const validator = isValidTask(req.body.task.dueDate, req.body.task.description, req.body.task.state)
-        if (!validator.valid) return createHttpError(400, validator.message as string)
+        const validator = isValidTask(req.body.task.dueDate, req.body.task.description, 'A faire')
+        if (!validator.valid) throw createHttpError(400, validator.message as string)
+
 
         // Insert data
         const task = await Tasks.create({
-            // taskId: identifier,
-            dueDate: req.body.task.dueDate,
+            dueDate: new Date(req.body.task.dueDate),
             description: req.body.task.description,
-            state: req.body.task.state
+            userId: req.body.task.userId,
+            issuerId: req.body.task.issuerId,
+            state: 'A faire'
         })
 
         // Return success
@@ -133,17 +120,23 @@ async function create(req: Request, res: Response) {
  */
 const update = async (req: Request, res: Response) => {
     try {
-        if (req.params.taskId && !isNumber(req.params.taskId)) throw createHttpError(400, 'Please provide a valid identifier')
         const identifier = parseInt(req.params.taskId)
+        if (isNaN(identifier)) throw createHttpError(400, 'Please provide a valid identifier')
 
         const task = await Tasks.findByPk(identifier, {})
         if (!task) throw createHttpError(404, 'Task not found')
 
         // Test params
         const validator = isValidTask(req.body.task.dueDate, req.body.task.description, req.body.task.state)
-        if (!validator.valid) return createHttpError(400, validator.message as string)
+        if (!validator.valid) throw createHttpError(400, validator.message as string)
 
-        await Tasks.update(req.body, {
+        await Tasks.update({
+            dueDate: new Date(req.body.task.dueDate),
+            description: req.body.task.description,
+            userId: req.body.task.userId,
+            issuerId: req.body.task.issuerId,
+            state: req.body.task.state
+        }, {
             where: { taskId: identifier }
         })
 
@@ -164,8 +157,8 @@ const update = async (req: Request, res: Response) => {
 const del = async (req: Request, res: Response) => {
     try {
         // Parse identifier
-        if (req.params.taskId && !isNumber(req.params.taskId)) throw createHttpError(400, 'Please provide a valid identifier')
         const identifier = parseInt(req.params.taskId)
+        if (isNaN(identifier)) throw createHttpError(400, 'Please provide a valid identifier')
 
         const task = await Tasks.findByPk(identifier, {})
         if (!task) throw createHttpError(404, 'Task not found')
@@ -174,6 +167,10 @@ const del = async (req: Request, res: Response) => {
             where: {
                 taskId: identifier
             }
+        })
+
+        return res.status(200).json({
+            status: 'success'
         })
     } catch (err) {
         if (err instanceof HttpError) controllerErrorHandler(err, res)
@@ -185,7 +182,6 @@ const taskController = {
     getAll,
     getByPk,
     getByUser,
-    getTheUser,
     create,
     del,
     update

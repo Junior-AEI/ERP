@@ -19,9 +19,16 @@ import Concerned from './concerned.model'
 export default class Groups extends Model {
     @PrimaryKey
     @Column({
-        type: DataType.STRING,
+        type: DataType.INTEGER,
         allowNull: false,
-        primaryKey: true
+        primaryKey: true,
+        autoIncrement: true
+    })
+    groupId!: number
+
+    @Column({
+        type: DataType.STRING,
+        allowNull: false
     })
     groupName!: string
 

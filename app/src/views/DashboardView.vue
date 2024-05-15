@@ -1,11 +1,19 @@
 <script setup lang="ts">
+import { ref, onMounted } from 'vue'
+import axios from 'axios'
 import { useAuthStore } from '@/stores/authStore'
-import type { MaterialSymbol } from 'material-symbols'
+
+import { type IconNames } from '@/types'
+
+import type { Event } from '@/types/api'
+
+import { format } from 'date-fns'
+import { fr } from 'date-fns/locale'
 
 const user = useAuthStore()
 
 type Link = {
-  icon: MaterialSymbol
+  icon: IconNames
   name: string
   to: string
 }
@@ -31,11 +39,6 @@ const links: Link[] = [
     name: 'Kiwi',
     to: 'https://kiwix.junior-entreprises.com/'
   },
-  /*   {
-    icon: 'cloud_upload',
-    name: 'Uploader un document',
-    to: '/upload'
-  }, */
   {
     icon: 'person',
     name: 'Mon profil',
@@ -44,24 +47,37 @@ const links: Link[] = [
   {
     icon: 'cloud_upload',
     name: 'Uploader un document',
-    to: '/'
+    to: '/documents'
   }
 ]
 
-import router from '@/router'
+const noEvents = ref(true)
+const events = ref<Event[]>([])
 
-const goTo = (to: string) => {
-  if (to.startsWith('http') || to.startsWith('www') || to.startsWith('https')) {
-    window.location.href = to
-  } else {
-    router.push(to)
-  }
+async function getEvents(): Promise<Event[]> {
+  const response = await axios.get(`/event`, {
+    headers: {
+      Authorization: `Bearer ${useAuthStore().token}`
+    }
+  })
+  console.log(response.data.data.events)
+  return response.data.data.events
 }
+
+onMounted(async () => {
+  events.value = await getEvents()
+  events.value = events.value
+    .filter((event) => event.endDate > new Date().toISOString())
+    .sort((a, b) => new Date(a.startDate).getTime() - new Date(b.startDate).getTime())
+    .slice(0, 5)
+
+  noEvents.value = events.value.length == 0
+})
 </script>
 
 <template>
   <main class="flex flex-1 flex-col gap-6">
-    <Wrapper class="w-full">
+    <!-- <Wrapper class="w-full">
       <Card>
         <CardContent> </CardContent>
       </Card>
@@ -71,9 +87,9 @@ const goTo = (to: string) => {
       <Card>
         <CardContent> </CardContent>
       </Card>
-    </Wrapper>
+    </Wrapper> -->
 
-    <div class="flex flex-col gap-3 md:flex-row">
+    <div class="flex flex-wrap gap-3">
       <Wrapper class="flex-2 flex-col">
         <h1 class="m-3 text-3xl text-accent">
           <RouterLink to="/profile">Bonjour {{ user.firstName }},</RouterLink>
@@ -93,10 +109,13 @@ const goTo = (to: string) => {
             />
           </CardContent>
         </Card>
+        <div class="flex flex-1 flex-row flex-wrap gap-2">
+          <TasksCard class="flex flex-1 m-0"> </TasksCard>
+        </div>
       </Wrapper>
 
-      <div class="flex h-fit flex-1 flex-col gap-3">
-        <Wrapper class="flex-col">
+      <div class="flex h-fit flex-1 flex-col gap-3 sm:min-w-72">
+        <!-- <Wrapper class="flex-col">
           <Card>
             <CardHeader>
               <Icon name="notifications" />
@@ -106,17 +125,58 @@ const goTo = (to: string) => {
               <span class="text-muted-foreground">Vous êtes à jour</span>
             </CardContent>
           </Card>
+        </Wrapper> -->
+        <Wrapper>
+          <ProjectProgressCard class="flex flex-1"> </ProjectProgressCard>
+
         </Wrapper>
         <Wrapper class="flex-col gap-3">
           <Card>
-            <CardHeader>
-              <Icon name="pin_drop" />
-              <span class="text-accent">Prochains évènements </span>
+            <CardHeader class="flex flex-1 justify-between items-center">
+              <div class="flex flex-1 gap-2 items-center">
+
+                <Icon name="pin_drop" />
+                <span class="text-accent">Prochains événements </span>
+              </div>
+              <Link class="p-2" to="/events" icon="read_more"> </Link>
             </CardHeader>
+            <div class="max-h-96 overflow-y-auto"> 
+
             <CardContent>
-              <span class="text-muted-foreground">Aucun évènement à venir</span>
+              <div v-if="noEvents">
+                <span class="text-muted-foreground">Aucun événement à venir</span>
+              </div>
+              <div class="flex flex-1 flex-col gap-2" v-else>
+                <div v-for="event in events" :key="event.eventId">
+                  <Card>
+                    <CardContent>
+                      <div class="flex flex-1 flex-col justify-start">
+                        <h3>{{ event.name }}</h3>
+                        <div class="flex flex-1 flex-row items-center justify-between">
+                          <span> {{ event.eventTypeName }}</span>
+                        </div>
+                        <div class="flex flex-1 flex-row items-center justify-between">
+                          <span>
+                            {{
+                              format(new Date(event.startDate), 'd MMMM yyyy à HH:mm', {
+                                locale: fr
+                              })
+                            }}
+                            -
+                            {{
+                              format(new Date(event.endDate), 'd MMMM yyyy à HH:mm', { locale: fr })
+                            }}</span
+                          >
+                        </div>
+                      </div>
+                    </CardContent>
+                  </Card>
+                </div>
+              </div>
             </CardContent>
+           </div>
           </Card>
+          
         </Wrapper>
       </div>
     </div>

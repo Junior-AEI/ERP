@@ -20,6 +20,7 @@ const forwardedProps = useForwardProps(delegatedProps)
     :class="cn('text-sm font-medium', props.class)"
     v-bind="forwardedProps"
   >
+    <!-- @vue-ignore -->
     <slot :heading-value>
       {{ headingValue }}
     </slot>

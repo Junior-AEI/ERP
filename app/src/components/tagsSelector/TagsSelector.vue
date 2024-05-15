@@ -10,8 +10,7 @@ import {
   TagsInputItemText
 } from '@/components/ui/tags-input'
 
-import {type Field} from "."
-
+import { type Field } from '.'
 
 const props = defineProps<{
   placeholder: string
@@ -21,8 +20,6 @@ const props = defineProps<{
 const modelValue = defineModel<string[]>()
 const open = ref(false)
 const searchTerm = ref('')
-console.log("props :",props);
-
 
 const filteredfields = computed(() =>
   props.fields.filter((i) => {
@@ -94,4 +91,3 @@ const filteredfields = computed(() =>
     </ComboboxRoot>
   </TagsInput>
 </template>
-

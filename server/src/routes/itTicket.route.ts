@@ -4,9 +4,9 @@ import itTicketController from '../controller/itTicket.controller'
 const router = express.Router()
 
 router.get('/', itTicketController.getAll)
-router.get('/:itTicketId', itTicketController.getByPk)
+router.get('/:ticketId', itTicketController.getByPk)
 router.post('/', itTicketController.create)
-router.put('/:itTicketId', itTicketController.update)
-router.delete('/:itTicketId', itTicketController.del)
+router.put('/:ticketId', itTicketController.update)
+router.delete('/:ticketId', itTicketController.del)
 
 export default router

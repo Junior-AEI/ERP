@@ -17,6 +17,14 @@ import Events from './event.model'
 @Table
 export default class Partners extends Model {
     @PrimaryKey
+    @Column({
+        type: DataType.INTEGER,
+        allowNull: false,
+        primaryKey: true,
+        autoIncrement: true
+    })
+    partnerId!: number
+
     @ForeignKey(() => Companies)
     @Column({
         type: DataType.INTEGER,
@@ -27,7 +35,6 @@ export default class Partners extends Model {
     @BelongsTo(() => Companies)
     company!: Companies
 
-    @PrimaryKey
     @ForeignKey(() => Events)
     @Column({
         type: DataType.INTEGER,

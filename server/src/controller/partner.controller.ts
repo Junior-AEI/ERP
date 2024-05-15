@@ -13,7 +13,7 @@ import Companies from '../models/company.model'
  */
 const getAll = async (req: Request, res: Response) => {
     try {
-        const partners = await Partners.findAll({ })
+        const partners = await Partners.findAll({})
 
         return res.status(200).json({
             status: 'success',
@@ -37,8 +37,8 @@ const getByPk = async (req: Request, res: Response) => {
         if (req.params.companyId && !isNumber(req.params.companyId)) throw createHttpError(400, 'Please provide a valid identifier')
         if (req.params.eventId && !isNumber(req.params.eventId)) throw createHttpError(400, 'Please provide a valid identifier')
 
-        const identifier = [parseInt(req.params.companyId), parseInt(req.params.eventId)];
-        
+        const identifier = [parseInt(req.params.companyId), parseInt(req.params.eventId)]
+
         const partner = await Partners.findByPk((identifier[0], identifier[1]), {})
         if (!partner) throw createHttpError(404, 'partner not found')
 
@@ -64,8 +64,8 @@ async function create(req: Request, res: Response) {
         if (req.params.companyId && !isNumber(req.params.companyId)) throw createHttpError(400, 'Please provide a valid identifier')
         if (req.params.eventId && !isNumber(req.params.eventId)) throw createHttpError(400, 'Please provide a valid identifier')
 
-        const identifier = [parseInt(req.params.companyId), parseInt(req.params.eventId)];
-        
+        const identifier = [parseInt(req.params.companyId), parseInt(req.params.eventId)]
+
         // Try to find the linked company
         const company = await Companies.findByPk(identifier[0])
         if (!company) return createHttpError(404, 'Unable to find the linked company.')
@@ -74,7 +74,6 @@ async function create(req: Request, res: Response) {
         const event = await Events.findByPk(identifier[1])
         if (!event) return createHttpError(404, 'Unable to find the linked event.')
 
-        
         // Insert data
         const partner = await Partners.create({
             companyId: identifier[0],
@@ -105,15 +104,13 @@ const update = async (req: Request, res: Response) => {
         if (req.params.companyId && !isNumber(req.params.companyId)) throw createHttpError(400, 'Please provide a valid identifier')
         if (req.params.eventId && !isNumber(req.params.eventId)) throw createHttpError(400, 'Please provide a valid identifier')
 
-        const identifier = [parseInt(req.params.companyId), parseInt(req.params.eventId)];
-        
+        const identifier = [parseInt(req.params.companyId), parseInt(req.params.eventId)]
+
         const partner = await Partners.findByPk((identifier[0], identifier[1]), {})
         if (!partner) throw createHttpError(404, 'partner not found')
 
         await Partners.update(req.body, {
-            where: { companyId: identifier[0],
-                     eventId: identifier[1]
-            }
+            where: { companyId: identifier[0], eventId: identifier[1] }
         })
 
         return res.status(200).json({
@@ -135,8 +132,8 @@ const del = async (req: Request, res: Response) => {
         if (req.params.companyId && !isNumber(req.params.companyId)) throw createHttpError(400, 'Please provide a valid identifier')
         if (req.params.eventId && !isNumber(req.params.eventId)) throw createHttpError(400, 'Please provide a valid identifier')
 
-        const identifier = [parseInt(req.params.companyId), parseInt(req.params.eventId)];
-        
+        const identifier = [parseInt(req.params.companyId), parseInt(req.params.eventId)]
+
         const partner = await Partners.findByPk((identifier[0], identifier[1]), {})
         if (!partner) throw createHttpError(404, 'partner not found')
 

@@ -10,7 +10,8 @@
         "seed": "node src/migrations/seed.js",
         "test": "vitest",
         "test_ui": "vitest --ui",
-        "coverage": "vitest --config ./vitest.config.ts run --coverage"
+        "coverage": "vitest --config ./vitest.config.ts run --coverage",
+        "build": "tsc"
     },
     "keywords": [],
     "author": "",
@@ -35,12 +36,13 @@
     "devDependencies": {
         "@types/bcrypt": "^5.0.0",
         "@types/cors": "^2.8.13",
-        "@types/express": "^4.17.17",
+        "@types/express": "^4.17.21",
         "@types/http-errors": "^2.0.1",
         "@types/mime": "^3.0.1",
         "@types/multer": "^1.4.7",
         "@types/node": "^18.15.11",
         "@types/node-telegram-bot-api": "^0.64.2",
+        "@types/nodemailer": "^6.4.15",
         "@types/supertest": "^2.0.12",
         "@types/umzug": "^2.3.3",
         "@vitest/coverage-istanbul": "^0.29.8",

@@ -19,6 +19,7 @@ export const createClient = async (username: string) => {
         addressId: address.addressId,
         companyId: company.companyId,
         function: clients[username].function,
+        firstContact: clients[username].firstContact,
     })
 
     return client.clientId
@@ -29,4 +30,3 @@ export const createPerson = async (username: string) => {
 
     return person.personId
 }
-

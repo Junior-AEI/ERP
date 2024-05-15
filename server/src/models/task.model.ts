@@ -13,14 +13,16 @@
 import { Table, Column, Model, DataType, ForeignKey, BelongsTo, IsDate, PrimaryKey, IsIn } from 'sequelize-typescript'
 import Users from './user.model'
 
-const STATE = ['A faire', 'En cours', 'Terminée', 'Annulé', 'Archivé']
+export const STATE = ['A faire', 'En cours', 'Terminée', 'Annulé']
 
 @Table
 export default class Tasks extends Model {
     @PrimaryKey
     @Column({
         type: DataType.INTEGER,
-        allowNull: false
+        allowNull: false,
+        primaryKey: true,
+        autoIncrement: true
     })
     taskId!: number
 

@@ -12,7 +12,7 @@ import { controllerErrorHandler } from './utils.controller'
  */
 const getAll = async (req: Request, res: Response) => {
     try {
-        const documentTypes = await DocumentTypes.findAll({ })
+        const documentTypes = await DocumentTypes.findAll({})
 
         return res.status(200).json({
             status: 'success',
@@ -33,12 +33,10 @@ const getAll = async (req: Request, res: Response) => {
  */
 const getByPk = async (req: Request, res: Response) => {
     try {
-        if (req.params.type) throw createHttpError(400, 'Please provide a valid identifier')
+        const identifier = parseInt(req.params.typeId)
+        if (isNaN(identifier)) throw createHttpError(400, 'Please provide a valid identifier')
 
-        const identifier = req.params.type
-
-        const documentType = await DocumentTypes.findByPk(identifier, { })
-
+        const documentType = await DocumentTypes.findByPk(identifier)
         if (!documentType) throw createHttpError(404, 'Document Type not found')
 
         return res.status(200).json({
@@ -60,25 +58,22 @@ const getByPk = async (req: Request, res: Response) => {
  */
 async function create(req: Request, res: Response) {
     try {
-        if (req.params.type) throw createHttpError(400, 'Please provide a valid identifier')
-        const identifier = req.params.type
-
         // Test params
-        const validator = isValidDocumentType(req.body.documentType.fieldNumber, req.body.documentType.fieldMeaning)
-        if (!validator.valid) return createHttpError(400, validator.message as string)
+        const validator = isValidDocumentType(req.body.documentType.type, req.body.documentType.fieldNumber, req.body.documentType.fieldMeaning)
+        if (!validator.valid) throw createHttpError(400, validator.message as string)
 
         // Insert data
         const documentType = await DocumentTypes.create({
-            type: identifier,
+            type: req.body.documentType.type,
             fieldNumber: req.body.documentType.fieldNumber,
-            fieldMeaning: req.body.documentType.fieldMeaning,
+            fieldMeaning: req.body.documentType.fieldMeaning
         })
 
         // Return success
         return res.status(200).json({
             status: 'success',
             data: {
-                type: documentType.type
+                typeId: documentType.typeId
             }
         })
     } catch (err) {
@@ -94,18 +89,17 @@ async function create(req: Request, res: Response) {
  */
 const update = async (req: Request, res: Response) => {
     try {
-        if (req.params.type) throw createHttpError(400, 'Please provide a valid identifier')
-        const identifier = req.params.type
+        const identifier = parseInt(req.params.typeId)
+        if (isNaN(identifier)) throw createHttpError(400, 'Please provide a valid identifier')
 
         const documentType = await DocumentTypes.findByPk(identifier)
         if (!documentType) throw createHttpError(404, 'Document Type not found')
 
-        const validator = isValidDocumentType(req.body.documentType.fieldNumber, req.body.documentType.fieldMeaning)
-
+        const validator = isValidDocumentType(req.body.documentType.type, req.body.documentType.fieldNumber, req.body.documentType.fieldMeaning)
         if (validator.valid == 0) throw createHttpError(400, validator.message as string)
 
-        await DocumentTypes.update(req.body, {
-            where: { type: identifier }
+        await DocumentTypes.update(req.body.documentType, {
+            where: { typeId: identifier }
         })
 
         return res.status(200).json({
@@ -124,16 +118,20 @@ const update = async (req: Request, res: Response) => {
  */
 const del = async (req: Request, res: Response) => {
     try {
-        if (req.params.type) throw createHttpError(400, 'Please provide a valid identifier')
-        const identifier = req.params.type
+        const identifier = parseInt(req.params.typeId)
+        if (isNaN(identifier)) throw createHttpError(400, 'Please provide a valid identifier')
 
         const documentType = await DocumentTypes.findByPk(identifier)
         if (!documentType) throw createHttpError(404, 'Document Type not found')
 
         await DocumentTypes.destroy({
             where: {
-                type: identifier
+                typeId: identifier
             }
+        })
+
+        return res.status(200).json({
+            status: 'success'
         })
     } catch (err) {
         if (err instanceof HttpError) controllerErrorHandler(err, res)

@@ -58,20 +58,22 @@ const getByPk = async (req: Request, res: Response) => {
  */
 async function create(req: Request, res: Response) {
     try {
-        if (req.params.expenseId && !isNumber(req.params.expenseId)) throw createHttpError(400, 'Please provide a valid identifier')
-        const identifier = parseInt(req.params.expenseId)
-
         // Test params
-        const validator = isValidExpenseAccount(req.body.expenseAccount.reason, req.body.expenseAccount.expenseDate, req.body.expenseAccount.description, req.body.expenseAccount.state)
+        console.log('TETETTTETTETTESSSTTSTS')
+        const expenseDateFormat = new Date(req.body.expenseAccount.expenseDate)
+        const validator = isValidExpenseAccount(req.body.expenseAccount.reason, expenseDateFormat, req.body.expenseAccount.description, 'A traiter')
+        console.log(req.body.expenseAccount.expenseDate)
+
         if (!validator.valid) return createHttpError(400, validator.message as string)
 
         // Insert data
         const accountExpense = await AccountExpenses.create({
-            expenseId: identifier,
             reason: req.body.expenseAccount.reason,
             expenseDate: req.body.expenseAccount.expenseDate,
             description: req.body.expenseAccount.description,
-            state: req.body.expenseAccount.state
+            userId: req.body.expenseAccount.userId,
+            approbatorId: req.body.expenseAccount.approbatorId,
+            state: 'A Traiter'
         })
 
         // Return success
@@ -97,16 +99,33 @@ const update = async (req: Request, res: Response) => {
         if (req.params.expenseId && !isNumber(req.params.expenseId)) throw createHttpError(400, 'Please provide a valid identifier')
         const identifier = parseInt(req.params.expenseId)
 
+        console.log(identifier)
+
         const accountExpense = await AccountExpenses.findByPk(identifier, {})
+
         if (!accountExpense) throw createHttpError(404, 'Expense not found')
-
         // Test params
-        const validator = isValidExpenseAccount(req.body.expenseAccount.reason, req.body.expenseAccount.expenseDate, req.body.expenseAccount.description, req.body.expenseAccount.state)
-        if (!validator.valid) return createHttpError(400, validator.message as string)
+        const expenseDateFormat = new Date(req.body.expenseAccount.expenseDate)
 
-        await AccountExpenses.update(req.body, {
-            where: { expenseId: identifier }
-        })
+        const validator = isValidExpenseAccount(req.body.expenseAccount.reason, expenseDateFormat, req.body.expenseAccount.description, req.body.expenseAccount.state)
+
+        console.log(validator.message)
+        if (!validator.valid) return createHttpError(400, validator.message as string)
+        console.log(validator.message)
+
+        await AccountExpenses.update(
+            {
+                reason: req.body.expenseAccount.reason,
+                expenseDate: req.body.expenseAccount.expenseDate,
+                description: req.body.expenseAccount.description,
+                userId: req.body.expenseAccount.userId,
+                approbatorId: req.body.expenseAccount.approbatorId,
+                state: req.body.expenseAccount.state
+            },
+            {
+                where: { expenseId: identifier }
+            }
+        )
 
         return res.status(200).json({
             status: 'success'

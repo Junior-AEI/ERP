@@ -14,7 +14,7 @@ import { Table, Column, Model, DataType, ForeignKey, BelongsTo, PrimaryKey, IsIn
 import Users from './user.model'
 import Projects from './project.model'
 
-const ADVANCEMENT = ['Prospection', 'Devis validé', 'CE signé', 'RM signé', 'FA émise', 'FA payée', 'FI émise', 'FI payée', 'FS émise', 'FS payée', 'PVRF signé', 'PVRI signé', 'ARM signé', 'ARCE signé', 'ARRM signé', 'ARCE signé', 'BV payé']
+export const ADVANCEMENT = ['Prospection', 'Devis validé', 'CE signé', 'RM signé', 'FA émise', 'FA payée', 'FI émise', 'FI payée', 'FS émise', 'FS payée', 'PVRF signé', 'PVRI signé', 'ARM signé', 'ARCE signé', 'ARRM signé', 'ARCE signé', 'BV payé', 'Terminé']
 
 @Table
 export default class ProjectNotes extends Model {

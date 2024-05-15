@@ -1,6 +1,6 @@
 import { Request, Response } from 'express'
 import Adresses from '../models/address.model'
-import { controllerErrorHandler, isNumber } from './utils.controller'
+import { controllerErrorHandler } from './utils.controller'
 import createHttpError, { HttpError } from 'http-errors'
 import { isValidAddress } from '../validator/address.validator'
 import Addresses from '../models/address.model'
@@ -13,7 +13,12 @@ import Addresses from '../models/address.model'
 const getAll = async (req: Request, res: Response) => {
     try {
         const addresses = await Adresses.findAll()
-        return res.status(200).json(addresses)
+        return res.status(200).json({
+            status: 'success',
+            data: {
+                addresses: addresses
+            }
+        })
     } catch (err) {
         if (err instanceof HttpError) {
             return controllerErrorHandler(err, res)
@@ -31,12 +36,12 @@ const getAll = async (req: Request, res: Response) => {
 const getByPk = async (req: Request, res: Response) => {
     try {
         // Parse identifier
-        if (req.params.addressId && !isNumber(req.params.addressId)) throw createHttpError(400, 'Please provide a valid identifier.')
         const identifier = parseInt(req.params.addressId)
+        if (isNaN(identifier)) throw createHttpError(400, 'Please provide a valid identifier')
 
         // Find
         const address = await Adresses.findByPk(identifier)
-        if (!address) return createHttpError(404, 'Address not found.')
+        if (!address) throw createHttpError(404, 'Address not found.')
 
         // Return the found address
         return res.status(200).json({
@@ -61,9 +66,8 @@ const create = async (req: Request, res: Response) => {
     try {
         // Test params
         const validator = isValidAddress(req.body.address.address, req.body.address.additionnalAddress, req.body.address.city, req.body.address.postCode, req.body.address.country)
-
         if (!validator.valid) throw createHttpError(400, validator.message as string)
-
+        
         // Insert data
         const address = await Addresses.create({
             address: req.body.address.address,
@@ -96,19 +100,15 @@ const create = async (req: Request, res: Response) => {
 async function update(req: Request, res: Response) {
     try {
         // Parse identifier
-        if (req.params.addressId && !isNumber(req.params.addressId)) throw createHttpError(400, 'Please provide a valid identifier.')
         const identifier = parseInt(req.params.addressId)
+        if (isNaN(identifier)) throw createHttpError(400, 'Please provide a valid identifier')
 
-        console.log(req.body.address)
+        const address = await Addresses.findByPk(identifier)
+        if (!address) throw createHttpError(404, 'Address not found');
 
         // Test params
-        const validator = isValidAddress(
-            req.body.address.address,
-            req.body.address.additionnalAddress,
-            req.body.address.city,
-            req.body.address.postCode,
-            req.body.address.country
-        )
+        console.log("Test" + req.body.address.additionnalAddress)
+        const validator = isValidAddress(req.body.address.address, req.body.address.additionnalAddress, req.body.address.city, req.body.address.postCode, req.body.address.country)
 
         if (!validator.valid) throw createHttpError(400, validator.message as string)
 
@@ -146,8 +146,8 @@ async function update(req: Request, res: Response) {
 const del = async (req: Request, res: Response) => {
     try {
         // Parse identifier
-        if (req.params.addressId && !isNumber(req.params.addressId)) throw createHttpError(400, 'Please provide a valid identifier.')
         const identifier = parseInt(req.params.addressId)
+        if (isNaN(identifier)) throw createHttpError(400, 'Please provide a valid identifier')
 
         const address = await Addresses.findByPk(identifier)
         if (!address) throw createHttpError(404, 'Address not found.')
@@ -156,6 +156,11 @@ const del = async (req: Request, res: Response) => {
             where: {
                 addressId: identifier
             }
+        })
+
+        // Return success
+        return res.status(200).json({
+            status: 'success'
         })
     } catch (err) {
         if (err instanceof HttpError) controllerErrorHandler(err, res)

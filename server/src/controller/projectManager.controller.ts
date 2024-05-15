@@ -1,7 +1,7 @@
 import { Request, Response } from 'express'
 import createHttpError from 'http-errors'
 import { HttpError } from 'http-errors'
-import { controllerErrorHandler, isNumber } from './utils.controller'
+import { controllerErrorHandler } from './utils.controller'
 import ProjectManagers from '../models/projectManager.model'
 import Users from '../models/user.model'
 import Projects from '../models/project.model'
@@ -13,7 +13,7 @@ import Projects from '../models/project.model'
  */
 const getAll = async (req: Request, res: Response) => {
     try {
-        const projectManagers = await ProjectManagers.findAll({ })
+        const projectManagers = await ProjectManagers.findAll({})
 
         return res.status(200).json({
             status: 'success',
@@ -34,19 +34,39 @@ const getAll = async (req: Request, res: Response) => {
  */
 const getByPk = async (req: Request, res: Response) => {
     try {
-        if (req.params.userId && !isNumber(req.params.userId)) throw createHttpError(400, 'Please provide a valid identifier')
-        if (req.params.projectId && !isNumber(req.params.projectId)) throw createHttpError(400, 'Please provide a valid identifier')
+        const identifier = parseInt(req.params.projectManagerId)
+        if (isNaN(identifier)) throw createHttpError(400, 'Please provide a valid identifier')
 
-        const identifier = [parseInt(req.params.userId), parseInt(req.params.projectId)];
-
-        const projectManager = await ProjectManagers.findByPk((identifier[0], identifier[1]), {})
-
+        const projectManager = await ProjectManagers.findByPk(identifier)
         if (!projectManager) throw createHttpError(404, 'Project manager not found')
 
         return res.status(200).json({
             status: 'success',
             data: {
                 projectManager: projectManager
+            }
+        })
+    } catch (err) {
+        if (err instanceof HttpError) controllerErrorHandler(err, res)
+        else throw err
+    }
+}
+
+async function getByProject(req: Request, res: Response) {
+    try {
+        const identifier = parseInt(req.params.projectId)
+        if (isNaN(identifier)) throw createHttpError(400, 'Please provide a valid identifier')
+
+        const projectManagers = await ProjectManagers.findAll({
+            where: {
+                projectId: identifier
+            }
+        })
+
+        return res.status(200).json({
+            status: 'success',
+            data: {
+                projectManagers: projectManagers
             }
         })
     } catch (err) {
@@ -62,32 +82,31 @@ const getByPk = async (req: Request, res: Response) => {
  */
 async function create(req: Request, res: Response) {
     try {
-        if (req.params.userId && !isNumber(req.params.userId)) throw createHttpError(400, 'Please provide a valid identifier')
-        if (req.params.projectId && !isNumber(req.params.projectId)) throw createHttpError(400, 'Please provide a valid identifier')
+        // parse project identifier
+        const idProject = parseInt(req.body.projectManager.projectId)
+        if (isNaN(idProject)) throw createHttpError(400, 'Please provide a valid project identifier')
 
-        const identifier = [parseInt(req.params.userId), parseInt(req.params.projectId)];
+        const project = await Projects.findByPk(idProject)
+        if (!project) throw createHttpError(404, 'Link project not found')
 
-        // Try to find the linked user
-        const user = await Users.findByPk(identifier[0])
-        if (!user) return createHttpError(404, 'Unable to find the linked user.')
+        // parse user identifier
+        const idUser = parseInt(req.body.projectManager.userId)
+        if (isNaN(idUser)) throw createHttpError(400, 'Please provide a valid user identifier')
 
-        // Try to find the linked project
-        const project = await Projects.findByPk(identifier[1])
-        if (!project) return createHttpError(404, 'Unable to find the linked project.')
+        const user = await Users.findByPk(idUser)
+        if (!user) throw createHttpError(404, 'Link user not found')
 
-        
         // Insert data
         const projectManager = await ProjectManagers.create({
-            userId: identifier[0],
-            projectId: identifier[1]
+            userId: idUser,
+            projectId: idProject
         })
 
         // Return success
         return res.status(200).json({
             status: 'success',
             data: {
-                userId: projectManager.userId,
-                projectId: projectManager.projectId
+                projectManagerId: projectManager.projectManagerId
             }
         })
     } catch (err) {
@@ -103,17 +122,30 @@ async function create(req: Request, res: Response) {
  */
 const update = async (req: Request, res: Response) => {
     try {
-        if (req.params.userId && !isNumber(req.params.userId)) throw createHttpError(400, 'Please provide a valid identifier')
-        if (req.params.projectId && !isNumber(req.params.projectId)) throw createHttpError(400, 'Please provide a valid identifier')
+        // parse identifier
+        const identifier = parseInt(req.params.projectManagerId)
+        if (isNaN(identifier)) throw createHttpError(400, 'Please provide a valid identifier')
 
-        const identifier = [parseInt(req.params.userId), parseInt(req.params.projectId)];
+        const projectManager = await ProjectManagers.findByPk(identifier)
+        if (!projectManager) throw createHttpError(404, 'Project manager not found')
 
-        const projectManager = await ProjectManagers.findByPk((identifier[0], identifier[1]))
-        if (!projectManager) throw createHttpError(404, 'Belonger not found')
+        // parse project identifier
+        const idProject = parseInt(req.body.projectManager.projectId)
+        if (isNaN(idProject)) throw createHttpError(400, 'Please provide a valid project identifier')
 
-        await ProjectManagers.update(req.body, {
-            where: { userId: identifier[0],
-                     projectId: identifier[1]
+        const project = await Projects.findByPk(idProject)
+        if (!project) throw createHttpError(404, 'Link project not found')
+
+        // parse user identifier
+        const idUser = parseInt(req.body.projectManager.userId)
+        if (isNaN(idUser)) throw createHttpError(400, 'Please provide a valid user identifier')
+
+        const user = await Users.findByPk(idUser)
+        if (!user) throw createHttpError(404, 'Link user not found')
+
+        await ProjectManagers.update(req.body.projectManager, {
+            where: {
+                projectManagerId: identifier
             }
         })
 
@@ -133,19 +165,21 @@ const update = async (req: Request, res: Response) => {
  */
 const del = async (req: Request, res: Response) => {
     try {
-        if (req.params.userId && !isNumber(req.params.userId)) throw createHttpError(400, 'Please provide a valid identifier')
-        if (req.params.projectId && !isNumber(req.params.projectId)) throw createHttpError(400, 'Please provide a valid identifier')
+        // parse identifier
+        const identifier = parseInt(req.params.projectManagerId)
+        if (isNaN(identifier)) throw createHttpError(400, 'Please provide a valid identifier')
 
-        const identifier = [parseInt(req.params.userId), parseInt(req.params.projectId)];
-
-        const projectManager = await ProjectManagers.findByPk((identifier[0], identifier[1]))
-        if (!projectManager) throw createHttpError(404, 'Belonger not found')
+        const projectManager = await ProjectManagers.findByPk(identifier)
+        if (!projectManager) throw createHttpError(404, 'Project manager not found')
 
         await ProjectManagers.destroy({
             where: {
-                userId: identifier[0],
-                projectId: identifier[1]
+                projectManagerId: identifier
             }
+        })
+
+        return res.status(200).json({
+            status: 'success'
         })
     } catch (err) {
         if (err instanceof HttpError) controllerErrorHandler(err, res)
@@ -156,6 +190,7 @@ const del = async (req: Request, res: Response) => {
 const projectManagerController = {
     getAll,
     getByPk,
+    getByProject,
     create,
     del,
     update

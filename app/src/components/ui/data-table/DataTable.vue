@@ -20,9 +20,14 @@ import { valueUpdater } from '@/lib/utils'
 const props = defineProps<{
   columns: ColumnDef<TData, TValue>[]
   data: TData[]
-  onClickFn?: (...args: any[]) => void
+  max_item_by_page?: number; // Rendre max_item_by_page optionnel
 }>()
 
+
+let Max_item_by_page = 10
+if(props.max_item_by_page){
+  Max_item_by_page= props.max_item_by_page
+}
 const sorting = ref<SortingState>([])
 const columnFilters = ref<ColumnFiltersState>([])
 const columnVisibility = ref<VisibilityState>({})
@@ -54,10 +59,18 @@ const table = useVueTable({
   }
 })
 
-table.setPageSize(10)
+table.setPageSize(Max_item_by_page)
 
 const setFilterModelValue = (event: string | number) => {
   table.setGlobalFilter(event)
+}
+
+const emit = defineEmits(['click:row'])
+
+const handleClickFn = (row: any, e: any) => {
+  if (e.target.tagName === 'DIV') {
+    return emit('click:row', row.original)
+  }
 }
 </script>
 
@@ -119,7 +132,7 @@ const setFilterModelValue = (event: string | number) => {
       <TableBody>
         <template v-if="table.getRowModel().rows?.length">
           <TableRow
-            @click="onClickFn"
+            @click="handleClickFn(row, $event)"
             v-for="row in table.getRowModel().rows"
             :key="row.id"
             :data-state="row.getIsSelected() ? 'selected' : undefined"

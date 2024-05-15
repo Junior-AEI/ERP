@@ -108,10 +108,13 @@ onMounted(async () => {
             />
           </CardContent>
         </Card>
+        <div class="flex flex-1 flex-row flex-wrap gap-2">
+          <TasksCard class="flex flex-1 m-0"> </TasksCard>
+        </div>
       </Wrapper>
 
       <div class="flex h-fit flex-1 flex-col gap-3 sm:min-w-72">
-        <Wrapper class="flex-col">
+        <!-- <Wrapper class="flex-col">
           <Card>
             <CardHeader>
               <Icon name="notifications" />
@@ -121,12 +124,19 @@ onMounted(async () => {
               <span class="text-muted-foreground">Vous êtes à jour</span>
             </CardContent>
           </Card>
+        </Wrapper> -->
+        <Wrapper>
+          <ProjectProgressCard class="flex flex-1"> </ProjectProgressCard>
+
         </Wrapper>
         <Wrapper class="flex-col gap-3">
           <Card>
-            <CardHeader>
-              <Icon name="pin_drop" />
-              <span class="text-accent">Prochains événements </span>
+            <CardHeader class="flex flex-1 justify-between items-center">
+              <div class="flex flex-1 gap-2 items-center">
+
+                <Icon name="pin_drop" />
+                <span class="text-accent">Prochains événements </span>
+              </div>
               <Link class="p-2" to="/events" icon="read_more"> </Link>
             </CardHeader>
             <CardContent>

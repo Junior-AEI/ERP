@@ -4,7 +4,7 @@
       <div class="flex flex-1 flex-col justify-start">
         <h3>{{ description }}</h3>
         <div class="flex flex-1 flex-row items-center justify-between">
-          <span>{{ duedate.toLocaleDateString('fr-FR') }}</span>
+          <span>Pour le {{ duedate.toLocaleDateString('fr-FR') }}</span>
           <DropdownMenu>
             <DropdownMenuTrigger as-child>
               <div  :class=badgeColorClass>
@@ -86,7 +86,7 @@ let badgeColorClass = ''
 const bg_color = async (state : string) => {
   switch (state) {
         case 'A Faire':
-          badgeColorClass = 'bg-gray-200 p-1 rounded mr-2'
+          badgeColorClass = 'bg-blue-200 p-1 rounded mr-2'
           break
         case 'En cours':
           badgeColorClass = 'bg-orange-200 p-1 rounded mr-2'
@@ -95,7 +95,7 @@ const bg_color = async (state : string) => {
           badgeColorClass = 'bg-green-200 p-1 rounded mr-2'
           break
         case 'Annulé':
-          badgeColorClass = 'bg-red-200 p-1 rounded mr-2'
+          badgeColorClass = 'bg-gray-200 p-1 rounded mr-2'
           break
         default:
           badgeColorClass = 'bg-gray-200 p-1 rounded mr-2'

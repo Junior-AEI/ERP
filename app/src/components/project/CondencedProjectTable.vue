@@ -5,7 +5,7 @@
     <Card class="max-h-screen">
       <ScrollArea class="flex h-full flex-col gap-1">
         <CardContent class="h-full pr-3">
-          <CondencedProject v-for="project in results" :infos="project" :key="project.projectId">
+          <CondencedProject v-for="project in res" :infos="project" :key="project.projectId">
           </CondencedProject>
         </CardContent>
       </ScrollArea>
@@ -19,11 +19,22 @@ import axios from 'axios'
 import { type ExtendedProject } from '@/types/api'
 import { useAuthStore } from '@/stores/authStore'
 
+import { computed } from 'vue'
 
 
   const research = ref('')
   const results = ref<ExtendedProject[]>([])
   
+
+  function result() {
+  return results.value.filter((project) => {
+    const fields: string = Object.values(project).join(' ').toLocaleLowerCase()
+    return fields.includes(research.value.toLowerCase())
+  })
+}
+
+const res = computed(result)
+
 function delay(isoDateString: string): number {
     const currentDate = new Date().getTime(); // Convertir la date actuelle en timestamp UNIX
     const endDateTime = new Date(isoDateString).getTime();

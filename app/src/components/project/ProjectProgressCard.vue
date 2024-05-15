@@ -1,7 +1,7 @@
 <template>
   <Wrapper>
     <div class="flex flex-1 flex-col gap-2 sm:min-w-72">
-      <h2>Avancement des Etudes</h2>
+      <h2 class="text-accent border-none p-0">Avancement des Etudes en cours</h2>
       <ProjectCard
         v-for="projectNotes in notesActiveProjects"
         :acronym="projectNotes.acronym"
@@ -21,14 +21,6 @@ import { ref } from 'vue'
 import { useAuthStore } from '@/stores/authStore'
 
 const activeProjects = ref<Project[]>([
-  {
-    nameProject: 'Projet A',
-    projectId: 0,
-    acronym: 'ACR',
-    clientId: 4,
-    startDate: new Date('2023-07-26T12:00:00').toISOString(),
-    endDate: new Date('2024-07-26T12:00:00').toISOString()
-  }
 ])
 
 interface ProjectNotesWithAcronym {

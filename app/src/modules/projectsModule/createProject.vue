@@ -542,7 +542,7 @@ async function newProject() {
       console.log(response)
       toast({
         title: 'Etude ajoutée',
-        description: `${response.data.data.project}`
+        description: `${form.value.nameProject}`
       })
     })
     .catch((error) => {

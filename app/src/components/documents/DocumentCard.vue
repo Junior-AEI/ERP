@@ -11,7 +11,7 @@
       <Button
         variant="outline"
         icon="visibility"
-        @click="reviewDocument(props.infos.documentId)"
+        @click="previewDocument(props.infos.documentId)"
       ></Button>
     </CardContent>
   </Card>
@@ -20,6 +20,8 @@
 <script setup lang="ts">
 import axios from 'axios'
 import { type ExtendedDocument } from '@/types/api'
+import { useToast } from '../ui/toast'
+
 
 const props = defineProps<{
   infos: ExtendedDocument
@@ -37,8 +39,9 @@ const getExtensionByMime = (mime: string) => {
   }
   return mimeTypes[mime] || ''
 }
+const { toast } = useToast()
 
-const reviewDocument = (id: number) => {
+const previewDocument = (id: number) => {
   axios
     .get('/document/downloadById/' + id, {
       responseType: 'blob',
@@ -49,16 +52,18 @@ const reviewDocument = (id: number) => {
     .then((response) => {
       const file = new File(
         [response.data],
-        `${props.infos.name}_v${props.infos.version}.${getExtensionByMime(
-          response.headers['content-type']
-        )}`,
+        `${props.infos.name}.${getExtensionByMime(response.headers['content-type'])}`,
         { type: response.headers['content-type'] }
       )
       window.open(URL.createObjectURL(file))
       return URL.createObjectURL(file)
     })
     .catch((error) => {
-      console.error(error)
+      toast({
+        title: 'Erreur lors du téléchargement',
+        variant: 'destructive',
+        description: error
+      })
     })
 }
 </script>

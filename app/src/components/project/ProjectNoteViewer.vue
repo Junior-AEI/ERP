@@ -203,6 +203,7 @@ function previous_note() {
 
 const currentNote = ref<number>(0)
 const projectNotes = ref<ProjectNotes[]>([])
+async function getData(){
 
 axios
   .get(`/projectNote/byProject/${props.projectId}`, {
@@ -228,6 +229,8 @@ axios
   .catch((error) => {
     console.log(error)
   })
+
+  }
   function delay(isoDateString: string): number {
     const currentDate = new Date().getTime(); // Convertir la date actuelle en timestamp UNIX
     const endDateTime = new Date(isoDateString).getTime();
@@ -263,7 +266,12 @@ axios
       toast({
         title: 'Événement ajouté',
         description: `La note a bien été ajouté.`
+
       })
+      no_add_note()
+      getData()
+
+
     })
     .catch((error) => {
       console.error(error)
@@ -274,4 +282,5 @@ axios
       })
     })
 }
+getData()
 </script>

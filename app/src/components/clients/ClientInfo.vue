@@ -1,13 +1,19 @@
 <template>
   <div class="flex flex-col gap-4">
     <Card class="flex-1">
-      <CardHeader>
+      <CardHeader class="flex items-center justify-between">
+      <div class="flex items-center gap-2">
         <Icon name="badge" class="text-6xl" />
-        <span class="text-accent"> Informations du Membre </span>
-        <Button class="ml-10" v-if="!canEdit" @click="handleClick"
-          >Valider les modifications</Button
-        >
-      </CardHeader>
+        <span class="text-accent"> Informations du Client </span>
+      </div>
+      <Button class="ml-5" variant="outline" v-if="!canEdit" @click="handleClickModif"
+        >Modifer</Button
+      >
+
+      <Button class="ml-5" v-if="canEdit" @click="handleClickValidate"
+        >Valider les modifications</Button
+      >
+    </CardHeader>
       <CardContent>
         <div class="flex items-end gap-4">
           <div class="flex flex-1 flex-col gap-2">
@@ -24,16 +30,8 @@
           <div class="flex flex-1 flex-col gap-2">
             <Label for="gender">Genre</Label>
             <div class="flex flex-1 flex-row gap-2">
-              <Input
-                :disabled="!canEdit"
-                v-if="ModifyGender == false"
-                id="firstname"
-                v-model="form.gender"
-              />
-              <Button v-if="ModifyGender == false" @click="handleModifyGender"
-                ><Icon name="edit"
-              /></Button>
-              <Select v-model="form.gender" v-if="ModifyGender == true">
+              <Input :disabled="!canEdit" v-if="!canEdit" id="firstname" v-model="form.gender" />
+              <Select v-model="form.gender" v-if="canEdit">
                 <SelectTrigger>
                   <SelectValue placeholder="Genre" />
                 </SelectTrigger>
@@ -50,31 +48,23 @@
 
           <div class="flex flex-1 flex-col gap-2">
             <Label for="mobilePhone">N° de Téléphone Mobile</Label>
-            <Input id="mobilePhone" placeholder="Info" v-model="form.mobilePhone" />
+            <Input id="mobilePhone" :disabled="!canEdit" placeholder="Info" v-model="form.mobilePhone" />
           </div>
           <div class="flex flex-1 flex-col gap-2">
             <Label for="landlinePhone">N° de Téléphone</Label>
-            <Input id="landlinePhone" placeholder="Tel Fixe" v-model="form.landlinePhone" />
+            <Input id="landlinePhone" :disabled="!canEdit" placeholder="Tel Fixe" v-model="form.landlinePhone" />
           </div>
         </div>
         <div class="flex items-start gap-4">
           <div class="flex flex-1 flex-col gap-2">
             <Label for="landlinePhone">Email</Label>
-            <Input id="landlinePhone" placeholder="Tel Fixe" v-model="form.email" />
+            <Input id="landlinePhone" :disabled="!canEdit" placeholder="Tel Fixe" v-model="form.email" />
           </div>
           <div class="flex flex-1 flex-col gap-2">
             <Label for="landlinePhone">Premier Contact</Label>
             <div class="flex flex-1 flex-row gap-2">
-              <Input
-                :disabled="!canEdit"
-                v-if="!ModifyFirstContact"
-                id="firstname"
-                v-model="form.firstContact"
-              />
-              <Button v-if="ModifyFirstContact == false" @click="handleModifyFirstContact"
-                ><Icon name="edit"
-              /></Button>
-              <Select v-model="form.firstContact" v-if="ModifyFirstContact">
+              <Input :disabled="!canEdit" v-if="!canEdit" id="firstname" v-model="form.firstContact" />
+              <Select v-model="form.firstContact" v-if="canEdit">
                 <SelectTrigger>
                   <SelectValue placeholder="Comment AEI a eu le premier contact" />
                 </SelectTrigger>
@@ -98,31 +88,23 @@
         <div class="flex items-start gap-4">
           <div class="flex flex-col gap-2">
             <Label for="name">Nom de l'Entreprise</Label>
-            <Input id="name" placeholder="Tel Fixe" v-model="form.name" />
+            <Input id="name" :disabled="!canEdit" placeholder="Tel Fixe" v-model="form.name" />
           </div>
           <div class="flex flex-col gap-2">
             <Label for="landlinePhone">Poste dans l'entreprise</Label>
-            <Input id="landlinePhone" placeholder="Tel Fixe" v-model="form.function" />
+            <Input id="landlinePhone" :disabled="!canEdit" placeholder="Tel Fixe" v-model="form.function" />
           </div>
           <div class="flex flex-1 flex-col gap-2">
             <Label for="legalEntity">N° de SIRET de l'entreprise</Label>
-            <Input id="legalEntity" placeholder="Tel Fixe" v-model="form.legalEntity" />
+            <Input id="legalEntity" :disabled="!canEdit" placeholder="Tel Fixe" v-model="form.legalEntity" />
           </div>
         </div>
         <div class="flex items-end gap-4">
           <div class="flex flex-1 flex-col gap-2">
             <Label for="name">Type d'Entreprise</Label>
             <div class="flex flex-1 flex-row gap-2">
-              <Input
-                :disabled="!canEdit"
-                v-if="!ModifyCompanyType"
-                id="firstname"
-                v-model="form.companyType"
-              />
-              <Button v-if="ModifyCompanyType == false" @click="handleModifyCompanyType"
-                ><Icon name="edit"
-              /></Button>
-              <Select v-model="form.companyType" v-if="ModifyCompanyType">
+              <Input :disabled="!canEdit" v-if="!canEdit" id="firstname" v-model="form.companyType" />
+              <Select v-model="form.companyType" v-if="canEdit">
                 <SelectTrigger>
                   <SelectValue placeholder="Type d'entreprise" />
                 </SelectTrigger>
@@ -142,37 +124,33 @@
           </div>
           <div class="flex flex-1 flex-col gap-2">
             <Label for="Ac">Domaine</Label>
-            <Input id="legalEntity" placeholder="Tel Fixe" v-model="form.activityField" />
+            <Input id="legalEntity" :disabled="!canEdit" placeholder="Tel Fixe" v-model="form.activityField" />
           </div>
         </div>
 
         <div class="flex items-end gap-4">
           <div class="flex flex-1 flex-col gap-2">
             <Label for="name">Adresse </Label>
-            <Input id="address" placeholder="Tel Fixe" v-model="form.address" />
+            <Input id="address":disabled="!canEdit"  placeholder="Tel Fixe" v-model="form.address" />
           </div>
           <div class="flex flex-1 flex-col gap-2">
             <Label for="legalEntity">Complément d'adresse</Label>
-            <Input
-              id="additionnalAddress"
-              placeholder="Tel Fixe"
-              v-model="form.additionnalAddress"
-            />
+            <Input id="additionnalAddress" :disabled="!canEdit"  v-model="form.additionnalAddress" />
           </div>
         </div>
         <div class="flex items-end gap-4">
           <div class="mt-2 flex flex-1 flex-col gap-2">
             <Label for="name">Code Postal </Label>
-            <Input id="postCode" placeholder="Tel Fixe" v-model="form.postCode" />
+            <Input id="postCode" :disabled="!canEdit" placeholder="Tel Fixe" v-model="form.postCode" />
           </div>
           <div class="flex flex-1 flex-col gap-2">
             <Label for="legalEntity">Ville</Label>
-            <Input id="city" placeholder="Tel Fixe" v-model="form.city" />
+            <Input id="city" :disabled="!canEdit" placeholder="Tel Fixe" v-model="form.city" />
           </div>
         </div>
         <div class="mt-2 flex flex-1 flex-col gap-2">
           <Label for="legalEntity">Pays</Label>
-          <Input id="country" placeholder="Tel Fixe" v-model="form.country" />
+          <Input id="country" :disabled="!canEdit" placeholder="Tel Fixe" v-model="form.country" />
         </div>
       </CardContent>
     </Card>
@@ -485,11 +463,15 @@ async function updateClient() {
       })
     })
 }
-
-const handleClick = () => {
+const handleClickModif = () => {
+  canEdit.value = true
+}
+const handleClickValidate = () => {
   updateAddress()
   updateCompany()
   updatePerson()
   updateClient()
+  canEdit.value = false
+
 }
 </script>

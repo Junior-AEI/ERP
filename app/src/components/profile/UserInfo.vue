@@ -1,5 +1,5 @@
 <template>
-  <Card class="h-auto">
+  <Card v-if="username" class="h-auto">
     <CardHeader class="flex items-center justify-between">
       <div class="flex items-center gap-2">
         <Icon name="user_attributes" class="text-6xl" />

@@ -247,7 +247,7 @@ const createMembers = async () => {
         contributionDate: ct,
         paymentMethod: 'HelloAsso',
         department: 'Informatique',
-        telegramId: '@emilybrown',
+        telegramId: '@carlito',
         membershipNumber: '987654',
         addressId: 1
     })
@@ -588,7 +588,7 @@ const createProjects = async () => {
         noteId: 4,
         writerId: 2,
         projectId: 2,
-        comment: 'Ca avance plutot bien',
+        comment: 'Le client est content',
         advancement: 'CE signé'
     })
     console.log('Project created', project1, project2, note1Project1, note2Project1, note1Project2, note2Project2)

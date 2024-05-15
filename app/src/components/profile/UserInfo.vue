@@ -1,14 +1,17 @@
 <template>
   <Card class="h-auto">
-    <CardHeader class="flex justify-between items-center">
-      <div class="flex items-center">
+    <CardHeader class="flex items-center justify-between">
+      <div class="flex items-center gap-2">
         <Icon name="user_attributes" class="text-6xl" />
         <span class="text-accent"> Informations du compte utilisateur</span>
       </div>
-      <Button class="ml-5" variant="outline" v-if="!canEdit" @click="handleClickModif">Mode Modif</Button>
+      <Button class="ml-5" variant="outline" v-if="!canEdit" @click="handleClickModif"
+        >Modifier</Button
+      >
 
-      <Button class="ml-5" v-if="canEdit" @click="handleClickValidate">Valider les modifications</Button>
-
+      <Button class="ml-5" v-if="canEdit" @click="handleClickValidate"
+        >Valider les modifications</Button
+      >
     </CardHeader>
     <CardContent>
       <div class="flex items-end gap-4">
@@ -49,7 +52,6 @@ import { useToast } from '@/components/ui/toast/use-toast'
 
 import { parseAbsoluteToLocal, type DateValue } from '@internationalized/date'
 
-
 const props = defineProps<{
   userId: number
 }>()
@@ -62,7 +64,6 @@ const mandateEnd = ref<DateValue>()
 
 const emailJE = ref('')
 const { toast } = useToast()
-
 
 axios
   .get(`/user/${props.userId}`, {
@@ -81,12 +82,13 @@ axios
     console.error(error)
   })
 
-
 async function updateUser() {
-  const mandateStartISO = mandateStart.value ?
-    `${mandateStart.value.year}-${mandateStart.value.month}-${mandateStart.value.day}` : null;
-  const mandateEndISO = mandateEnd.value ?
-    `${mandateEnd.value.year}-${mandateEnd.value.month}-${mandateEnd.value.day}` : null;
+  const mandateStartISO = mandateStart.value
+    ? `${mandateStart.value.year}-${mandateStart.value.month}-${mandateStart.value.day}`
+    : null
+  const mandateEndISO = mandateEnd.value
+    ? `${mandateEnd.value.year}-${mandateEnd.value.month}-${mandateEnd.value.day}`
+    : null
 
   await axios
     .put(
@@ -97,7 +99,7 @@ async function updateUser() {
           username: username.value,
           mandateStart: mandateStartISO,
           mandateEnd: mandateEndISO,
-          emailJE: emailJE.value,
+          emailJE: emailJE.value
         }
       },
       {
@@ -110,7 +112,7 @@ async function updateUser() {
       console.log(response)
       canEdit.value = false
       toast({
-        title: 'Utilisateur modifié',
+        title: 'Utilisateur modifié'
       })
     })
     .catch((error) => {
@@ -123,10 +125,8 @@ async function updateUser() {
     })
 }
 
-
 const handleClickValidate = () => {
   updateUser()
-
 }
 const handleClickModif = () => {
   canEdit.value = true

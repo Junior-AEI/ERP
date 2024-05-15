@@ -1,14 +1,17 @@
 <template>
   <Card class="flex-1">
-    <CardHeader class="flex justify-between items-center">
-      <div class="flex items-center">
+    <CardHeader class="flex items-center justify-between">
+      <div class="flex items-center gap-2">
         <Icon name="badge" class="text-6xl" />
         <span class="text-accent"> Informations du Membre </span>
       </div>
-      <Button class="ml-5" variant="outline" v-if="!canEdit" @click="handleClickModif">Passer en mode Modif</Button>
+      <Button class="ml-5" variant="outline" v-if="!canEdit" @click="handleClickModif"
+        >Modifer</Button
+      >
 
-      <Button class="ml-5" v-if="canEdit" @click="handleClickValidate">Valider les modifications</Button>
-
+      <Button class="ml-5" v-if="canEdit" @click="handleClickValidate"
+        >Valider les modifications</Button
+      >
     </CardHeader>
     <CardContent>
       <div class="flex items-end gap-4">
@@ -27,7 +30,7 @@
           <div class="flex flex-1 flex-row gap-2">
             <Input disabled v-if="!canEdit" id="firstname" v-model="form.gender" />
             <div v-if="canEdit">
-              <Select v-model="form.gender" >
+              <Select v-model="form.gender">
                 <SelectTrigger>
                   <SelectValue placeholder="Genre" />
                 </SelectTrigger>
@@ -46,7 +49,6 @@
           <Label for="birthDate">Date de naissance</Label>
           <div class="flex flex-1 flex-row gap-2">
             <DatePickerComponent :disabled="!canEdit" v-model="birthDateFormat" />
-
           </div>
         </div>
       </div>
@@ -67,7 +69,7 @@
           <div class="flex flex-1 flex-row gap-2">
             <Input disabled v-if="!canEdit" id="firstname" v-model="form.department" />
             <div v-if="canEdit">
-              <Select v-model="form.department" >
+              <Select v-model="form.department">
                 <SelectTrigger>
                   <SelectValue placeholder="Filière" />
                 </SelectTrigger>
@@ -87,32 +89,50 @@
         </div>
         <div class="flex flex-1 flex-col gap-2">
           <Label for="promotion">Promo</Label>
-          <Input :disabled="!canEdit" id="promotion" :placeholder="new Date().getFullYear() + 2"
-            v-model="form.promotion" />
+          <Input
+            :disabled="!canEdit"
+            id="promotion"
+            :placeholder="new Date().getFullYear() + 2"
+            v-model="form.promotion"
+          />
         </div>
       </div>
       <div class="flex items-end gap-4">
         <div class="flex flex-1 flex-col gap-2">
           <Label for="mobilePhone">N° de Téléphone Mobile</Label>
-          <Input id="mobilePhone" :disabled="!canEdit" placeholder="Info" v-model="form.mobilePhone" />
+          <Input
+            id="mobilePhone"
+            :disabled="!canEdit"
+            placeholder="Info"
+            v-model="form.mobilePhone"
+          />
         </div>
         <div class="flex flex-1 flex-col gap-2">
           <Label for="landlinePhone">N° de Téléphone</Label>
-          <Input id="landlinePhone" :disabled="!canEdit" placeholder="Tel Fixe" v-model="form.landlinePhone" />
+          <Input
+            id="landlinePhone"
+            :disabled="!canEdit"
+            placeholder="Tel Fixe"
+            v-model="form.landlinePhone"
+          />
         </div>
       </div>
       <div class="flex justify-end gap-4">
         <div class="flex flex-1 flex-col gap-2">
           <Label for="landlinePhone">Email</Label>
-          <Input id="landlinePhone" :disabled="!canEdit" placeholder="Tel Fixe" v-model="form.email" />
+          <Input
+            id="landlinePhone"
+            :disabled="!canEdit"
+            placeholder="Tel Fixe"
+            v-model="form.email"
+          />
         </div>
         <div class="flex flex-1 flex-col gap-2">
           <Label for="paymentMethod">Moyen de paiement de la Cotisation</Label>
           <div class="flex flex-1 flex-row gap-2">
             <Input disabled v-if="!canEdit" id="firstname" v-model="form.paymentMethod" />
             <div v-if="canEdit">
-
-              <Select v-model="form.paymentMethod" >
+              <Select v-model="form.paymentMethod">
                 <SelectTrigger>
                   <SelectValue placeholder="Moyen de Payement" />
                 </SelectTrigger>
@@ -137,8 +157,6 @@
           <Label for="contributionDate">Date de cotisation</Label>
 
           <DatePickerComponent :disabled="!canEdit" v-model="contributionDateFormat" />
-
-
         </div>
       </div>
 
@@ -181,13 +199,10 @@ import {
 
 const canEdit = ref(false) // to be modified when permissions are added
 
-
 const contributionDateFormat = ref<DateValue>()
 const birthDateFormat = ref<DateValue>()
 const contributionDateString = ref<string>()
 const birthDateString = ref<string>()
-
-
 
 const df = new DateFormatter('fr-FR', {
   dateStyle: 'long'
@@ -403,7 +418,6 @@ async function updateMember() {
 const handleClickValidate = () => {
   updatePerson()
   updateMember()
-
 }
 const handleClickModif = () => {
   canEdit.value = true

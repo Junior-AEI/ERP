@@ -9,11 +9,11 @@
         <div class="flex items-end gap-4">
           <div class="flex flex-1 flex-col gap-2">
             <Label for="lastname">Nom</Label>
-            <Input id="lastname" v-model="form.lastname" />
+            <Input id="lastname" placeholder="Bond" v-model="form.lastname" />
           </div>
           <div class="flex flex-1 flex-col gap-2">
             <Label for="firstname">Prénom</Label>
-            <Input id="firstname" v-model="form.firstname" />
+            <Input id="firstname" placeholder="James" v-model="form.firstname" />
           </div>
         </div>
         <div class="flex flex-1 flex-col gap-2">
@@ -34,7 +34,7 @@
         <div class="flex items-end gap-4">
           <div class="flex flex-1 flex-col gap-2">
             <Label for="mobilePhone">N° de Téléphone Mobile</Label>
-            <Input id="mobilePhone" placeholder="Info" v-model="form.mobilePhone" />
+            <Input id="mobilePhone" placeholder="+33756121007 (Attention au +33)" v-model="form.mobilePhone" />
           </div>
           <div class="flex flex-1 flex-col gap-2">
             <Label for="landlinePhone">N° de Téléphone</Label>
@@ -43,7 +43,7 @@
         </div>
         <div class="flex flex-1 flex-col gap-2">
           <Label for="landlinePhone">Email</Label>
-          <Input id="landlinePhone" placeholder="Tel Fixe" v-model="form.email" />
+          <Input id="landlinePhone" placeholder="bond@007.com"  v-model="form.email" />
         </div>
         <div class="flex items-start gap-4">
           <div class="flex flex-col gap-2">
@@ -61,7 +61,7 @@
           <div class="flex flex-col gap-2">
             <div class="flex flex-1 flex-col gap-2">
               <Label for="landlinePhone">Poste dans l'entreprise</Label>
-              <Input id="landlinePhone" placeholder="Tel Fixe" v-model="form.function" />
+              <Input id="landlinePhone" placeholder="Agent" v-model="form.function" />
             </div>
             <div class="flex flex-1 flex-col gap-2">
               <Label for="landlinePhone">Premier Contact</Label>
@@ -90,11 +90,11 @@
           <div class="flex items-end gap-4">
             <div class="flex flex-1 flex-col gap-2">
               <Label for="name">Nom de l'Entreprise</Label>
-              <Input id="name" placeholder="Tel Fixe" v-model="form.name" />
+              <Input id="name" placeholder="Airbus" v-model="form.name" />
             </div>
             <div class="flex flex-1 flex-col gap-2">
               <Label for="legalEntity">N° de SIRET de l'entreprise</Label>
-              <Input id="legalEntity" placeholder="Tel Fixe" v-model="form.legalEntity" />
+              <Input id="legalEntity" placeholder="2522522522525 (Trouvable sur société.com)" v-model="form.legalEntity" />
             </div>
           </div>
           <div class="flex items-end gap-4">
@@ -119,7 +119,7 @@
             </div>
             <div class="flex flex-1 flex-col gap-2">
               <Label for="Ac">Domaine</Label>
-              <Input id="legalEntity" placeholder="Tel Fixe" v-model="form.activityField" />
+              <Input id="legalEntity" placeholder="Industrie Agroalimentaire" v-model="form.activityField" />
             </div>
           </div>
           <div class="mt-2 flex flex-col gap-2">
@@ -145,13 +145,13 @@
           <div class="flex items-end gap-4">
             <div class="flex flex-1 flex-col gap-2">
               <Label for="name">Adresse </Label>
-              <Input id="address" placeholder="Tel Fixe" v-model="form.address" />
+              <Input id="address" placeholder="4 rue Dupont" v-model="form.address" />
             </div>
             <div class="flex flex-1 flex-col gap-2">
               <Label for="legalEntity">Complément d'adresse</Label>
               <Input
                 id="additionnalAddress"
-                placeholder="Tel Fixe"
+                placeholder="Appt 133"
                 v-model="form.additionnalAddress"
               />
             </div>
@@ -159,16 +159,16 @@
           <div class="flex items-end gap-4">
             <div class="mt-2 flex flex-1 flex-col gap-2">
               <Label for="name">Code Postal </Label>
-              <Input id="postCode" placeholder="Tel Fixe" v-model="form.postCode" />
+              <Input id="postCode" placeholder="31650" v-model="form.postCode" />
             </div>
             <div class="flex flex-1 flex-col gap-2">
               <Label for="legalEntity">Ville</Label>
-              <Input id="city" placeholder="Tel Fixe" v-model="form.city" />
+              <Input id="city" placeholder="Lune" v-model="form.city" />
             </div>
           </div>
           <div class="mt-2 flex flex-1 flex-col gap-2">
             <Label for="legalEntity">Pays</Label>
-            <Input id="country" placeholder="Tel Fixe" v-model="form.country" />
+            <Input id="country" placeholder="USA" v-model="form.country" />
           </div>
         </div>
 
